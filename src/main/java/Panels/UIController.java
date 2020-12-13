@@ -38,6 +38,7 @@ public class UIController {
 
         mainPanel.add(rhsPanel, BorderLayout.EAST);
 
+
     }
 
     //Function returning the mainPanel
@@ -45,6 +46,7 @@ public class UIController {
         return mainPanel;
     }
 
+    //Function that creates borders around panel entered
     public void outline(JPanel ... a){
         for (JPanel i:a){
             i.setBorder(BorderFactory.createLineBorder(Color.BLACK));
