@@ -1,2 +1,12 @@
-package PACKAGE_NAME;public class Main {
+//Main Class
+import javax.swing.*;
+import java.awt.*;
+
+
+public class Main {
+    public static void main (String[] args){
+        System.out.println("Hello Motherfucker!");
+
+    }
+
 }
