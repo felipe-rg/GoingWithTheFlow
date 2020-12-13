@@ -10,7 +10,6 @@ public class BedStatus extends JPanel{
 
     public BedStatus(){
         this.setPreferredSize(new Dimension(300,100));
-        outline(this);
 
         greenBeds = new JLabel("3");
         greenBeds.setBackground(Color.decode("#2ECC71"));
@@ -38,8 +37,5 @@ public class BedStatus extends JPanel{
         add(ambarBeds);
         add(redBeds);
 
-    }
-    public void outline(JPanel panel){
-        panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
     }
 }

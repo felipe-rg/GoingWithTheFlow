@@ -24,6 +24,8 @@ public class UIController {
         bedStatus = new BedStatus();
         wardInfo = new WardInfo();
 
+        outline(topography,title, rhsPanel);
+
 
         //Adding Panels to mainPanel
         mainPanel.setLayout(new BorderLayout(0,0));
@@ -43,5 +45,10 @@ public class UIController {
         return mainPanel;
     }
 
-}
+    public void outline(JPanel ... a){
+        for (JPanel i:a){
+            i.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        }
+    }
 
+}
