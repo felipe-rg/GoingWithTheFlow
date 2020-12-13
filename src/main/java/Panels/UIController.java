@@ -24,12 +24,13 @@ public class UIController {
         bedStatus = new BedStatus();
         wardInfo = new WardInfo();
 
+
         //Adding Panels to mainPanel
-        mainPanel.setLayout(new BorderLayout(5,5));
+        mainPanel.setLayout(new BorderLayout(0,0));
         mainPanel.add(topography);
         mainPanel.add(title, BorderLayout.NORTH);
 
-        rhsPanel.setLayout(new BorderLayout(0,5));
+        rhsPanel.setLayout(new BorderLayout(0,0));
         rhsPanel.add(bedStatus, BorderLayout.NORTH);
         rhsPanel.add(wardInfo, BorderLayout.CENTER);
 
@@ -43,3 +44,4 @@ public class UIController {
     }
 
 }
+

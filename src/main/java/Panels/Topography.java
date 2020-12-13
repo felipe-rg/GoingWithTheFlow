@@ -20,6 +20,7 @@ public class Topography extends JPanel{
         this.setPreferredSize(new Dimension(900,700));
         this.setBackground(Color.white);
         this.setLayout(null);
+        outline(this);
 
         setupBeds();
 
@@ -44,5 +45,8 @@ public class Topography extends JPanel{
         this.add(bed6);
         this.add(bed7);
         this.add(bed8);
+    }
+    public void outline(JPanel panel){
+        panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
     }
 }

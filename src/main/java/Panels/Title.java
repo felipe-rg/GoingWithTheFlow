@@ -11,6 +11,7 @@ public class Title extends JPanel{
         //Editing Panel itself
         this.setPreferredSize(new Dimension(1200,100));
         this.setBackground(Color.white);
+        outline(this);
 
         //Adding label
         titleLabel = new JLabel("AMU Ward");
@@ -18,5 +19,9 @@ public class Title extends JPanel{
         add(titleLabel);
 
 
+    }
+
+    public void outline(JPanel panel){
+        panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
     }
 }
