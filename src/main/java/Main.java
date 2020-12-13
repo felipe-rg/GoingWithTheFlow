@@ -10,7 +10,7 @@ public class Main {
 
         JFrame frame = new JFrame();
         frame.setSize(1200,800);
-        frame.setResizable(false);
+        //frame.setResizable(false);
 
         UIController UIc = new UIController();
         frame.add(UIc.getMainPanel());

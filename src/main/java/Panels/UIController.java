@@ -6,6 +6,7 @@ import java.awt.*;
 public class UIController {
     //Declaring Panels
     JPanel mainPanel;
+    JPanel rhsPanel;
     Topography topography;
     Title title;
     BedStatus bedStatus;
@@ -17,17 +18,22 @@ public class UIController {
 
         //Instantiating Panels
         mainPanel = new JPanel();
+        rhsPanel = new JPanel();
         topography = new Topography();
         title = new Title();
         bedStatus = new BedStatus();
         wardInfo = new WardInfo();
 
         //Adding Panels to mainPanel
-        mainPanel.setLayout(null);
+        mainPanel.setLayout(new BorderLayout(5,5));
         mainPanel.add(topography);
         mainPanel.add(title, BorderLayout.NORTH);
-        mainPanel.add(bedStatus, BorderLayout.EAST);
-        mainPanel.add(wardInfo, BorderLayout.EAST);
+
+        rhsPanel.setLayout(new BorderLayout(0,5));
+        rhsPanel.add(bedStatus, BorderLayout.NORTH);
+        rhsPanel.add(wardInfo, BorderLayout.CENTER);
+
+        mainPanel.add(rhsPanel, BorderLayout.EAST);
 
     }
 

@@ -6,7 +6,7 @@ import java.awt.*;
 public class WardInfo extends JPanel{
 
     public WardInfo(){
-        this.setBounds(900, 200, 300, 600);
-        this.setBackground(Color.YELLOW);
+        this.setPreferredSize(new Dimension(300,600));
+        this.setBackground(Color.white);
     }
 }
