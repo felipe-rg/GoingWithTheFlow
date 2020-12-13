@@ -5,7 +5,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class Topography extends JPanel{
-    private ArrayList<Bed> bedList;
+    //private ArrayList<Bed> bedList;
     Bed bed1;
     Bed bed2;
     Bed bed3;
@@ -22,8 +22,6 @@ public class Topography extends JPanel{
         this.setLayout(null);
 
         setupBeds();
-
-
 
 
     }
