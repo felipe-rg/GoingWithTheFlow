@@ -2,14 +2,13 @@ package Client;
 
 import java.io.Serializable;
 import java.sql.Time;
-import java.util.ArrayList;
 
 public class Patient implements Serializable {
 
     private int id;
     private String nameInitials;
     private String currentLocation;
-    private char sex;
+    private String sex;
     private Time arrivalTime;
     private String initialDiagnosis;
     private boolean needsSideRoom;
@@ -18,12 +17,12 @@ public class Patient implements Serializable {
     private Time estimatedTimeOfNext;
     private boolean ttaSignedOff;
     private boolean suitableForDischargeLounge;
-    private char transferRequestStatus;
+    private String transferRequestStatus;
     private boolean deceased;
 
-    public Patient(int id, String nameInitials,String currentLocation,char sex,Time arrivalTime, String initialDiagnosis,
+    public Patient(int id, String nameInitials,String currentLocation,String sex,Time arrivalTime, String initialDiagnosis,
                    boolean needsSideRoom,boolean acceptedByMedicine,String nextDestination,Time estimatedTimeOfNext,
-                   boolean ttaSignedOff,boolean suitableForDischargeLounge,char transferRequestStatus,boolean deceased) {
+                   boolean ttaSignedOff,boolean suitableForDischargeLounge,String transferRequestStatus,boolean deceased) {
         this.id = id;
         this.nameInitials = nameInitials;
         this.currentLocation = currentLocation;
@@ -39,4 +38,20 @@ public class Patient implements Serializable {
         this.transferRequestStatus = transferRequestStatus;
         this.deceased = deceased;
     }
+
+
+    public int getId() {return id;}
+    public String getNameInitials() {return nameInitials;}
+    public String getCurrentLocation() {return currentLocation;}
+    public String getSex() {return sex;}
+    public Time getArrivalTime() {return arrivalTime;}
+    public String getInitialDiagnosis() {return initialDiagnosis;}
+    public boolean getNeedsSideRoom() {return needsSideRoom;}
+    public boolean getAcceptedByMedicine() {return acceptedByMedicine;}
+    public String getNextDestination() {return nextDestination;}
+    public Time getEstimatedTimeOfNext() {return estimatedTimeOfNext;}
+    public boolean getTtaSignedOff() {return ttaSignedOff;}
+    public boolean getSuitableForDischargeLounge() {return suitableForDischargeLounge;}
+    public String getTransferRequestStatus() {return transferRequestStatus;}
+    public boolean getDeceased() {return deceased;};
 }

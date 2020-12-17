@@ -5,36 +5,25 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.ProtocolException;
-import java.net.URL;
+import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class Client {
 
-    private ArrayList<Patient> patients = new ArrayList<Patient>();
 
 
     public Client() {   }
 
-    public void makeGetRequest(String sqlString) throws IOException {
-        String message = sqlString;
+    public ArrayList<String> makeGetRequest(String fields, String table, String criteria) throws IOException {
+        ArrayList<String> patients = new ArrayList<String>();
         Gson gson = new Gson();
-        byte[] body = message.getBytes(StandardCharsets.UTF_8);
-                URL servletURL = new URL("https://goingwiththeflowservlet.herokuapp.com/home");
+        String url = "http://localhost:8080/GoingWithTheFlowServlet/home?command="+"&fields="+fields+"&table="+table+"&where="+criteria;
+        URL servletURL = new URL(url);
         HttpURLConnection conn = (HttpURLConnection) servletURL.openConnection();
         conn.setRequestMethod("GET");
-        conn.setRequestProperty("Accept", "text/html");
+        conn.setRequestProperty("Content-type", "application/json");
         conn.setRequestProperty("charset", "utf-8");
-        conn.setRequestProperty("Content-Length", Integer.toString(body.length));
-        conn.setDoOutput(true);
-
-        // Write the body of the request
-        try (OutputStream outputStream = conn.getOutputStream()) {
-            outputStream.write(body, 0, body.length);
-        }
-
         BufferedReader bufferedReader = new BufferedReader(new
                 InputStreamReader(conn.getInputStream(), "utf-8"));
         String inputLine;
@@ -44,14 +33,15 @@ public class Client {
             patients = gson.fromJson(inputLine,ArrayList.class);
         }
         bufferedReader.close();
-    }
+        return patients;
 
+    }
 
     public void makePostRequest(String sqlString) throws IOException {
         // Set up the body data
         String message = sqlString;
         byte[] body = message.getBytes(StandardCharsets.UTF_8);
-        URL servletURL = new URL("https://goingwiththeflowservlet.herokuapp.com/home");
+        URL servletURL = new URL("http://localhost:8080/GoingWithTheFlowServlet/home");
         HttpURLConnection conn = null;
         conn = (HttpURLConnection) servletURL.openConnection();
 
