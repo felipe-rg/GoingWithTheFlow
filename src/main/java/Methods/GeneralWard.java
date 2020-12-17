@@ -14,13 +14,14 @@ public class GeneralWard {
     }
 
     public ArrayList<Patient> getIncomingList(int wardId) throws IOException {
-        //String SQLstr = "SELECT id FROM patients WHERE wardId="+wardId+";";
-        return client.makeGetRequest("id", "patients", "wardid="+wardId);
+        //String SQLstr = "SELECT id FROM patients WHERE nextDestination="+wardId+";";
+        return client.makeGetRequest("id", "patients", "nextDestination="+wardId);
     }
 
     public void acceptIncoming(int patientId, int wardId) throws IOException {
         String SQLstr = "UPDATE patients SET accepted='Yes' WHERE id = "+patientId+";";
         client.makePutRequest(SQLstr);
+        //FIXME: how are we tracking requests?
     }
     public void rejectIncoming(int patientId, int wardId) throws IOException {
         String SQLstr = "UPDATE patients SET accepted=Null WHERE id = "+patientId+";";
