@@ -16,7 +16,7 @@ public class AandE implements requestable{
     }
 
     @Override
-    public void makeRequest(String patientId, String idealDestination) throws IOException {
+    public void makeRequest(int patientId, String idealDestination) throws IOException {
         String SQLstr = "UPDATE patients SET transferReqStatus = "+idealDestination+" WHERE id = "+patientId+";";
         client.makePutRequest(SQLstr);
     }

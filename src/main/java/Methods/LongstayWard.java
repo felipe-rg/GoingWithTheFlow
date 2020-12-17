@@ -1,6 +1,6 @@
 package Methods;
 public class LongstayWard extends GeneralWard{
-    public LongstayWard(String wardId){
+    public LongstayWard(int wardId){
         super(wardId);
     }
 

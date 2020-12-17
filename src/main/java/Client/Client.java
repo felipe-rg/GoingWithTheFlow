@@ -15,7 +15,8 @@ public class Client {
 
     public Client() {   }
 
-    public ArrayList<Patient> makeGetRequest(String sqlString) throws IOException {
+    //FIXME not real function
+    public ArrayList<Patient> makeGetRequest(String columns, String table, String conditions) throws IOException {
         URL servletURL = new URL("https://goingwiththeflowservlet.herokuapp.com/home");
         HttpURLConnection conn = (HttpURLConnection) servletURL.openConnection();
         conn.setRequestMethod("GET");
@@ -30,7 +31,6 @@ public class Client {
         }
         in.close();
 
-        //FIXME not real function
         ArrayList<Patient> output = new ArrayList<Patient>();
         for(int i=1; i<10; i++){
             Patient p = new Patient();

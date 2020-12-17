@@ -36,31 +36,50 @@ public class ControlCentre implements statusable{
         amcCapacityPerc = 0;
         freeBeds = 0;
         dischargePatients = 0;
+        transferPatients = 0;
         //FIXME wardId in int or string?
-        String SQLstr = "SELECT id FROM patients WHERE currentLocation = 'AMC';";
-        ArrayList<Patient> amcPatients = client.makeGetRequest(SQLstr);
-        SQLstr = "SELECT id FROM beds WHERE wardId = 'AMC';";
-        ArrayList<Patient> amcBeds = client.makeGetRequest(SQLstr);
+        //String SQLstr = "SELECT id FROM patients WHERE currentLocation = 'AMC';";
+        ArrayList<Patient> amcPatients = client.makeGetRequest("id", "patients", "currentLocation='AMC'");
+        //SQLstr = "SELECT id FROM beds WHERE wardId = 'AMC';";
+        ArrayList<Patient> amcBeds = client.makeGetRequest("id", "beds", "wardId='AMC'");
         amcCapacityPerc = amcPatients.size()*100/amcBeds.size();
         freeBeds = amcBeds.size()-amcPatients.size();
-        SQLstr = "SELECT id FROM patients WHERE currentLocation = 'AMC' AND nextDestination != NULL;";
-        ArrayList<Patient> transfers = client.makeGetRequest(SQLstr);
-        transferPatients = transfers.size();
+        //SQLstr = "SELECT id FROM patients WHERE currentLocation = 'AMC' AND nextDestination != NULL;";
+        ArrayList<Patient> inAMC = client.makeGetRequest("id", "patients", "currentLocation='AMC'");
+        ArrayList<Patient> leavingAMC = client.makeGetRequest("id", "patients", "nextDestination!=NULL");
         //todo how are we signalling discharge?
-        SQLstr = "SELECT id FROM patients WHERE currentLocation = 'AMC' AND nextDestination = 'Discharge';";
-        ArrayList<Patient> discharges = client.makeGetRequest(SQLstr);
-        dischargePatients = discharges.size();
+        //SQLstr = "SELECT id FROM patients WHERE currentLocation = 'AMC' AND nextDestination = 'Discharge';";
+        ArrayList<Patient> discharges = client.makeGetRequest("id", "patients", "nextDestination='Discharge'");
+        for(int i=0; i<inAMC.size(); i++){
+            for(int j=0; j<leavingAMC.size();i++) {
+                if (inAMC.get(i).id == leavingAMC.get(j).id){
+                    transferPatients = transferPatients +1;
+                }
+                if (inAMC.get(i).id == discharges.get(j).id){
+                    dischargePatients = dischargePatients +1;
+                }
+            }
+        }
     }
 
     private void longStayNumbers() throws IOException {
         longstayCapacityPerc = 0;
         longstayFreeBeds = 0;
-        String SQLstr = "SELECT id FROM patients WHERE currentLocation != 'AMC' AND currentLocation != 'AandE';";
-        ArrayList<Patient> longstayPatients = client.makeGetRequest(SQLstr);
-        SQLstr = "SELECT id FROM beds WHERE wardId != 'AMC';";
-        ArrayList<Patient> longstayBeds = client.makeGetRequest(SQLstr);
-        longstayCapacityPerc = longstayPatients.size()*100/longstayBeds.size();
-        longstayFreeBeds = longstayBeds.size() - longstayPatients.size();
+        int longStayCapacity = 0;
+        //String SQLstr = "SELECT id FROM patients WHERE currentLocation != 'AMC' AND currentLocation != 'AandE';";
+        ArrayList<Patient> notInAMC = client.makeGetRequest("id", "patients", "currentLocation!='AMC'");
+        ArrayList<Patient> notInAandE = client.makeGetRequest("id", "patients", "currentLocation!='AandE'");
+        for(int i=0; i<notInAMC.size(); i++){
+            for(int j=0; j<notInAandE.size();i++) {
+                if (notInAandE.get(i).id == notInAandE.get(j).id){
+                    longStayCapacity = longStayCapacity +1;
+                }
+            }
+        }
+        //SQLstr = "SELECT id FROM beds WHERE wardId != 'AMC';";
+        ArrayList<Patient> longstayBeds = client.makeGetRequest("id", "beds", "wardid!='AMC'");
+        longstayCapacityPerc = longStayCapacity*100/longstayBeds.size();
+        longstayFreeBeds = longstayBeds.size() - longStayCapacity;
     }
 
     private void incomingNumbers() throws IOException {
@@ -68,7 +87,16 @@ public class ControlCentre implements statusable{
         redPatients = 0;
         orangePatients = 0;
         String SQLstr = "SELECT arrivalTime FROM patients WHERE currentLocation = 'AandE' AND acceptedByMedicine = true;";
-        ArrayList<Patient> incoming = client.makeGetRequest(SQLstr);
+        ArrayList<Patient> inAandE = client.makeGetRequest("id,arrivalTime", "patients", "currentLocation='AandE'");
+        ArrayList<Patient> accepted= client.makeGetRequest("id", "patients", "acceptedByMedicine=true");
+        ArrayList<Patient> incoming = new ArrayList<Patient>();
+        for(int i=0; i<inAandE.size(); i++){
+            for(int j=0; j<accepted.size();i++) {
+                if (inAandE.get(i).id == incoming.get(j).id){
+                    incoming.add(inAandE.get(i));
+                }
+            }
+        }
         Calendar calendar = Calendar.getInstance();
         Calendar calendar2 = Calendar.getInstance();
         Calendar calendar3 = Calendar.getInstance();
@@ -91,18 +119,18 @@ public class ControlCentre implements statusable{
     }
 
     public ArrayList<Patient> seeIncomingList() throws IOException {
-        String SQLstr = "SELECT id, sex, initialDiagnosis, acceptedByMedicine, arrivalTime FROM patients WHERE currentLocation = 'AandE';";
-        return client.makeGetRequest(SQLstr);
+        //String SQLstr = "SELECT id, sex, initialDiagnosis, acceptedByMedicine, arrivalTime FROM patients WHERE currentLocation = 'AandE';";
+        return client.makeGetRequest("id,sex,initialDiagnosis,acceptedByMedicine,arrivalTime", "patients", "currentLocation='AandE'");
     }
 
     @Override
-    public ArrayList<Patient> getWardInfo(String wardId) throws IOException {
-        String SQLstr = "SELECT * FROM patients WHERE wardId = '"+wardId+"';";
-        return client.makeGetRequest(SQLstr);
+    public ArrayList<Patient> getWardInfo(int wardId) throws IOException {
+        //String SQLstr = "SELECT * FROM patients WHERE wardId = '"+wardId+"';";
+        return client.makeGetRequest("*", "patients", "wardid="+wardId);
     }
 
     @Override
-    public ArrayList<Patient> getPatientInfo(String wardId) {
+    public ArrayList<Patient> getPatientInfo(int wardId) {
         return null;
     }
 }
