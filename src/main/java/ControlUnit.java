@@ -1,3 +1,5 @@
+import Panels.Title;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -8,7 +10,6 @@ public class ControlUnit {
     JFrame f;                                                           // field: JFrame for the Homepage
     JPanel mainPanel;                                                   // field: Panel in frame
 
-    JPanel title;                                                       // field: Panels for frame
     JPanel incoming;
     JPanel longStay;
     JPanel AMC;
@@ -20,15 +21,7 @@ public class ControlUnit {
         outline(mainPanel);
 
 
-        title = new JPanel();                                                                       // creates Title JPanel
-        title.setBorder(BorderFactory.createEmptyBorder(30, 10, 20, 10));      // adds padding
-        outline(title);
-
-        JLabel Title = new JLabel("AMC Status");                                           // text for Title JPanel
-        Title.setFont (Title.getFont ().deriveFont (32.0f));                                        // font size of text
-        padding(Title);
-        title.add(Title);                                                                           // adds text to title
-
+        Title titlePanel = new Title("AMC Status");                                                                       // creates Title JPanel// adds padding
 
         incoming = new JPanel();
         outline(incoming);
@@ -54,6 +47,13 @@ public class ControlUnit {
 
         JButton ipDetails = new JButton("Click here to see Incoming Patients Details");
         ipDetails.setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 10));
+        ipDetails.addActionListener(new ActionListener() {                            // waits for mouse to click button
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                f.dispose();
+                Incoming patientList = new Incoming();
+            }
+        });
 
         incoming.add(head1);
         incoming.add(body1);
@@ -145,7 +145,7 @@ public class ControlUnit {
 
         mainPanel.setLayout(new BorderLayout());                                    // defines layout of MainPanel
 
-        mainPanel.add(title , BorderLayout.NORTH);                                  // adds panels to MainPanel in correct position
+        mainPanel.add(titlePanel , BorderLayout.NORTH);                                  // adds panels to MainPanel in correct position
         mainPanel.add(incoming , BorderLayout.WEST);
         mainPanel.add(longStay , BorderLayout.EAST);
         mainPanel.add(AMC , BorderLayout.CENTER);

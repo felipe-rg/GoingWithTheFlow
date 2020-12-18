@@ -6,19 +6,19 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class AMCInfo {
+public class Incoming {
 
     JFrame f;                                                           // field: JFrame for the Homepage
     JPanel mainPanel;                                                   // field: Panel in frame
 
     JPanel title;                                                       // field: Panels for frame
 
-    public AMCInfo() {
+    public Incoming() {
 
         f = new JFrame();                                               // creates JFrame for Homepage
         mainPanel = new JPanel();
 
-        Title titlePanel = new Title("AMC Status");
+        Title titlePanel = new Title("Incoming Patients from A&E");
         titlePanel.setLayout(new FlowLayout());
 
         JButton backButton = new JButton("Click here for Homepage");
@@ -33,33 +33,19 @@ public class AMCInfo {
         });
 
         JPanel infoPanel = new JPanel();
-        infoPanel.setLayout(new FlowLayout());
 
-        JLabel AMU1info = new JLabel("AMU 1 table goes here");
-        JLabel AMU2info = new JLabel("AMU 2 table goes here");
-        JLabel AAU1info = new JLabel("AAU 1 table goes here");
+        JLabel AMU1info = new JLabel("A&E Patient table goes here");
+
 
         infoPanel.add(AMU1info);
-        infoPanel.add(AMU2info);
-        infoPanel.add(AAU1info);
 
         mainPanel.setLayout(new BorderLayout());                                    // defines layout of MainPanel
-        mainPanel.add(titlePanel , BorderLayout.NORTH);
-        mainPanel.add(infoPanel , BorderLayout.CENTER);
+        mainPanel.add(titlePanel, BorderLayout.NORTH);
+        mainPanel.add(infoPanel, BorderLayout.CENTER);
 
         f.getContentPane().add(mainPanel);                                          // adds MainPanel to JFrame
         f.setVisible(true);
         f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         f.setSize(1000, 600);
     }
-
-    public void outline(JPanel panel) {                                             // adds outline to JPanels
-        panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-    }
-
-    public void padding(JLabel label) {                                              // adds padding to JLabels for better spacing
-        label.setBorder(BorderFactory.createEmptyBorder(30, 10, 20, 10));
-
-    }
 }
-

@@ -20,7 +20,7 @@ public class UIController {
         mainPanel = new JPanel();
         rhsPanel = new JPanel();
         topography = new Topography();
-        title = new Title();
+        title = new Title("AMU Ward");
         bedStatus = new BedStatus();
         wardInfo = new WardInfo();
 
