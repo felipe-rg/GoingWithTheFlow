@@ -20,6 +20,7 @@ public class BedStatus extends JPanel{
         redBeds = new JLabel("3");
         redBeds.setBackground(Color.decode("#E74C3C"));
 
+        //
         setLabel(greenBeds, ambarBeds, redBeds);
 
         this.setLayout(new GridLayout(1,3));
@@ -29,6 +30,7 @@ public class BedStatus extends JPanel{
 
     }
 
+    //Function in which you introduce labels and they are automatically edited
     public void setLabel(JLabel ... a){
         for (JLabel i:a){
             i.setOpaque(true);

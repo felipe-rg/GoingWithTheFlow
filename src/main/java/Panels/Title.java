@@ -7,13 +7,13 @@ public class Title extends JPanel{
     //Declaring components
     JLabel titleLabel;
 
-    public Title(){
+    public Title(String title){
         //Editing Panel itself
         this.setPreferredSize(new Dimension(1200,100));
         this.setBackground(Color.white);
 
         //Adding label
-        titleLabel = new JLabel("AMU Ward");
+        JLabel titleLabel = new JLabel(title);
         titleLabel.setFont(new Font("Verdana", Font.PLAIN, 50));
         add(titleLabel);
 

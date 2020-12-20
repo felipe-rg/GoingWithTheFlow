@@ -20,10 +20,11 @@ public class UIController {
         mainPanel = new JPanel();
         rhsPanel = new JPanel();
         topography = new Topography();
-        title = new Title();
+        title = new Title("AMC GUI");
         bedStatus = new BedStatus();
         wardInfo = new WardInfo();
 
+        //Giving the panels a black border
         outline(topography,title, rhsPanel);
 
 
