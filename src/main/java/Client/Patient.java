@@ -1,7 +1,9 @@
 package Client;
 
 import java.io.Serializable;
-import java.sql.Time;
+
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class Patient implements Serializable {
 
@@ -9,49 +11,55 @@ public class Patient implements Serializable {
     private String nameInitials;
     private String currentLocation;
     private String sex;
-    private Time arrivalTime;
+    private LocalDateTime arrivalDateTime;
     private String initialDiagnosis;
     private boolean needsSideRoom;
     private boolean acceptedByMedicine;
     private String nextDestination;
-    private Time estimatedTimeOfNext;
+    private LocalDateTime estimatedDateTimeOfNext;
     private boolean ttaSignedOff;
     private boolean suitableForDischargeLounge;
     private String transferRequestStatus;
     private boolean deceased;
 
-    public Patient(int id, String nameInitials,String currentLocation,String sex,Time arrivalTime, String initialDiagnosis,
-                   boolean needsSideRoom,boolean acceptedByMedicine,String nextDestination,Time estimatedTimeOfNext,
+    public Patient(String nameInitials,String sex,String initialDiagnosis,boolean needsSideRoom) {
+        this.nameInitials = nameInitials;
+        this.sex = sex;
+        this.initialDiagnosis = initialDiagnosis;
+        this.needsSideRoom = needsSideRoom;
+    }
+
+    public Patient(int id, String nameInitials,String currentLocation,String sex,LocalDateTime arrivalDateTime, String initialDiagnosis,
+                   boolean needsSideRoom,boolean acceptedByMedicine,String nextDestination,LocalDateTime estimatedTimeOfNext,
                    boolean ttaSignedOff,boolean suitableForDischargeLounge,String transferRequestStatus,boolean deceased) {
         this.id = id;
         this.nameInitials = nameInitials;
         this.currentLocation = currentLocation;
         this.sex = sex;
-        this.arrivalTime = arrivalTime;
+        this.arrivalDateTime = arrivalDateTime;
         this.initialDiagnosis = initialDiagnosis;
         this.needsSideRoom = needsSideRoom;
         this.acceptedByMedicine = acceptedByMedicine;
         this.nextDestination = nextDestination;
-        this.estimatedTimeOfNext = estimatedTimeOfNext;
+        this.estimatedDateTimeOfNext = estimatedTimeOfNext;
         this.ttaSignedOff = ttaSignedOff;
         this.suitableForDischargeLounge = suitableForDischargeLounge;
         this.transferRequestStatus = transferRequestStatus;
         this.deceased = deceased;
     }
 
-
     public int getId() {return id;}
     public String getNameInitials() {return nameInitials;}
     public String getCurrentLocation() {return currentLocation;}
     public String getSex() {return sex;}
-    public Time getArrivalTime() {return arrivalTime;}
+    public LocalDateTime getArrivalDateTime() {return arrivalDateTime;}
     public String getInitialDiagnosis() {return initialDiagnosis;}
     public boolean getNeedsSideRoom() {return needsSideRoom;}
     public boolean getAcceptedByMedicine() {return acceptedByMedicine;}
     public String getNextDestination() {return nextDestination;}
-    public Time getEstimatedTimeOfNext() {return estimatedTimeOfNext;}
+    public LocalDateTime getEstimatedTimeOfNext() {return estimatedDateTimeOfNext;}
     public boolean getTtaSignedOff() {return ttaSignedOff;}
     public boolean getSuitableForDischargeLounge() {return suitableForDischargeLounge;}
     public String getTransferRequestStatus() {return transferRequestStatus;}
-    public boolean getDeceased() {return deceased;};
+    public boolean getDeceased() {return deceased;}
 }

@@ -1,6 +1,6 @@
 package Client;
-import com.google.gson.Gson;
 
+import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -12,13 +12,12 @@ import java.util.ArrayList;
 public class Client {
 
 
-
     public Client() {   }
 
     public ArrayList<String> makeGetRequest(String fields, String table, String criteria) throws IOException {
         ArrayList<String> patients = new ArrayList<String>();
         Gson gson = new Gson();
-        String url = "http://localhost:8080/GoingWithTheFlowServlet/home?command="+"&fields="+fields+"&table="+table+"&where="+criteria;
+        String url = "https://goingwiththeflowservlet.herokuapp.com/home?fields="+fields+"&table="+table+"&where="+criteria;
         URL servletURL = new URL(url);
         HttpURLConnection conn = (HttpURLConnection) servletURL.openConnection();
         conn.setRequestMethod("GET");
@@ -34,16 +33,15 @@ public class Client {
         }
         bufferedReader.close();
         return patients;
-
     }
 
-    public void makePostRequest(String sqlString) throws IOException {
+    public void makePostRequest(Patient p) throws IOException {
         // Set up the body data
-        String message = sqlString;
-        byte[] body = message.getBytes(StandardCharsets.UTF_8);
-        URL servletURL = new URL("http://localhost:8080/GoingWithTheFlowServlet/home");
-        HttpURLConnection conn = null;
-        conn = (HttpURLConnection) servletURL.openConnection();
+        Gson gson = new Gson();
+        String jsonString = gson.toJson(p);
+        byte[] body = jsonString.getBytes(StandardCharsets.UTF_8);
+        URL servletURL = new URL("https://goingwiththeflowservlet.herokuapp.com/home");
+        HttpURLConnection conn= (HttpURLConnection) servletURL.openConnection();
 
         // Set up the header
         conn.setRequestMethod("POST");
@@ -73,8 +71,7 @@ public class Client {
         String message = sqlString;
         byte[] body = message.getBytes(StandardCharsets.UTF_8);
         URL servletURL = new URL("https://goingwiththeflowservlet.herokuapp.com/home");
-        HttpURLConnection conn = null;
-        conn = (HttpURLConnection) servletURL.openConnection();
+        HttpURLConnection conn = (HttpURLConnection) servletURL.openConnection();
 
         // Set up the header
         conn.setRequestMethod("DELETE");
