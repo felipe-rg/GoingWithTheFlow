@@ -1,6 +1,6 @@
 package Methods;
 
-import Client.Client;
+import Client.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,22 +19,19 @@ public class GeneralWard {
     }
 
     public void acceptIncoming(int patientId, int wardId) throws IOException {
-        String SQLstr = "UPDATE patients SET accepted='Yes' WHERE id = "+patientId+";";
-        client.makePutRequest(SQLstr);
+        //String SQLstr = "UPDATE patients SET accepted='Yes' WHERE id = "+patientId+";";
+        client.makePutRequest("patients", "accepted='Yes'", "id="+patientId);
         //FIXME: how are we tracking requests?
     }
     public void rejectIncoming(int patientId, int wardId) throws IOException {
-        String SQLstr = "UPDATE patients SET accepted=Null WHERE id = "+patientId+";";
-        client.makePutRequest(SQLstr);
+        //String SQLstr = "UPDATE patients SET accepted=Null WHERE id = "+patientId+";";
+        client.makePutRequest("patients", "accepted='No'", "id="+patientId);
         //todo: alert of rejection to location or request new ward
     }
 
     public void setBed(int patientId, int bedId) throws IOException {
-        //todo: check which table we edit here
-        String SQLstr = "UPDATE patients SET bedId="+bedId+" WHERE id = "+patientId+";";
-        client.makePutRequest(SQLstr);
-        SQLstr = "UPDATE beds SET occupied='Occupied' WHERE id = "+bedId+";";
-        client.makePutRequest(SQLstr);
+        //String SQLstr = "UPDATE patients SET bedId="+bedId+" WHERE id = "+patientId+";";
+        client.makePutRequest("patients", "bedid="+bedId, "id="+patientId);
     }
 
     public void discharge(int patientId) throws IOException {
@@ -49,15 +46,15 @@ public class GeneralWard {
     }
 
     public void removePatient(int patientId, int bedId) throws IOException {
-        String SQLstr = "UPDATE patients SET bedId=Null, wardId=Null WHERE id "+patientId+";";
-        client.makePutRequest(SQLstr);
-        SQLstr = "UPDATE beds SET patientId=Null, occupied='No' WHERE id "+bedId+";";
-        client.makePutRequest(SQLstr);
+        //String SQLstr = "UPDATE patients SET bedId=Null, wardId=Null WHERE id "+patientId+";";
+        client.makePutRequest("patients", "bedid=Null", "id="+patientId);
+        //SQLstr = "UPDATE beds SET patientId=Null, occupied='No' WHERE id "+bedId+";";
+        client.makePutRequest("beds", "occupied='free'", "id="+bedId);
     }
 
     public void editBed(int bedId, String columnId, String newVal) throws IOException {
-        String SQLstr = "UPDATE beds SET "+columnId+ " = "+newVal+" WHERE id =" +bedId+";";
-        client.makePutRequest(SQLstr);
+        //String SQLstr = "UPDATE beds SET "+columnId+ " = "+newVal+" WHERE id =" +bedId+";";
+        client.makePutRequest("beds", columnId+"="+newVal, "id="+bedId);
     }
 
     public void isBedFree(int bedId) throws IOException {
@@ -71,6 +68,6 @@ public class GeneralWard {
 
     public void editPatient(int patientId, String columnId, String newVal) throws IOException {
         String SQLstr = "UPDATE patients SET "+columnId+ " = "+newVal+" WHERE id =" +patientId+";";
-        client.makePutRequest(SQLstr);
+        client.makePutRequest("patients", columnId="="+newVal, "id="+patientId);
     }
 }

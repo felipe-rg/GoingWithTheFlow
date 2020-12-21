@@ -1,6 +1,6 @@
 package Methods;
 
-import Client.Client;
+import Client.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,6 +18,6 @@ public class AMCWard extends GeneralWard implements requestable{
     @Override
     public void makeRequest(int patientId, String idealDestination) throws IOException {
         String SQLstr = "UPDATE patients SET transferReqStatus = "+idealDestination+" WHERE id = "+patientId+";";
-        client.makePutRequest(SQLstr);
+        client.makePutRequest("patients", "transferReqStatus="+idealDestination, "id="+patientId);
     }
 }

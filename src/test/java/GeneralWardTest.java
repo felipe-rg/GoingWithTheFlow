@@ -1,5 +1,4 @@
-import Client.Client;
-import Methods.Patient;
+import Client.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,22 +25,22 @@ public class GeneralWardTest {
         //Create test ward, bed, and patient
         Time time = Time.valueOf(LocalTime.now());
         String SQLstr = "INSERT INTO patients(currentLocation, acceptedByMedicine, sex, arrivalTime, initialDiagnosis) VALUES('AandE', false, 'male', "+time+", 'TestDiagnosis');";
-        client.makePostRequest(SQLstr);
+        client.makeDeleteRequest(SQLstr);
         SQLstr = "INSERT INTO wards(wardName) VALUES('TestWard');";
-        client.makePostRequest(SQLstr);
+        client.makeDeleteRequest(SQLstr);
         SQLstr = "INSERT INTO beds(wardId) VALUES("+wardId+");";
-        client.makePostRequest(SQLstr);
+        client.makeDeleteRequest(SQLstr);
 
         //Get the id for each of the tests
         //SQLstr = "SELECT id FROM patients WHERE initialDiagnosis = 'Test Diagnosis';";
         ArrayList<Patient> patient = client.makeGetRequest( "id", "patients", "initialDiagnosis='TestDiagnosis'");
-        patientId = patient.get(0).id;
+        patientId = patient.get(0).getId();
         //SQLstr = "SELECT id FROM wards WHERE wardName = 'Test Ward';";
         ArrayList<Patient> wards = client.makeGetRequest( "id", "wards", "wardName=TestWard");
-        wardId = wards.get(0).id;
+        wardId = wards.get(0).getId();
         //SQLstr = "SELECT id FROM beds WHERE wardId = "+wardId+";";
         ArrayList<Patient> beds = client.makeGetRequest( "id", "beds", "wardid="+wardId);
-        bedId = beds.get(0).id;
+        bedId = beds.get(0).getId();
 
         //Initialise a ward to test methods
         ward = new AMCWard(wardId);
@@ -63,7 +62,7 @@ public class GeneralWardTest {
         ward.discharge(patientId);
         String SQLstr = "SELECT * FROM patients WHERE id="+patientId+";";
         ArrayList<Patient> patient = client.makeGetRequest( "*", "patients", "id="+patientId);
-        Assert.assertEquals(patient.get(0).id, null);
+        Assert.assertEquals(patient.get(0).getId(), null);
     }
 
     public void testGetIncomingList() throws IOException {

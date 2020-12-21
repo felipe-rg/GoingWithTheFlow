@@ -11,12 +11,12 @@ public class Main {
         //Patient p = new Patient("REEE","F","od",false);
         //c.makePostRequest(p);
 
-        ArrayList<String> ps = c.makeGetRequest("*","patients","id%3E40");
+        ArrayList<Patient> ps = c.makeGetRequest("*","patients","id%3E40");
         Gson gson = new Gson();
-        for(String s:ps) {
-            Patient p = gson.fromJson(s, Patient.class);
-            System.out.println(p.getNameInitials()+p.getArrivalDateTime());
-        }
+        //for(Patient s:ps) {
+          //  Patient p = gson.fromJson(s, Patient.class);
+          //  System.out.println(p.getNameInitials()+p.getArrivalDateTime());
+        //}
     }
 
 }

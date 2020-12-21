@@ -1,5 +1,5 @@
 package Methods;
-import Client.Client;
+import Client.*;
 
 import java.io.IOException;
 import java.sql.Time;
@@ -52,10 +52,10 @@ public class ControlCentre implements statusable{
         ArrayList<Patient> discharges = client.makeGetRequest("id", "patients", "nextDestination='Discharge'");
         for(int i=0; i<inAMC.size(); i++){
             for(int j=0; j<leavingAMC.size();i++) {
-                if (inAMC.get(i).id == leavingAMC.get(j).id){
+                if (inAMC.get(i).getId() == leavingAMC.get(j).getId()){
                     transferPatients = transferPatients +1;
                 }
-                if (inAMC.get(i).id == discharges.get(j).id){
+                if (inAMC.get(i).getId() == discharges.get(j).getId()){
                     dischargePatients = dischargePatients +1;
                 }
             }
@@ -71,7 +71,7 @@ public class ControlCentre implements statusable{
         ArrayList<Patient> notInAandE = client.makeGetRequest("id", "patients", "currentLocation!='AandE'");
         for(int i=0; i<notInAMC.size(); i++){
             for(int j=0; j<notInAandE.size();i++) {
-                if (notInAandE.get(i).id == notInAandE.get(j).id){
+                if (notInAandE.get(i).getId() == notInAandE.get(j).getId()){
                     longStayCapacity = longStayCapacity +1;
                 }
             }
@@ -92,12 +92,12 @@ public class ControlCentre implements statusable{
         ArrayList<Patient> incoming = new ArrayList<Patient>();
         for(int i=0; i<inAandE.size(); i++){
             for(int j=0; j<accepted.size();i++) {
-                if (inAandE.get(i).id == incoming.get(j).id){
+                if (inAandE.get(i).getId() == incoming.get(j).getId()){
                     incoming.add(inAandE.get(i));
                 }
             }
         }
-        Calendar calendar = Calendar.getInstance();
+       /* Calendar calendar = Calendar.getInstance();
         Calendar calendar2 = Calendar.getInstance();
         Calendar calendar3 = Calendar.getInstance();
         calendar.setTime(java.sql.Time.valueOf(LocalTime.now()));
@@ -106,7 +106,7 @@ public class ControlCentre implements statusable{
         calendar2.add(Calendar.HOUR_OF_DAY, -2);
         calendar3.add(Calendar.HOUR_OF_DAY, -3);
         for(Patient p : incoming){
-            if(p.arrivalTime.after(calendar2.getTime())){
+            if(p.getArrivalDateTime().after(calendar2.getTime())){
                 greenPatients = greenPatients +1;
             }
             else if(p.arrivalTime.after(calendar3.getTime())){
@@ -115,7 +115,7 @@ public class ControlCentre implements statusable{
             else {
                 redPatients = redPatients +1;
             }
-        }
+        }*/
     }
 
     public ArrayList<Patient> seeIncomingList() throws IOException {

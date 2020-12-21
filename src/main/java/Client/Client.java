@@ -14,8 +14,8 @@ public class Client {
 
     public Client() {   }
 
-    public ArrayList<String> makeGetRequest(String fields, String table, String criteria) throws IOException {
-        ArrayList<String> patients = new ArrayList<String>();
+    public ArrayList<Patient> makeGetRequest(String fields, String table, String criteria) throws IOException {
+        ArrayList<Patient> patients = new ArrayList<Patient>();
         Gson gson = new Gson();
         String url = "https://goingwiththeflowservlet.herokuapp.com/home?fields="+fields+"&table="+table+"&where="+criteria;
         URL servletURL = new URL(url);
@@ -33,6 +33,27 @@ public class Client {
         }
         bufferedReader.close();
         return patients;
+    }
+
+    public void makePutRequest(String table, String changes, String condition) throws IOException {
+        ArrayList<String> patients = new ArrayList<String>();
+        Gson gson = new Gson();
+        String url = "https://goingwiththeflowservlet.herokuapp.com/home?table="+table+"&changes="+changes+"&condition="+condition;
+        URL servletURL = new URL(url);
+        HttpURLConnection conn = (HttpURLConnection) servletURL.openConnection();
+        conn.setRequestMethod("GET");
+        conn.setRequestProperty("Content-type", "application/json");
+        conn.setRequestProperty("charset", "utf-8");
+        BufferedReader bufferedReader = new BufferedReader(new
+                InputStreamReader(conn.getInputStream(), "utf-8"));
+        String inputLine;
+
+        // Read the body of the response
+        while ((inputLine = bufferedReader.readLine()) != null) {
+            patients = gson.fromJson(inputLine,ArrayList.class);
+        }
+        bufferedReader.close();
+        //return patients;
     }
 
     public void makePostRequest(Patient p) throws IOException {
@@ -66,7 +87,7 @@ public class Client {
         bufferedReader.close();
     }
 
-    private void makeDeleteRequest(String sqlString) throws IOException {
+    public void makeDeleteRequest(String sqlString) throws IOException {
         // Set up the body data
         String message = sqlString;
         byte[] body = message.getBytes(StandardCharsets.UTF_8);
