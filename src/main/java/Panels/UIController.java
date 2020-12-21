@@ -1,7 +1,11 @@
 package Panels;
 
+import jdk.incubator.jpackage.main.Main;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class UIController {
     //Declaring Panels
@@ -20,7 +24,9 @@ public class UIController {
         mainPanel = new JPanel();
         rhsPanel = new JPanel();
         topography = new Topography();
-        title = new Title("AMU Ward");
+
+        JButton backButton = new JButton("Go Back to User Page");
+        title = new Title("AMU Ward" , backButton);
         bedStatus = new BedStatus();
         wardInfo = new WardInfo();
 

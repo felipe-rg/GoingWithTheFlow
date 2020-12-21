@@ -6,20 +6,20 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Incoming {
+public class LongStay {
 
     JFrame f;                                                           // field: JFrame for the Homepage
     JPanel mainPanel;                                                   // field: Panel in frame
 
     JPanel title;                                                       // field: Panels for frame
 
-    public Incoming() {
+    public LongStay() {
 
         f = new JFrame();                                               // creates JFrame for Homepage
         mainPanel = new JPanel();
 
         JButton backButton = new JButton("Go Back");
-        Title titlePanel = new Title("Incoming Patients from A&E" , backButton);
+        Title titlePanel = new Title("Long-stay Ward Overview" , backButton);
 
         backButton.addActionListener(new ActionListener() {                            // waits for mouse to click button
             @Override
@@ -29,12 +29,13 @@ public class Incoming {
             }
         });
 
+
         JPanel infoPanel = new JPanel();
 
-        JLabel AMU1info = new JLabel("A&E Patient table goes here");
+        JLabel LSinfo = new JLabel("Longstay ward table goes here");
 
 
-        infoPanel.add(AMU1info);
+        infoPanel.add(LSinfo);
 
         mainPanel.setLayout(new BorderLayout());                                    // defines layout of MainPanel
         mainPanel.add(titlePanel, BorderLayout.NORTH);

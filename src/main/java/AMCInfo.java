@@ -18,12 +18,9 @@ public class AMCInfo {
         f = new JFrame();                                               // creates JFrame for Homepage
         mainPanel = new JPanel();
 
-        Title titlePanel = new Title("AMC Status");
-        titlePanel.setLayout(new FlowLayout());
+        JButton backButton = new JButton("Go Back");
+        Title titlePanel = new Title("AMC Status" , backButton);
 
-        JButton backButton = new JButton("Click here for Homepage");
-        backButton.setBorder(new EmptyBorder(0, 400, 0, 0));
-        titlePanel.add(backButton);
         backButton.addActionListener(new ActionListener() {                            // waits for mouse to click button
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -32,8 +29,9 @@ public class AMCInfo {
             }
         });
 
+
         JPanel infoPanel = new JPanel();
-        infoPanel.setLayout(new FlowLayout());
+        infoPanel.setLayout(new GridLayout(1,3));
 
         JLabel AMU1info = new JLabel("AMU 1 table goes here");
         JLabel AMU2info = new JLabel("AMU 2 table goes here");
@@ -50,7 +48,7 @@ public class AMCInfo {
         f.getContentPane().add(mainPanel);                                          // adds MainPanel to JFrame
         f.setVisible(true);
         f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        f.setSize(1000, 600);
+        f.setExtendedState(Frame.MAXIMIZED_BOTH);
     }
 
     public void outline(JPanel panel) {                                             // adds outline to JPanels

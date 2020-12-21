@@ -20,8 +20,15 @@ public class ControlUnit {
         mainPanel = new JPanel();
         outline(mainPanel);
 
-
-        Title titlePanel = new Title("AMC Status");                                                                       // creates Title JPanel// adds padding
+        JButton backButton = new JButton("Go Back To User Page");
+        Title titlePanel = new Title("AMC Status" , backButton);
+        backButton.addActionListener(new ActionListener() {                            // waits for mouse to click button
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                f.dispose();
+                UserPage user = new UserPage();
+            }
+        });
 
         incoming = new JPanel();
         outline(incoming);
@@ -83,15 +90,22 @@ public class ControlUnit {
         JLabel blank2 = new JLabel("   ");
         padding(blank2);
 
-        JButton lsinfo = new JButton("Click here to see Longstay Ward Information");
-        lsinfo.setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 10));
+        JButton LSreview = new JButton("Click here to see Longstay Ward Information");
+        LSreview.setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 10));
+
+        LSreview.addActionListener(new ActionListener() {                            // waits for mouse to click button
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                f.dispose();
+                LongStay LSpage = new LongStay();
+            }
+        });
 
         longStay.add(head2);
         longStay.add(lcap);
         longStay.add(freeBed2);
         longStay.add(blank2);
-        longStay.add(lsinfo);
-
+        longStay.add(LSreview);
 
         AMC = new JPanel();
         outline(AMC);
@@ -133,6 +147,13 @@ public class ControlUnit {
 
         JButton td = new JButton("Click here to see AMC transfer and discharge information");
         td.setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 10));
+        td.addActionListener(new ActionListener() {                            // waits for mouse to click button
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                f.dispose();
+                DisTransPage DTPage = new DisTransPage();
+            }
+        });
 
         AMC.add(head3);
         AMC.add(cap);
@@ -153,7 +174,8 @@ public class ControlUnit {
         f.getContentPane().add(mainPanel);                                          // adds MainPanel to JFrame
         f.setVisible(true);
         f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        f.setSize(1000, 600);
+        f.setExtendedState(Frame.MAXIMIZED_BOTH);
+
     }
 
     public void padding(JLabel label){                                              // adds padding to JLabels for better spacing
