@@ -1,28 +1,22 @@
-//Main Class
-import Panels.UIController;
-
-import javax.swing.*;
-import java.awt.*;
-
+import Client.Client;
+import com.google.gson.Gson;
+import Client.Patient;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class Main {
-    public static void main (String[] args){
+    public static void main (String[] args) throws IOException {
 
-        JFrame frame = new JFrame();
-        frame.setSize(1200,800);
-        //frame.setResizable(false);
+        Client c = new Client();
+        //Patient p = new Patient("REEE","F","od",false);
+        //c.makePostRequest(p);
 
-        UIController UIc = new UIController();
-        frame.add(UIc.getMainPanel());
-
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
-
-
-
-
-
+        ArrayList<String> ps = c.makeGetRequest("*","patients","id%3E40");
+        Gson gson = new Gson();
+        for(String s:ps) {
+            Patient p = gson.fromJson(s, Patient.class);
+            System.out.println(p.getNameInitials()+p.getArrivalDateTime());
+        }
     }
 
 }
