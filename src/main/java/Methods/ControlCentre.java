@@ -38,15 +38,11 @@ public class ControlCentre implements statusable{
         freeBeds = 0;
         dischargePatients = 0;
         transferPatients = 0;
-        //FIXME wardId in int or string?
-        //String SQLstr = "SELECT id FROM patients WHERE currentLocation = 'AMC';";
-        ArrayList<Patient> amcPatients = client.makeGetRequest("id", "patients", "currentLocation='AMC'");
-        //SQLstr = "SELECT id FROM beds WHERE wardId = 'AMC';";
-        ArrayList<Patient> amcBeds = client.makeGetRequest("id", "beds", "wardId='AMC'");
+        ArrayList<Patient> amcPatients = client.makeGetRequest("id", "patients", "currentLocation='AMC'");//todo AMC id
+        ArrayList<Patient> amcBeds = client.makeGetRequest("id", "beds", "wardId='AMC'");//todo GetBeds //todo AMC id
         amcCapacityPerc = amcPatients.size()*100/amcBeds.size();
         freeBeds = amcBeds.size()-amcPatients.size();
-        //SQLstr = "SELECT id FROM patients WHERE currentLocation = 'AMC' AND nextDestination != NULL;";
-        ArrayList<Patient> inAMC = client.makeGetRequest("id", "patients", "currentLocation='AMC'");
+        ArrayList<Patient> inAMC = client.makeGetRequest("id", "patients", "currentLocation='AMC'");//todo AMC id
         ArrayList<Patient> leavingAMC = client.makeGetRequest("id", "patients", "nextDestination!=NULL");
         //todo how are we signalling discharge?
         //SQLstr = "SELECT id FROM patients WHERE currentLocation = 'AMC' AND nextDestination = 'Discharge';";

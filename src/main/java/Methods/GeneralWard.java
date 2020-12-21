@@ -30,14 +30,14 @@ public class GeneralWard {
     public void setBed(int patientId, int bedId) throws IOException, SQLException {
         client.makePutRequest("patients", "bedid="+bedId, "id="+patientId);
         //todo access bed table with get
-        client.makePutRequest("patients", "currentlocation=13", "id="+patientId);
+        client.makePutRequest("patients", "currentlocation=13", "id="+patientId);//todo AMC id
         client.makePutRequest("patients", "nextlocation=NULL", "id="+patientId);
         client.makePutRequest("beds", "occupied='occupied'", "id="+bedId);
     }
 
     public void discharge(int patientId) throws IOException, SQLException {
         String SQLstr = "DELETE FROM patients WHERE id="+patientId+";";
-        client.makeDeleteRequest(SQLstr);
+        client.makeDeleteRequest("patients", "id="+patientId);
     }
 
     public ArrayList<Patient> getAllPatients(int wardId) throws IOException, SQLException {
@@ -72,7 +72,11 @@ public class GeneralWard {
         client.makePutRequest("patients", columnId="="+newVal, "id="+patientId);
     }
 
-    public ArrayList<Patient> getPatientInfo(String inits) throws IOException, SQLException {
-        return client.makeGetRequest("id","patients", "nameinitials='"+inits+"'");
+    public ArrayList<Patient> getPatientInfo(int patientId) throws IOException, SQLException {
+        return client.makeGetRequest("*","patients", "id="+patientId);
+    }
+
+    public void ripPatient(int patientId) throws IOException {
+        client.makePutRequest("patients", "deceased=true", "id="+patientId);
     }
 }

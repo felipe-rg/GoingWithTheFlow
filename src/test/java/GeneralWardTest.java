@@ -19,7 +19,7 @@ public class GeneralWardTest {
 
     @Before
     public void setup() throws IOException, SQLException {
-        client  = new Client();
+        /*client  = new Client();
         //Create test ward, bed, and patient
         Time time = Time.valueOf(LocalTime.now());
         String SQLstr = "INSERT INTO patients(currentLocation, acceptedByMedicine, sex, arrivalTime, initialDiagnosis) VALUES('AandE', false, 'male', "+time+", 'TestDiagnosis');";
@@ -41,27 +41,27 @@ public class GeneralWardTest {
         bedId = beds.get(0).getId();
 
         //Initialise a ward to test methods
-        ward = new AMCWard(wardId);
+        ward = new AMCWard(wardId);*/
     }
 
     @After
     public void debrief() throws IOException, SQLException {
-        String SQLstr = "DELETE FROM patients WHERE id="+patientId+");";
+        /*String SQLstr = "DELETE FROM patients WHERE id="+patientId+");";
         client.makeDeleteRequest(SQLstr);
         SQLstr = "DELETE FROM beds WHERE id="+bedId+");";
         client.makeDeleteRequest(SQLstr);
         SQLstr = "DELETE FROM wards WHERE id="+wardId+");";
-        client.makeDeleteRequest(SQLstr);
+        client.makeDeleteRequest(SQLstr);*/
     }
 
 
     @Test
     @Ignore
     public void testDischarge() throws IOException, SQLException {
-        ward.discharge(patientId);
+        /*ward.discharge(patientId);
         String SQLstr = "SELECT * FROM patients WHERE id="+patientId+";";
         ArrayList<Patient> patient = client.makeGetRequest( "*", "patients", "id="+patientId);
-        Assert.assertEquals(patient.get(0).getId(), null);
+        Assert.assertEquals(patient.get(0).getId(), null);*/
     }
 
     public void testGetIncomingList() throws IOException {
