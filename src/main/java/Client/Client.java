@@ -14,10 +14,11 @@ public class Client {
 
     public Client() {   }
 
-    public ArrayList<String> makeGetRequest(String fields, String table, String criteria) throws IOException {
-        ArrayList<String> patients = new ArrayList<String>();
+    public ArrayList<Patient> makeGetRequest(String fields,String table,String condition) throws IOException {
+        ArrayList<String> jsonStrings = new ArrayList<String>();
+        ArrayList<Patient> patients = new ArrayList<Patient>();
         Gson gson = new Gson();
-        String url = "https://goingwiththeflowservlet.herokuapp.com/home?fields="+fields+"&table="+table+"&where="+criteria;
+        String url = "https://goingwiththeflowservlet.herokuapp.com/home?fields="+fields+"&table="+table+"&condition="+condition;
         URL servletURL = new URL(url);
         HttpURLConnection conn = (HttpURLConnection) servletURL.openConnection();
         conn.setRequestMethod("GET");
@@ -29,9 +30,14 @@ public class Client {
 
         // Read the body of the response
         while ((inputLine = bufferedReader.readLine()) != null) {
-            patients = gson.fromJson(inputLine,ArrayList.class);
+            jsonStrings = gson.fromJson(inputLine,ArrayList.class);
         }
         bufferedReader.close();
+
+        for(String s:jsonStrings) {
+            Patient p = gson.fromJson(s, Patient.class);
+            patients.add(p);
+        }
         return patients;
     }
 
@@ -53,37 +59,26 @@ public class Client {
         // Write the body of the request
         try (OutputStream outputStream = conn.getOutputStream()) {
             outputStream.write(body, 0, body.length);
-        }
 
-        BufferedReader bufferedReader = new BufferedReader(new
-                InputStreamReader(conn.getInputStream(), "utf-8"));
-        String inputLine;
+            BufferedReader bufferedReader = new BufferedReader(new
+                    InputStreamReader(conn.getInputStream(), "utf-8"));
+            String inputLine;
 
-        // Read the body of the response
-        while ((inputLine = bufferedReader.readLine()) != null) {
-            System.out.println(inputLine);
+            // Read the body of the response
+            while ((inputLine = bufferedReader.readLine()) != null) {
+                System.out.println(inputLine);
+            }
+            bufferedReader.close();
         }
-        bufferedReader.close();
     }
 
-    private void makeDeleteRequest(String sqlString) throws IOException {
-        // Set up the body data
-        String message = sqlString;
-        byte[] body = message.getBytes(StandardCharsets.UTF_8);
-        URL servletURL = new URL("https://goingwiththeflowservlet.herokuapp.com/home");
+    public void makePutRequest(String table,String change,String condition) throws IOException {
+        String url = "https://goingwiththeflowservlet.herokuapp.com/home?table="+table+"&change="+change+"&condition="+condition;
+        URL servletURL = new URL(url);
         HttpURLConnection conn = (HttpURLConnection) servletURL.openConnection();
-
-        // Set up the header
-        conn.setRequestMethod("DELETE");
-        conn.setRequestProperty("Accept", "text/html");
+        conn.setRequestMethod("PUT");
+        conn.setRequestProperty("Content-type", "application/html");
         conn.setRequestProperty("charset", "utf-8");
-        conn.setRequestProperty("Content-Length", Integer.toString(body.length));
-        conn.setDoOutput(true);
-
-        // Write the body of the request
-        try (OutputStream outputStream = conn.getOutputStream()) {
-            outputStream.write(body, 0, body.length);
-        }
 
         BufferedReader bufferedReader = new BufferedReader(new
                 InputStreamReader(conn.getInputStream(), "utf-8"));
@@ -96,6 +91,24 @@ public class Client {
         bufferedReader.close();
     }
 
+    public void makeDeleteRequest(String table,String condition) throws IOException {
+        String url = "https://goingwiththeflowservlet.herokuapp.com/home?table="+table+"&condition="+condition;
+        URL servletURL = new URL(url);
+        HttpURLConnection conn = (HttpURLConnection) servletURL.openConnection();
+        conn.setRequestMethod("DELETE");
+        conn.setRequestProperty("Content-type", "application/html");
+        conn.setRequestProperty("charset", "utf-8");
+
+        BufferedReader bufferedReader = new BufferedReader(new
+                InputStreamReader(conn.getInputStream(), "utf-8"));
+        String inputLine;
+
+        // Read the body of the response
+        while ((inputLine = bufferedReader.readLine()) != null) {
+            System.out.println(inputLine);
+        }
+        bufferedReader.close();
+    }
 
 
 }

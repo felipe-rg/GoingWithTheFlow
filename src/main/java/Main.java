@@ -8,15 +8,19 @@ public class Main {
     public static void main (String[] args) throws IOException {
 
         Client c = new Client();
-        //Patient p = new Patient("REEE","F","od",false);
-        //c.makePostRequest(p);
+        /*Patient pi = new Patient("IB","F","leg",false);
+        c.makePostRequest(pi);*/
 
-        ArrayList<String> ps = c.makeGetRequest("*","patients","id%3E40");
-        Gson gson = new Gson();
-        for(String s:ps) {
-            Patient p = gson.fromJson(s, Patient.class);
-            System.out.println(p.getNameInitials()+p.getArrivalDateTime());
-        }
+        /*ArrayList<Patient> patients = c.makeGetRequest("*","patients","id%3E40");
+
+        for(Patient p:patients) {
+            System.out.println(p.getId()+' '+p.getNameInitials()+' '+p.getCurrentWardId()+' '+p.getCurrentBedId());
+        }*/
+
+        //c.makeDeleteRequest("patients","id%3E46");
+
+        //c.makePutRequest("patients","nameinitials='ael'","id%3E43");
+
     }
 
 }
