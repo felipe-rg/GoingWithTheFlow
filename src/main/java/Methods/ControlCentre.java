@@ -2,6 +2,7 @@ package Methods;
 import Client.*;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.sql.Time;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -21,18 +22,18 @@ public class ControlCentre implements statusable{
     private int longstayFreeBeds;
 
 
-    public ControlCentre() throws IOException {
+    public ControlCentre() throws IOException, SQLException {
         client = new Client();
         refresh();
     }
 
-    public void refresh() throws IOException {
+    public void refresh() throws IOException, SQLException {
         incomingNumbers();
         amcNumbers();
         longStayNumbers();
     }
 
-    private void amcNumbers() throws IOException {
+    private void amcNumbers() throws IOException, SQLException {
         amcCapacityPerc = 0;
         freeBeds = 0;
         dischargePatients = 0;
@@ -62,7 +63,7 @@ public class ControlCentre implements statusable{
         }
     }
 
-    private void longStayNumbers() throws IOException {
+    private void longStayNumbers() throws IOException, SQLException {
         longstayCapacityPerc = 0;
         longstayFreeBeds = 0;
         int longStayCapacity = 0;
@@ -82,7 +83,7 @@ public class ControlCentre implements statusable{
         longstayFreeBeds = longstayBeds.size() - longStayCapacity;
     }
 
-    private void incomingNumbers() throws IOException {
+    private void incomingNumbers() throws IOException, SQLException {
         greenPatients = 0;
         redPatients = 0;
         orangePatients = 0;
@@ -118,13 +119,13 @@ public class ControlCentre implements statusable{
         }*/
     }
 
-    public ArrayList<Patient> seeIncomingList() throws IOException {
+    public ArrayList<Patient> seeIncomingList() throws IOException, SQLException {
         //String SQLstr = "SELECT id, sex, initialDiagnosis, acceptedByMedicine, arrivalTime FROM patients WHERE currentLocation = 'AandE';";
         return client.makeGetRequest("id,sex,initialDiagnosis,acceptedByMedicine,arrivalTime", "patients", "currentLocation='AandE'");
     }
 
     @Override
-    public ArrayList<Patient> getWardInfo(int wardId) throws IOException {
+    public ArrayList<Patient> getWardInfo(int wardId) throws IOException, SQLException {
         //String SQLstr = "SELECT * FROM patients WHERE wardId = '"+wardId+"';";
         return client.makeGetRequest("*", "patients", "wardid="+wardId);
     }

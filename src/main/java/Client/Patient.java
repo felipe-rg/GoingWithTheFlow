@@ -9,18 +9,21 @@ public class Patient implements Serializable {
 
     private int id;
     private String nameInitials;
-    private String currentLocation;
+    private int currentLocation;
     private String sex;
-    private LocalDateTime arrivalDateTime;
+    private Timestamp arrivalDateTime;
     private String initialDiagnosis;
     private boolean needsSideRoom;
     private boolean acceptedByMedicine;
-    private String nextDestination;
-    private LocalDateTime estimatedDateTimeOfNext;
+    private int nextDestination;
+    private Timestamp estimatedDateTimeOfNext;
     private boolean ttaSignedOff;
     private boolean suitableForDischargeLounge;
     private String transferRequestStatus;
     private boolean deceased;
+    private int bedid;
+    //FIXME - get neo's
+    public Patient(){}
 
     public Patient(String nameInitials,String sex,String initialDiagnosis,boolean needsSideRoom) {
         this.nameInitials = nameInitials;
@@ -29,9 +32,9 @@ public class Patient implements Serializable {
         this.needsSideRoom = needsSideRoom;
     }
 
-    public Patient(int id, String nameInitials,String currentLocation,String sex,LocalDateTime arrivalDateTime, String initialDiagnosis,
-                   boolean needsSideRoom,boolean acceptedByMedicine,String nextDestination,LocalDateTime estimatedTimeOfNext,
-                   boolean ttaSignedOff,boolean suitableForDischargeLounge,String transferRequestStatus,boolean deceased) {
+    public Patient(int id, String nameInitials,int currentLocation,String sex,Timestamp arrivalDateTime, String initialDiagnosis,
+                   boolean needsSideRoom,boolean acceptedByMedicine,int nextDestination,Timestamp estimatedTimeOfNext,
+                   boolean ttaSignedOff,boolean suitableForDischargeLounge,String transferRequestStatus,boolean deceased, int bedid) {
         this.id = id;
         this.nameInitials = nameInitials;
         this.currentLocation = currentLocation;
@@ -50,16 +53,18 @@ public class Patient implements Serializable {
 
     public int getId() {return id;}
     public String getNameInitials() {return nameInitials;}
-    public String getCurrentLocation() {return currentLocation;}
+    public int getCurrentLocation() {return currentLocation;}
     public String getSex() {return sex;}
-    public LocalDateTime getArrivalDateTime() {return arrivalDateTime;}
+    public Timestamp getArrivalDateTime() {return arrivalDateTime;}
     public String getInitialDiagnosis() {return initialDiagnosis;}
     public boolean getNeedsSideRoom() {return needsSideRoom;}
     public boolean getAcceptedByMedicine() {return acceptedByMedicine;}
-    public String getNextDestination() {return nextDestination;}
-    public LocalDateTime getEstimatedTimeOfNext() {return estimatedDateTimeOfNext;}
+    public int getNextDestination() {return nextDestination;}
+    public Timestamp getEstimatedTimeOfNext() {return estimatedDateTimeOfNext;}
     public boolean getTtaSignedOff() {return ttaSignedOff;}
     public boolean getSuitableForDischargeLounge() {return suitableForDischargeLounge;}
     public String getTransferRequestStatus() {return transferRequestStatus;}
     public boolean getDeceased() {return deceased;}
+    public int getBedid(){return bedid;}
+    public void setId(int id){this.id = id;}
 }

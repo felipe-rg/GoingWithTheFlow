@@ -1,10 +1,8 @@
 import Client.*;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.Assert;
+import org.junit.*;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.sql.Time;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -20,7 +18,7 @@ public class GeneralWardTest {
     //FIXME could do beforeclass and afterclass to save time and make more efficient
 
     @Before
-    public void setup() throws IOException {
+    public void setup() throws IOException, SQLException {
         client  = new Client();
         //Create test ward, bed, and patient
         Time time = Time.valueOf(LocalTime.now());
@@ -47,7 +45,7 @@ public class GeneralWardTest {
     }
 
     @After
-    public void debrief() throws IOException {
+    public void debrief() throws IOException, SQLException {
         String SQLstr = "DELETE FROM patients WHERE id="+patientId+");";
         client.makeDeleteRequest(SQLstr);
         SQLstr = "DELETE FROM beds WHERE id="+bedId+");";
@@ -58,7 +56,8 @@ public class GeneralWardTest {
 
 
     @Test
-    public void testDischarge() throws IOException {
+    @Ignore
+    public void testDischarge() throws IOException, SQLException {
         ward.discharge(patientId);
         String SQLstr = "SELECT * FROM patients WHERE id="+patientId+";";
         ArrayList<Patient> patient = client.makeGetRequest( "*", "patients", "id="+patientId);
