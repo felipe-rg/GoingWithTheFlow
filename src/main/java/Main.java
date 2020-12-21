@@ -1,27 +1,25 @@
-//Main Class
-import Panels.UIController;
-
-import javax.swing.*;
-import java.awt.*;
-
+import Client.Client;
+import com.google.gson.Gson;
+import Client.Patient;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class Main {
-    public static void main (String[] args){
+    public static void main (String[] args) throws IOException {
 
-        JFrame frame = new JFrame();
-        frame.setSize(1200,800);
-        //frame.setResizable(false);
+        Client c = new Client();
+        /*Patient pi = new Patient("IB","F","leg",false);
+        c.makePostRequest(pi);*/
 
-        UIController UIc = new UIController();
-        frame.add(UIc.getMainPanel());
+        /*ArrayList<Patient> patients = c.makeGetRequest("*","patients","id%3E40");
 
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        for(Patient p:patients) {
+            System.out.println(p.getId()+' '+p.getNameInitials()+' '+p.getCurrentWardId()+' '+p.getCurrentBedId());
+        }*/
 
+        //c.makeDeleteRequest("patients","id%3E46");
 
-
-
-
+        //c.makePutRequest("patients","nameinitials='ael'","id%3E43");
 
     }
 
