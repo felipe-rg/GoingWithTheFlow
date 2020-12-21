@@ -7,85 +7,108 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
-import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-
-import java.sql.Timestamp;
 
 public class Client {
 
 
     public Client() {   }
-    //FIXME this is not at all useful - need neo's
-    public ArrayList<Patient> makeGetRequest(String fields, String table, String criteria) throws IOException, SQLException {
-        ArrayList<Patient> patients = new ArrayList<Patient>();
-        String dbUrl = "jdbc:postgresql://localhost:5432/postgres";
-        try {// Registers the driver
-            Class.forName("org.postgresql.Driver");
-        } catch (Exception e) {}
-        Connection conn= DriverManager.getConnection(dbUrl, "postgres", "root");
-        try {
-            Statement s = conn.createStatement();
-            String sqlStr = "SELECT "+fields+" FROM "+table+" WHERE "+criteria+";";
-            ResultSet ret = s.executeQuery(sqlStr);
-            while(ret.next()) {
-                /*Patient p = new Patient(ret.getInt("id"), ret.getString("nameinitials") ,
-                        ret.getInt("currentlocation"),ret.getString("sex"),
-                        ret.getTimestamp("arrivaldatetime"), ret.getString("initialDiagnosis"),
-                ret.getBoolean("needssideroom"),ret.getBoolean("acceptedbymedicine"),
-                        ret.getInt("nextdestination"),ret.getTimestamp("estimatedtimeofnext"),
-                        ret.getBoolean("ttasignedoff"),ret.getBoolean("suitablefordischargelounge"),
-                        ret.getString("transferrequeststatus"),ret.getBoolean("deceased"), ret.getInt("bedid"));*/
-                Patient p = new Patient();
-                p.setId(ret.getInt("id"));
-                patients.add(p);
-            }
-            ret.close();
-        } catch (Exception e) {}
 
+    public ArrayList<Patient> makeGetRequest(String fields,String table,String condition) throws IOException {
+        ArrayList<String> jsonStrings = new ArrayList<String>();
+        ArrayList<Patient> patients = new ArrayList<Patient>();
+        Gson gson = new Gson();
+        String url = "https://goingwiththeflowservlet.herokuapp.com/home?fields="+fields+"&table="+table+"&condition="+condition;
+        URL servletURL = new URL(url);
+        HttpURLConnection conn = (HttpURLConnection) servletURL.openConnection();
+        conn.setRequestMethod("GET");
+        conn.setRequestProperty("Content-type", "application/json");
+        conn.setRequestProperty("charset", "utf-8");
+        BufferedReader bufferedReader = new BufferedReader(new
+                InputStreamReader(conn.getInputStream(), "utf-8"));
+        String inputLine;
+
+        // Read the body of the response
+        while ((inputLine = bufferedReader.readLine()) != null) {
+            jsonStrings = gson.fromJson(inputLine,ArrayList.class);
+        }
+        bufferedReader.close();
+
+        for(String s:jsonStrings) {
+            Patient p = gson.fromJson(s, Patient.class);
+            patients.add(p);
+        }
         return patients;
     }
 
-    public void makePutRequest(String table, String changes, String condition) throws IOException, SQLException {
-        String dbUrl = "jdbc:postgresql://localhost:5432/postgres";
-        try {// Registers the driver
-            Class.forName("org.postgresql.Driver");
-        } catch (Exception e) {}
-        Connection conn= DriverManager.getConnection(dbUrl, "postgres", "root");
-        try {
-            Statement s = conn.createStatement();
-            String sqlStr = "UPDATE "+table+" SET "+changes+" WHERE "+condition+";";
-            s.execute(sqlStr);
-        } catch (Exception e) {}
+    public void makePostRequest(Patient p) throws IOException {
+        // Set up the body data
+        Gson gson = new Gson();
+        String jsonString = gson.toJson(p);
+        byte[] body = jsonString.getBytes(StandardCharsets.UTF_8);
+        URL servletURL = new URL("https://goingwiththeflowservlet.herokuapp.com/home");
+        HttpURLConnection conn= (HttpURLConnection) servletURL.openConnection();
+
+        // Set up the header
+        conn.setRequestMethod("POST");
+        conn.setRequestProperty("Accept", "text/html");
+        conn.setRequestProperty("charset", "utf-8");
+        conn.setRequestProperty("Content-Length", Integer.toString(body.length));
+        conn.setDoOutput(true);
+
+        // Write the body of the request
+        try (OutputStream outputStream = conn.getOutputStream()) {
+            outputStream.write(body, 0, body.length);
+
+            BufferedReader bufferedReader = new BufferedReader(new
+                    InputStreamReader(conn.getInputStream(), "utf-8"));
+            String inputLine;
+
+            // Read the body of the response
+            while ((inputLine = bufferedReader.readLine()) != null) {
+                System.out.println(inputLine);
+            }
+            bufferedReader.close();
+        }
     }
 
-    public void makePostRequest(Patient p) throws IOException, SQLException {
-        String dbUrl = "jdbc:postgresql://localhost:5432/postgres";
-        try {// Registers the driver
-            Class.forName("org.postgresql.Driver");
-        } catch (Exception e) {}
-        Connection conn= DriverManager.getConnection(dbUrl, "postgres", "root");
-        try {
-            Statement s = conn.createStatement();
-            String sqlStr = "INSERT INTO patients(nameinitials, sex, initialdiagnosis, needssideroom)" +
-                    "VALUES('"+p.getNameInitials()+"','"+p.getSex()+"','"+p.getInitialDiagnosis()+"',"+p.getNeedsSideRoom()+")";
-            s.execute(sqlStr);
-        } catch (Exception e) {}
+    public void makePutRequest(String table,String change,String condition) throws IOException {
+        String url = "https://goingwiththeflowservlet.herokuapp.com/home?table="+table+"&change="+change+"&condition="+condition;
+        URL servletURL = new URL(url);
+        HttpURLConnection conn = (HttpURLConnection) servletURL.openConnection();
+        conn.setRequestMethod("PUT");
+        conn.setRequestProperty("Content-type", "application/html");
+        conn.setRequestProperty("charset", "utf-8");
+
+        BufferedReader bufferedReader = new BufferedReader(new
+                InputStreamReader(conn.getInputStream(), "utf-8"));
+        String inputLine;
+
+        // Read the body of the response
+        while ((inputLine = bufferedReader.readLine()) != null) {
+            System.out.println(inputLine);
+        }
+        bufferedReader.close();
     }
 
-    public void makeDeleteRequest(String sqlString) throws IOException, SQLException {
-        String dbUrl = "jdbc:postgresql://localhost:5432/postgres";
-        try {// Registers the driver
-            Class.forName("org.postgresql.Driver");
-        } catch (Exception e) {}
-        Connection conn= DriverManager.getConnection(dbUrl, "postgres", "root");
-        try {
-            Statement s = conn.createStatement();
-            s.execute(sqlString);
-        } catch (Exception e) {}
-    }
+    public void makeDeleteRequest(String table,String condition) throws IOException {
+        String url = "https://goingwiththeflowservlet.herokuapp.com/home?table="+table+"&condition="+condition;
+        URL servletURL = new URL(url);
+        HttpURLConnection conn = (HttpURLConnection) servletURL.openConnection();
+        conn.setRequestMethod("DELETE");
+        conn.setRequestProperty("Content-type", "application/html");
+        conn.setRequestProperty("charset", "utf-8");
 
+        BufferedReader bufferedReader = new BufferedReader(new
+                InputStreamReader(conn.getInputStream(), "utf-8"));
+        String inputLine;
+
+        // Read the body of the response
+        while ((inputLine = bufferedReader.readLine()) != null) {
+            System.out.println(inputLine);
+        }
+        bufferedReader.close();
+    }
 
 
 }
