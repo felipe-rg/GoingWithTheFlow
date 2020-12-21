@@ -10,6 +10,8 @@ public class Bed extends JButton{
     char status;    //Character saying if bed is free (f), if it is occupied (o) or closed (c)
     Integer age;
     char gender;
+    JFrame infoFrame = new JFrame();
+
 
     public Bed(String BedId, char status, Integer x, Integer y, Integer age, char gender) {
         this.BedId = BedId;
@@ -48,6 +50,47 @@ public class Bed extends JButton{
             this.status = 'e';
         }
     }
+
+    public void printInfo(){
+        //edit info Frame
+        infoFrame.setSize(300,300);
+        infoFrame.setBackground(Color.WHITE);
+        infoFrame.setVisible(true);
+        infoFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        infoFrame.setLocation(300,300);
+
+        // labels with the bed information using methods from class Bed
+        JLabel bedId = new JLabel("Bed ID: "+this.getID());
+        JLabel gender = new JLabel("\n Gender: "+this.getGender());
+        JLabel age = new JLabel("\n Age: "+this.getAge());
+
+        bedId.setVisible(true);
+        gender.setVisible(true);
+        age.setVisible(true);
+
+        //jbutton for editing bed
+        JButton editButton = new JButton("Edit Patient Info");
+        editButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                
+            }
+        });
+
+        // add the labels to a panel that will be added to the frame
+        JPanel infoPanel = new JPanel();
+        infoPanel.add(bedId);
+        infoPanel.add(gender);
+        infoPanel.add(age);
+        infoPanel.add(editButton);
+        infoPanel.setVisible(true);
+
+
+        infoFrame.add(infoPanel);
+
+    }
+
+
 
 
 

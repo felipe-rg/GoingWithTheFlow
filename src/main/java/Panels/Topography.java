@@ -46,6 +46,12 @@ public class Topography extends JPanel{
             }
         });
 
+        bed7.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                bed7.printInfo();
+            }
+        });
     }
 
 
