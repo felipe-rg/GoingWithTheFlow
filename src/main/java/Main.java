@@ -1,26 +1,11 @@
-//Main Class
-import Panels.UIController;
-
-import javax.swing.*;
-import java.awt.*;
-
+import Client.Client;
+import com.google.gson.Gson;
+import Client.Patient;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class Main {
-    public static void main (String[] args){
-
-        JFrame frame = new JFrame();
-        frame.setSize(1200,800);
-        //frame.setResizable(false);
-
-        UIController UIc = new UIController();
-        frame.add(UIc.getMainPanel());
-
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
-
-
-
+    public static void main (String[] args) {
 
 
     }
