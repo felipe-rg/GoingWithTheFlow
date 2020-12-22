@@ -22,11 +22,11 @@ public class Main {
                 AMCGUI AMC = new AMCGUI();                                 // constructs AMCGUI class
             }
         });
+        //mainPanel.setLayout(new GridLayout(1, 0));
         mainPanel.add(bt1);                                                 // adds button to main panel
 
         /*
         JButton bt2 = new JButton("Click here to view Control Unit");      // creates button to access Control Unit
-
         bt2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
