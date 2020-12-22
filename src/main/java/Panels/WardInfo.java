@@ -1,7 +1,11 @@
 package Panels;
 
+import Panels.Tables.*;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class WardInfo extends JPanel{
     //Labels
@@ -29,7 +33,7 @@ public class WardInfo extends JPanel{
         transLabel = new JLabel("Transferring Patients");
         disLabel = new JLabel("Discharge Patients");
         othLabel = new JLabel("Others");
-        totLabel = new JLabel("Total Patients");
+        totLabel = new JLabel("Total Patients in ward");
         //Editing labels
         editLabel(inLabel, transLabel, disLabel, othLabel, totLabel);
 
@@ -39,9 +43,46 @@ public class WardInfo extends JPanel{
         disbut = new JButton("2");
         othbut = new JButton("1");
         totbut = new JButton("13");
-
         //Editing Buttons
         editButton(inbut, transbut, disbut, othbut, totbut);
+
+
+        //Actionlisteners for buttons opening new window displaying table
+        inbut.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                InTable inTable = new InTable();
+            }
+        });
+
+        transbut.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                TransTable transTable = new TransTable();
+            }
+        });
+
+        disbut.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DisTable disTable = new DisTable();
+            }
+        });
+
+        othbut.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                OthTable othTable = new OthTable();
+            }
+        });
+
+        totbut.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                TotTable totTable = new TotTable();
+            }
+        });
+
 
 
         //Adding labels and buttons into Panel

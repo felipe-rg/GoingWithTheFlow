@@ -11,6 +11,7 @@ public class AMCGUI {
     public AMCGUI() {
         JFrame frame = new JFrame();
         frame.setSize(1200, 800);
+        frame.setTitle("AMC GUI");
         //frame.setResizable(false);
 
         UIController UIc = new UIController();
