@@ -51,37 +51,74 @@ public class Bed extends JButton{
         }
     }
 
+    public void setAge(Integer age){
+        this.age = age;
+    }
+
+
     public void printInfo(){
         //edit info Frame
         infoFrame.setSize(300,300);
         infoFrame.setBackground(Color.WHITE);
         infoFrame.setVisible(true);
-        infoFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         infoFrame.setLocation(300,300);
 
         // labels with the bed information using methods from class Bed
-        JLabel bedId = new JLabel("Bed ID: "+this.getID());
-        JLabel gender = new JLabel("\n Gender: "+this.getGender());
-        JLabel age = new JLabel("\n Age: "+this.getAge());
+        JLabel bedIdLabel = new JLabel("Bed ID: "+this.getID(),SwingConstants.CENTER);
+        JLabel genderLabel = new JLabel("\n Gender: "+this.getGender(),SwingConstants.CENTER);
+        JLabel ageLabel = new JLabel("\n Age: "+this.getAge(),SwingConstants.CENTER);
 
-        bedId.setVisible(true);
-        gender.setVisible(true);
-        age.setVisible(true);
 
         //jbutton for editing bed
         JButton editButton = new JButton("Edit Patient Info");
         editButton.addActionListener(new ActionListener() {
+            JTextField ageTextField;
+            JTextField genderTextField;
+            JButton confirmButton;
+
             @Override
             public void actionPerformed(ActionEvent evt) {
-                
+                JFrame editorFrame = new JFrame();
+                editorFrame.setSize(300,300);
+                editorFrame.setBackground(Color.WHITE);
+                editorFrame.setVisible(true);
+                editorFrame.setLocation(300,300);
+
+                JPanel editorPanel = new JPanel();
+                editorPanel.setLayout(new GridLayout(3,1));
+                editorPanel.setBackground(Color.WHITE);
+
+                ageTextField = new JTextField("new age");
+                genderTextField = new JTextField("new gender");
+
+                confirmButton = new JButton("Confirm Edits");
+                confirmButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent evt) {
+                        age = Integer.parseInt(ageTextField.getText());
+                        gender = genderTextField.getText().charAt(0);
+                        printInfo();
+                    }
+
+                });
+
+                editorPanel.add(ageTextField);
+                editorPanel.add(genderTextField);
+                editorPanel.add(confirmButton);
+                editorPanel.setVisible(true);
+                editorFrame.add(editorPanel);
+
             }
         });
 
+        //this.setAge(newAge);
+
         // add the labels to a panel that will be added to the frame
         JPanel infoPanel = new JPanel();
-        infoPanel.add(bedId);
-        infoPanel.add(gender);
-        infoPanel.add(age);
+        infoPanel.setLayout(new GridLayout(4,1));
+        infoPanel.add(bedIdLabel);
+        infoPanel.add(genderLabel);
+        infoPanel.add(ageLabel);
         infoPanel.add(editButton);
         infoPanel.setVisible(true);
 
@@ -89,6 +126,7 @@ public class Bed extends JButton{
         infoFrame.add(infoPanel);
 
     }
+
 
 
 
