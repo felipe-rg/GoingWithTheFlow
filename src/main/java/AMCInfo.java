@@ -17,6 +17,7 @@ public class AMCInfo {
 
         f = new JFrame();                                               // creates JFrame for Homepage
         mainPanel = new JPanel();
+        mainPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK , 3));
 
         JButton backButton = new JButton("Go Back");
         Title titlePanel = new Title("AMC Status" , backButton);

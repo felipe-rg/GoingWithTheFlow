@@ -7,183 +7,203 @@ import java.awt.event.ActionListener;
 
 public class ControlUnit {
 
-    JFrame f;                                                           // field: JFrame for the Homepage
-    JPanel mainPanel;                                                   // field: Panel in frame
+    JFrame f;                                                           // creates relevant fields
+    JPanel mainPanel;
 
-    JPanel incoming;
-    JPanel longStay;
-    JPanel AMC;
+    JPanel incomingPanel;
+    JPanel longStayPanel;
+    JPanel AMCPanel;
 
-    public ControlUnit() {                                                 // constructor of Homepage
+    public ControlUnit() {                                              // constructor for control page
 
-        f = new JFrame();                                               // creates JFrame for Homepage
+        f = new JFrame();
         mainPanel = new JPanel();
-        outline(mainPanel);
+        outline(mainPanel);                                            // adds a border to panel
 
-        JButton backButton = new JButton("Go Back To User Page");
-        Title titlePanel = new Title("AMC Status" , backButton);
-        backButton.addActionListener(new ActionListener() {                            // waits for mouse to click button
+        // Title Panel
+        JButton backButton = new JButton("Go Back To User Page");  // creates back button
+        Title titlePanel = new Title("AMC Status" , backButton);   // calls title class to create panel for title
+        titlePanel.setBorder(BorderFactory.createMatteBorder(0, 0, 3, 0, Color.BLACK));
+
+        backButton.addActionListener(new ActionListener() {             // waits for mouse to click button
             @Override
             public void actionPerformed(ActionEvent e) {
-                f.dispose();
-                UserPage user = new UserPage();
+                f.dispose();                                            // closes control page
+                UserPage user = new UserPage();                         // creates user page (new JFrame)
             }
         });
 
-        incoming = new JPanel();
-        outline(incoming);
-        incoming.setLayout(new BoxLayout(incoming, BoxLayout.Y_AXIS));                              // sets layout type of incoming panel
+        // Incoming Panel
+        incomingPanel = new JPanel();
+        outline(incomingPanel);
+        panelPadding(incomingPanel);                                    // adds padding to the JPanel
 
-        JLabel head1 = new JLabel("Incoming from A&E");
-        head1.setFont (head1.getFont ().deriveFont (24.0f));
-        padding(head1);
+        incomingPanel.setLayout(new BoxLayout(incomingPanel, BoxLayout.Y_AXIS));  // sets layout type of panel to be vertical
 
-        JLabel body1 = new JLabel("Number of Patients coming from A&E:");                       // add info
-        body1.setFont (body1.getFont ().deriveFont (14.0f));
-        padding(body1);
+        JLabel incomingTitle = new JLabel("Incoming from A&E");
+        incomingTitle.setFont (incomingTitle.getFont ().deriveFont (24.0f));
+        labelPadding(incomingTitle);
 
-        JButton r = new JButton("2");
+        // incoming from A&E info
+        JLabel text1 = new JLabel("Number of Patients coming from A&E:");
+        text1.setFont (text1.getFont ().deriveFont (14.0f));
+        labelPadding(text1);
+
+        JButton r = new JButton("2");           // incoming patients with traffic light to represent time of arrival
         r.setBackground(Color.RED);
+        r.setHorizontalAlignment(SwingConstants.CENTER);
         JButton y = new JButton("4");
         y.setBackground(Color.YELLOW);
+        y.setHorizontalAlignment(SwingConstants.CENTER);
         JButton g = new JButton("6");
         g.setBackground(Color.GREEN);
+        g.setHorizontalAlignment(SwingConstants.CENTER);
 
-        JLabel blank1 = new JLabel("   ");
-        padding(blank1);
+        JLabel blank1 = new JLabel("   ");      // here for spacing
+        labelPadding(blank1);
 
         JButton ipDetails = new JButton("Click here to see Incoming Patients Details");
         ipDetails.setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 10));
-        ipDetails.addActionListener(new ActionListener() {                            // waits for mouse to click button
+        ipDetails.addActionListener( new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 f.dispose();
-                Incoming patientList = new Incoming();
+                Incoming ipList = new Incoming();           // opens incoming patient list (new JFrame)
             }
         });
 
-        incoming.add(head1);
-        incoming.add(body1);
-        incoming.add(r);
-        incoming.add(y);
-        incoming.add(g);
-        incoming.add(blank1);
-        incoming.add(ipDetails);
+        incomingPanel.add(incomingTitle);                   // adds components to incoming panel
+        incomingPanel.add(text1);
+        incomingPanel.add(r);
+        incomingPanel.add(y);
+        incomingPanel.add(g);
+        incomingPanel.add(blank1);
+        incomingPanel.add(ipDetails);
 
+        // Long-stay Panel
+        longStayPanel = new JPanel();
+        outline(longStayPanel);
+        panelPadding(longStayPanel);
+        longStayPanel.setLayout(new BoxLayout(longStayPanel, BoxLayout.Y_AXIS));
 
-        longStay = new JPanel();
-        outline(longStay);
-        longStay.setLayout(new BoxLayout(longStay, BoxLayout.Y_AXIS));
-
-        JLabel head2 = new JLabel("Long Stay Wards");
-        head2.setFont (head2.getFont ().deriveFont (24.0f));
-        padding(head2);
+        JLabel titleLS = new JLabel("Long Stay Wards");
+        titleLS.setFont (titleLS.getFont ().deriveFont (24.0f));
+        labelPadding(titleLS);
 
         JLabel lcap = new JLabel("Longstay Ward Capacity: 95%");                       // add info
         lcap.setFont (lcap.getFont ().deriveFont (14.0f));
-        padding(lcap);
+        labelPadding(lcap);
 
         JLabel freeBed2 = new JLabel("Number of Free Beds: 13");                       // add info
         freeBed2.setFont (freeBed2.getFont ().deriveFont (14.0f));
-        padding(freeBed2);
+        labelPadding(freeBed2);
 
         JLabel blank2 = new JLabel("   ");
-        padding(blank2);
+        labelPadding(blank2);
 
-        JButton LSreview = new JButton("Click here to see Longstay Ward Information");
-        LSreview.setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 10));
-
-        LSreview.addActionListener(new ActionListener() {                            // waits for mouse to click button
+        JButton viewLS = new JButton("Click here to see Longstay Ward Information");
+        viewLS.setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 10));
+        viewLS.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 f.dispose();
-                LongStay LSpage = new LongStay();
+                LongStay LSpage = new LongStay();           // opens long stay ward overview
             }
         });
 
-        longStay.add(head2);
-        longStay.add(lcap);
-        longStay.add(freeBed2);
-        longStay.add(blank2);
-        longStay.add(LSreview);
+        longStayPanel.add(titleLS);
+        longStayPanel.add(lcap);
+        longStayPanel.add(freeBed2);
+        longStayPanel.add(blank2);
+        longStayPanel.add(viewLS);
 
-        AMC = new JPanel();
-        outline(AMC);
-        AMC.setLayout(new BoxLayout(AMC, BoxLayout.Y_AXIS));
+        // AMC Panel
+        AMCPanel = new JPanel();
+        AMCPanel.setBorder(BorderFactory.createMatteBorder(0, 3, 0, 3, Color.BLACK));
+        AMCPanel.setLayout(new GridLayout(8,1));
 
-        JLabel head3 = new JLabel("AMC");
-        padding(head3);
-        head3.setFont (head3.getFont ().deriveFont (24.0f));
+        JLabel titleAMC = new JLabel("AMC");
+        labelPadding(titleAMC);
+        titleAMC.setHorizontalAlignment(JLabel.CENTER);
+        titleAMC.setFont (titleAMC.getFont ().deriveFont (24.0f));
 
+        JLabel capAMC = new JLabel("AMC Ward Capacity: 95%");          // make dynamic
+        labelPadding(capAMC);
+        capAMC.setHorizontalAlignment(JLabel.CENTER);
+        capAMC.setFont (capAMC.getFont ().deriveFont (18.0f));
 
-        JLabel cap = new JLabel("AMC Ward Capacity: 95%");          // make dynamic
-        padding(cap);
-        cap.setFont (cap.getFont ().deriveFont (18.0f));
+        JLabel freeBedAMC = new JLabel("Free beds: 5");          // make dynamic
+        labelPadding(freeBedAMC);
+        freeBedAMC.setHorizontalAlignment(JLabel.CENTER);
+        freeBedAMC.setFont (capAMC.getFont ().deriveFont (18.0f));
 
-        JLabel freeBed1 = new JLabel("Free beds: 5");          // make dynamic
-        padding(freeBed1);
-        freeBed1.setFont (cap.getFont ().deriveFont (18.0f));
+        JLabel disAMC = new JLabel("Number of discharges today: 4");          // make dynamic
+        labelPadding(disAMC);
+        disAMC.setHorizontalAlignment(JLabel.CENTER);
+        disAMC.setFont (disAMC.getFont ().deriveFont (18.0f));
 
-        JLabel disch = new JLabel("Number of discharges today: 4");          // make dynamic
-        padding(disch);
-        disch.setFont (disch.getFont ().deriveFont (18.0f));
-
-        JLabel trans = new JLabel("Number of transfers today: 3");          // make dynamic
-        padding(trans);
-        trans.setFont (trans.getFont ().deriveFont (18.0f));
+        JLabel tranAMC = new JLabel("Number of transfers today: 3");          // make dynamic
+        labelPadding(tranAMC);
+        tranAMC.setHorizontalAlignment(JLabel.CENTER);
+        tranAMC.setFont (tranAMC.getFont ().deriveFont (18.0f));
 
         JLabel blank3 = new JLabel("   ");
-        padding(blank3);
+        labelPadding(blank3);
 
-        JButton AMCinfo = new JButton("Click here to see AMC ward Information");
-        AMCinfo.setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 10));
-        AMCinfo.addActionListener(new ActionListener() {                            // waits for mouse to click button
+        JButton AMCinfoBut = new JButton("Click here to see AMC ward Information");
+        AMCinfoBut.setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 10));
+        AMCinfoBut.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 f.dispose();
-                AMCInfo AMCPage = new AMCInfo();
+                AMCInfo AMCPage = new AMCInfo();                // opens AMC ward overview page (new JFrame)
             }
         });
 
-        JButton td = new JButton("Click here to see AMC transfer and discharge information");
-        td.setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 10));
-        td.addActionListener(new ActionListener() {                            // waits for mouse to click button
+        JButton tdBut = new JButton("Click here to see AMC transfer and discharge information");
+        tdBut.setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 10));
+        tdBut.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 f.dispose();
-                DisTransPage DTPage = new DisTransPage();
+                DisTransPage dtList = new DisTransPage();           // opens transfer/discharge lists
             }
         });
 
-        AMC.add(head3);
-        AMC.add(cap);
-        AMC.add(freeBed1);
-        AMC.add(disch);
-        AMC.add(trans);
-        AMC.add(blank3);
-        AMC.add(AMCinfo);
-        AMC.add(td);
+        AMCPanel.add(titleAMC);
+        AMCPanel.add(capAMC);
+        AMCPanel.add(freeBedAMC);
+        AMCPanel.add(disAMC);
+        AMCPanel.add(tranAMC);
+        AMCPanel.add(blank3);
+        AMCPanel.add(AMCinfoBut);
+        AMCPanel.add(tdBut);
 
-        mainPanel.setLayout(new BorderLayout());                                    // defines layout of MainPanel
+        // Main Panel arrangement
+        mainPanel.setLayout(new BorderLayout());               // defines layout of MainPanel
+        mainPanel.add(titlePanel , BorderLayout.NORTH);        // adds panels to MainPanel in correct position
+        mainPanel.add(incomingPanel , BorderLayout.WEST);
+        mainPanel.add(longStayPanel , BorderLayout.EAST);
+        mainPanel.add(AMCPanel , BorderLayout.CENTER);
 
-        mainPanel.add(titlePanel , BorderLayout.NORTH);                                  // adds panels to MainPanel in correct position
-        mainPanel.add(incoming , BorderLayout.WEST);
-        mainPanel.add(longStay , BorderLayout.EAST);
-        mainPanel.add(AMC , BorderLayout.CENTER);
-
-        f.getContentPane().add(mainPanel);                                          // adds MainPanel to JFrame
+        // Frame setup
+        f.getContentPane().add(mainPanel);
         f.setVisible(true);
         f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         f.setExtendedState(Frame.MAXIMIZED_BOTH);
 
     }
 
-    public void padding(JLabel label){                                              // adds padding to JLabels for better spacing
+    public void labelPadding(JLabel label){                                              // adds padding to JLabels for better spacing
         label.setBorder(BorderFactory.createEmptyBorder(30, 10, 20, 10));
     }
 
+    public void panelPadding(JPanel panel){                                              // adds padding to JLabels for better spacing
+        panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
+    }
+
     public void outline (JPanel panel){                                             // adds outline to JPanels
-        panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        panel.setBorder(BorderFactory.createLineBorder(Color.BLACK , 3));
     }
 
 }
