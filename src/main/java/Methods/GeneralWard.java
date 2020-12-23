@@ -29,8 +29,8 @@ public class GeneralWard {
 
     public void setBed(int patientId, int bedId) throws IOException, SQLException {
         client.makePutRequest("patients", "bedid="+bedId, "id="+patientId);
-        //todo access bed table with get
-        client.makePutRequest("patients", "currentlocation=13", "id="+patientId);//todo AMC id
+        int wardid = client.makeGetRequest("wardid", "beds", "id="+bedId).get(0).getId();
+        client.makePutRequest("patients", "currentlocation="+wardid, "id="+patientId);
         client.makePutRequest("patients", "nextlocation=NULL", "id="+patientId);
         client.makePutRequest("beds", "occupied='occupied'", "id="+bedId);
     }
