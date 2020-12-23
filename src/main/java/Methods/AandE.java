@@ -19,7 +19,7 @@ public class AandE implements requestable{
 
     //FIXME not needed if request automatic
     @Override
-    public void makeRequest(int patientId, String idealDestination) throws IOException, SQLException {
+    public void makeRequest(int patientId, int idealDestination) throws IOException, SQLException {
         //String SQLstr = "UPDATE patients SET transferReqStatus = "+idealDestination+" WHERE id = "+patientId+";";
         client.makePutRequest("patients", "transferReqStatus="+idealDestination, "id="+patientId);
     }

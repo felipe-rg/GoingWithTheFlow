@@ -16,9 +16,9 @@ public class Bed {
     public void setForSex(String sex){this.forSex=sex;}
     public void setHasSideRoom(boolean hasSideRoom){this.hasSideRoom = hasSideRoom;}
 
-    public int setId(){return this.id;}
-    public int setWardId(){return this.wardId;}
-    public String setStatus(){return this.status;}
-    public String setForSex(){return this.forSex;}
-    public boolean setHasSideRoom(){return this.hasSideRoom;}
+    public int getId(){return this.id;}
+    public int getWardId(){return this.wardId;}
+    public String getStatus(){return this.status;}
+    public String getForSex(){return this.forSex;}
+    public boolean getHasSideRoom(){return this.hasSideRoom;}
 }

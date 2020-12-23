@@ -38,13 +38,16 @@ public class ControlCentre implements statusable{
         freeBeds = 0;
         dischargePatients = 0;
         transferPatients = 0;
-        ArrayList<String> json = client.makeGetRequest("id", "patients", "currentLocation='AMC'");//todo AMC id
+        ArrayList<String> json = client.makeGetRequest("*", "wards", "wardname='AMC1'");
+        ArrayList<Ward> wards = client.wardsFromJson(json);
+        int amcId = wards.get(0).getId();
+        json = client.makeGetRequest("id", "patients", "currentLocation="+amcId);
         ArrayList<Patient> amcPatients = client.patientsFromJson(json);
-        json = client.makeGetRequest("id", "beds", "wardId='AMC'");
+        json = client.makeGetRequest("id", "beds", "wardId="+amcId);
         ArrayList<Bed> amcBeds = client.bedsFromJson(json);
         amcCapacityPerc = amcPatients.size()*100/amcBeds.size();
         freeBeds = amcBeds.size()-amcPatients.size();
-        json = client.makeGetRequest("id", "patients", "currentLocation='AMC'");//todo AMC id
+        json = client.makeGetRequest("id", "patients", "currentLocation="+amcId);
         ArrayList<Patient> inAMC = client.patientsFromJson(json);
         json = client.makeGetRequest("id", "patients", "nextDestination!=NULL");
         ArrayList<Patient> leavingAMC = client.patientsFromJson(json);
@@ -125,16 +128,100 @@ public class ControlCentre implements statusable{
     }
 
     public ArrayList<Patient> seeIncomingList() throws IOException, SQLException {
-        //String SQLstr = "SELECT id, sex, initialDiagnosis, acceptedByMedicine, arrivalTime FROM patients WHERE currentLocation = 'AandE';";
-        ArrayList<String> json = client.makeGetRequest("*", "patients", "currentLocation='AandE'");
+        ArrayList<String> json = client.makeGetRequest("*", "wards", "wardname='A&E'");
+        ArrayList<Ward> wards = client.wardsFromJson(json);
+        int AandEId = wards.get(0).getId();
+        json = client.makeGetRequest("*", "patients", "currentLocation="+AandEId);
         return client.patientsFromJson(json);
     }
 
+    public ArrayList<Patient> seeDischargeList() throws IOException {
+        ArrayList<String> json = client.makeGetRequest("*", "wards", "wardname='AMC1'");
+        ArrayList<Ward> wards = client.wardsFromJson(json);
+        ArrayList<Patient> patients = new ArrayList<Patient>();
+        int amcId = wards.get(0).getId();
+        json = client.makeGetRequest("*", "patients", "currentLocation="+amcId);
+        ArrayList<Patient> inAMC = client.patientsFromJson(json);
+        //Todo - signalling discharge?
+        json = client.makeGetRequest("*", "patients", "discharge='Y'");
+        ArrayList<Patient> discharge= client.patientsFromJson(json);
+        for(Patient p:inAMC) {
+            for(Patient pt:discharge){
+                if(p.getId()==pt.getId()){
+                    patients.add(p);
+                }
+            }
+        }
+        return patients;
+    }
+
+    public ArrayList<Patient> seeTransferList() throws IOException {
+        ArrayList<String> json = client.makeGetRequest("*", "wards", "wardname='AMC1'");
+        ArrayList<Ward> wards = client.wardsFromJson(json);
+        ArrayList<Patient> patients = new ArrayList<Patient>();
+        int amcId = wards.get(0).getId();
+        json = client.makeGetRequest("*", "patients", "currentLocation="+amcId);
+        ArrayList<Patient> inAMC = client.patientsFromJson(json);
+
+        json = client.makeGetRequest("*", "patients", "nextdestination!=null");
+        ArrayList<Patient> transfer= client.patientsFromJson(json);
+        for(Patient p:inAMC) {
+            for(Patient pt:transfer){
+                if(p.getId()==pt.getId()){
+                    patients.add(p);
+                }
+            }
+        }
+        return patients;
+    }
+
+
+
     @Override
-    public ArrayList<Patient> getWardInfo(int wardId) throws IOException, SQLException {
-        //String SQLstr = "SELECT * FROM patients WHERE wardId = '"+wardId+"';";
-        ArrayList<String> json = client.makeGetRequest("*", "patients", "wardid="+wardId);
-        return client.patientsFromJson(json);
+    public ArrayList<String> getWardInfo(int wardId) throws IOException, SQLException {
+        ArrayList<String> numbers = new ArrayList<String>();
+        //format = wardname, capacity, Male free, female free, either sex free, expected male discharge, expected female discharge
+
+        ArrayList<String> json = client.makeGetRequest("*", "wards", "wardid="+wardId);
+        ArrayList<Ward> wards = client.wardsFromJson(json);
+        //add wardName
+        numbers.add(wards.get(0).getWardName());
+
+        json = client.makeGetRequest("*", "patients", "wardid="+wardId);
+        ArrayList<Patient> patients = client.patientsFromJson(json);
+        json = client.makeGetRequest("*", "beds", "wardid="+wardId);
+        ArrayList<Bed> beds = client.bedsFromJson(json);
+
+        ArrayList<Bed> fullBeds = new ArrayList<Bed>();
+        ArrayList<Bed> emptyBeds = new ArrayList<Bed>();
+        ArrayList<Bed> emptyMaleBeds = new ArrayList<Bed>();
+        ArrayList<Bed> emptyFemaleBeds = new ArrayList<Bed>();
+        for(Bed b:beds){
+            if(b.getStatus()=="F"){
+                emptyBeds.add(b);
+                if(b.getForSex()=="M"){
+                    emptyMaleBeds.add(b);
+                }
+                else {
+                    emptyFemaleBeds.add(b);
+                }
+            }
+            else {
+                fullBeds.add(b);
+            }
+        }
+
+        //add percentage capacity
+        numbers.add((patients.size()*100)/beds.size()+"%");
+        //add male free
+        numbers.add(String.valueOf(emptyMaleBeds.size()));
+        //add female free
+        numbers.add(String.valueOf(emptyFemaleBeds.size()));
+        //add total free
+        numbers.add(String.valueOf(emptyBeds.size()));
+
+        //Todo expected discharges signalled how?
+        return numbers;
     }
 
     @Override

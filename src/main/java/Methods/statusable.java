@@ -7,6 +7,6 @@ import java.util.ArrayList;
 import Client.Patient;
 
 public interface statusable {
-    public ArrayList<Patient> getWardInfo(int wardId) throws IOException, SQLException;
+    public ArrayList<String> getWardInfo(int wardId) throws IOException, SQLException;
     public ArrayList<Patient> getPatientInfo(int wardId);
 }
