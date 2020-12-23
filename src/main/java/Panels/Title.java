@@ -4,19 +4,25 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Title extends JPanel{
-    //Declaring components
-    JLabel titleLabel;
 
-    public Title(){
+    public Title(String title , JButton back ){
+
         //Editing Panel itself
         this.setPreferredSize(new Dimension(1200,100));
         this.setBackground(Color.white);
+        this.setLayout(new BorderLayout());
+
+        //Adding refresh
+        JLabel refreshLabel = new JLabel();
+        add(refreshLabel, BorderLayout.WEST);
 
         //Adding label
-        titleLabel = new JLabel("AMU Ward");
+        JLabel titleLabel = new JLabel(title , SwingConstants.CENTER);
         titleLabel.setFont(new Font("Verdana", Font.PLAIN, 50));
-        add(titleLabel);
+        titleLabel.setBorder(BorderFactory.createEmptyBorder(30, 10, 20, 10));
+        add(titleLabel , BorderLayout.CENTER);
 
-
+        //Adding Back Button
+        add(back , BorderLayout.EAST);
     }
 }
