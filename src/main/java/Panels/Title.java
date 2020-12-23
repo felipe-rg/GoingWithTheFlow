@@ -9,9 +9,8 @@ public class Title extends JPanel{
 
     //Declaring the two components
     JLabel titleLabel;
-    JButton backButton;
 
-    public Title(String title){
+    public Title(String title, JButton backButton){
         //Editing Panel itself
         this.setPreferredSize(new Dimension(1200,100));
         this.setBackground(Color.white);
@@ -27,9 +26,10 @@ public class Title extends JPanel{
         this.add(titleLabel, c);
 
         //Button
-        backButton = new JButton("Back to UI Selector");
         c.insets = new Insets(0,430,0,0);
         this.add(backButton, c);
+
+
 
 
     }

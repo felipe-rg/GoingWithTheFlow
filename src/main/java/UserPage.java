@@ -38,7 +38,7 @@ public class UserPage {
 
         frame.getContentPane().add(mainPanel);                              // adds MainPanel to frame
 
-        //frame.setExtendedState(Frame.MAXIMIZED_BOTH);
+        frame.setExtendedState(Frame.MAXIMIZED_BOTH);
         frame.setVisible(true);                                             // makes JFrame visible
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);      // This closes the program when the frame is closed
     }

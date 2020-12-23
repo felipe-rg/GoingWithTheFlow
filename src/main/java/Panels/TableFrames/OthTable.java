@@ -1,13 +1,13 @@
-package Panels.Tables;
+package Panels.TableFrames;
 
 import javax.swing.*;
 
-public class DisTable {
+public class OthTable {
 
-    public DisTable(){
+    public OthTable(){
         JFrame frame = new JFrame();
         frame.setSize(800, 600);
-        frame.setTitle("Discharging Patients");
+        frame.setTitle("Others");
         //frame.setResizable(false);
 
         frame.setVisible(true);

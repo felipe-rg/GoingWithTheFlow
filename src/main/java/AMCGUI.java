@@ -15,13 +15,24 @@ public class AMCGUI {
         frame.setTitle("AMC GUI");
         //frame.setResizable(false);
 
-        UIController UIc = new UIController();
+        //Creating button to go back to the User Page (it will be passed to UIController
+        // and then to the Title panel to be added there
+        backButton = new JButton("Back to UI Selector");
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+                UserPage user = new UserPage();
+            }
+        });
+
+        //Creating UIController than generates all panels
+        UIController UIc = new UIController(backButton);
         frame.add(UIc.getMainPanel());
-
-
 
         frame.setVisible(true);
         frame.setExtendedState(Frame.MAXIMIZED_BOTH);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
     }
 }

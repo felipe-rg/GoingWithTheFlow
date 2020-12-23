@@ -14,13 +14,13 @@ public class UIController {
 
 
     //Constructor
-    public UIController(){
+    public UIController(JButton backButton){
 
         //Instantiating Panels
         mainPanel = new JPanel();
         rhsPanel = new JPanel();
         topography = new Topography();
-        title = new Title("AMC GUI");
+        title = new Title("AMC GUI", backButton);
         bedStatus = new BedStatus();
         wardInfo = new WardInfo();
 

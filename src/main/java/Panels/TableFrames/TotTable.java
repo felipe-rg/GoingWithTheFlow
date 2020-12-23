@@ -1,4 +1,4 @@
-package Panels.Tables;
+package Panels.TableFrames;
 
 import javax.swing.*;
 
