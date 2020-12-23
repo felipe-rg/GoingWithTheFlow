@@ -28,7 +28,6 @@ public class Incoming {
 
         JLabel AMU1info = new JLabel("A&E Patient table goes here");
 
-
         infoPanel.add(AMU1info);
 
         mainPanel.setLayout(new BorderLayout());
