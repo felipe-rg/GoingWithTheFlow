@@ -33,7 +33,7 @@ public class WardInfo extends JPanel{
         transLabel = new JLabel("Transferring Patients");
         disLabel = new JLabel("Discharge Patients");
         othLabel = new JLabel("Others");
-        totLabel = new JLabel("Total Patients in ward");
+        totLabel = new JLabel("Total Patients in Ward");
         //Editing labels
         editLabel(inLabel, transLabel, disLabel, othLabel, totLabel);
 

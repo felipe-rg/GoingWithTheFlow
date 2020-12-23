@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class AMCGUI {
+    JButton backButton;
 
     public AMCGUI() {
         JFrame frame = new JFrame();
@@ -16,6 +17,8 @@ public class AMCGUI {
 
         UIController UIc = new UIController();
         frame.add(UIc.getMainPanel());
+
+
 
         frame.setVisible(true);
         frame.setExtendedState(Frame.MAXIMIZED_BOTH);
