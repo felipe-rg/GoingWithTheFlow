@@ -38,15 +38,19 @@ public class ControlCentre implements statusable{
         freeBeds = 0;
         dischargePatients = 0;
         transferPatients = 0;
-        ArrayList<Patient> amcPatients = client.makeGetRequest("id", "patients", "currentLocation='AMC'");//todo AMC id
-        ArrayList<Patient> amcBeds = client.makeGetRequest("id", "beds", "wardId='AMC'");//todo GetBeds //todo AMC id
+        ArrayList<String> json = client.makeGetRequest("id", "patients", "currentLocation='AMC'");//todo AMC id
+        ArrayList<Patient> amcPatients = client.patientsFromJson(json);
+        json = client.makeGetRequest("id", "beds", "wardId='AMC'");
+        ArrayList<Bed> amcBeds = client.bedsFromJson(json);
         amcCapacityPerc = amcPatients.size()*100/amcBeds.size();
         freeBeds = amcBeds.size()-amcPatients.size();
-        ArrayList<Patient> inAMC = client.makeGetRequest("id", "patients", "currentLocation='AMC'");//todo AMC id
-        ArrayList<Patient> leavingAMC = client.makeGetRequest("id", "patients", "nextDestination!=NULL");
+        json = client.makeGetRequest("id", "patients", "currentLocation='AMC'");//todo AMC id
+        ArrayList<Patient> inAMC = client.patientsFromJson(json);
+        json = client.makeGetRequest("id", "patients", "nextDestination!=NULL");
+        ArrayList<Patient> leavingAMC = client.patientsFromJson(json);
         //todo how are we signalling discharge?
-        //SQLstr = "SELECT id FROM patients WHERE currentLocation = 'AMC' AND nextDestination = 'Discharge';";
-        ArrayList<Patient> discharges = client.makeGetRequest("id", "patients", "nextDestination='Discharge'");
+        json = client.makeGetRequest("id", "patients", "nextDestination='Discharge'");
+        ArrayList<Patient> discharges = client.patientsFromJson(json);
         for(int i=0; i<inAMC.size(); i++){
             for(int j=0; j<leavingAMC.size();i++) {
                 if (inAMC.get(i).getId() == leavingAMC.get(j).getId()){
@@ -63,9 +67,10 @@ public class ControlCentre implements statusable{
         longstayCapacityPerc = 0;
         longstayFreeBeds = 0;
         int longStayCapacity = 0;
-        //String SQLstr = "SELECT id FROM patients WHERE currentLocation != 'AMC' AND currentLocation != 'AandE';";
-        ArrayList<Patient> notInAMC = client.makeGetRequest("id", "patients", "currentLocation!='AMC'");
-        ArrayList<Patient> notInAandE = client.makeGetRequest("id", "patients", "currentLocation!='AandE'");
+        ArrayList<String> json = client.makeGetRequest("id", "patients", "currentLocation!='AMC'");
+        ArrayList<Patient> notInAMC = client.patientsFromJson(json);
+        json = client.makeGetRequest("id", "patients", "currentLocation!='AandE'");
+        ArrayList<Patient> notInAandE = client.patientsFromJson(json);
         for(int i=0; i<notInAMC.size(); i++){
             for(int j=0; j<notInAandE.size();i++) {
                 if (notInAandE.get(i).getId() == notInAandE.get(j).getId()){
@@ -74,7 +79,8 @@ public class ControlCentre implements statusable{
             }
         }
         //SQLstr = "SELECT id FROM beds WHERE wardId != 'AMC';";
-        ArrayList<Patient> longstayBeds = client.makeGetRequest("id", "beds", "wardid!='AMC'");
+        json = client.makeGetRequest("id", "beds", "wardid!='AMC'");
+        ArrayList<Bed> longstayBeds = client.bedsFromJson(json);
         longstayCapacityPerc = longStayCapacity*100/longstayBeds.size();
         longstayFreeBeds = longstayBeds.size() - longStayCapacity;
     }
@@ -84,8 +90,10 @@ public class ControlCentre implements statusable{
         redPatients = 0;
         orangePatients = 0;
         String SQLstr = "SELECT arrivalTime FROM patients WHERE currentLocation = 'AandE' AND acceptedByMedicine = true;";
-        ArrayList<Patient> inAandE = client.makeGetRequest("id,arrivalTime", "patients", "currentLocation='AandE'");
-        ArrayList<Patient> accepted= client.makeGetRequest("id", "patients", "acceptedByMedicine=true");
+        ArrayList<String> json = client.makeGetRequest("id,arrivalTime", "patients", "currentLocation='AandE'");
+        ArrayList<Patient> inAandE = client.patientsFromJson(json);
+        json = client.makeGetRequest("id", "patients", "acceptedByMedicine=true");
+        ArrayList<Patient> accepted = client.patientsFromJson(json);
         ArrayList<Patient> incoming = new ArrayList<Patient>();
         for(int i=0; i<inAandE.size(); i++){
             for(int j=0; j<accepted.size();i++) {
@@ -94,6 +102,7 @@ public class ControlCentre implements statusable{
                 }
             }
         }
+        //FIXME time manipulation with neo
        /* Calendar calendar = Calendar.getInstance();
         Calendar calendar2 = Calendar.getInstance();
         Calendar calendar3 = Calendar.getInstance();
@@ -117,13 +126,15 @@ public class ControlCentre implements statusable{
 
     public ArrayList<Patient> seeIncomingList() throws IOException, SQLException {
         //String SQLstr = "SELECT id, sex, initialDiagnosis, acceptedByMedicine, arrivalTime FROM patients WHERE currentLocation = 'AandE';";
-        return client.makeGetRequest("id,sex,initialDiagnosis,acceptedByMedicine,arrivalTime", "patients", "currentLocation='AandE'");
+        ArrayList<String> json = client.makeGetRequest("*", "patients", "currentLocation='AandE'");
+        return client.patientsFromJson(json);
     }
 
     @Override
     public ArrayList<Patient> getWardInfo(int wardId) throws IOException, SQLException {
         //String SQLstr = "SELECT * FROM patients WHERE wardId = '"+wardId+"';";
-        return client.makeGetRequest("*", "patients", "wardid="+wardId);
+        ArrayList<String> json = client.makeGetRequest("*", "patients", "wardid="+wardId);
+        return client.patientsFromJson(json);
     }
 
     @Override

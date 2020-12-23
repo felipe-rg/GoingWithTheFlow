@@ -7,13 +7,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class AMCWard extends GeneralWard implements requestable{
-    public AMCWard(int wardId){
+    public AMCWard(int wardId) throws IOException {
         super(wardId);
     }
 
     public ArrayList<Patient> getTransferList(String wardId) throws IOException, SQLException {
         //String SQLstr = "SELECT id, sex, nextDestination, estimatedTimeNext, transferReqStatus, needsSideRoom FROM patients WHERE currentLocation = "+wardId+";";
-        return client.makeGetRequest("id,sex,nextDestination,estimatedTimeNext,transferReqStatus,needsSideRoom", "patients", "currentLocation="+wardId);
+        ArrayList<String> json = client.makeGetRequest("*", "patients", "currentLocation="+wardId);
+        return client.patientsFromJson(json);
     }
 
     @Override

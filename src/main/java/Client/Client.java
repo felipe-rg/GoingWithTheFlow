@@ -9,14 +9,13 @@ import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
-public class Client {
+public class Client extends fromJson{
 
 
     public Client() {   }
 
-    public ArrayList<Patient> makeGetRequest(String fields,String table,String condition) throws IOException {
+    public ArrayList<String> makeGetRequest(String fields,String table,String condition) throws IOException {
         ArrayList<String> jsonStrings = new ArrayList<String>();
-        ArrayList<Patient> patients = new ArrayList<Patient>();
         Gson gson = new Gson();
         String url = "https://goingwiththeflowservlet.herokuapp.com/home?fields="+fields+"&table="+table+"&condition="+condition;
         URL servletURL = new URL(url);
@@ -33,12 +32,7 @@ public class Client {
             jsonStrings = gson.fromJson(inputLine,ArrayList.class);
         }
         bufferedReader.close();
-
-        for(String s:jsonStrings) {
-            Patient p = gson.fromJson(s, Patient.class);
-            patients.add(p);
-        }
-        return patients;
+        return jsonStrings;
     }
 
     public void makePostRequest(Patient p) throws IOException {
