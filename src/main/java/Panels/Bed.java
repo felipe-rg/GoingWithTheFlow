@@ -11,7 +11,10 @@ public class Bed extends JButton{
     char status;    //Character saying if bed is free (f), if it is occupied (o) or closed (c)
     Integer age;
     char gender;
-    private JFrame infoFrame = new JFrame();
+
+    //JLabel bedIdLabel;
+    //JLabel ageLabel;
+    //JLabel genderLabel;
 
 
     public Bed(String BedId, char status, Integer x, Integer y, Integer age, char gender) {
@@ -54,6 +57,8 @@ public class Bed extends JButton{
     public void setGender(char gender){ this.gender = gender;}
 
     public void printInfo(){
+        JFrame infoFrame = new JFrame();
+
         //edit info Frame
         infoFrame.setSize(300,300);
         infoFrame.setBackground(Color.WHITE);
@@ -67,24 +72,23 @@ public class Bed extends JButton{
 
         //jbutton for editing bed
         JButton editButton = new JButton("Edit Patient Info");
-        // when button to edit information is clicked
+        // button to edit information when it is clicked
         editButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
                 inputNewInfo();
+                infoFrame.dispose();
             }
         });
 
         // add the labels to a panel that will be added to the frame
-        JPanel infoPanel = new JPanel();
-        infoPanel.setLayout(new GridLayout(4,1));
-        infoPanel.add(bedIdLabel);
-        infoPanel.add(ageLabel);
-        infoPanel.add(genderLabel);
-        infoPanel.add(editButton);
 
+        infoFrame.setLayout(new GridLayout(4,1));
+        infoFrame.add(bedIdLabel);
+        infoFrame.add(ageLabel);
+        infoFrame.add(genderLabel);
+        infoFrame.add(editButton);
 
-        infoFrame.add(infoPanel);
     }
 
     // prints text fields, gets info from user and updates gender and age
@@ -94,6 +98,7 @@ public class Bed extends JButton{
         editorFrame.setBackground(Color.WHITE);
         editorFrame.setVisible(true);
         editorFrame.setLocation(300,300);
+        editorFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
         JPanel editorPanel = new JPanel();
         editorPanel.setLayout(new GridLayout(3,1));
@@ -108,9 +113,7 @@ public class Bed extends JButton{
             public void actionPerformed(ActionEvent evt) {
                 setAge(Integer.parseInt(ageTextField.getText()));
                 setGender(genderTextField.getText().charAt(0));
-                infoFrame.dispose();
                 editorFrame.dispose();
-
                 System.out.print(getAge());
             }
         });
