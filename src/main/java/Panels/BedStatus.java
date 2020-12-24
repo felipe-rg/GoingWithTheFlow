@@ -35,7 +35,6 @@ public class BedStatus extends JPanel{
         add(ambarBeds);
         add(redBeds);
 
-
-
     }
 }
+

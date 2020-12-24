@@ -16,6 +16,7 @@ public class Main {
         frame.add(UIc.getMainPanel());
 
         frame.setVisible(true);
+        frame.setExtendedState(Frame.MAXIMIZED_BOTH);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 
