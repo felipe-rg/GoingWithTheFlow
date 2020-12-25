@@ -2,6 +2,8 @@ package Panels;
 
 import javax.swing.*;
 import java.awt.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class BedButton extends JButton{
     String BedId;   // kept as string in case e decide to name them with characters too
@@ -10,6 +12,7 @@ public class BedButton extends JButton{
     char gender;    // when empty, gender = x
     String dia = "";    // diagnosis, not necessary to instantiate when creating bed
     Boolean sideroom;
+    LocalDateTime ETD = LocalDateTime.now(); // right now if bed is empty or ETD is not set, ETD is current time
 
     //constructor; when instantiating a bed its location must be specified with x and y.
     public BedButton(String BedId, char status, Boolean sideroom, Integer x, Integer y, Integer age, char gender) {
@@ -20,11 +23,12 @@ public class BedButton extends JButton{
         this.age = age;
 
         this.setText(BedId);
+        this.setFont(new Font("Verdana", Font.PLAIN, 30));
         this.setBounds(x, y, 70, 140);
         this.setOpaque(true);
-        if(status == 'F'){this.setBackground(Color.RED); }
-        if(status == 'E'){this.setBackground(Color.GREEN);}
-        if(status == 'C'){this.setBackground(Color.YELLOW);}
+        if(status == 'F'){this.setBackground(Color.decode("#E74C3C")); }
+        if(status == 'E'){this.setBackground(Color.decode("#2ECC71"));}
+        if(status == 'C'){this.setBackground(Color.decode("#F39C12"));}
     }
 
     // functions that return bed information
@@ -40,19 +44,21 @@ public class BedButton extends JButton{
     public char getStatus(){ return this.status; }
     public String getDia(){ return this.dia; }
     public Boolean getSR(){ return this.sideroom; }
+    public LocalDateTime getETD(){ return ETD; }
 
     public void makeFull(){
         this.status = 'F';
-        this.setBackground(Color.RED);
+        this.setBackground(Color.decode("#E74C3C"));
         this.repaint();
 
     }
     public void makeEmpty(){
         this.status = 'E';
-        this.setBackground(Color.GREEN);
+        this.setBackground(Color.decode("#2ECC71"));
         this.setAge(0);
         this.setGender('x');
         this.setDia("");
+        this.setETDinMins(0);
 
     }
 
@@ -64,6 +70,8 @@ public class BedButton extends JButton{
         this.dia = dia;
     }
     public void setSR(Boolean sr){ this.sideroom = sr; }
+    public void setETDinMins(Integer Minutes){ this.ETD = LocalDateTime.now().plusMinutes(Minutes); }
+    public void setETDinHrs(Integer Hours){ this.ETD = LocalDateTime.now().plusHours(Hours); }
 
     // creates a frame with a panel inside, then 3 labels with the patient information and an 'edit' button. Once clicked, the edit button calls the 'inputNewInfo' function
     public void printInfo(){
@@ -82,6 +90,11 @@ public class BedButton extends JButton{
         JLabel srLabel = new JLabel("Sideroom: "+this.getSR(), SwingConstants.CENTER);
         JLabel diaLabel = new JLabel("Diagnosis: "+this.getDia(), SwingConstants.CENTER);
 
+        // formating ETD time
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        String ETDTime = this.getETD().format(formatter);
+        JLabel ETDLabel = new JLabel("ETD: "+ETDTime, SwingConstants.CENTER);
+
         //jbutton for editing bed
         JButton editButton = new JButton("Edit Patient");
         // button to edit information when it is clicked
@@ -96,13 +109,14 @@ public class BedButton extends JButton{
             infoFrame.dispose();
         });
 
-        // add the labels to a panel that will be added to the frame
-        infoFrame.setLayout(new GridLayout(7,1));
+        // add the labels to the frame
+        infoFrame.setLayout(new GridLayout(8,1));
         infoFrame.add(bedIdLabel);
         infoFrame.add(ageLabel);
         infoFrame.add(genderLabel);
         infoFrame.add(srLabel);
         infoFrame.add(diaLabel);
+        infoFrame.add(ETDLabel);
 
         infoFrame.add(editButton);
         infoFrame.add(deleteButton);
