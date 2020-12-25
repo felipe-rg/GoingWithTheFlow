@@ -42,17 +42,18 @@ public class BedButton extends JButton{
     public Boolean getSR(){ return this.sideroom; }
 
     public void makeFull(){
-        if(this.status == 'e'){
-            this.status = 'f';
-            this.setBackground(Color.RED);
-            this.repaint();
-        }
+        this.status = 'F';
+        this.setBackground(Color.RED);
+        this.repaint();
+
     }
     public void makeEmpty(){
-        if(this.status == 'f' || this.status == 'c'){
-            this.status = 'e';
-            this.setBackground(Color.GREEN);
-        }
+        this.status = 'E';
+        this.setBackground(Color.GREEN);
+        this.setAge(0);
+        this.setGender('x');
+        this.setDia("");
+
     }
 
     public void setAge(Integer age){
@@ -91,7 +92,7 @@ public class BedButton extends JButton{
 
         JButton deleteButton = new JButton("Delete Patient");
         deleteButton.addActionListener(evt -> {
-            deleteInfo();
+            makeEmpty();
             infoFrame.dispose();
         });
 
@@ -109,6 +110,7 @@ public class BedButton extends JButton{
 
     // prints text fields, gets info from user and updates gender and age
     public void inputNewInfo(){
+        // new popup over which everything is put
         JFrame editorFrame = new JFrame();
         editorFrame.setSize(300,300);
         editorFrame.setBackground(Color.WHITE);
@@ -116,31 +118,39 @@ public class BedButton extends JButton{
         editorFrame.setLocation(300,300);
         editorFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
+        // panel on editorFrame
         JPanel editorPanel = new JPanel();
         editorPanel.setLayout(new GridLayout(5,1));
         editorPanel.setBackground(Color.WHITE);
 
+        // add input fields to editorPanel
         JTextField ageTextField = new JTextField("New age");
         JTextField genderTextField = new JTextField("New gender");
         JTextField diaTextField = new JTextField(this.getDia());
         JTextField SRTextField = new JTextField("Sideroom");
 
+        // confirm button on editorPanel. when clicked, this button must (1) assign new values to all fields, (2) change color from green to red if bed was empty
         JButton confirmButton = new JButton("Confirm Edits");
         confirmButton.addActionListener(evt -> {
-            if(getStatus() == 'e') {
-                makeFull();
-            } // repaint bed in green
+
+            // change bed color
+            if(this.getStatus() == 'E') {
+                this.makeFull();
+            }
+
+            // asign new values
             setAge(Integer.parseInt(ageTextField.getText()));
             setGender(genderTextField.getText().charAt(0));
             setDia(diaTextField.getText());
-
-            if(SRTextField.getText().equals("False") || SRTextField.getText().equals("false") || SRTextField.getText().charAt(0) == 'F'){
+            // there are many ways to indicate yes or no
+            if(SRTextField.getText().equals("False") || SRTextField.getText().equals("false")  || SRTextField.getText().equals("FALSE") || SRTextField.getText().charAt(0) == 'F' || SRTextField.getText().charAt(0) == 'N' || SRTextField.getText().equals("No") || SRTextField.getText().equals("NO") || SRTextField.getText().equals("no")){
                 setSR(false);
             }
-            else if (SRTextField.getText().equals("True") || SRTextField.getText().equals("true") || SRTextField.getText().charAt(0) == 'T'){
+            else if (SRTextField.getText().equals("True") || SRTextField.getText().equals("true")  || SRTextField.getText().equals("TRUE") || SRTextField.getText().charAt(0) == 'T' || SRTextField.getText().charAt(0) == 'Y' || SRTextField.getText().equals("Yes") || SRTextField.getText().equals("YES") || SRTextField.getText().equals("yes")){
                 setSR(true);
             }
 
+            // get rid of editor popup after confirming edits
             editorFrame.dispose();
         });
 
@@ -153,12 +163,5 @@ public class BedButton extends JButton{
         editorFrame.add(editorPanel);
     }
 
-    public void deleteInfo(){
-        this.setAge(0);
-        this.setGender('x');
-        this.setDia("");
-        this.makeEmpty();
-        System.out.println(this.getStatus());
-    }
 
 }
