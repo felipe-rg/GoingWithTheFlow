@@ -15,10 +15,9 @@ public class Topography extends JPanel{
     BedButton bed6;
     BedButton bed7;
     BedButton bed8;
+    ArrayList<BedButton> beds = new ArrayList<BedButton>();
 
     public Topography() {
-        ArrayList<BedButton> beds = new ArrayList<BedButton>();
-
         this.setBackground(Color.WHITE);
         this.setPreferredSize(new Dimension(100, 70));
         this.setLayout(null);
@@ -58,9 +57,12 @@ public class Topography extends JPanel{
                 @Override
                 public void actionPerformed(ActionEvent evt) {
                     b.printInfo();
+                    b.repaint();
                 }
             });
         }
 
     }
+
+
 }

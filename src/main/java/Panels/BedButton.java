@@ -2,9 +2,6 @@ package Panels;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 public class BedButton extends JButton{
     String BedId;   // kept as string in case e decide to name them with characters too
@@ -47,14 +44,17 @@ public class BedButton extends JButton{
     public void makeFull(){
         if(this.status == 'e'){
             this.status = 'f';
-            this.setBackground(Color.GREEN);
+            this.setBackground(Color.RED);
+            this.repaint();
         }
     }
     public void makeEmpty(){
         if(this.status == 'f' || this.status == 'c'){
             this.status = 'e';
+            this.setBackground(Color.GREEN);
         }
     }
+
     public void setAge(Integer age){
         this.age = age;
     }
@@ -84,21 +84,15 @@ public class BedButton extends JButton{
         //jbutton for editing bed
         JButton editButton = new JButton("Edit Patient");
         // button to edit information when it is clicked
-        editButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                inputNewInfo();
-                infoFrame.dispose();
-            }
+        editButton.addActionListener(evt -> {
+            inputNewInfo();
+            infoFrame.dispose();
         });
 
         JButton deleteButton = new JButton("Delete Patient");
-        deleteButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                deleteInfo();
-                infoFrame.dispose();
-            }
+        deleteButton.addActionListener(evt -> {
+            deleteInfo();
+            infoFrame.dispose();
         });
 
         // add the labels to a panel that will be added to the frame
@@ -132,25 +126,22 @@ public class BedButton extends JButton{
         JTextField SRTextField = new JTextField("Sideroom");
 
         JButton confirmButton = new JButton("Confirm Edits");
-        confirmButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                if(getStatus() == 'e') {
-                    makeFull();
-                } // repaint bed in green
-                setAge(Integer.parseInt(ageTextField.getText()));
-                setGender(genderTextField.getText().charAt(0));
-                setDia(diaTextField.getText());
+        confirmButton.addActionListener(evt -> {
+            if(getStatus() == 'e') {
+                makeFull();
+            } // repaint bed in green
+            setAge(Integer.parseInt(ageTextField.getText()));
+            setGender(genderTextField.getText().charAt(0));
+            setDia(diaTextField.getText());
 
-                if(SRTextField.getText() == "False" || SRTextField.getText() == "false" || SRTextField.getText().charAt(0) == 'F'){
-                    setSR(false);
-                }
-                else if (SRTextField.getText() == "True" || SRTextField.getText() == "true" || SRTextField.getText().charAt(0) == 'T'){
-                    setSR(true);
-                }
-
-                editorFrame.dispose();
+            if(SRTextField.getText().equals("False") || SRTextField.getText().equals("false") || SRTextField.getText().charAt(0) == 'F'){
+                setSR(false);
             }
+            else if (SRTextField.getText().equals("True") || SRTextField.getText().equals("true") || SRTextField.getText().charAt(0) == 'T'){
+                setSR(true);
+            }
+
+            editorFrame.dispose();
         });
 
         editorPanel.add(ageTextField);
@@ -165,6 +156,9 @@ public class BedButton extends JButton{
     public void deleteInfo(){
         this.setAge(0);
         this.setGender('x');
+        this.setDia("");
         this.makeEmpty();
+        System.out.println(this.getStatus());
     }
+
 }
