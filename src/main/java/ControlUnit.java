@@ -38,7 +38,7 @@ public class ControlUnit {
         outline(incomingPanel);
         panelPadding(incomingPanel);                                    // adds padding to the JPanel
 
-        incomingPanel.setLayout(new BoxLayout(incomingPanel, BoxLayout.Y_AXIS));  // sets layout type of panel to be vertical
+        incomingPanel.setLayout(new GridLayout(8,1));  // sets layout type of panel to be vertical
 
         JLabel incomingTitle = new JLabel("Incoming from A&E");
         incomingTitle.setFont (incomingTitle.getFont ().deriveFont (24.0f));
@@ -46,6 +46,10 @@ public class ControlUnit {
 
         // incoming from A&E info
         JLabel text1 = new JLabel("Number of Patients coming from A&E:");
+        text1.setFont (text1.getFont ().deriveFont (14.0f));
+        labelPadding(text1);
+
+        JLabel total = new JLabel("12" , SwingConstants.CENTER);
         text1.setFont (text1.getFont ().deriveFont (14.0f));
         labelPadding(text1);
 
@@ -74,6 +78,7 @@ public class ControlUnit {
 
         incomingPanel.add(incomingTitle);                   // adds components to incoming panel
         incomingPanel.add(text1);
+        incomingPanel.add(total);
         incomingPanel.add(r);
         incomingPanel.add(y);
         incomingPanel.add(g);

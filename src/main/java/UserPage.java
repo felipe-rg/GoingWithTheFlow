@@ -46,11 +46,22 @@ public class UserPage {
             }
         });
 
-        userPanel.setLayout(new GridLayout(3,1));                     // sets user panel layout
+        JButton formButton = new JButton("Click here to fill out Patient Form");     // creates button to access Patient Form
+        formButton.setFont(new Font("Verdana", Font.PLAIN, 20));
+        formButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+                PatientForm form = new PatientForm();                        // constructs control page (new Jframe)
+            }
+        });
+
+        userPanel.setLayout(new GridLayout(4,1));                     // sets user panel layout
         padding(userPanel);                                                    // adds padding to user panel
         userPanel.add(userLabel);                                              // adds components to user panel
         userPanel.add(wardButton);
         userPanel.add(controlButton);
+        userPanel.add(formButton);
 
         mainPanel.setLayout(new BorderLayout());
         mainPanel.add(titlePanel , BorderLayout.NORTH);                         // adds title to the top of panel

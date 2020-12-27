@@ -8,27 +8,23 @@ import java.awt.event.ActionListener;
 
 public class DisTransPage {
 
-    JFrame f;                                                           // field: JFrame for the Homepage
-    JPanel mainPanel;                                                   // field: Panel in frame
-
-    JPanel title;                                                       // field: Panels for frame
-
     public DisTransPage() {
 
-        f = new JFrame();                                               // creates JFrame for Homepage
-        mainPanel = new JPanel();
+        JFrame f = new JFrame();
+        JPanel mainPanel = new JPanel();
+        mainPanel.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, Color.BLACK));
 
         JButton backButton = new JButton("Go Back");
         Title titlePanel = new Title("Discharge and Transfer Lists" , backButton);
+        titlePanel.setBorder(BorderFactory.createMatteBorder(0, 0, 3, 0, Color.BLACK));
 
-        backButton.addActionListener(new ActionListener() {                            // waits for mouse to click button
+        backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 f.dispose();
                 ControlUnit control = new ControlUnit();
             }
         });
-
 
         JPanel infoPanel = new JPanel();
         infoPanel.setLayout(new GridLayout( 2 , 1));

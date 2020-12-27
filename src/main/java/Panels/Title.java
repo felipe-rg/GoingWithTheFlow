@@ -10,19 +10,17 @@ public class Title extends JPanel{
         //Editing Panel itself
         this.setPreferredSize(new Dimension(1200,100));
         this.setBackground(Color.white);
-        this.setLayout(new BorderLayout());
-
-        //Adding refresh
-        JLabel refreshLabel = new JLabel();
-        add(refreshLabel, BorderLayout.WEST);
+        this.setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
 
         //Adding label
-        JLabel titleLabel = new JLabel(title , SwingConstants.CENTER);
+        JLabel titleLabel = new JLabel(title);
         titleLabel.setFont(new Font("Verdana", Font.PLAIN, 50));
-        titleLabel.setBorder(BorderFactory.createEmptyBorder(30, 10, 20, 10));
-        add(titleLabel , BorderLayout.CENTER);
+        c.insets = new Insets(0,400,0,0);
+        add(titleLabel , c);
 
         //Adding Back Button
-        add(back , BorderLayout.EAST);
+        c.insets = new Insets(0,200,0,0);
+        add(back , c);
     }
 }

@@ -8,28 +8,23 @@ import java.awt.event.ActionListener;
 
 public class AMCInfo {
 
-    JFrame f;                                                           // field: JFrame for the Homepage
-    JPanel mainPanel;                                                   // field: Panel in frame
-
-    JPanel title;                                                       // field: Panels for frame
-
     public AMCInfo() {
 
-        f = new JFrame();                                               // creates JFrame for Homepage
-        mainPanel = new JPanel();
+        JFrame f = new JFrame();
+        JPanel mainPanel = new JPanel();
         mainPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK , 3));
 
         JButton backButton = new JButton("Go Back");
         Title titlePanel = new Title("AMC Status" , backButton);
+        titlePanel.setBorder(BorderFactory.createMatteBorder(0, 0, 3, 0, Color.BLACK));
 
-        backButton.addActionListener(new ActionListener() {                            // waits for mouse to click button
+        backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 f.dispose();
                 ControlUnit control = new ControlUnit();
             }
         });
-
 
         JPanel infoPanel = new JPanel();
         infoPanel.setLayout(new GridLayout(1,3));
@@ -42,23 +37,14 @@ public class AMCInfo {
         infoPanel.add(AMU2info);
         infoPanel.add(AAU1info);
 
-        mainPanel.setLayout(new BorderLayout());                                    // defines layout of MainPanel
+        mainPanel.setLayout(new BorderLayout());
         mainPanel.add(titlePanel , BorderLayout.NORTH);
         mainPanel.add(infoPanel , BorderLayout.CENTER);
 
-        f.getContentPane().add(mainPanel);                                          // adds MainPanel to JFrame
+        f.getContentPane().add(mainPanel);
         f.setVisible(true);
         f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         f.setExtendedState(Frame.MAXIMIZED_BOTH);
-    }
-
-    public void outline(JPanel panel) {                                             // adds outline to JPanels
-        panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-    }
-
-    public void padding(JLabel label) {                                              // adds padding to JLabels for better spacing
-        label.setBorder(BorderFactory.createEmptyBorder(30, 10, 20, 10));
-
     }
 }
 
