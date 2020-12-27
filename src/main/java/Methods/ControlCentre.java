@@ -27,7 +27,16 @@ public class ControlCentre implements statusable{
 
     public ControlCentre() throws IOException, SQLException {
         client = new Client();
-        refresh();
+        //refresh();
+        redPatients = 3;
+        orangePatients = 4;
+        greenPatients = 2;
+        amcCapacityPerc = 80;
+        freeBeds = 2;
+        transferPatients = 9;
+        dischargePatients = 2;
+        longstayCapacityPerc = 90;
+        longstayFreeBeds = 10;
     }
 
     public void refresh() throws IOException, SQLException {

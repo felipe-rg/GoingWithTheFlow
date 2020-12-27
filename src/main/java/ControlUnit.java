@@ -65,7 +65,7 @@ public class ControlUnit {
         text1.setFont (text1.getFont ().deriveFont (14.0f));
         labelPadding(text1);
 
-        JButton r = new JButton("2");           // incoming patients with traffic light to represent time of arrival
+        JButton r = new JButton(String.valueOf(methods.get));           // incoming patients with traffic light to represent time of arrival
         r.setBackground(Color.RED);
         r.setHorizontalAlignment(SwingConstants.CENTER);
         JButton y = new JButton("4");
