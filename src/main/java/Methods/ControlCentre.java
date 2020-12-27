@@ -4,7 +4,10 @@ import Client.*;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -38,28 +41,30 @@ public class ControlCentre implements statusable{
         freeBeds = 0;
         dischargePatients = 0;
         transferPatients = 0;
-        ArrayList<String> json = client.makeGetRequest("*", "wards", "wardname='AMC1'");
-        ArrayList<Ward> wards = client.wardsFromJson(json);
-        int amcId = wards.get(0).getId();
-        json = client.makeGetRequest("id", "patients", "currentLocation="+amcId);
-        ArrayList<Patient> amcPatients = client.patientsFromJson(json);
-        json = client.makeGetRequest("id", "beds", "wardId="+amcId);
-        ArrayList<Bed> amcBeds = client.bedsFromJson(json);
+
+        ArrayList<String> json = client.makeGetRequest("id", "patients", "currentLocation=2"); //amc id is 2
+        ArrayList<Patient> amcPatients = client.patientsFromJson(json); //All amc patients
+
+        json = client.makeGetRequest("id", "beds", "wardId=2");
+        ArrayList<Bed> amcBeds = client.bedsFromJson(json); //All amc beds
+
         amcCapacityPerc = amcPatients.size()*100/amcBeds.size();
         freeBeds = amcBeds.size()-amcPatients.size();
-        json = client.makeGetRequest("id", "patients", "currentLocation="+amcId);
-        ArrayList<Patient> inAMC = client.patientsFromJson(json);
-        json = client.makeGetRequest("id", "patients", "nextDestination!=NULL");
+
+        //todo !=NULL
+        json = client.makeGetRequest("id", "patients", "transferrequeststatus='C'");
         ArrayList<Patient> leavingAMC = client.patientsFromJson(json);
+
         //todo how are we signalling discharge?
-        json = client.makeGetRequest("id", "patients", "nextDestination='Discharge'");
+        json = client.makeGetRequest("id", "patients", "ttasignedoff=TRUE");
         ArrayList<Patient> discharges = client.patientsFromJson(json);
-        for(int i=0; i<inAMC.size(); i++){
+
+        for(int i=0; i<amcPatients.size(); i++){
             for(int j=0; j<leavingAMC.size();i++) {
-                if (inAMC.get(i).getId() == leavingAMC.get(j).getId()){
+                if (amcPatients.get(i).getId() == leavingAMC.get(j).getId()){
                     transferPatients = transferPatients +1;
                 }
-                if (inAMC.get(i).getId() == discharges.get(j).getId()){
+                if (amcPatients.get(i).getId() == discharges.get(j).getId()){
                     dischargePatients = dischargePatients +1;
                 }
             }
@@ -70,10 +75,12 @@ public class ControlCentre implements statusable{
         longstayCapacityPerc = 0;
         longstayFreeBeds = 0;
         int longStayCapacity = 0;
-        ArrayList<String> json = client.makeGetRequest("id", "patients", "currentLocation!='AMC'");
+        ArrayList<String> json = client.makeGetRequest("id", "patients", "currentLocation!=2");
         ArrayList<Patient> notInAMC = client.patientsFromJson(json);
-        json = client.makeGetRequest("id", "patients", "currentLocation!='AandE'");
+
+        json = client.makeGetRequest("id", "patients", "currentLocation!=1");
         ArrayList<Patient> notInAandE = client.patientsFromJson(json);
+
         for(int i=0; i<notInAMC.size(); i++){
             for(int j=0; j<notInAandE.size();i++) {
                 if (notInAandE.get(i).getId() == notInAandE.get(j).getId()){
@@ -81,9 +88,10 @@ public class ControlCentre implements statusable{
                 }
             }
         }
-        //SQLstr = "SELECT id FROM beds WHERE wardId != 'AMC';";
-        json = client.makeGetRequest("id", "beds", "wardid!='AMC'");
+
+        json = client.makeGetRequest("id", "beds", "wardid!=2");
         ArrayList<Bed> longstayBeds = client.bedsFromJson(json);
+
         longstayCapacityPerc = longStayCapacity*100/longstayBeds.size();
         longstayFreeBeds = longstayBeds.size() - longStayCapacity;
     }
@@ -92,11 +100,13 @@ public class ControlCentre implements statusable{
         greenPatients = 0;
         redPatients = 0;
         orangePatients = 0;
-        String SQLstr = "SELECT arrivalTime FROM patients WHERE currentLocation = 'AandE' AND acceptedByMedicine = true;";
-        ArrayList<String> json = client.makeGetRequest("id,arrivalTime", "patients", "currentLocation='AandE'");
+
+        ArrayList<String> json = client.makeGetRequest("*", "patients", "currentLocation=1");
         ArrayList<Patient> inAandE = client.patientsFromJson(json);
-        json = client.makeGetRequest("id", "patients", "acceptedByMedicine=true");
+
+        json = client.makeGetRequest("id", "patients", "acceptedByMedicine=TRUE");
         ArrayList<Patient> accepted = client.patientsFromJson(json);
+
         ArrayList<Patient> incoming = new ArrayList<Patient>();
         for(int i=0; i<inAandE.size(); i++){
             for(int j=0; j<accepted.size();i++) {
@@ -105,26 +115,23 @@ public class ControlCentre implements statusable{
                 }
             }
         }
-        //FIXME time manipulation with neo
-       /* Calendar calendar = Calendar.getInstance();
-        Calendar calendar2 = Calendar.getInstance();
-        Calendar calendar3 = Calendar.getInstance();
-        calendar.setTime(java.sql.Time.valueOf(LocalTime.now()));
-        calendar2.setTime(java.sql.Time.valueOf(LocalTime.now()));
-        calendar3.setTime(java.sql.Time.valueOf(LocalTime.now()));
-        calendar2.add(Calendar.HOUR_OF_DAY, -2);
-        calendar3.add(Calendar.HOUR_OF_DAY, -3);
+
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime red = now.minusHours(3);
+        LocalDateTime orange = now.minusHours(2);
+
         for(Patient p : incoming){
-            if(p.getArrivalDateTime().after(calendar2.getTime())){
+            LocalDateTime patientArrival = p.getArrivalDateTime();
+            if(patientArrival.isAfter(orange)){
                 greenPatients = greenPatients +1;
             }
-            else if(p.arrivalTime.after(calendar3.getTime())){
+            else if(patientArrival.isAfter(red)){
                 orangePatients = orangePatients +1;
             }
             else {
                 redPatients = redPatients +1;
             }
-        }*/
+        }
     }
 
     public ArrayList<Patient> seeIncomingList() throws IOException, SQLException {

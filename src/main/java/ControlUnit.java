@@ -1,9 +1,12 @@
+import Methods.ControlCentre;
 import Panels.Title;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.sql.SQLException;
 
 public class ControlUnit {
 
@@ -14,7 +17,16 @@ public class ControlUnit {
     JPanel longStayPanel;
     JPanel AMCPanel;
 
-    public ControlUnit() {                                              // constructor for control page
+    ControlCentre methods;
+
+    public ControlUnit() {
+        try {
+            methods = new ControlCentre();              //Methods for control centre                               // constructor for control page
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
 
         f = new JFrame();
         mainPanel = new JPanel();
