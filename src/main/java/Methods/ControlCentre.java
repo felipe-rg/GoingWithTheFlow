@@ -39,6 +39,16 @@ public class ControlCentre implements statusable{
         longstayFreeBeds = 10;
     }
 
+    public int getRedPatients(){return redPatients;}
+    public int getOrangePatients(){return orangePatients;}
+    public int getGreenPatients(){return greenPatients;}
+    public float getAmcCapacityPerc(){return amcCapacityPerc;}
+    public int getTransferPatients(){return transferPatients;}
+    public int getDischargePatients(){return dischargePatients;}
+    public int getFreeBeds(){return freeBeds;}
+    public int getLongstayFreeBeds(){return longstayFreeBeds;}
+    public float getLongstayCapacityPerc(){return longstayCapacityPerc;}
+
     public void refresh() throws IOException, SQLException {
         incomingNumbers();
         amcNumbers();
@@ -144,22 +154,16 @@ public class ControlCentre implements statusable{
     }
 
     public ArrayList<Patient> seeIncomingList() throws IOException, SQLException {
-        ArrayList<String> json = client.makeGetRequest("*", "wards", "wardname='A&E'");
-        ArrayList<Ward> wards = client.wardsFromJson(json);
-        int AandEId = wards.get(0).getId();
-        json = client.makeGetRequest("*", "patients", "currentLocation="+AandEId);
+        ArrayList<String> json = client.makeGetRequest("*", "patients", "currentLocation=1");
         return client.patientsFromJson(json);
     }
 
     public ArrayList<Patient> seeDischargeList() throws IOException {
-        ArrayList<String> json = client.makeGetRequest("*", "wards", "wardname='AMC1'");
-        ArrayList<Ward> wards = client.wardsFromJson(json);
         ArrayList<Patient> patients = new ArrayList<Patient>();
-        int amcId = wards.get(0).getId();
-        json = client.makeGetRequest("*", "patients", "currentLocation="+amcId);
+        ArrayList<String> json = client.makeGetRequest("*", "patients", "currentLocation=2");
         ArrayList<Patient> inAMC = client.patientsFromJson(json);
         //Todo - signalling discharge?
-        json = client.makeGetRequest("*", "patients", "discharge='Y'");
+        json = client.makeGetRequest("*", "patients", "ttasignedoff=TRUE");
         ArrayList<Patient> discharge= client.patientsFromJson(json);
         for(Patient p:inAMC) {
             for(Patient pt:discharge){
@@ -172,14 +176,11 @@ public class ControlCentre implements statusable{
     }
 
     public ArrayList<Patient> seeTransferList() throws IOException {
-        ArrayList<String> json = client.makeGetRequest("*", "wards", "wardname='AMC1'");
-        ArrayList<Ward> wards = client.wardsFromJson(json);
         ArrayList<Patient> patients = new ArrayList<Patient>();
-        int amcId = wards.get(0).getId();
-        json = client.makeGetRequest("*", "patients", "currentLocation="+amcId);
+        ArrayList<String> json = client.makeGetRequest("*", "patients", "currentLocation=2");
         ArrayList<Patient> inAMC = client.patientsFromJson(json);
 
-        json = client.makeGetRequest("*", "patients", "nextdestination!=null");
+        json = client.makeGetRequest("*", "patients", "transferrequeststatus='C'");
         ArrayList<Patient> transfer= client.patientsFromJson(json);
         for(Patient p:inAMC) {
             for(Patient pt:transfer){
@@ -189,6 +190,19 @@ public class ControlCentre implements statusable{
             }
         }
         return patients;
+    }
+
+    public ArrayList<ArrayList<String>> getAllWardInfo() throws IOException, SQLException {
+        ArrayList<ArrayList<String>> output = new ArrayList<ArrayList<String>>();
+
+        ArrayList<String> json = client.makeGetRequest("wards", "information_schema.tables", "table_schema='public'");
+        ArrayList<Ward> wards = client.wardsFromJson(json);
+
+        for(Ward w:wards){
+            output.add(getWardInfo(w.getId()));
+        }
+
+        return output;
     }
 
 

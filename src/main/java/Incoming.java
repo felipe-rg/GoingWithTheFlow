@@ -1,13 +1,15 @@
+import Client.Patient;
 import Panels.Title;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class Incoming {
 
-    public Incoming() {
+    public Incoming(ArrayList<Patient> incomingPatients) {
 
         JFrame f = new JFrame();                   //creates JFrame
         JPanel mainPanel = new JPanel();           // creates MainPanel
