@@ -47,7 +47,7 @@ public class ControlUnit {
         // incoming from A&E info
         JLabel text1 = new JLabel("Number of Patients coming from A&E:");
         text1.setFont (text1.getFont ().deriveFont (14.0f));
-        labelPadding(text1);
+        //labelPadding(text1);
 
         JLabel total = new JLabel("12" , SwingConstants.CENTER);
         text1.setFont (text1.getFont ().deriveFont (14.0f));
@@ -89,7 +89,7 @@ public class ControlUnit {
         longStayPanel = new JPanel();
         outline(longStayPanel);
         panelPadding(longStayPanel);
-        longStayPanel.setLayout(new BoxLayout(longStayPanel, BoxLayout.Y_AXIS));
+        longStayPanel.setLayout(new GridLayout(6,1));
 
         JLabel titleLS = new JLabel("Long Stay Wards");
         titleLS.setFont (titleLS.getFont ().deriveFont (24.0f));

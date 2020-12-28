@@ -33,42 +33,64 @@ public class PatientForm {
 
         JLabel infoID = new JLabel("Patient ID:     ", SwingConstants.RIGHT);
         JTextField pID = new JTextField(10);
-        //pID.setPreferredSize(new Dimension(30,25));
+        JPanel panelID = new JPanel();
+        panelID.add(pID);
+        padding(panelID);
+
 
         JLabel infoGend = new JLabel("Gender:     " , SwingConstants.RIGHT);
         String[] gender = { "Male","Female"};
         final JComboBox<String> pGend = new JComboBox<String>(gender);
+        JPanel panelGend = new JPanel();
+        panelGend.add(pGend);
+        padding(panelGend);
 
         JLabel infoIll = new JLabel("Initial Diagnosis     " , SwingConstants.RIGHT);
-        JTextField pIll = new JTextField();
+        JTextField pIll = new JTextField( 10 );
+        JPanel panelIll = new JPanel();
+        panelIll.add(pIll);
+        padding(panelIll);
 
         JLabel infoSR = new JLabel("Is a sideroom required?     ", SwingConstants.RIGHT);
         String[] sideroom = { "No","Yes"};
         final JComboBox<String> pSR = new JComboBox<String>(sideroom);
+        JPanel panelSR = new JPanel();
+        panelSR.add(pSR);
+        padding(panelSR);
 
         JLabel blank1 = new JLabel("  ");
         JButton submit = new JButton ("Submit Form");
+
         submit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                f.dispose();
-                UserPage user = new UserPage();
+
+                if (pID.getText().length() != 10){
+                    JOptionPane.showMessageDialog(null, "Invalid Patient ID", "Warning", JOptionPane.INFORMATION_MESSAGE);
+                }
+                else {
+                    f.dispose();
+                    UserPage user = new UserPage();
+                }
             }
         });
+        JPanel panelSub = new JPanel();
+        panelSub.add(submit);
+        padding(panelSub);
 
         padding(infoPanel);
         infoPanel.add(instructLabel);
         infoPanel.add(blank);
         infoPanel.add(infoID);
-        infoPanel.add(pID);
+        infoPanel.add(panelID);
         infoPanel.add(infoGend);
-        infoPanel.add(pGend);
+        infoPanel.add(panelGend);
         infoPanel.add(infoIll);
-        infoPanel.add(pIll);
+        infoPanel.add(panelIll);
         infoPanel.add(infoSR);
-        infoPanel.add(pSR);
+        infoPanel.add(panelSR);
         infoPanel.add(blank1);
-        infoPanel.add(submit);
+        infoPanel.add(panelSub);
 
         mainPanel.setLayout(new BorderLayout());
         mainPanel.add(titlePanel , BorderLayout.NORTH);
@@ -80,6 +102,6 @@ public class PatientForm {
         f.setExtendedState(Frame.MAXIMIZED_BOTH);
     }
     public void padding(JPanel panel){
-        panel.setBorder(BorderFactory.createEmptyBorder(30, 500, 30, 500));
+        panel.setBorder(BorderFactory.createEmptyBorder(30, 200, 30, 500));
     }
 }
