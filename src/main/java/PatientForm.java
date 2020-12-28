@@ -1,3 +1,4 @@
+import Methods.AandE;
 import Panels.Title;
 
 import javax.swing.*;
@@ -6,10 +7,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+//todo get input into variables
+
 public class PatientForm {
 
     public PatientForm() {
-
+        AandE methods = new AandE(1);
         JFrame f = new JFrame();
         JPanel mainPanel = new JPanel();
         mainPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK , 3));
@@ -38,7 +41,6 @@ public class PatientForm {
         JLabel infoGend = new JLabel("Gender:     " , SwingConstants.RIGHT);
         String[] gender = { "Male","Female"};
         final JComboBox<String> pGend = new JComboBox<String>(gender);
-
         JLabel infoIll = new JLabel("Initial Diagnosis     " , SwingConstants.RIGHT);
         JTextField pIll = new JTextField();
 
@@ -51,6 +53,8 @@ public class PatientForm {
         submit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
+                //methods.createPatient(infoID, sex, infoIll, );
                 f.dispose();
                 UserPage user = new UserPage();
             }
