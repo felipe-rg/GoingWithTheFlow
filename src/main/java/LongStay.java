@@ -5,10 +5,13 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class LongStay {
 
-    public LongStay() {
+    public LongStay(ArrayList<ArrayList<String>> info) {
+    //Todo Input format is not nice - think of better way
+
 
         JFrame f = new JFrame();
         JPanel mainPanel = new JPanel();
