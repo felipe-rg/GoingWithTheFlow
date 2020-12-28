@@ -61,7 +61,7 @@ public abstract class GeneralWard {
                 //todo colour bed red with slash
             }
             else {
-                json = client.makeGetRequest("*", "patients", "bedid="+b.getId());
+                json = client.makeGetRequest("*", "patients", "bedid="+b.getBedId());
                 ArrayList<Patient> patients = client.patientsFromJson(json);
                 if(patients.get(0).getEstimatedTimeOfNext()==null){
                     redBeds = redBeds+1;
