@@ -54,24 +54,26 @@ public abstract class GeneralWard {
             if(b.getStatus()=="F"){
                 //add to free beds
                 greenBeds = greenBeds+1;
-                //todo colour bed
+                //todo colour bed green
+            }
+            else if(b.getStatus()=="C"){
+                redBeds = redBeds+1;
+                //todo colour bed red with slash
             }
             else {
                 json = client.makeGetRequest("*", "patients", "bedid="+b.getId());
                 ArrayList<Patient> patients = client.patientsFromJson(json);
                 if(patients.get(0).getEstimatedTimeOfNext()==null){
-                    //todo time manipulation
-                    orangeBeds = orangeBeds+1;
-                    //add to patient in ward
-                    patientsInWard = patientsInWard+1;
-                    //todo colour bed
-
-                }
-                else {
                     redBeds = redBeds+1;
                     //add to patient in ward
                     patientsInWard = patientsInWard+1;
-                    //todo colour bed
+                    //todo colour bed red
+                }
+                else {
+                    orangeBeds = orangeBeds+1;
+                    //add to patient in ward
+                    patientsInWard = patientsInWard+1;
+                    //todo colour bed orange
                 }
             }
         }
@@ -111,36 +113,18 @@ public abstract class GeneralWard {
         ArrayList<Patient> patients = client.patientsFromJson(json);
         json = client.makeGetRequest("id", "patients", "ttasignedoff=TRUE");
         ArrayList<Patient> discharging = client.patientsFromJson(json);
-        ArrayList<Patient> dischargeList = new ArrayList<Patient>();
-        for(Patient p:patients){
-            for(Patient pt:discharging){
-                if(p.getId()==pt.getId()){
-                    dischargeList.add(p);
-                }
-            }
-        }
-
-        return dischargeList;
+        return client.crossReference(patients, discharging);
     }
+
     //Returns all patients in ward who have died
     //todo make it not just dying
     //Used to see who will be leaving and when
     public ArrayList<Patient> getOtherList(int wardId) throws IOException, SQLException {
-        ArrayList<Patient> others = new ArrayList<Patient>();
         ArrayList<String> json = client.makeGetRequest("id", "patients", "currentLocation="+wardId);
         ArrayList<Patient> patients = client.patientsFromJson(json);
         json = client.makeGetRequest("id", "patients", "deceased=true");
         ArrayList<Patient> deceased = client.patientsFromJson(json);
-
-        //todo cross reference function?
-        for(Patient p:patients){
-            for(Patient pt:deceased){
-                if(p.getId()==pt.getId()){
-                    others.add(p);
-                }
-            }
-        }
-        return others;
+        return client.crossReference(patients, deceased);
     }
 
     //Changes transfer request status to confirmed

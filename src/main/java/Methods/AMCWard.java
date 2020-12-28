@@ -18,16 +18,25 @@ public class AMCWard extends GeneralWard implements requestable{
         transferNumber = getTransferList(wardId).size();
     }
 
+    //Returns list of patients going to be transferred from amc
+    //Used in table of transfers
     public ArrayList<Patient> getTransferList(int wardId) throws IOException, SQLException {
-        //String SQLstr = "SELECT id, sex, nextDestination, estimatedTimeNext, transferReqStatus, needsSideRoom FROM patients WHERE currentLocation = "+wardId+";";
         ArrayList<String> json = client.makeGetRequest("*", "patients", "currentLocation="+wardId);
-        //todo cross reference with people transferring
-        return client.patientsFromJson(json);
+        ArrayList<Patient> inAMC = client.patientsFromJson(json);
+
+        //todo next destination != null
+        json = client.makeGetRequest("*", "patients", "nextdestination=3");
+        ArrayList<Patient> transferring = client.patientsFromJson(json);
+
+        return client.crossReference(inAMC, transferring);
     }
 
+    //Changes next destination of patient to ideal desination
+    //Changes transferrequest status to pending
+    //Used to request a transfer to a new ward from AMC
     @Override
     public void makeRequest(int patientId, int idealDestination) throws IOException, SQLException {
-        String SQLstr = "UPDATE patients SET transferReqStatus = "+idealDestination+" WHERE id = "+patientId+";";
-        client.makePutRequest("patients", "transferReqStatus="+idealDestination, "id="+patientId);
+        client.makePutRequest("patients", "nextdestination="+idealDestination, "id="+patientId);
+        client.makePutRequest("patients", "transferrequeststatus='P'", "id="+patientId);
     }
 }

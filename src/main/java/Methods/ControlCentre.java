@@ -55,6 +55,7 @@ public class ControlCentre implements statusable{
         longStayNumbers();
     }
 
+    //Updates numbers in amc section
     private void amcNumbers() throws IOException, SQLException {
         amcCapacityPerc = 0;
         freeBeds = 0;
@@ -69,8 +70,10 @@ public class ControlCentre implements statusable{
 
         amcCapacityPerc = amcPatients.size()*100/amcBeds.size();
         freeBeds = amcBeds.size()-amcPatients.size();
+        //todo male and female free beds?
+        //beds with sideroom?
 
-        //todo !=NULL
+        //todo nextdestination!=NULL?
         json = client.makeGetRequest("id", "patients", "transferrequeststatus='C'");
         ArrayList<Patient> leavingAMC = client.patientsFromJson(json);
 
@@ -90,10 +93,12 @@ public class ControlCentre implements statusable{
         }
     }
 
+    //Updates numbers in longstay section
     private void longStayNumbers() throws IOException, SQLException {
         longstayCapacityPerc = 0;
         longstayFreeBeds = 0;
         int longStayCapacity = 0;
+
         ArrayList<String> json = client.makeGetRequest("id", "patients", "currentLocation!=2");
         ArrayList<Patient> notInAMC = client.patientsFromJson(json);
 
@@ -112,28 +117,25 @@ public class ControlCentre implements statusable{
         ArrayList<Bed> longstayBeds = client.bedsFromJson(json);
 
         longstayCapacityPerc = longStayCapacity*100/longstayBeds.size();
+        //todo male and female free beds?
+        //beds with sideroom?
         longstayFreeBeds = longstayBeds.size() - longStayCapacity;
     }
 
+    //Updates numbers in incoming section
     private void incomingNumbers() throws IOException, SQLException {
         greenPatients = 0;
         redPatients = 0;
         orangePatients = 0;
 
-        ArrayList<String> json = client.makeGetRequest("*", "patients", "currentLocation=1");
+        ArrayList<String> json = client.makeGetRequest("*", "patients", "currentlocation=1");
         ArrayList<Patient> inAandE = client.patientsFromJson(json);
 
-        json = client.makeGetRequest("id", "patients", "acceptedByMedicine=TRUE");
+        //todo do we need them to be accepted?
+        json = client.makeGetRequest("*", "patients", "acceptedbymedicine=true");
         ArrayList<Patient> accepted = client.patientsFromJson(json);
 
-        ArrayList<Patient> incoming = new ArrayList<Patient>();
-        for(int i=0; i<inAandE.size(); i++){
-            for(int j=0; j<accepted.size();i++) {
-                if (inAandE.get(i).getId() == incoming.get(j).getId()){
-                    incoming.add(inAandE.get(i));
-                }
-            }
-        }
+        ArrayList<Patient> incoming = client.crossReference(inAandE, accepted);
 
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime red = now.minusHours(3);
@@ -153,45 +155,38 @@ public class ControlCentre implements statusable{
         }
     }
 
+    //Returns list of people coming to AMC
+    //FIXME same as getIncomingList in generalWard?
     public ArrayList<Patient> seeIncomingList() throws IOException, SQLException {
         ArrayList<String> json = client.makeGetRequest("*", "patients", "currentLocation=1");
         return client.patientsFromJson(json);
     }
 
+    //Returns list of people being discharged from AMC
+    //FIXME same as getDischargeList in generalWard?
     public ArrayList<Patient> seeDischargeList() throws IOException {
-        ArrayList<Patient> patients = new ArrayList<Patient>();
         ArrayList<String> json = client.makeGetRequest("*", "patients", "currentLocation=2");
         ArrayList<Patient> inAMC = client.patientsFromJson(json);
         //Todo - signalling discharge?
         json = client.makeGetRequest("*", "patients", "ttasignedoff=TRUE");
         ArrayList<Patient> discharge= client.patientsFromJson(json);
-        for(Patient p:inAMC) {
-            for(Patient pt:discharge){
-                if(p.getId()==pt.getId()){
-                    patients.add(p);
-                }
-            }
-        }
-        return patients;
+        return client.crossReference(inAMC, discharge);
     }
 
+    //Returns list of patients set to be transferred from AMC
     public ArrayList<Patient> seeTransferList() throws IOException {
-        ArrayList<Patient> patients = new ArrayList<Patient>();
         ArrayList<String> json = client.makeGetRequest("*", "patients", "currentLocation=2");
         ArrayList<Patient> inAMC = client.patientsFromJson(json);
 
         json = client.makeGetRequest("*", "patients", "transferrequeststatus='C'");
         ArrayList<Patient> transfer= client.patientsFromJson(json);
-        for(Patient p:inAMC) {
-            for(Patient pt:transfer){
-                if(p.getId()==pt.getId()){
-                    patients.add(p);
-                }
-            }
-        }
-        return patients;
+
+        return client.crossReference(inAMC, transfer);
     }
 
+    //Returns list of strings with info from getWardInfo
+    //Used in table for wards
+    //todo must be a better way of doing this
     public ArrayList<ArrayList<String>> getAllWardInfo() throws IOException, SQLException {
         ArrayList<ArrayList<String>> output = new ArrayList<ArrayList<String>>();
 
@@ -206,7 +201,8 @@ public class ControlCentre implements statusable{
     }
 
 
-
+    //Returns list of strings with format described below
+    //Used in method above
     @Override
     public ArrayList<String> getWardInfo(int wardId) throws IOException, SQLException {
         ArrayList<String> numbers = new ArrayList<String>();
@@ -254,6 +250,7 @@ public class ControlCentre implements statusable{
         return numbers;
     }
 
+    //todo why do we need this?
     @Override
     public ArrayList<Patient> getPatientInfo(int wardId) {
         return null;
