@@ -1,24 +1,26 @@
 package Client;
+import java.io.Serializable;
 
-public class Bed {
-    private int id;
+public class Bed implements Serializable {
+
+    private int bedId;
     private int wardId;
     private String status;
     private String forSex;
     private boolean hasSideRoom;
-    //FIXME bed number for actual bed number rather than our id?
 
-    public Bed(){}
+    public Bed(int bedId,int wardId,String status,String forSex,boolean hasSideRoom) {
+        this.bedId=bedId;
+        this.wardId=wardId;
+        this.status=status;
+        this.forSex=forSex;
+        this.hasSideRoom=hasSideRoom;
+    }
 
-    public void setId(int id){this.id = id;}
-    public void setWardId(int wardId){this.wardId=wardId;}
-    public void setStatus(String status){this.status = status;}
-    public void setForSex(String sex){this.forSex=sex;}
-    public void setHasSideRoom(boolean hasSideRoom){this.hasSideRoom = hasSideRoom;}
-
-    public int getId(){return this.id;}
-    public int getWardId(){return this.wardId;}
-    public String getStatus(){return this.status;}
-    public String getForSex(){return this.forSex;}
-    public boolean getHasSideRoom(){return this.hasSideRoom;}
+    public int getBedId(){return bedId;}
+    public int getWardId(){return wardId;}
+    public String getStatus(){return status;}
+    public String getForSex(){return forSex;}
+    public boolean getHasSideRoom(){return hasSideRoom;}
 }
+

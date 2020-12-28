@@ -1,13 +1,17 @@
 package Client;
+import java.io.Serializable;
 
-public class Ward {
+public class Ward implements Serializable {
+
+    private int wardId;
     private String wardName;
-    private int id;
 
-    public Ward(){};
+    public Ward(int wardId,String wardName) {
+        this.wardId=wardId;
+        this.wardName=wardName;
+    }
 
-    public int getId(){return id;}
-    public String getWardName(){return wardName;}
-    public void setId(int id){this.id = id;}
-    public void setWardName(){this.wardName = wardName;}
+    public int getWardId() {return wardId;}
+    public String getWardName() {return wardName;}
 }
+
