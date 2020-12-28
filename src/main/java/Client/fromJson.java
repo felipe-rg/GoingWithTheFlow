@@ -35,4 +35,16 @@ public class fromJson {
         }
         return wards;
     }
+
+    public ArrayList<Patient> crossReference(ArrayList<Patient> patients, ArrayList<Patient> pat){
+        ArrayList<Patient> output = new ArrayList<Patient>();
+        for(Patient p:patients){
+            for(Patient pt:pat){
+                if(p.getId()==pt.getId()){
+                    output.add(p);
+                }
+            }
+        }
+        return output;
+    }
 }

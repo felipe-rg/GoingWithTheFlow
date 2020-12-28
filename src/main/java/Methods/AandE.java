@@ -11,8 +11,8 @@ public class AandE implements requestable{
         client = new Client();
     }
 
+    //Creates patient with essential information
     public void createPatient(String initials, String sex, String initialDiagnosis, boolean sideroom) throws IOException, SQLException {
-        //todo fit this in with UI
         Patient p = new Patient(initials, sex, initialDiagnosis, sideroom);
         client.makePostRequest(p);
     }
@@ -20,7 +20,6 @@ public class AandE implements requestable{
     //FIXME not needed if request automatic
     @Override
     public void makeRequest(int patientId, int idealDestination) throws IOException, SQLException {
-        //String SQLstr = "UPDATE patients SET transferReqStatus = "+idealDestination+" WHERE id = "+patientId+";";
         client.makePutRequest("patients", "transferReqStatus="+idealDestination, "id="+patientId);
     }
 }
