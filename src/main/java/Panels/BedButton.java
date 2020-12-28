@@ -3,11 +3,11 @@ package Panels;
 import javax.swing.*;
 import java.awt.*;
 
-public class Bed extends JButton{
+public class BedButton extends JButton{
     String BedId;
     char status;    //Character saying if bed is free (f), if it is occupied (o) or closed (c)
 
-    public Bed(String BedId, int x, int y, char status){
+    public BedButton(String BedId, int x, int y, char status){
         this.status = status;
         this.BedId = BedId;
 
