@@ -2,31 +2,32 @@ package Panels;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class BedStatus extends JPanel{
     JLabel greenBeds;
     JLabel ambarBeds;
     JLabel redBeds;
 
-    public BedStatus(){
+    public BedStatus(Integer Empty, Integer Closed, Integer Full){
         this.setPreferredSize(new Dimension(300,100));
 
-        greenBeds = new JLabel("2");
+        greenBeds = new JLabel(Empty.toString());
         greenBeds.setBackground(Color.decode("#2ECC71"));
 
-        ambarBeds = new JLabel("3");
+        ambarBeds = new JLabel(Closed.toString());
         ambarBeds.setBackground(Color.decode("#F39C12"));
 
-        redBeds = new JLabel("3");
+        redBeds = new JLabel(Full.toString());
         redBeds.setBackground(Color.decode("#E74C3C"));
 
-        //
         setLabel(greenBeds, ambarBeds, redBeds);
 
         this.setLayout(new GridLayout(1,3));
         add(greenBeds);
         add(ambarBeds);
         add(redBeds);
+
 
     }
 
@@ -50,5 +51,10 @@ public class BedStatus extends JPanel{
 
     public void setRedBedsNum(String numberIn){
         redBeds.setText(numberIn);
+    }
+
+    static public void updateStatuses(Integer ECount, Integer CCount, Integer FCount){
+        new BedStatus(ECount, CCount, FCount);
+        //empty, closed and full
     }
 }

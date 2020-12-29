@@ -12,21 +12,18 @@ public class UIController {
     BedStatus bedStatus;
     WardInfo wardInfo;
 
-
     //Constructor
     public UIController(JButton backButton){
-
         //Instantiating Panels
         mainPanel = new JPanel();
         rhsPanel = new JPanel();
         topography = new Topography();
         title = new Title("AMC GUI", backButton);
-        bedStatus = new BedStatus();
+        bedStatus = new BedStatus(topography.getECount(), topography.getCCount(), topography.getFCount());
         wardInfo = new WardInfo();
 
         //Giving the panels a black border
         outline(topography,title, rhsPanel);
-
 
         //Adding Panels to mainPanel
         mainPanel.setLayout(new BorderLayout(0,0));
@@ -40,6 +37,7 @@ public class UIController {
         mainPanel.add(rhsPanel, BorderLayout.EAST);
 
 
+        //window.setInterval(UpdateBedStatus(),10000);
     }
 
     //Function returning the mainPanel
@@ -52,6 +50,11 @@ public class UIController {
         for (JPanel i:a){
             i.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         }
+    }
+
+    public void UpdateBedStatus(){
+        topography.CountBeds();
+        bedStatus.updateStatuses(topography.getECount(), topography.getCCount(), topography.getFCount());
     }
 
 }
