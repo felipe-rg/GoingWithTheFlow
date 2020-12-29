@@ -1,12 +1,14 @@
 package Panels;
 
 import com.sun.tools.javac.tree.JCTree;
+import jdk.vm.ci.meta.Local;
 
 import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 public class BedButton extends JButton{
     private String BedId;   // kept as string in case e decide to name them with characters too
@@ -15,23 +17,25 @@ public class BedButton extends JButton{
     private char gender;    // when empty, gender = x
     private String dia = "";    // diagnosis, not necessary to instantiate when creating bed
     private Boolean sideroom;
-    private LocalDateTime ETD = LocalDateTime.now(); // right now if bed is empty or ETD is not set, ETD is current time
+    private LocalDateTime ETD = LocalDateTime.of(LocalDateTime.now().toLocalDate(), LocalTime.MIDNIGHT);
+    // ETD is at midnight if if bed is empty or ETD is not set, ETD is current time
 
     //constructor; when instantiating a bed its location must be specified with x and y.
-    public BedButton(String BedId, char status, Boolean sideroom, Integer x, Integer y, Integer age, char gender) {
+    public BedButton(String BedId, char status, Boolean sideroom, Integer x, Integer y, Integer age, char gender, String dia) {
         this.BedId = BedId;
         this.status = status; //f = full, e = empty, c = closed
         this.gender = gender;
         this.sideroom = sideroom;
         this.age = age;
+        this.dia = dia;
 
         this.setText(BedId);
         this.setFont(new Font("Verdana", Font.PLAIN, 30));
         this.setBounds(x, y, 70, 140);
         this.setOpaque(true);
         if(status == 'F'){this.setBackground(Color.decode("#E74C3C")); }
-        if(status == 'E'){this.setBackground(Color.decode("#2ECC71"));}
-        if(status == 'C'){this.setBackground(Color.decode("#F39C12"));}
+        if(status == 'E'){this.setBackground(Color.decode("#2ECC71")); }
+        if(status == 'C'){this.setBackground(Color.BLACK); }
     }
 
     // functions that return bed information
@@ -53,7 +57,6 @@ public class BedButton extends JButton{
         this.status = 'F';
         this.setBackground(Color.decode("#E74C3C"));
         this.repaint();
-
     }
     public void makeEmpty(){
         this.setStatus('E');
@@ -61,7 +64,15 @@ public class BedButton extends JButton{
         this.setAge(0);
         this.setGender('x');
         this.setDia("");
-        this.setETD(LocalDateTime.of(LocalDateTime.now().getYear(),1,1,0,0));
+        this.setETD(LocalDateTime.of(LocalDateTime.now().toLocalDate(), LocalTime.MIDNIGHT));
+    }
+    public void makeClosed(){
+        this.setStatus('C');
+        this.setBackground(Color.BLACK);
+        this.setAge(0);
+        this.setGender('x');
+        this.setDia("");
+        this.setETD(LocalDateTime.of(LocalDateTime.now().toLocalDate(), LocalTime.MIDNIGHT));
     }
 
     public void setAge(Integer age){
@@ -72,7 +83,10 @@ public class BedButton extends JButton{
         this.dia = dia;
     }
     public void setSR(Boolean sr){ this.sideroom = sr; }
-    public void setETD(LocalDateTime ETD){ this.ETD = ETD; }
+    public void setETD(LocalDateTime ETD){
+        this.ETD = ETD;
+        this.setBackground(Color.decode("#F39C12"));
+    }
     public void setStatus(char status){ this.status = status; }
 
     // creates a frame with a panel inside, then 3 labels with the patient information and an 'edit' button. Once clicked, the edit button calls the 'inputNewInfo' function
@@ -105,9 +119,17 @@ public class BedButton extends JButton{
             infoFrame.dispose();
         });
 
+        // delete patient, making the bed empty
         JButton deleteButton = new JButton("Delete Patient");
         deleteButton.addActionListener(evt -> {
             makeEmpty();
+            infoFrame.dispose();
+        });
+
+        // make bed closed
+        JButton closeButton = new JButton("Close Bed");
+        closeButton.addActionListener(evt -> {
+            makeClosed();
             infoFrame.dispose();
         });
 
@@ -118,7 +140,7 @@ public class BedButton extends JButton{
         });
 
         // add the labels to the frame
-        infoFrame.setLayout(new GridLayout(9,1));
+        infoFrame.setLayout(new GridLayout(10,1));
         infoFrame.add(bedIdLabel);
         infoFrame.add(ageLabel);
         infoFrame.add(genderLabel);
@@ -128,6 +150,7 @@ public class BedButton extends JButton{
 
         infoFrame.add(setETDButton);
         infoFrame.add(editButton);
+        infoFrame.add(closeButton);
         infoFrame.add(deleteButton);
     }
 
@@ -152,12 +175,20 @@ public class BedButton extends JButton{
             infoFrame.dispose();
         });
 
+        // make bed closed
+        JButton closeButton = new JButton("Close Bed");
+        closeButton.addActionListener(evt -> {
+            makeClosed();
+            infoFrame.dispose();
+        });
+
         // add the labels to the frame
-        infoFrame.setLayout(new GridLayout(3,1));
+        infoFrame.setLayout(new GridLayout(4,1));
         infoFrame.add(bedIdLabel);
         infoFrame.add(srLabel);
 
         infoFrame.add(editButton);
+        infoFrame.add(closeButton);
     }
 
     // prints text fields, gets info from user and updates gender and age
@@ -178,7 +209,7 @@ public class BedButton extends JButton{
         // add input fields to editorPanel
         JTextField ageTextField = new JTextField("New age");
         JTextField genderTextField = new JTextField("New gender");
-        JTextField diaTextField = new JTextField(this.getDia());
+        JTextField diaTextField = new JTextField("Diagnosis");
         JTextField SRTextField = new JTextField("Sideroom");
 
         // confirm button on editorPanel. when clicked, this button must (1) assign new values to all fields, (2) change color from green to red if bed was empty
@@ -196,9 +227,11 @@ public class BedButton extends JButton{
             setDia(diaTextField.getText());
 
             // there are many ways to indicate yes or no
+            // if sideroom is no
             if(SRTextField.getText().equals("False") || SRTextField.getText().equals("false")  || SRTextField.getText().equals("FALSE") || SRTextField.getText().charAt(0) == 'F' || SRTextField.getText().charAt(0) == 'N' || SRTextField.getText().equals("No") || SRTextField.getText().equals("NO") || SRTextField.getText().equals("no")){
                 setSR(false);
             }
+            // if sideroom is yes
             else if (SRTextField.getText().equals("True") || SRTextField.getText().equals("true")  || SRTextField.getText().equals("TRUE") || SRTextField.getText().charAt(0) == 'T' || SRTextField.getText().charAt(0) == 'Y' || SRTextField.getText().equals("Yes") || SRTextField.getText().equals("YES") || SRTextField.getText().equals("yes")){
                 setSR(true);
             }
@@ -274,6 +307,8 @@ public class BedButton extends JButton{
         ETDPanel.add(InputMins);
         ETDFrame.add(ETDPanel);
         ETDFrame.add(confirmButton);
+
+
 
     }
 

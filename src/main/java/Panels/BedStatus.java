@@ -9,16 +9,16 @@ public class BedStatus extends JPanel{
     JLabel ambarBeds;
     JLabel redBeds;
 
-    public BedStatus(Integer Empty, Integer Closed, Integer Full){
+    public BedStatus(){
         this.setPreferredSize(new Dimension(300,100));
 
-        greenBeds = new JLabel(Empty.toString());
+        greenBeds = new JLabel();
         greenBeds.setBackground(Color.decode("#2ECC71"));
 
-        ambarBeds = new JLabel(Closed.toString());
+        ambarBeds = new JLabel();
         ambarBeds.setBackground(Color.decode("#F39C12"));
 
-        redBeds = new JLabel(Full.toString());
+        redBeds = new JLabel();
         redBeds.setBackground(Color.decode("#E74C3C"));
 
         setLabel(greenBeds, ambarBeds, redBeds);
@@ -41,20 +41,14 @@ public class BedStatus extends JPanel{
         }
     }
 
-    public void setGreenBedsNum(String numberIn){
-        greenBeds.setText(numberIn);
+    public void setGreenBedsNum(Integer numberIn){
+        greenBeds.setText(numberIn.toString());
     }
 
-    public void setAmbarBedsNum(String numberIn){
-        ambarBeds.setText(numberIn);
+    public void setAmbarBedsNum(Integer numberIn){
+        ambarBeds.setText(numberIn.toString());
     }
 
-    public void setRedBedsNum(String numberIn){
-        redBeds.setText(numberIn);
-    }
+    public void setRedBedsNum(Integer numberIn){ redBeds.setText(numberIn.toString()); }
 
-    static public void updateStatuses(Integer ECount, Integer CCount, Integer FCount){
-        new BedStatus(ECount, CCount, FCount);
-        //empty, closed and full
-    }
 }

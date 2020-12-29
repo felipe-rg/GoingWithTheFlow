@@ -17,9 +17,9 @@ public class UIController {
         //Instantiating Panels
         mainPanel = new JPanel();
         rhsPanel = new JPanel();
-        topography = new Topography();
+        bedStatus = new BedStatus();
+        topography = new Topography(bedStatus);
         title = new Title("AMC GUI", backButton);
-        bedStatus = new BedStatus(topography.getECount(), topography.getCCount(), topography.getFCount());
         wardInfo = new WardInfo();
 
         //Giving the panels a black border
@@ -52,9 +52,9 @@ public class UIController {
         }
     }
 
-    public void UpdateBedStatus(){
-        topography.CountBeds();
-        bedStatus.updateStatuses(topography.getECount(), topography.getCCount(), topography.getFCount());
-    }
+//    public void UpdateBedStatus(){
+//        topography.CountBeds();
+//        bedStatus.updateStatuses(topography.getECount(), topography.getCCount(), topography.getFCount());
+//    }
 
 }
