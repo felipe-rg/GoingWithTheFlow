@@ -105,13 +105,31 @@ public abstract class GeneralWard {
         return client.patientsFromJson(json);
     }
 
+    public Object[][] getIncomingData() throws IOException, SQLException {
+        ArrayList<Patient> patients = getIncomingList(wardId);
+        Object[][] data;
+        for(int i=0; i<patients.size(); i++) {
+            Patient p = patients.get(i);
+            data[i][0] = p.getId();
+            data[i][1] = p.getNameInitials();
+            data[i][2] = p.getSex();
+            data[i][3] = p.getInitialDiagnosis();
+            data[i][4] = p.getNeedsSideRoom();
+            data[i][5] = p.getArrivalDateTime();
+            data[i][6] = p.getAcceptedByMedicine();
+            data[i][7] = "Select Bed";
+            data[i][8] = "Delete Patient";
+            }
+        return data;
+    }
+
     //Returns all patients in ward who have had a TTA signoff
     //todo make it not tta but discharge
     //Used to see who will be leaving and when
     public ArrayList<Patient> getDischargeList(int wardId) throws IOException, SQLException {
-        ArrayList<String> json = client.makeGetRequest("id", "patients", "currentLocation="+wardId);
+        ArrayList<String> json = client.makeGetRequest("*", "patients", "currentLocation="+wardId);
         ArrayList<Patient> patients = client.patientsFromJson(json);
-        json = client.makeGetRequest("id", "patients", "ttasignedoff=TRUE");
+        json = client.makeGetRequest("*", "patients", "ttasignedoff=TRUE");
         ArrayList<Patient> discharging = client.patientsFromJson(json);
         return client.crossReference(patients, discharging);
     }
@@ -131,6 +149,10 @@ public abstract class GeneralWard {
     //Used to accept patients into next destination, setBed will then change their location
     public void acceptIncoming(int patientId) throws IOException, SQLException {
         client.makePutRequest("patients", "transferrequeststatus='C'", "id="+patientId);
+    }
+
+    public void acceptByMedicine(int patientId) throws IOException, SQLException {
+        client.makePutRequest("patients", "acceptedbymedicine=true", "id="+patientId);
     }
 
     //Changes transfer request status to rejected
