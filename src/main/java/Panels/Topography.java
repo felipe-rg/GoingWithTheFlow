@@ -12,14 +12,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Topography extends JPanel{
-    BedButton bed1;
-    BedButton bed2;
-    BedButton bed3;
-    BedButton bed4;
-    BedButton bed5;
-    BedButton bed6;
-    BedButton bed7;
-    BedButton bed8;
     ArrayList<BedButton> beds = new ArrayList<>();
     Integer RCount = 0;
     Integer OCount = 0;
@@ -66,8 +58,8 @@ public class Topography extends JPanel{
 
         for (BedButton b : beds){
             b.addActionListener(evt -> {
-                if(b.getStatus() == "F"){ b.printInfoFull(); }
-                if(b.getStatus() == "E" || b.getStatus() == "C"){ b.printInfoEmpty(); }
+                if(b.getStatus().equals("F")){ b.printInfoFull(); }
+                if(b.getStatus().equals("E") || b.getStatus().equals("C")){ b.printInfoEmpty(); }
 
                 // every time something is done to the beds, check whether the bedstatus must change and update it
                 CountBeds();
@@ -76,21 +68,21 @@ public class Topography extends JPanel{
         }
     }
 
+    // counts how many red-green-orange beds there are
     public void CountBeds() {
         OCount = GCount = RCount = 0;
         for (BedButton b : beds) {
-            if (b.getStatus() == "C") { RCount = RCount + 1; }
-            if (b.getStatus() == "E") { GCount = GCount + 1; }
-            if (b.getStatus() == "F") {
-                //this is never true for some reason
-                if((b.getETD().getHour() == 00) && (b.getETD().getMinute() == 00)){ RCount = RCount + 1; }
+            if (b.getStatus().equals("C")) { RCount = RCount + 1; }
+            if (b.getStatus().equals("E")) { GCount = GCount + 1; }
+            if (b.getStatus().equals("F")) {
+
+                if((b.getETD().getHour() == 0) && (b.getETD().getMinute() == 0)){ RCount = RCount + 1; }
                 else{ OCount = OCount + 1; }
             }
-
         }
-
     }
 
+    //updates bed status numbers
     public void updateBedStatus(BedStatus bedstatus){
         bedstatus.setAmbarBedsNum(OCount);
         bedstatus.setGreenBedsNum(GCount);

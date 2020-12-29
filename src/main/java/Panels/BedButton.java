@@ -29,14 +29,13 @@ public class BedButton extends JButton{
         this.sex = sex;
         this.methods = methods;
 
-
         this.setText(String.valueOf(BedId));
         this.setFont(new Font("Verdana", Font.PLAIN, 30));
         this.setBounds(x, y, 70, 140);
         this.setOpaque(true);
-        if(status == "F"){this.setBackground(Color.decode("#E74C3C")); }
-        if(status == "E"){this.setBackground(Color.decode("#2ECC71")); }
-        if(status == "C"){this.setBackground(Color.BLACK); }
+        if(status.equals("F")){this.setBackground(Color.decode("#E74C3C")); }
+        if(status.equals("E")){this.setBackground(Color.decode("#2ECC71")); }
+        if(status.equals("C")){this.setBackground(Color.BLACK); }
     }
 
     // functions that return bed information
@@ -204,11 +203,6 @@ public class BedButton extends JButton{
         JButton confirmButton = new JButton("Confirm Edits");
         confirmButton.addActionListener(evt -> {
 
-            // change bed color if bed goes from empty to full
-            if (this.getStatus() == "E") {
-                this.makeFull();
-            }
-
             // asign new values for gender, age and diagnosis
             setSex(String.valueOf(genderTextField.getText().charAt(0)));
 
@@ -227,13 +221,13 @@ public class BedButton extends JButton{
         });
     }
 
-        private void inputNewPatientInfo(Patient p){
+    private void inputNewPatientInfo(Patient p){
             // new popup over which everything is put
             JFrame editorFrame = new JFrame();
             editorFrame.setSize(300,300);
             editorFrame.setBackground(Color.WHITE);
             editorFrame.setVisible(true);
-            editorFrame.setLocation(300,300);
+            editorFrame.setLocationRelativeTo(null);
             editorFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
             // panel on editorFrame
@@ -249,6 +243,17 @@ public class BedButton extends JButton{
             // confirm button on editorPanel. when clicked, this button must (1) assign new values to all fields, (2) change color from green to red if bed was empty
             JButton confirmButton = new JButton("Confirm Edits");
             confirmButton.addActionListener(evt -> {
+
+                // change bed color if bed goes from empty to full
+                if (this.getStatus().equals("E")) {
+                    this.makeFull();
+                }
+
+                // if we try to put a patient in a bed that must be for the other sex
+                // and the sex has been specified previously (so it's not x anymore)
+                if( !this.getSex().equals(String.valueOf(genderTextField.getText().charAt(0))) && !this.getSex().equals("x")){
+                    Warning("This bed must be for a "+this.getSex());
+                }
 
                 // asign new values for gender, age and diagnosis
                 try {
@@ -306,7 +311,7 @@ public class BedButton extends JButton{
             }
             // if only hours are inputted, change to the new hour o'clock
             if (!InputHrs.getText().equals("ETD Hours") && InputMins.getText().equals("ETD Minutes")) {
-                int Minutes = 00;
+                int Minutes = 0;
                 int Hours = Integer.parseInt(InputHrs.getText());
                 this.setETD(LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonthValue(),LocalDateTime.now().getDayOfMonth(), Hours, Minutes));
                 ETDFrame.dispose(); //close popup
@@ -326,7 +331,6 @@ public class BedButton extends JButton{
 
         });
 
-        System.out.println(this.getETD());
         ETDPanel.add(InputHrs);
         ETDPanel.add(InputMins);
         ETDFrame.add(ETDPanel);
@@ -347,7 +351,7 @@ public class BedButton extends JButton{
         WarningFrame.setSize(300,75);
         WarningFrame.setBackground(Color.WHITE);
         WarningFrame.setVisible(true);
-        WarningFrame.setLocation(300,400);
+        WarningFrame.setLocationRelativeTo(null);
 
         JLabel ReasonLabel = new JLabel("Error: "+Problem, SwingConstants.CENTER);
         JLabel WarningLabel = new JLabel("Please try again", SwingConstants.CENTER);
