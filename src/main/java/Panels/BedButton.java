@@ -1,24 +1,21 @@
 package Panels;
 
-import com.sun.tools.javac.tree.JCTree;
-import jdk.vm.ci.meta.Local;
-
 import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 public class BedButton extends JButton{
-    private String BedId;   // kept as string in case e decide to name them with characters too
+    private final String BedId;   // kept as string in case e decide to name them with characters too
     private char status;    // free (f), if it is occupied (o) or closed (c)
     private Integer age;    // when empty, age = 0
     private char gender;    // when empty, gender = x
-    private String dia = "";    // diagnosis, not necessary to instantiate when creating bed
+    private String dia;    // diagnosis, not necessary to instantiate when creating bed
     private Boolean sideroom;
     private LocalDateTime ETD = LocalDateTime.of(LocalDateTime.now().toLocalDate(), LocalTime.MIDNIGHT);
     // ETD is at midnight if if bed is empty or ETD is not set, ETD is current time
+
 
     //constructor; when instantiating a bed its location must be specified with x and y.
     public BedButton(String BedId, char status, Boolean sideroom, Integer x, Integer y, Integer age, char gender, String dia) {
@@ -56,7 +53,6 @@ public class BedButton extends JButton{
     public void makeFull(){
         this.status = 'F';
         this.setBackground(Color.decode("#E74C3C"));
-        this.repaint();
     }
     public void makeEmpty(){
         this.setStatus('E');
@@ -68,11 +64,11 @@ public class BedButton extends JButton{
     }
     public void makeClosed(){
         this.setStatus('C');
-        this.setBackground(Color.BLACK);
         this.setAge(0);
         this.setGender('x');
         this.setDia("");
         this.setETD(LocalDateTime.of(LocalDateTime.now().toLocalDate(), LocalTime.MIDNIGHT));
+        this.setBackground(Color.BLACK);
     }
 
     public void setAge(Integer age){
@@ -97,7 +93,7 @@ public class BedButton extends JButton{
         infoFrame.setSize(300,300);
         infoFrame.setBackground(Color.WHITE);
         infoFrame.setVisible(true);
-        infoFrame.setLocation(300,300);
+        infoFrame.setLocationRelativeTo(null);
 
         // labels with the bed information using methods from class Bed
         JLabel bedIdLabel = new JLabel("Bed ID: "+this.getID(),SwingConstants.CENTER);
@@ -112,10 +108,16 @@ public class BedButton extends JButton{
         JLabel ETDLabel = new JLabel("ETD: "+ETDTime, SwingConstants.CENTER);
 
         //jbutton for editing bed
-        JButton editButton = new JButton("Edit Patient Information");
+        JButton editBedButton = new JButton("Edit Bed Information");
         // button to edit information when it is clicked
-        editButton.addActionListener(evt -> {
-            inputNewInfo();
+        editBedButton.addActionListener(evt -> {
+            inputBedInfo();
+            infoFrame.dispose();
+        });
+
+        JButton editPatientButton = new JButton("Edit Patient Information");
+        editPatientButton.addActionListener(evt -> {
+            inputPatientInfo();
             infoFrame.dispose();
         });
 
@@ -140,7 +142,7 @@ public class BedButton extends JButton{
         });
 
         // add the labels to the frame
-        infoFrame.setLayout(new GridLayout(10,1));
+        infoFrame.setLayout(new GridLayout(11,1));
         infoFrame.add(bedIdLabel);
         infoFrame.add(ageLabel);
         infoFrame.add(genderLabel);
@@ -149,7 +151,8 @@ public class BedButton extends JButton{
         infoFrame.add(ETDLabel);
 
         infoFrame.add(setETDButton);
-        infoFrame.add(editButton);
+        infoFrame.add(editBedButton);
+        infoFrame.add(editPatientButton);
         infoFrame.add(closeButton);
         infoFrame.add(deleteButton);
     }
@@ -161,7 +164,7 @@ public class BedButton extends JButton{
         infoFrame.setSize(300,300);
         infoFrame.setBackground(Color.WHITE);
         infoFrame.setVisible(true);
-        infoFrame.setLocation(300,300);
+        infoFrame.setLocationRelativeTo(null);
 
         // labels with the bed information using methods from class Bed
         JLabel bedIdLabel = new JLabel("Bed ID: "+this.getID(),SwingConstants.CENTER);
@@ -171,9 +174,17 @@ public class BedButton extends JButton{
         JButton editButton = new JButton("Edit Bed Info");
         // button to edit information when it is clicked
         editButton.addActionListener(evt -> {
-            inputNewInfo();
+            inputBedInfo();
+            infoFrame.dispose();
+
+        });
+
+        JButton addPatientButton = new JButton("Add Patient");
+        addPatientButton.addActionListener(evt -> {
+            inputPatientInfo();
             infoFrame.dispose();
         });
+
 
         // make bed closed
         JButton closeButton = new JButton("Close Bed");
@@ -182,23 +193,69 @@ public class BedButton extends JButton{
             infoFrame.dispose();
         });
 
+
         // add the labels to the frame
-        infoFrame.setLayout(new GridLayout(4,1));
+        infoFrame.setLayout(new GridLayout(5,1));
         infoFrame.add(bedIdLabel);
         infoFrame.add(srLabel);
 
         infoFrame.add(editButton);
+        infoFrame.add(addPatientButton);
         infoFrame.add(closeButton);
     }
 
     // prints text fields, gets info from user and updates gender and age
-    public void inputNewInfo(){
+    public void inputBedInfo(){ //only parameters about the bed is sex and sideroom
         // new popup over which everything is put
         JFrame editorFrame = new JFrame();
         editorFrame.setSize(300,300);
         editorFrame.setBackground(Color.WHITE);
         editorFrame.setVisible(true);
-        editorFrame.setLocation(300,300);
+        editorFrame.setLocationRelativeTo(null);
+        editorFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+
+        // panel on editorFrame
+        JPanel editorPanel = new JPanel();
+        editorPanel.setLayout(new GridLayout(3,1));
+        editorPanel.setBackground(Color.WHITE);
+
+        // add input fields to editorPanel
+        JTextField genderTextField = new JTextField("Bed gender");
+        JTextField SRTextField = new JTextField("Sideroom");
+
+        // confirm button on editorPanel. when clicked, this button must (1) assign new values to all fields, (2) change color from green to red if bed was empty
+        JButton confirmButton = new JButton("Confirm Edits");
+        confirmButton.addActionListener(evt -> {
+            //set bed gender
+            this.setGender(genderTextField.getText().charAt(0));
+
+            // there are many ways to indicate yes or no
+            // if sideroom is no
+            if(SRTextField.getText().equals("False") || SRTextField.getText().equals("false")  || SRTextField.getText().equals("FALSE") || SRTextField.getText().charAt(0) == 'F' || SRTextField.getText().charAt(0) == 'N' || SRTextField.getText().equals("No") || SRTextField.getText().equals("NO") || SRTextField.getText().equals("no")){
+                setSR(false);
+            }
+            // if sideroom is yes
+            else if (SRTextField.getText().equals("True") || SRTextField.getText().equals("true")  || SRTextField.getText().equals("TRUE") || SRTextField.getText().charAt(0) == 'T' || SRTextField.getText().charAt(0) == 'Y' || SRTextField.getText().equals("Yes") || SRTextField.getText().equals("YES") || SRTextField.getText().equals("yes")){
+                setSR(true);
+            }
+
+            // get rid of editor popup after confirming edits
+            editorFrame.dispose();
+        });
+
+        editorPanel.add(genderTextField);
+        editorPanel.add(SRTextField);
+        editorPanel.add(confirmButton);
+        editorPanel.setVisible(true);
+        editorFrame.add(editorPanel);
+    }
+    public void inputPatientInfo(){
+        // new popup over which everything is put
+        JFrame editorFrame = new JFrame();
+        editorFrame.setSize(300,300);
+        editorFrame.setBackground(Color.WHITE);
+        editorFrame.setVisible(true);
+        editorFrame.setLocationRelativeTo(null);
         editorFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
         // panel on editorFrame
@@ -215,6 +272,11 @@ public class BedButton extends JButton{
         // confirm button on editorPanel. when clicked, this button must (1) assign new values to all fields, (2) change color from green to red if bed was empty
         JButton confirmButton = new JButton("Confirm Edits");
         confirmButton.addActionListener(evt -> {
+
+            //if we try to put a patient in a bed that must be for the other sec
+            if( this.getGender()!= genderTextField.getText().charAt(0)){
+                Warning("This bed must be for a "+this.getGender());
+            }
 
             // change bed color if bed goes from empty to full
             if(this.getStatus() == 'E') {
@@ -255,7 +317,7 @@ public class BedButton extends JButton{
         ETDFrame.setSize(300,300);
         ETDFrame.setBackground(Color.WHITE);
         ETDFrame.setVisible(true);
-        ETDFrame.setLocation(300,300);
+        ETDFrame.setLocationRelativeTo(null);
         ETDFrame.setLayout(new GridLayout(2,1));
 
         // pannel where textfields and confirm button are
@@ -282,7 +344,7 @@ public class BedButton extends JButton{
             }
             // if only hours are inputted, change to the new hour o'clock
             if (!InputHrs.getText().equals("ETD Hours") && InputMins.getText().equals("ETD Minutes")) {
-                int Minutes = 00;
+                int Minutes = 0;
                 int Hours = Integer.parseInt(InputHrs.getText());
                 this.setETD(LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonthValue(),LocalDateTime.now().getDayOfMonth(), Hours, Minutes));
                 ETDFrame.dispose(); //close popup
@@ -297,7 +359,8 @@ public class BedButton extends JButton{
                     this.Warning("Time is in the past");
                 }
 
-                else{ this.setETD(LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonthValue(),LocalDateTime.now().getDayOfMonth(), Hours, Minutes)); }
+                else{ this.setETD(LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonthValue(),LocalDateTime.now().getDayOfMonth(), Hours, Minutes));
+                    ETDFrame.dispose();}
             }
 
         });
@@ -308,8 +371,6 @@ public class BedButton extends JButton{
         ETDFrame.add(ETDPanel);
         ETDFrame.add(confirmButton);
 
-
-
     }
 
     public void Warning(String Problem){
@@ -317,7 +378,7 @@ public class BedButton extends JButton{
         WarningFrame.setSize(300,75);
         WarningFrame.setBackground(Color.WHITE);
         WarningFrame.setVisible(true);
-        WarningFrame.setLocation(300,400);
+        WarningFrame.setLocationRelativeTo(null);
 
         JLabel ReasonLabel = new JLabel("Error: "+Problem, SwingConstants.CENTER);
         JLabel WarningLabel = new JLabel("Please try again", SwingConstants.CENTER);

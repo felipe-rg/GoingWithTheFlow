@@ -23,7 +23,7 @@ public class Topography extends JPanel{
 
     public Topography(BedStatus bedstatus) {
         this.setBackground(Color.WHITE);
-        this.setPreferredSize(new Dimension(100, 70));
+        //this.setPreferredSize(new Dimension(100, 70));
         this.setLayout(null);
 
         //will make this automatic when i know exactly how the information is going to come
@@ -60,12 +60,13 @@ public class Topography extends JPanel{
 
         for (BedButton b : beds){
             b.addActionListener(evt -> {
-                if(b.getStatus() == 'F'){ b.printInfoFull(); }
-                if(b.getStatus() == 'E' || b.getStatus() == 'C'){ b.printInfoEmpty(); }
-
                 // every time something is done to the beds, check whether the bedstatus must change and update it
                 CountBeds();
                 updateBedStatus(bedstatus);
+
+                // print information in a popup
+                if(b.getStatus() == 'F'){ b.printInfoFull(); }
+                if(b.getStatus() == 'E' || b.getStatus() == 'C'){ b.printInfoEmpty(); }
             });
         }
     }
@@ -80,9 +81,7 @@ public class Topography extends JPanel{
                 if((b.getETD().getHour() == 00) && (b.getETD().getMinute() == 00)){ RCount = RCount + 1; }
                 else{ OCount = OCount + 1; }
             }
-
         }
-
     }
 
     public void updateBedStatus(BedStatus bedstatus){
