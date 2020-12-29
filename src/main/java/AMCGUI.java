@@ -7,7 +7,7 @@ public class AMCGUI {
 
         public AMCGUI() {
             JFrame frame = new JFrame();
-            frame.setSize(1200, 800);
+            frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
             //frame.setResizable(false);
 
             UIController UIc = new UIController();

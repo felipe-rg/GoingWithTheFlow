@@ -23,11 +23,11 @@ public class UIController {
         //Instantiating Panels
         mainPanel = new JPanel();
         rhsPanel = new JPanel();
-        topography = new Topography();
+        bedStatus = new BedStatus();
+        topography = new Topography(bedStatus);
 
         JButton backButton = new JButton("Go Back to User Page");
         title = new Title("AMU Ward" , backButton);
-        bedStatus = new BedStatus();
         wardInfo = new WardInfo();
 
         //Adding Panels to mainPanel
