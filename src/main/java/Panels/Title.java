@@ -2,41 +2,27 @@ package Panels;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class Title extends JPanel{
 
-    //Declaring the two components
-    JLabel titleLabel;
+    public Title(String title , JButton back ){
 
-    public Title(String title, JButton backButton){
         //Editing Panel itself
         this.setPreferredSize(new Dimension(1200,100));
         this.setBackground(Color.white);
-        //Setting layout
-        this.setLayout(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
+        this.setLayout(new BorderLayout());
 
+        //Adding refresh
+        JLabel refreshLabel = new JLabel();
+        add(refreshLabel, BorderLayout.WEST);
 
-        //Title Label
-        titleLabel = new JLabel(title);
+        //Adding label
+        JLabel titleLabel = new JLabel(title , SwingConstants.CENTER);
         titleLabel.setFont(new Font("Verdana", Font.PLAIN, 50));
-        c.insets = new Insets(0,570,0,0);
-        this.add(titleLabel, c);
+        titleLabel.setBorder(BorderFactory.createEmptyBorder(30, 10, 20, 10));
+        add(titleLabel , BorderLayout.CENTER);
 
-        //Button
-        c.insets = new Insets(0,430,0,0);
-        this.add(backButton, c);
-
-
-
-
+        //Adding Back Button
+        add(back , BorderLayout.EAST);
     }
-
-
-
-
-
-
 }
