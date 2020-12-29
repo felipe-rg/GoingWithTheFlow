@@ -2,6 +2,7 @@ package Panels;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class BedStatus extends JPanel{
     JLabel greenBeds;
@@ -10,25 +11,17 @@ public class BedStatus extends JPanel{
 
     public BedStatus(){
         this.setPreferredSize(new Dimension(300,100));
-        this.setBackground(Color.white);
 
-        greenBeds = new JLabel("3");
+        greenBeds = new JLabel();
         greenBeds.setBackground(Color.decode("#2ECC71"));
-        greenBeds.setOpaque(true);
-        greenBeds.setHorizontalAlignment(JLabel.CENTER);
-        greenBeds.setVerticalAlignment(JLabel.CENTER);
 
-        ambarBeds = new JLabel("4");
+        ambarBeds = new JLabel();
         ambarBeds.setBackground(Color.decode("#F39C12"));
-        ambarBeds.setOpaque(true);
-        ambarBeds.setHorizontalAlignment(JLabel.CENTER);
-        ambarBeds.setVerticalAlignment(JLabel.CENTER);
 
-        redBeds = new JLabel("8");
+        redBeds = new JLabel();
         redBeds.setBackground(Color.decode("#E74C3C"));
-        redBeds.setOpaque(true);
-        redBeds.setHorizontalAlignment(JLabel.CENTER);
-        redBeds.setVerticalAlignment(JLabel.CENTER);
+
+        setLabel(greenBeds, ambarBeds, redBeds);
 
         this.setLayout(new GridLayout(1,3));
         add(greenBeds);
@@ -36,6 +29,26 @@ public class BedStatus extends JPanel{
         add(redBeds);
 
 
-
     }
+
+    //Function in which you introduce labels and they are automatically edited
+    public void setLabel(JLabel ... a){
+        for (JLabel i:a){
+            i.setOpaque(true);
+            i.setHorizontalAlignment(JLabel.CENTER);
+            i.setVerticalAlignment(JLabel.CENTER);
+            i.setFont(new Font("Verdana", Font.PLAIN, 30));
+        }
+    }
+
+    public void setGreenBedsNum(Integer numberIn){
+        greenBeds.setText(numberIn.toString());
+    }
+
+    public void setAmbarBedsNum(Integer numberIn){
+        ambarBeds.setText(numberIn.toString());
+    }
+
+    public void setRedBedsNum(Integer numberIn){ redBeds.setText(numberIn.toString()); }
+
 }
