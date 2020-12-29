@@ -1,5 +1,6 @@
 package Panels;
 
+import Methods.GeneralWard;
 import jdk.incubator.jpackage.main.Main;
 
 import javax.swing.*;
@@ -18,12 +19,12 @@ public class UIController {
 
 
     //Constructor
-    public UIController(JButton backButton){
+    public UIController(JButton backButton, GeneralWard methods){
         //Instantiating Panels
         mainPanel = new JPanel();
         rhsPanel = new JPanel();
         bedStatus = new BedStatus();
-        topography = new Topography(bedStatus);
+        topography = new Topography(bedStatus, methods);
         title = new Title("AMC GUI", backButton);
         wardInfo = new WardInfo();
 

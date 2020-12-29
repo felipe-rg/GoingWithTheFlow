@@ -2,7 +2,12 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/AMUWard.iml" filepath="$PROJECT_DIR$/.idea/modules/AMUWard.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/AMUWard.main.iml" filepath="$PROJECT_DIR$/.idea/modules/AMUWard.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/AMUWard.test.iml" filepath="$PROJECT_DIR$/.idea/modules/AMUWard.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/GoingWithTheFlow.AMUWard.iml" filepath="$PROJECT_DIR$/.idea/modules/GoingWithTheFlow.AMUWard.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/GoingWithTheFlow.AMUWard.main.iml" filepath="$PROJECT_DIR$/.idea/modules/GoingWithTheFlow.AMUWard.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/GoingWithTheFlow.AMUWard.test.iml" filepath="$PROJECT_DIR$/.idea/modules/GoingWithTheFlow.AMUWard.test.iml" />
     </modules>
   </component>
 </project>

@@ -1,3 +1,4 @@
+import Methods.AMCWard;
 import Panels.UIController;
 
 //AMU GUI
@@ -5,11 +6,21 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.sql.SQLException;
 
 public class AMCGUI {
     JButton backButton;
+    AMCWard methods;
 
     public AMCGUI() {
+        try {
+            AMCWard methods = new AMCWard(2);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         JFrame frame = new JFrame();
         frame.setSize(1200, 800);
         frame.setTitle("AMC GUI");
@@ -27,7 +38,7 @@ public class AMCGUI {
         });
 
         //Creating UIController than generates all panels
-        UIController UIc = new UIController(backButton);
+        UIController UIc = new UIController(backButton, methods);
         frame.add(UIc.getMainPanel());
 
         frame.setVisible(true);

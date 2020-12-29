@@ -20,6 +20,9 @@ public class Patient implements Serializable {
     private boolean suitableForDischargeLounge;
     private String transferRequestStatus;
     private boolean deceased;
+    private int age;
+
+    public Patient(){}
 
     public Patient(String nameInitials,String sex,String initialDiagnosis,boolean needsSideRoom) {
         this.nameInitials = nameInitials;
@@ -48,6 +51,7 @@ public class Patient implements Serializable {
         this.deceased = deceased;
     }
 
+    public int getAge(){return age;}
     public int getId() {return id;}
     public String getNameInitials() {return nameInitials;}
     public int getCurrentWardId() {return currentWardId;}

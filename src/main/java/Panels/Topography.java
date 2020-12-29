@@ -1,7 +1,11 @@
 package Panels;
 
+import Client.Bed;
+import Methods.GeneralWard;
+
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.LocalDate;
@@ -20,48 +24,50 @@ public class Topography extends JPanel{
     Integer RCount = 0;
     Integer OCount = 0;
     Integer GCount = 0;
+    ArrayList<Bed> dbBeds;
 
-    public Topography(BedStatus bedstatus) {
+    public Topography(BedStatus bedstatus, GeneralWard methods) {
+        try {
+            dbBeds = methods.getBeds();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         this.setBackground(Color.WHITE);
         this.setPreferredSize(new Dimension(100, 70));
         this.setLayout(null);
-
-        //will make this automatic when i know exactly how the information is going to come
-        bed1 = new BedButton("1",'F',false,200, 150, 28, 'f',"");
-        bed1.setDia("asthma");
-        this.add(bed1);
-        beds.add(bed1);
-        bed2 = new BedButton("2",'E',false,400, 150,0,'x',"");
-        this.add(bed2);
-        beds.add(bed2);
-        bed3 = new BedButton("3",'E',false,600, 150,0,'x',"");
-        this.add(bed3);
-        beds.add(bed3);
-        bed4 = new BedButton("4",'C',false,800, 150,0,'x',"");
-        this.add(bed4);
-        beds.add(bed4);
-        bed5 = new BedButton("5",'E',false,200, 450,0,'x',"");
-        this.add(bed5);
-        beds.add(bed5);
-        bed6 = new BedButton("6",'F',true,400, 450,65,'m',"");
-        bed6.setDia("COVID-19");
-        this.add(bed6);
-        beds.add(bed6);
-        bed7 = new BedButton("7",'F',false,600, 450,19,'m',"");
-        bed7.setDia("Broken Leg");
-        this.add(bed7);
-        beds.add(bed7);
-        bed8 = new BedButton("8",'E',false,800, 450,0,'x',"");
-        this.add(bed8);
-        beds.add(bed8);
+        int count = 0;
+        int x = 200;
+        int y = 150;
+        for(Bed b:dbBeds){
+            count++;
+            if(count == 1 || count == 5){
+                x=200;
+            }
+            if(count == 2 || count == 6){
+                x=400;
+            }
+            if(count == 3 || count == 7){
+                x=600;
+            }
+            if(count == 4 || count == 8){
+                x=800;
+            }
+            if(count < 5){
+                y=150;
+            } else {
+                y = 450;
+            }
+            BedButton newBed = new BedButton(methods, b.getId(), b.getStatus(), b.getForSex(), b.getHasSideRoom(), x, y);
+            beds.add(newBed);
+        }
 
         CountBeds();
         updateBedStatus(bedstatus);
 
         for (BedButton b : beds){
             b.addActionListener(evt -> {
-                if(b.getStatus() == 'F'){ b.printInfoFull(); }
-                if(b.getStatus() == 'E' || b.getStatus() == 'C'){ b.printInfoEmpty(); }
+                if(b.getStatus() == "F"){ b.printInfoFull(); }
+                if(b.getStatus() == "E" || b.getStatus() == "C"){ b.printInfoEmpty(); }
 
                 // every time something is done to the beds, check whether the bedstatus must change and update it
                 CountBeds();
@@ -73,9 +79,9 @@ public class Topography extends JPanel{
     public void CountBeds() {
         OCount = GCount = RCount = 0;
         for (BedButton b : beds) {
-            if (b.getStatus() == 'C') { RCount = RCount + 1; }
-            if (b.getStatus() == 'E') { GCount = GCount + 1; }
-            if (b.getStatus() == 'F') {
+            if (b.getStatus() == "C") { RCount = RCount + 1; }
+            if (b.getStatus() == "E") { GCount = GCount + 1; }
+            if (b.getStatus() == "F") {
                 //this is never true for some reason
                 if((b.getETD().getHour() == 00) && (b.getETD().getMinute() == 00)){ RCount = RCount + 1; }
                 else{ OCount = OCount + 1; }

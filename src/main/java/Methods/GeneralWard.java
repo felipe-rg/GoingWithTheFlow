@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import java.sql.Array;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public abstract class GeneralWard {
@@ -216,6 +217,12 @@ public abstract class GeneralWard {
         client.makePutRequest("patients", columnId="="+newVal, "id="+patientId);
     }
 
+    public void editPatientETON(int patientId, LocalDateTime newVal) throws IOException, SQLException {
+        //String SQLstr = "UPDATE patients SET "+columnId+ " = "+newVal+" WHERE id =" +patientId+";";
+        client.makePutRequest("patients", "estimatedtimeofnext="+newVal, "id="+patientId);
+    }
+
+
     //Returns all info about the patient
     //Used to retrieve specific info
     public ArrayList<Patient> getPatientInfo(int patientId) throws IOException, SQLException {
@@ -223,11 +230,21 @@ public abstract class GeneralWard {
         return client.patientsFromJson(json);
     }
 
+    public Patient getPatient(int bedId) throws IOException, SQLException {
+        ArrayList<String> json = client.makeGetRequest("*","patients", "bedid="+bedId);
+        return client.patientsFromJson(json).get(0);
+    }
+
     //Changes deceased column to true
     //Used to indicate that a patient has died
     //todo do we need it this specific?
     public void ripPatient(int patientId) throws IOException {
         client.makePutRequest("patients", "deceased=true", "id="+patientId);
+    }
+
+    public ArrayList<Bed> getBeds() throws IOException {
+        ArrayList<String> json = client.makeGetRequest("*", "beds", "wardid="+wardId);
+        return client.bedsFromJson(json);
     }
 
     //Returns the beds in the ward
