@@ -1,4 +1,4 @@
-package Panels.TableFrames.Incoming;
+package Panels.TableFrames;
 
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
@@ -12,11 +12,11 @@ import java.time.Month;
 import java.time.format.DateTimeFormatter;
 
 
-public class TablePanel extends JPanel implements TableModelListener {
+public class InTablePanel extends JPanel implements TableModelListener {
     //Table and scrollpane where table sits
     private JTable table;
     private JScrollPane scrollPane;
-    private MyTableModel tableModel;
+    private InTableModel tableModel;
 
     //Columnames in our table
     private String[] columnName = {"Index",
@@ -33,7 +33,7 @@ public class TablePanel extends JPanel implements TableModelListener {
     //This is how we will receive the date from the database
     //We need to input it into the table as doing dateFormatter first like i did below
     LocalDateTime localDateTime1 = LocalDateTime.of(0, Month.JULY, 1, 9, 00, 0);
-    LocalDateTime localDateTime2 = LocalDateTime.of(0, Month.JULY, 1, 10, 00, 0);
+    LocalDateTime localDateTime2 = LocalDateTime.of(0, Month.JULY, 1, 10, 07, 0);
     LocalDateTime localDateTime3 = LocalDateTime.of(0, Month.JULY, 1, 12, 20, 0);
 
 
@@ -49,11 +49,11 @@ public class TablePanel extends JPanel implements TableModelListener {
 
 
     //Constructor
-    public TablePanel() {
+    public InTablePanel() {
 
         //Instantiating table with appropriate data and tablemodel
 
-        tableModel = new MyTableModel(columnName, data);        //Instance of MytableModel
+        tableModel = new InTableModel(columnName, data);        //Instance of MytableModel
         table = new JTable(tableModel);         //Creating a table of model tablemodel (instance of MyTableModel)
         scrollPane = new JScrollPane(table);    //Creating scrollpane where table is located (for viewing purposes)
 
@@ -74,44 +74,7 @@ public class TablePanel extends JPanel implements TableModelListener {
         Action deletePopUp = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
-                //We create new frame
-                JFrame deleteRowConfirmation = new JFrame("Delete Confirmation");
-                deleteRowConfirmation.setSize(400,300);
-
-                //Introduce buttons and labels
-                JLabel confirmation = new JLabel("Are you sure you want to delete this patient?");
-                JButton yesButton = new JButton("Yes");
-                JButton noButton = new JButton("No");
-
-                //Editing label
-                confirmation.setHorizontalAlignment(SwingConstants.CENTER);
-                confirmation.setFont(new Font("Verdana", Font.PLAIN, 15));
-
-                //Action to happen when 'no' button is clicked
-                noButton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        deleteRowConfirmation.dispose();
-                    }
-                });
-                //Action to happen when 'yes' button is clicked
-                yesButton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        tableModel.removeRow(table.getSelectedRow());
-                    }
-                });
-
-                //Editing and adding the components to the frame
-                deleteRowConfirmation.setLayout(new GridLayout(3,1));
-                deleteRowConfirmation.add(confirmation);
-                deleteRowConfirmation.add(yesButton);
-                deleteRowConfirmation.add(noButton);
-
-                deleteRowConfirmation.setLocationRelativeTo(null);
-                deleteRowConfirmation.setVisible(true);
-                deleteRowConfirmation.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+                new DeletePopUp(table, tableModel);
             }
         };
 
@@ -145,7 +108,7 @@ public class TablePanel extends JPanel implements TableModelListener {
         //Row and column being edited
         int row = e.getFirstRow();
         int column = e.getColumn();
-        tableModel = (MyTableModel)e.getSource();   //Tablemodel used
+        tableModel = (InTableModel)e.getSource();   //Tablemodel used
 
         //Name of the column and data introduced
         String columnName = tableModel.getColumnName(column);

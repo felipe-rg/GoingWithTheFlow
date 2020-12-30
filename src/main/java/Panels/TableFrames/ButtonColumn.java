@@ -1,4 +1,4 @@
-package Panels.TableFrames.Incoming;
+package Panels.TableFrames;
 
 import javax.swing.*;
 import javax.swing.border.Border;

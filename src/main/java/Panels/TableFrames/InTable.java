@@ -1,19 +1,15 @@
-package Panels.TableFrames.Incoming;
+package Panels.TableFrames;
 
 import javax.swing.*;
-import javax.swing.table.JTableHeader;
 import java.awt.*;
 
 public class InTable {
-    JPanel mainPanel;
-    JTable table;
-
 
     public InTable(){
         JFrame frame = new JFrame("Incoming Patients");
 
 
-        TablePanel tablePanel = new TablePanel();
+        InTablePanel intablePanel = new InTablePanel();
 
 
         JPanel mainPanel = new JPanel();
@@ -34,12 +30,12 @@ public class InTable {
         mainPanel.add(rightPanel, BorderLayout.EAST);
         mainPanel.add(topPanel, BorderLayout.NORTH);
         mainPanel.add(colorCodePanel, BorderLayout.SOUTH);
-        mainPanel.add(tablePanel, BorderLayout.CENTER);
+        mainPanel.add(intablePanel, BorderLayout.CENTER);
 
 
         frame.add(mainPanel);
         frame.setExtendedState(Frame.MAXIMIZED_BOTH);
-        frame.setVisible(true);                                             // makes JFrame visible
+        frame.setVisible(true);
         frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
     }
 }

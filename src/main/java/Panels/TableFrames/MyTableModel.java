@@ -1,4 +1,4 @@
-package Panels.TableFrames.Incoming;
+package Panels.TableFrames;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.Vector;
@@ -106,14 +106,7 @@ class MyTableModel extends AbstractTableModel {
 
     //This method allows us to edit table and select which rows are editable
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-        if (columnIndex<4 || columnIndex==5){
-            return false;
-        }
-
-        if (columnIndex==7 && (boolean)this.getValueAt(rowIndex, 6)==false){
-            return false;
-        }
-        else return true;
+        return false;
     }
 
     //Removing a row (the one entered as a parameter)

@@ -1,7 +1,10 @@
 package Panels;
 
-import Panels.TableFrames.*;
-import Panels.TableFrames.Incoming.InTable;
+import Panels.TableFrames.DisTable;
+import Panels.TableFrames.InTable;
+import Panels.TableFrames.OthTable;
+import Panels.TableFrames.TotTable;
+import Panels.TableFrames.TransTable;
 
 import javax.swing.*;
 import java.awt.*;
