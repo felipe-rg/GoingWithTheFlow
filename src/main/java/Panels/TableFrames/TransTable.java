@@ -6,13 +6,13 @@ import java.awt.*;
 public class TransTable {
 
     public TransTable(){
-        JFrame frame = new JFrame("Incoming Patients");
+        JFrame frame = new JFrame("Transferring Patients");
 
 
         TransTablePanel transtablePanel = new TransTablePanel();
 
 
-        MainPanel mainPanel = new MainPanel(false, "Transferring Patients");
+        MainPanel mainPanel = new MainPanel(false, "TRANSFERRING PATIENTS");
 
         mainPanel.add(transtablePanel, BorderLayout.CENTER);
 

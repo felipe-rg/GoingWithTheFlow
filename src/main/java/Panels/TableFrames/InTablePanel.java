@@ -60,8 +60,6 @@ public class InTablePanel extends JPanel implements TableModelListener {
 
 
         //Editing table
-        table.setFillsViewportHeight(true);
-        scrollPane.setSize(800, 600);                  //Setting size of scrollpane
         table.setRowHeight(35);                                     //Setting rowheight
         JTableHeader tableHeader = table.getTableHeader();
         tableHeader.setFont(new Font("Verdana", Font.PLAIN, 15));   //Setting tableheader font

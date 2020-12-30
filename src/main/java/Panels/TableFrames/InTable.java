@@ -9,11 +9,11 @@ public class InTable {
         //We create a new frame
         JFrame frame = new JFrame("Incoming Patients");
         //We create the tablepanel with the table
-        InTablePanel intablePanel = new InTablePanel();
+        InTablePanel inTablePanel = new InTablePanel();
         //We create the mainPanel where everything will be
-        MainPanel mainPanel = new MainPanel(true, "Incoming Patients");
+        MainPanel mainPanel = new MainPanel(true, "INCOMING PATIENTS");
         //We add the table to the mainPanel
-        mainPanel.add(intablePanel, BorderLayout.CENTER);
+        mainPanel.add(inTablePanel, BorderLayout.CENTER);
 
         //Adding mainPanel to frame
         frame.add(mainPanel);

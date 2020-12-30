@@ -11,7 +11,7 @@ public class DisTable {
 
         DisTablePanel distablePanel = new DisTablePanel();
 
-        MainPanel mainPanel = new MainPanel(false, "Discharge Patients");
+        MainPanel mainPanel = new MainPanel(false, "DISCHARGE PATIENTS");
 
         mainPanel.add(distablePanel, BorderLayout.CENTER);
 

@@ -18,7 +18,7 @@ public class MainPanel extends JPanel {
 
         JPanel topPanel = new JPanel();
         JLabel titleLabel = new JLabel(title);
-        titleLabel.setFont(new Font("Verdana", Font.PLAIN, 50));
+        titleLabel.setFont(new Font("Arial", Font.PLAIN, 50));
         titleLabel.setHorizontalAlignment(JLabel.CENTER);
         topPanel.add(titleLabel);
 
