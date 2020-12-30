@@ -10,11 +10,13 @@ import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
 
-public class TransTablePanel extends JPanel implements TableModelListener {
+public class OthTablePanel extends JPanel implements TableModelListener {
+
     //Table and scrollpane where table sits
     private JTable table;
     private JScrollPane scrollPane;
-    private TransTableModel tableModel;
+    private OthTableModel tableModel;
+
 
     //Columnames in our table
     private String[] columnName = {"Bed Num",
@@ -23,9 +25,9 @@ public class TransTablePanel extends JPanel implements TableModelListener {
             "Initial Diagnosis",
             "Side Room",
             "ETT",
-            "New Ward",
+            "Destination",
             "Delete Button"
-            };
+    };
 
     //This is how we will receive the date from the database
     //We need to input it into the table as doing dateFormatter first like i did below
@@ -35,20 +37,18 @@ public class TransTablePanel extends JPanel implements TableModelListener {
 
     //Data in each of the rows of our table
     private Object[][] data = {
-            {1, 166128, "M", "Asthma", false, dateFormatter(localDateTime1), "Make Ward Request", "Delete Patient"},
-            {2, 234134, "F", "Internal Bleeding", true, dateFormatter(localDateTime2), "Make Ward Request", "Delete Patient"} ,
-            {3, 356456, "M", "Fracture", false, dateFormatter(localDateTime3), "Make Ward Request", "Delete Patient"}
+            {1, 166128, "M", "Asthma", false, dateFormatter(localDateTime1), "Intensive Care", "Delete Patient"},
+            {2, 234134, "F", "Internal Bleeding", true, dateFormatter(localDateTime2), "TBD", "Delete Patient"} ,
+            {3, 356456, "M", "Fracture", true, dateFormatter(localDateTime3), "Intensive Care", "Delete Patient"}
     };
 
 
-
-    public TransTablePanel(){
+    public OthTablePanel(){
         //Instantiating table with appropriate data and tablemodel
 
-        tableModel = new TransTableModel(columnName, data);        //Instance of MytableModel
+        tableModel = new OthTableModel(columnName, data);        //Instance of OthtableModel
         table = new JTable(tableModel);         //Creating a table of model tablemodel (instance of MyTableModel)
         scrollPane = new JScrollPane(table);    //Creating scrollpane where table is located (for viewing purposes)
-
 
 
         //Editing table
@@ -65,15 +65,8 @@ public class TransTablePanel extends JPanel implements TableModelListener {
                 new DeletePopUp(table, tableModel);
             }
         };
-        Action requestWard = new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("New Ward selected");
-            }
-        };
 
 
-        ButtonColumn wardRequest = new ButtonColumn(table, requestWard, 6);
         ButtonColumn deletePatient = new ButtonColumn(table, deletePopUp, 7);
 
 
@@ -81,15 +74,12 @@ public class TransTablePanel extends JPanel implements TableModelListener {
         this.add(scrollPane);
     }
 
-
-
-
     @Override
     public void tableChanged(TableModelEvent e) {
         //Row and column being edited
         int row = e.getFirstRow();
         int column = e.getColumn();
-        tableModel = (TransTableModel)e.getSource();   //Tablemodel used
+        tableModel = (OthTableModel)e.getSource();   //Tablemodel used
 
         //Name of the column and data introduced
         String columnName = tableModel.getColumnName(column);

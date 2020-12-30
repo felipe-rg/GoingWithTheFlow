@@ -32,9 +32,9 @@ public class InTablePanel extends JPanel implements TableModelListener {
 
     //This is how we will receive the date from the database
     //We need to input it into the table as doing dateFormatter first like i did below
-    LocalDateTime localDateTime1 = LocalDateTime.of(0, Month.JULY, 1, 9, 00, 0);
-    LocalDateTime localDateTime2 = LocalDateTime.of(0, Month.JULY, 1, 10, 07, 0);
-    LocalDateTime localDateTime3 = LocalDateTime.of(0, Month.JULY, 1, 12, 20, 0);
+    LocalDateTime localDateTime1 = LocalDateTime.of(0, Month.JULY, 1, 17, 00, 0);
+    LocalDateTime localDateTime2 = LocalDateTime.of(0, Month.JULY, 1, 19, 00, 0);
+    LocalDateTime localDateTime3 = LocalDateTime.of(0, Month.JULY, 1, 14, 20, 0);
 
 
 
