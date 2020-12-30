@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 public class Patient implements Serializable {
 
     private int id;
-    private String nameInitials;
+    private String nhsID;
     private int currentWardId;
     private int currentBedId;
     private String sex;
@@ -22,7 +22,7 @@ public class Patient implements Serializable {
     private boolean deceased;
 
     public Patient(String nameInitials,String sex,String initialDiagnosis,boolean needsSideRoom) {
-        this.nameInitials = nameInitials;
+        this.nhsID = nameInitials;
         this.sex = sex;
         this.initialDiagnosis = initialDiagnosis;
         this.needsSideRoom = needsSideRoom;
@@ -32,7 +32,7 @@ public class Patient implements Serializable {
                    boolean needsSideRoom,boolean acceptedByMedicine,String nextDestination,LocalDateTime estimatedTimeOfNext,
                    boolean ttaSignedOff,boolean suitableForDischargeLounge,String transferRequestStatus,boolean deceased) {
         this.id = id;
-        this.nameInitials = nameInitials;
+        this.nhsID = nameInitials;
         this.currentBedId = currentBedId;
         this.currentWardId = currentWardId;
         this.sex = sex;
@@ -49,7 +49,7 @@ public class Patient implements Serializable {
     }
 
     public int getId() {return id;}
-    public String getNameInitials() {return nameInitials;}
+    public String getNameInitials() {return nhsID;}
     public int getCurrentWardId() {return currentWardId;}
     public int getCurrentBedId() {return currentBedId;}
     public String getSex() {return sex;}

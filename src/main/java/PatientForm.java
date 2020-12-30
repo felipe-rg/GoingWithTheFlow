@@ -1,10 +1,12 @@
+import Client.Patient;
 import Panels.Title;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.util.stream.IntStream;
 
 public class PatientForm {
 
@@ -26,7 +28,7 @@ public class PatientForm {
         });
 
         JPanel infoPanel = new JPanel();
-        infoPanel.setLayout(new GridLayout(7,2));
+        infoPanel.setLayout(new GridLayout(8,2));
 
         JLabel instructLabel = new JLabel("Please fill out this patient form for the AMC" , SwingConstants.RIGHT);
         JLabel blank = new JLabel(" ");
@@ -38,12 +40,54 @@ public class PatientForm {
         padding(panelID);
 
 
-        JLabel infoGend = new JLabel("Gender:     " , SwingConstants.RIGHT);
-        String[] gender = { "Male","Female"};
-        final JComboBox<String> pGend = new JComboBox<String>(gender);
-        JPanel panelGend = new JPanel();
-        panelGend.add(pGend);
-        padding(panelGend);
+        JLabel infoSex = new JLabel("Gender:     " , SwingConstants.RIGHT);
+        String[] sex = { "Male","Female"};
+        final JComboBox<String> pSex = new JComboBox<String>(sex);
+        JPanel panelSex = new JPanel();
+        panelSex.add(pSex);
+        padding(panelSex);
+
+        JLabel infoDOB = new JLabel("Date of Birth     " , SwingConstants.RIGHT);
+        JPanel panelDOB = new JPanel();
+        panelDOB.setLayout(new GridLayout(2,3));
+
+        JLabel dayLabel = new JLabel("Day");
+        JLabel monthLabel = new JLabel("Month");
+        JLabel yearLabel = new JLabel("Year");
+        panelDOB.add(dayLabel);
+        panelDOB.add(monthLabel);
+        panelDOB.add(yearLabel);
+
+        Integer[] days = new Integer[31];
+        int inc=1;
+        for(int i=0;i<31;i++){
+            days[i]= inc;
+            inc++;
+        }
+        JComboBox<Integer> day = new JComboBox<>(days);
+        panelDOB.add(day);
+
+        Integer[] months = new Integer[12];
+        inc=1;
+        for(int i=0;i<12;i++){
+            months[i]= inc;
+            inc++;
+        }
+        JComboBox<Integer> month = new JComboBox<>(months);
+        panelDOB.add(month);
+
+        int currentYear = 2020;
+        Integer[] years = new Integer[currentYear];
+        inc=currentYear;
+        for(int i=0;i<currentYear;i++){
+            years[i]= inc;
+            inc--;
+        }
+        JComboBox<Integer> year = new JComboBox<>(years);
+        panelDOB.add(year);
+
+       LocalDate DOB = LocalDate.of(  (Integer) year.getSelectedItem(),  (Integer) month.getSelectedItem(),  (Integer) day.getSelectedItem() );
+
 
         JLabel infoIll = new JLabel("Initial Diagnosis     " , SwingConstants.RIGHT);
         JTextField pIll = new JTextField( 10 );
@@ -52,11 +96,14 @@ public class PatientForm {
         padding(panelIll);
 
         JLabel infoSR = new JLabel("Is a sideroom required?     ", SwingConstants.RIGHT);
-        String[] sideroom = { "No","Yes"};
-        final JComboBox<String> pSR = new JComboBox<String>(sideroom);
+        String[] sideRoom = { "No","Yes"};
+        final JComboBox<String> pSR = new JComboBox<String>(sideRoom);
         JPanel panelSR = new JPanel();
         panelSR.add(pSR);
         padding(panelSR);
+        boolean sRoom = false;
+        if (pSR.getSelectedItem() == "Yes") { sRoom = true;}
+        final boolean SR = sRoom;
 
         JLabel blank1 = new JLabel("  ");
         JButton submit = new JButton ("Submit Form");
@@ -69,10 +116,14 @@ public class PatientForm {
                     JOptionPane.showMessageDialog(null, "Invalid Patient ID", "Warning", JOptionPane.INFORMATION_MESSAGE);
                 }
                 else {
+                    Patient p = new Patient( pID.getText() , (String) pSex.getSelectedItem() ,pIll.getText(), SR);
+
+                    JOptionPane.showMessageDialog(null, "Patient has been added to database", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
                     f.dispose();
                     UserPage user = new UserPage();
+
+                    }
                 }
-            }
         });
         JPanel panelSub = new JPanel();
         panelSub.add(submit);
@@ -83,8 +134,10 @@ public class PatientForm {
         infoPanel.add(blank);
         infoPanel.add(infoID);
         infoPanel.add(panelID);
-        infoPanel.add(infoGend);
-        infoPanel.add(panelGend);
+        infoPanel.add(infoSex);
+        infoPanel.add(panelSex);
+        infoPanel.add(infoDOB);
+        infoPanel.add(panelDOB);
         infoPanel.add(infoIll);
         infoPanel.add(panelIll);
         infoPanel.add(infoSR);
