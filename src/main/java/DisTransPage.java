@@ -1,3 +1,4 @@
+import Client.Patient;
 import Panels.Title;
 
 import javax.swing.*;
@@ -5,10 +6,11 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class DisTransPage {
 
-    public DisTransPage() {
+    public DisTransPage(ArrayList<Patient> transfers, ArrayList<Patient> discharges) {
 
         JFrame f = new JFrame();
         JPanel mainPanel = new JPanel();
