@@ -1,6 +1,7 @@
 package Panels;
 
 import Panels.TableFrames.*;
+import Panels.TableFrames.Incoming.InTable;
 
 import javax.swing.*;
 import java.awt.*;

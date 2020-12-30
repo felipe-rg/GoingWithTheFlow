@@ -27,7 +27,6 @@ public class BedStatus extends JPanel{
         add(greenBeds);
         add(ambarBeds);
         add(redBeds);
-
     }
 
     //Function in which you introduce labels and they are automatically edited
@@ -38,6 +37,10 @@ public class BedStatus extends JPanel{
             i.setVerticalAlignment(JLabel.CENTER);
             i.setFont(new Font("Verdana", Font.PLAIN, 30));
         }
+    }
+
+    public void editBedStatus(int redBedNum){
+
     }
 
     public void setGreenBedsNum(String numberIn){
