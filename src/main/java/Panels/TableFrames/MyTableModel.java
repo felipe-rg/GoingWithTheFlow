@@ -15,6 +15,7 @@ class MyTableModel extends AbstractTableModel {
         this(convertToVector(data), convertToVector(columnName));
     }
 
+
     //We fill in the data vector with the information
     public MyTableModel(Vector data, Vector columnNames){
         setDataVector(data, columnNames);
@@ -119,6 +120,11 @@ class MyTableModel extends AbstractTableModel {
     public void setValueAt(Object value, int rowIndex, int columnIndex) {
         ((Vector) dataVector.get(rowIndex)).set(columnIndex, value);
         fireTableCellUpdated(rowIndex, columnIndex);
+    }
+
+    //Function returning patient id (whatever is at column number 1)
+    public int getPatientID(int row){
+        return (int) getValueAt(row, 0);
     }
 
 }

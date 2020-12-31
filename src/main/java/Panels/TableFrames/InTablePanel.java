@@ -31,9 +31,9 @@ public class InTablePanel extends JPanel implements TableModelListener {
 
 
     //This is how we will receive the time from the database (LocalDateTime)
-    LocalDateTime localDateTime1 = LocalDateTime.of(0, Month.JULY, 1, 17, 00, 0);
-    LocalDateTime localDateTime2 = LocalDateTime.of(0, Month.JULY, 1, 19, 00, 0);
-    LocalDateTime localDateTime3 = LocalDateTime.of(0, Month.JULY, 1, 14, 20, 0);
+    LocalDateTime localDateTime1 = LocalDateTime.of(0, Month.JULY, 1, 13, 00, 0);
+    LocalDateTime localDateTime2 = LocalDateTime.of(0, Month.JULY, 1, 14, 00, 0);
+    LocalDateTime localDateTime3 = LocalDateTime.of(0, Month.JULY, 1, 14, 18, 0);
     //We will input the time into the table as a string so we do dateFormatter first like i did below
 
 
@@ -75,7 +75,9 @@ public class InTablePanel extends JPanel implements TableModelListener {
         Action selectBedAction = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("'Select Bed' button clicked");
+                int patientID = tableModel.getPatientID(table.getSelectedRow());
+                System.out.println("'Select Bed' button clicked.  PatientID: " + patientID);
+
             }
         };
 
