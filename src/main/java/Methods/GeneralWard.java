@@ -128,6 +128,24 @@ public abstract class GeneralWard {
         return client.crossReference(patients, deceased);
     }
 
+
+    // Returns a list of beds in the ward which have the correct characteristics for the chosen patient
+    // Used when clicking select bed in incoming table
+    public ArrayList<Bed> getAcceptableBeds(int patientId) throws IOException {
+        ArrayList<Bed> acceptableBeds = new ArrayList<Bed>();
+        ArrayList<String> json = client.makeGetRequest("*", "beds", "wardid="+wardId);
+        ArrayList<Bed> bedsInWard = client.bedsFromJson(json);
+        json = client.makeGetRequest("*", "patients", "id="+patientId);
+        Patient patientInfo = client.patientsFromJson(json).get(0);
+        for(Bed b: bedsInWard){
+            if(b.getStatus() == "F" && patientInfo.getSex() == b.getForSex()
+                    && patientInfo.getNeedsSideRoom() == b.getHasSideRoom()) {
+                acceptableBeds.add(b);
+            }
+        }
+        return acceptableBeds;
+    }
+
     //Changes transfer request status to confirmed
     //Used to accept patients into next destination, setBed will then change their location
     public void acceptIncoming(int patientId) throws IOException, SQLException {
