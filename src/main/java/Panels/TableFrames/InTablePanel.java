@@ -60,12 +60,7 @@ public class InTablePanel extends JPanel implements TableModelListener {
 
 
         //Editing table
-        table.setRowHeight(35);                                     //Setting rowheight
-        JTableHeader tableHeader = table.getTableHeader();
-        tableHeader.setFont(new Font("Verdana", Font.PLAIN, 15));   //Setting tableheader font
-
-        //Adding a listener to see user edits
-        table.getModel().addTableModelListener(this);
+        setupTable(table);
 
 
         //Action to occur when the delete button is clicked
@@ -130,6 +125,14 @@ public class InTablePanel extends JPanel implements TableModelListener {
     public String dateFormatter(LocalDateTime localDateTime){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         return localDateTime.format(formatter);
+    }
+
+    public void setupTable(JTable table) {
+        table.setRowHeight(35);                                     //Setting rowheight
+        table.getTableHeader().setDefaultRenderer(new MultiLineTableHeaderRenderer());  //Setting header renderer
+
+        //Adding a listener to see user edits
+        table.getModel().addTableModelListener(this);
     }
 }
 

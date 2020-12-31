@@ -53,12 +53,7 @@ public class DisTablePanel extends JPanel implements TableModelListener {
         scrollPane = new JScrollPane(table);    //Creating scrollpane where table is located (for viewing purposes)
 
         //Editing table
-        table.setRowHeight(35);                                     //Setting rowheight
-        JTableHeader tableHeader = table.getTableHeader();
-        tableHeader.setFont(new Font("Verdana", Font.PLAIN, 15));   //Setting tableheader font
-
-        //Adding a listener to see user edits
-        table.getModel().addTableModelListener(this);
+        setupTable(table);
 
         //Action happening when we press delete button
         Action deletePopUp = new AbstractAction() {
@@ -67,7 +62,7 @@ public class DisTablePanel extends JPanel implements TableModelListener {
                 new DeletePopUp(table, tableModel);
             }
         };
-
+        //Assigning the column that will have the delete buttons
         ButtonColumn deletePatient = new ButtonColumn(table, deletePopUp, 8);
 
         this.setLayout(new GridLayout());
@@ -94,5 +89,14 @@ public class DisTablePanel extends JPanel implements TableModelListener {
     private Object dateFormatter(LocalDateTime localDateTime) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         return localDateTime.format(formatter);
+    }
+
+    public void setupTable(JTable table){
+        table.setRowHeight(35);                                     //Setting rowheight
+        table.getTableHeader().setDefaultRenderer(new MultiLineTableHeaderRenderer());  //Setting header renderer
+
+        //Adding a listener to see user edits
+        table.getModel().addTableModelListener(this);
+
     }
 }

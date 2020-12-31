@@ -34,6 +34,7 @@ public class DeletePopUp {
             @Override
             public void actionPerformed(ActionEvent e) {
                 tableModel.removeRow(table.getSelectedRow());
+                deleteRowConfirmation.dispose();
             }
         });
 
