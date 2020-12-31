@@ -107,7 +107,7 @@ public abstract class GeneralWard {
 
     public Object[][] getIncomingData() throws IOException, SQLException {
         ArrayList<Patient> patients = getIncomingList(wardId);
-        Object[][] data;
+        Object[][] data = new Object[patients.size()][8];
         for(int i=0; i<patients.size(); i++) {
             Patient p = patients.get(i);
             data[i][0] = p.getId();
