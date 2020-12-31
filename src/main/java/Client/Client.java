@@ -11,7 +11,6 @@ import java.util.ArrayList;
 
 public class Client extends fromJson{
 
-
     public Client() {   }
 
     public ArrayList<String> makeGetRequest(String fields,String table,String condition) throws IOException {

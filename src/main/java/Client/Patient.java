@@ -1,15 +1,17 @@
 package Client;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class Patient implements Serializable {
 
     private int id;
-    private String nhsID;
+    private String patientId;
+    private String sex;
+    private LocalDate dateOfBirth;
     private int currentWardId;
     private int currentBedId;
-    private String sex;
     private LocalDateTime arrivalDateTime;
     private String initialDiagnosis;
     private boolean needsSideRoom;
@@ -21,18 +23,20 @@ public class Patient implements Serializable {
     private String transferRequestStatus;
     private boolean deceased;
 
-    public Patient(String nameInitials,String sex,String initialDiagnosis,boolean needsSideRoom) {
-        this.nhsID = nameInitials;
+    public Patient(String patientId,String sex,LocalDate dateOfBirth,String initialDiagnosis,boolean needsSideRoom) {
+        this.patientId = patientId;
         this.sex = sex;
+        this.dateOfBirth = dateOfBirth;
         this.initialDiagnosis = initialDiagnosis;
         this.needsSideRoom = needsSideRoom;
     }
 
-    public Patient(int id, String nameInitials,int currentWardId,int currentBedId,String sex,LocalDateTime arrivalDateTime, String initialDiagnosis,
+    public Patient(int id, String patientId,LocalDate dateOfBirth,int currentWardId,int currentBedId,String sex,LocalDateTime arrivalDateTime, String initialDiagnosis,
                    boolean needsSideRoom,boolean acceptedByMedicine,String nextDestination,LocalDateTime estimatedTimeOfNext,
                    boolean ttaSignedOff,boolean suitableForDischargeLounge,String transferRequestStatus,boolean deceased) {
         this.id = id;
-        this.nhsID = nameInitials;
+        this.patientId = patientId;
+        this.dateOfBirth = dateOfBirth;
         this.currentBedId = currentBedId;
         this.currentWardId = currentWardId;
         this.sex = sex;
@@ -49,7 +53,8 @@ public class Patient implements Serializable {
     }
 
     public int getId() {return id;}
-    public String getNameInitials() {return nhsID;}
+    public String getPatientId() {return patientId;}
+    public LocalDate getDateOfBirth() {return dateOfBirth;}
     public int getCurrentWardId() {return currentWardId;}
     public int getCurrentBedId() {return currentBedId;}
     public String getSex() {return sex;}
