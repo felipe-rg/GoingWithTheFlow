@@ -30,12 +30,11 @@ public class InTablePanel extends JPanel implements TableModelListener {
             "Delete Button"};
 
 
-    //This is how we will receive the date from the database
-    //We need to input it into the table as doing dateFormatter first like i did below
+    //This is how we will receive the time from the database (LocalDateTime)
     LocalDateTime localDateTime1 = LocalDateTime.of(0, Month.JULY, 1, 17, 00, 0);
     LocalDateTime localDateTime2 = LocalDateTime.of(0, Month.JULY, 1, 19, 00, 0);
     LocalDateTime localDateTime3 = LocalDateTime.of(0, Month.JULY, 1, 14, 20, 0);
-
+    //We will input the time into the table as a string so we do dateFormatter first like i did below
 
 
     //Data in each of the rows of our table
@@ -53,8 +52,8 @@ public class InTablePanel extends JPanel implements TableModelListener {
 
         //Instantiating table with appropriate data and tablemodel
 
-        tableModel = new InTableModel(columnName, data);        //Instance of MytableModel
-        table = new JTable(tableModel);         //Creating a table of model tablemodel (instance of MyTableModel)
+        tableModel = new InTableModel(columnName, data);        //Instance of IntableModel extending from MyTableModel
+        table = new JTable(tableModel);         //Creating a table of model tablemodel
         scrollPane = new JScrollPane(table);    //Creating scrollpane where table is located (for viewing purposes)
 
 
@@ -127,9 +126,12 @@ public class InTablePanel extends JPanel implements TableModelListener {
         return localDateTime.format(formatter);
     }
 
+
     public void setupTable(JTable table) {
-        table.setRowHeight(35);                                     //Setting rowheight
-        table.getTableHeader().setDefaultRenderer(new MultiLineTableHeaderRenderer());  //Setting header renderer
+        //Setting rowheight
+        table.setRowHeight(35);
+        //Setting header renderer with our clas MultiLineTableHeaderRenderer() (it basically edits header a lilbit)
+        table.getTableHeader().setDefaultRenderer(new MultiLineTableHeaderRenderer());
 
         //Adding a listener to see user edits
         table.getModel().addTableModelListener(this);

@@ -104,7 +104,7 @@ class MyTableModel extends AbstractTableModel {
         return getValueAt(0, columnIndex).getClass();
     }
 
-    //This method allows us to edit table and select which rows are editable
+    //This method allows us to edit table and select which rows are editable (it will be overriden)
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         return false;
     }
@@ -120,18 +120,6 @@ class MyTableModel extends AbstractTableModel {
         ((Vector) dataVector.get(rowIndex)).set(columnIndex, value);
         fireTableCellUpdated(rowIndex, columnIndex);
     }
-
-    /*
-    //Obtain time
-    public void colorOfCell(){
-        LocalTime time = LocalTime.now();
-        for (int index = 0; index < dataVector.size(); index++){
-
-        }
-
-    }
-    */
-
 
 }
 

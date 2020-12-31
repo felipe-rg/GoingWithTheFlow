@@ -6,10 +6,14 @@ import java.awt.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/*
+        this class is a table renderer that renders the 'arrival at A&E' column as a label with the same
+        text as the one inputed in the table but different background depending on the time the patient
+        has spent in the hospital. If <2h then green, if in between 2-3h then amber and for >3h then red.
+
+ */
 public class TimeRenderer extends DefaultTableCellRenderer {
 
-    //We return a label with the same text as the one inputed in the table but different background depending on the
-    //time the patient has spent in the hospital
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         //Cells are by default rendered as a JLabel.
@@ -23,18 +27,20 @@ public class TimeRenderer extends DefaultTableCellRenderer {
         //Time spent in hospital already
         double timeInHospital = timeDifference(timeArrival, timeNowS);
 
+        //Making label opaque so we can see the color
         timeLabel.setOpaque(true);
 
-        if (timeInHospital < 2){
+
+        if (timeInHospital < 2){                                    //Making background green
             timeLabel.setBackground(Color.decode("#8ABB59"));
         }
 
-        else if (timeInHospital > 2 && timeInHospital < 3){
+        else if (timeInHospital > 2 && timeInHospital < 3){         //Making background amber
             timeLabel.setBackground(Color.decode("#F9D88C"));
         }
 
         else {
-            timeLabel.setBackground(Color.decode("#F76262"));
+            timeLabel.setBackground(Color.decode("#F76262"));       //Making background red
         }
 
         return timeLabel;
@@ -54,13 +60,15 @@ public class TimeRenderer extends DefaultTableCellRenderer {
         int hour1 = findHour(time1);
         int hour2 = findHour(time2);
 
-        //MINUTES
+        //Minutes in int
         int minutes1 = findMinutes(time1);
         int minutes2 = findMinutes(time2);
 
+        //Hours and minutes in double for example 9:30 would be 9.5
         double hourMinutes1 = hour1 + (double)minutes1/60;
         double hourMinutes2 = hour2 + (double)minutes2/60;
 
+        //We return time in hospital
         return (hourMinutes2 - hourMinutes1);
 
     }
