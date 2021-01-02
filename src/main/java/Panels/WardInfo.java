@@ -36,7 +36,7 @@ public class WardInfo extends JPanel{
         othLabel = new JLabel("Others");
         totLabel = new JLabel("Total Patients in Ward");
         //Editing labels
-        editLabel(inLabel, transLabel, disLabel, othLabel, totLabel);
+        editLabel(inLabel, disLabel, othLabel, totLabel);
 
         //Buttons
         inbut = new JButton(String.valueOf(methods.incomingNumber));
@@ -52,13 +52,6 @@ public class WardInfo extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
                 InTable inTable = new InTable();
-            }
-        });
-
-        transbut.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                TransTable transTable = new TransTable();
             }
         });
 
@@ -88,8 +81,6 @@ public class WardInfo extends JPanel{
         //Adding labels and buttons into Panel
         add(inLabel);
         add(inbut);
-        add(transLabel);
-        add(transbut);
         add(disLabel);
         add(disbut);
         add(othLabel);

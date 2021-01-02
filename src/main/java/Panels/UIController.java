@@ -2,6 +2,7 @@ package Panels;
 
 import Methods.AMCWard;
 import Methods.GeneralWard;
+import Methods.LongstayWard;
 import jdk.incubator.jpackage.main.Main;
 
 import javax.swing.*;
@@ -21,13 +22,13 @@ public class UIController {
 
 
     //Constructor
-    public UIController(JButton backButton, GeneralWard methods){
+    public UIController(JButton backButton, LongstayWard methods){
         //Instantiating Panels
         mainPanel = new JPanel();
         rhsPanel = new JPanel();
         bedStatus = new BedStatus(methods);
         topography = new Topography(bedStatus, methods);
-        title = new Title("AMC GUI", backButton);
+        title = new Title("Longstay GUI", backButton);
         wardInfo = new WardInfo(methods);
 
         //Giving the panels a black border

@@ -50,6 +50,7 @@ public class BedButton extends JButton{
 
 
     public void makeFull(){
+        //TODO setBed
         this.status = "F";
         this.setBackground(Color.decode("#E74C3C"));
         this.repaint();
@@ -66,6 +67,13 @@ public class BedButton extends JButton{
         this.setBackground(Color.decode("#2ECC71"));
     }
     public void makeClosed(){
+        try {
+            methods.editBed(BedId, "status", "C");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         this.setStatus("C");
         this.setBackground(Color.BLACK);
     }
@@ -205,15 +213,36 @@ public class BedButton extends JButton{
 
             // asign new values for gender, age and diagnosis
             setSex(String.valueOf(genderTextField.getText().charAt(0)));
+            try {
+                methods.editBed(BedId, "forsex", String.valueOf(genderTextField.getText().charAt(0)));
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
 
             // there are many ways to indicate yes or no
             // if sideroom is no
             if (SRTextField.getText().equals("False") || SRTextField.getText().equals("false") || SRTextField.getText().equals("FALSE") || SRTextField.getText().charAt(0) == 'F' || SRTextField.getText().charAt(0) == 'N' || SRTextField.getText().equals("No") || SRTextField.getText().equals("NO") || SRTextField.getText().equals("no")) {
                 setSR(false);
+                try {
+                    methods.editBed(BedId, "hassideroom", "false");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
             }
             // if sideroom is yes
             else if (SRTextField.getText().equals("True") || SRTextField.getText().equals("true") || SRTextField.getText().equals("TRUE") || SRTextField.getText().charAt(0) == 'T' || SRTextField.getText().charAt(0) == 'Y' || SRTextField.getText().equals("Yes") || SRTextField.getText().equals("YES") || SRTextField.getText().equals("yes")) {
                 setSR(true);
+                try {
+                    methods.editBed(BedId, "hassideroom", "true");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
             }
 
             // get rid of editor popup after confirming edits
@@ -257,6 +286,7 @@ public class BedButton extends JButton{
 
                 // asign new values for gender, age and diagnosis
                 try {
+                    //Todo initial diagnosis multiple words!
                     methods.editPatient(p.getId(), "initialdiagnosis", diaTextField.getText());
                     methods.editPatient(p.getId(), "age", String.valueOf(Integer.parseInt(ageTextField.getText())));
                     methods.editPatient(p.getId(), "sex", String.valueOf(genderTextField.getText().charAt(0)));

@@ -66,6 +66,7 @@ public class Topography extends JPanel{
             }
             BedButton newBed = new BedButton(methods, b.getId(), b.getStatus(), b.getForSex(), b.getHasSideRoom(), x, y);
             beds.add(newBed);
+            this.add(newBed);
         }
 
         CountBeds();

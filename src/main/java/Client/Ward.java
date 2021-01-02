@@ -9,5 +9,5 @@ public class Ward {
     public int getId(){return id;}
     public String getWardName(){return wardName;}
     public void setId(int id){this.id = id;}
-    public void setWardName(){this.wardName = wardName;}
+    public void setWardName(String wardName){this.wardName = wardName;}
 }
