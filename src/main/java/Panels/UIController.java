@@ -1,5 +1,6 @@
 package Panels;
 
+import Methods.AMCWard;
 import Methods.GeneralWard;
 import jdk.incubator.jpackage.main.Main;
 
@@ -16,6 +17,7 @@ public class UIController {
     Title title;
     BedStatus bedStatus;
     WardInfo wardInfo;
+    AMCWardInfo amcWardInfo;
 
 
     //Constructor
@@ -23,10 +25,10 @@ public class UIController {
         //Instantiating Panels
         mainPanel = new JPanel();
         rhsPanel = new JPanel();
-        bedStatus = new BedStatus();
+        bedStatus = new BedStatus(methods);
         topography = new Topography(bedStatus, methods);
         title = new Title("AMC GUI", backButton);
-        wardInfo = new WardInfo();
+        wardInfo = new WardInfo(methods);
 
         //Giving the panels a black border
         outline(topography,title, rhsPanel);
@@ -39,6 +41,32 @@ public class UIController {
         rhsPanel.setLayout(new BorderLayout(0,0));
         rhsPanel.add(bedStatus, BorderLayout.NORTH);
         rhsPanel.add(wardInfo, BorderLayout.CENTER);
+
+        mainPanel.add(rhsPanel, BorderLayout.EAST);
+
+
+        //window.setInterval(UpdateBedStatus(),10000);
+    }
+    public UIController(JButton backButton, AMCWard methods){
+        //Instantiating Panels
+        mainPanel = new JPanel();
+        rhsPanel = new JPanel();
+        bedStatus = new BedStatus(methods);
+        topography = new Topography(bedStatus, methods);
+        title = new Title("AMC GUI", backButton);
+        amcWardInfo = new AMCWardInfo(methods);
+
+        //Giving the panels a black border
+        outline(topography,title, rhsPanel);
+
+        //Adding Panels to mainPanel
+        mainPanel.setLayout(new BorderLayout(0,0));
+        mainPanel.add(topography);
+        mainPanel.add(title, BorderLayout.NORTH);
+
+        rhsPanel.setLayout(new BorderLayout(0,0));
+        rhsPanel.add(bedStatus, BorderLayout.NORTH);
+        rhsPanel.add(amcWardInfo, BorderLayout.CENTER);
 
         mainPanel.add(rhsPanel, BorderLayout.EAST);
 

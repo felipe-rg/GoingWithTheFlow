@@ -9,7 +9,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class WardInfo extends JPanel{
+public class AMCWardInfo extends JPanel{
     //Labels
     JLabel inLabel;
     JLabel transLabel;
@@ -24,7 +24,7 @@ public class WardInfo extends JPanel{
     JButton totbut;
 
 
-    public WardInfo(GeneralWard methods){
+    public AMCWardInfo(AMCWard methods){
         this.setPreferredSize(new Dimension(300,600));
         this.setBackground(Color.white);
 
@@ -32,6 +32,7 @@ public class WardInfo extends JPanel{
 
         //Labels
         inLabel = new JLabel("Incoming Patients");
+        transLabel = new JLabel("Transferring Patients");
         disLabel = new JLabel("Discharge Patients");
         othLabel = new JLabel("Others");
         totLabel = new JLabel("Total Patients in Ward");
@@ -40,11 +41,12 @@ public class WardInfo extends JPanel{
 
         //Buttons
         inbut = new JButton(String.valueOf(methods.incomingNumber));
+        transbut = new JButton(String.valueOf(methods.transferNumber));
         disbut = new JButton(String.valueOf(methods.dischargeNumber));
         othbut = new JButton(String.valueOf(methods.otherNumber));
-        totbut = new JButton(String.valueOf(methods.dischargeNumber+methods.otherNumber+methods.incomingNumber));
+        totbut = new JButton(String.valueOf(methods.transferNumber+methods.dischargeNumber+methods.otherNumber+methods.incomingNumber));
         //Editing Buttons
-        editButton(inbut, disbut, othbut, totbut);
+        editButton(inbut, transbut, disbut, othbut, totbut);
 
 
         //Actionlisteners for buttons opening new window displaying table

@@ -1,5 +1,7 @@
 package Panels;
 
+import Methods.GeneralWard;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -9,7 +11,7 @@ public class BedStatus extends JPanel{
     JLabel ambarBeds;
     JLabel redBeds;
 
-    public BedStatus(){
+    public BedStatus(GeneralWard methods){
         this.setPreferredSize(new Dimension(300,100));
 
         greenBeds = new JLabel();

@@ -15,7 +15,7 @@ public class AMCGUI {
 
     public AMCGUI() {
         try {
-            AMCWard methods = new AMCWard(2);
+            methods = new AMCWard(2);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (SQLException throwables) {

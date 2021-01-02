@@ -26,8 +26,8 @@ public abstract class GeneralWard {
 
     public GeneralWard(int wardId) throws IOException, SQLException {
         this.wardId = wardId;
-        getWardName();
         client = new Client();
+        getWardName();
         refresh();
     }
 
@@ -35,7 +35,12 @@ public abstract class GeneralWard {
     public void getWardName() throws IOException {
         ArrayList<String> json = client.makeGetRequest("wardname", "wards", "id="+wardId);
         ArrayList<Ward> wards = client.wardsFromJson(json);
-        wardName = wards.get(0).getWardName();
+        if(wards.size()!=0) {
+            wardName = wards.get(0).getWardName();
+        }
+        else {
+            wardName = "Unknown Ward";
+        }
     }
 
     //Updates local variables with appropriate numbers

@@ -13,16 +13,31 @@ import java.util.ArrayList;
 
 public class Topography extends JPanel{
     ArrayList<BedButton> beds = new ArrayList<>();
-    Integer RCount = 0;
-    Integer OCount = 0;
-    Integer GCount = 0;
+    Integer RCount;
+    Integer OCount;
+    Integer GCount;
     ArrayList<Bed> dbBeds;
 
     public Topography(BedStatus bedstatus, GeneralWard methods) {
+        /*RCount = methods.redBeds;
+        OCount = methods.orangeBeds;
+        GCount = methods.redBeds;*/
+
         try {
             dbBeds = methods.getBeds();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+        if(dbBeds.size()==0){
+            for(int i=1; i<9; i++){
+                Bed bed = new Bed();
+                bed.setId(i);
+                bed.setStatus("E");
+                bed.setForSex("M");
+                bed.setWardId(2);
+                bed.setHasSideRoom(false);
+                dbBeds.add(bed);
+            }
         }
         this.setBackground(Color.WHITE);
         this.setPreferredSize(new Dimension(100, 70));
