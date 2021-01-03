@@ -194,7 +194,7 @@ public class ControlCentre implements statusable{
         ArrayList<Ward> wards = client.wardsFromJson(json);
 
         for(Ward w:wards){
-            output.add(getWardInfo(w.getId()));
+            output.add(getWardInfo(w.getWardId()));
         }
 
         return output;
