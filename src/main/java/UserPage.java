@@ -61,12 +61,10 @@ public class UserPage {
         });
 
         ArrayList<Ward> wards = new ArrayList<Ward>();
-        Ward testward = new Ward(3, "TestWard");
-        wards.add(testward);
         //FIXME get all wards more efficiently
-        for(int i=3; i<20; i++) {
+        for(int i=3; i<6; i++) {
             try {
-                ArrayList<String> json = client.makeGetRequest("*", "wards", "id");
+                ArrayList<String> json = client.makeGetRequest("*", "wards", "wardid="+i);
                 if(json.size()!=0){
                     Ward ward = client.wardsFromJson(json).get(0);
                     wards.add(ward);

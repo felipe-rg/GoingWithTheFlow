@@ -1,13 +1,13 @@
 package Panels.TableFrames;
 
-import Methods.GeneralWard;
+import Methods.AMCWard;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class TransTable {
 
-    public TransTable(GeneralWard methods){
+    public TransTable(AMCWard methods){
         JFrame frame = new JFrame("Transferring Patients");
 
 

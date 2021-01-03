@@ -6,7 +6,10 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import java.sql.Array;
 import java.sql.SQLException;
+import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
@@ -51,7 +54,6 @@ public abstract class GeneralWard {
         greenBeds =0;
         orangeBeds =0;
         redBeds =0;
-        patientsInWard=0;
         //get bed Ids for hardcoded bed numbers / bednumber = bedid
         ArrayList<String> json = client.makeGetRequest("*", "beds", "wardid="+wardId);
         ArrayList<Bed> beds = client.bedsFromJson(json);
@@ -72,14 +74,10 @@ public abstract class GeneralWard {
                 ArrayList<Patient> patients = client.patientsFromJson(json);
                 if(patients.get(0).getEstimatedTimeOfNext()==null){
                     redBeds = redBeds+1;
-                    //add to patient in ward
-                    patientsInWard = patientsInWard+1;
                     //todo colour bed red
                 }
                 else {
                     orangeBeds = orangeBeds+1;
-                    //add to patient in ward
-                    patientsInWard = patientsInWard+1;
                     //todo colour bed orange
                 }
             }
@@ -95,7 +93,10 @@ public abstract class GeneralWard {
         dischargeNumber = getDischargeList().size();
 
         //Other patients
-        otherNumber = getOtherList(wardId).size();
+        otherNumber = getOtherList().size();
+
+        //Patients in ward
+        patientsInWard = getPatientList().size();
     }
 
     public void refresh() throws IOException, SQLException {
@@ -128,6 +129,40 @@ public abstract class GeneralWard {
             data[i][8] = "Delete Patient";
             }
         return data;
+    }
+
+    public ArrayList<Patient> getPatientList() throws IOException, SQLException {
+        ArrayList<String> json = client.makeGetRequest("*", "patients", "currentwardid="+wardId);
+        return client.patientsFromJson(json);
+    }
+
+    public Object[][] getPatientData() throws IOException, SQLException {
+        ArrayList<Patient> patients = getPatientList();
+        Object[][] data = new Object[patients.size()][9];
+        for(int i=0; i<patients.size(); i++) {
+            Patient p = patients.get(i);
+            data[i][0] = p.getId();
+            data[i][1] = p.getPatientId();
+            data[i][2] = p.getSex();
+            data[i][3] = p.getInitialDiagnosis();
+            data[i][4] = p.getNeedsSideRoom();
+            data[i][5] = durationFormatter(Duration.between(p.getArrivalDateTime(), LocalDateTime.now()));
+            if(p.getNextDestination()==0){
+                data[i][6] = null;
+            }
+            ArrayList<String> json = client.makeGetRequest("*", "wards", "wardid="+p.getNextDestination());
+            ArrayList<Ward> wards = client.wardsFromJson(json);
+            if(wards.size()!=0){
+                data[i][6] = wards.get(0).getWardName();
+            }
+            data[i][7] = "Delete Patient";
+        }
+        return data;
+    }
+
+    public String durationFormatter(Duration duration){
+        long hours = duration.toHours();
+        return String.valueOf(hours);
     }
 
     public String dateFormatter(LocalDateTime localDateTime){
@@ -168,15 +203,39 @@ public abstract class GeneralWard {
         return data;
     }
 
-    //Returns all patients in ward who have died
-    //todo make it not just dying
+    //Returns all patients in ward who have died or going to ICU
+    //FIXME better way?
     //Used to see who will be leaving and when
-    public ArrayList<Patient> getOtherList(int wardId) throws IOException, SQLException {
+    public ArrayList<Patient> getOtherList() throws IOException, SQLException {
         ArrayList<String> json = client.makeGetRequest("id", "patients", "currentLocation="+wardId);
         ArrayList<Patient> patients = client.patientsFromJson(json);
         json = client.makeGetRequest("id", "patients", "deceased=true");
         ArrayList<Patient> deceased = client.patientsFromJson(json);
-        return client.crossReference(patients, deceased);
+        json = client.makeGetRequest("id", "patients", "nextdestination=7");
+        ArrayList<Patient> toICU = client.patientsFromJson(json);
+        ArrayList<Patient> ICUorRIP = client.crossReference(toICU, deceased);
+        return client.crossReference(patients, ICUorRIP);
+    }
+
+    public Object[][] getOtherData() throws IOException, SQLException {
+        ArrayList<Patient> patients = getOtherList();
+        Object[][] data = new Object[patients.size()][9];
+        for(int i=0; i<patients.size(); i++) {
+            Patient p = patients.get(i);
+            data[i][0] = p.getId();
+            data[i][1] = p.getPatientId();
+            data[i][2] = p.getSex();
+            data[i][3] = p.getInitialDiagnosis();
+            data[i][4] = p.getNeedsSideRoom();
+            data[i][5] = dateFormatter(p.getEstimatedTimeOfNext());
+            ArrayList<String> json = client.makeGetRequest("*", "wards", "wardid="+p.getNextDestination());
+            ArrayList<Ward> wards = client.wardsFromJson(json);
+            if(wards.size()!=0){
+                data[i][6] = wards.get(0).getWardName();
+            }
+            data[i][8] = "Delete Patient";
+        }
+        return data;
     }
 
 
@@ -225,10 +284,10 @@ public abstract class GeneralWard {
     //Used to assign a bed and change patient location
     public void setBed(int patientId, int bedId) throws IOException, SQLException {
         client.makePutRequest("patients", "bedid="+bedId, "id="+patientId);
-        ArrayList<String> json = client.makeGetRequest("wardid", "beds", "id="+bedId);
+        ArrayList<String> json = client.makeGetRequest("wardid", "beds", "bedid="+bedId);
         int wardid = client.patientsFromJson(json).get(0).getId();
         client.makePutRequest("patients", "currentlocation="+wardid, "id="+patientId);
-        client.makePutRequest("patients", "nextlocation=NULL", "id="+patientId);
+        client.makePutRequest("patients", "nextlocation=0", "id="+patientId);
         client.makePutRequest("beds", "status='O'", "id="+bedId);
         refresh();
     }

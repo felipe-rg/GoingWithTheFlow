@@ -8,6 +8,8 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
@@ -19,7 +21,7 @@ public class TotTablePanel extends JPanel implements TableModelListener {
     private TotTableModel tableModel;
 
     //Columnames in our table
-    private String[] columnName = {"Bed num",
+    private String[] columnName = {"Index",
             "Patient ID",
             "Sex",
             "Initial Diagnosis",
@@ -28,19 +30,19 @@ public class TotTablePanel extends JPanel implements TableModelListener {
             "Next Destination",
             "Delete Button"};
 
-
-    //Data in each of the rows of our table
-    private Object[][] data = {
-            {1, 166128, "M", "Asthma", true, "19", "TBD", "Delete Patient"},
-            {2, 234134, "F", "Internal Bleeding", true, "23", "Transfer", "Delete Patient"},
-            {3, 356456, "M", "Fracture", false, "34", "Discharge", "Delete Patient"}
-    };
-
-
+    private Object[][] dbData;
     public TotTablePanel(GeneralWard methods){
+
+        try {
+            dbData = methods.getPatientData();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         //Instantiating table with appropriate data and tablemodel
 
-        tableModel = new TotTableModel(columnName, data);        //Instance of MytableModel
+        tableModel = new TotTableModel(columnName, dbData);        //Instance of MytableModel
         table = new JTable(tableModel);         //Creating a table of model tablemodel (instance of MyTableModel)
         scrollPane = new JScrollPane(table);    //Creating scrollpane where table is located (for viewing purposes)
 

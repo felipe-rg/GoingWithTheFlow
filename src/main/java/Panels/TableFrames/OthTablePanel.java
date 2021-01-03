@@ -8,6 +8,8 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
@@ -21,7 +23,7 @@ public class OthTablePanel extends JPanel implements TableModelListener {
 
 
     //Columnames in our table
-    private String[] columnName = {"Bed Num",
+    private String[] columnName = {"Index",
             "Patient ID",
             "Sex",
             "Initial Diagnosis",
@@ -31,24 +33,19 @@ public class OthTablePanel extends JPanel implements TableModelListener {
             "Delete Button"
     };
 
-    //This is how we will receive the date from the database
-    //We need to input it into the table as doing dateFormatter first like i did below
-    LocalDateTime localDateTime1 = LocalDateTime.of(0, Month.JULY, 1, 16, 00, 0);
-    LocalDateTime localDateTime2 = LocalDateTime.of(0, Month.JULY, 1, 19, 30, 0);
-    LocalDateTime localDateTime3 = LocalDateTime.of(0, Month.JULY, 1, 20, 20, 0);
-
-    //Data in each of the rows of our table
-    private Object[][] data = {
-            {1, 166128, "M", "Asthma", false, dateFormatter(localDateTime1), "Intensive Care", "Delete Patient"},
-            {2, 234134, "F", "Internal Bleeding", true, dateFormatter(localDateTime2), "TBD", "Delete Patient"} ,
-            {3, 356456, "M", "Fracture", true, dateFormatter(localDateTime3), "Intensive Care", "Delete Patient"}
-    };
-
+    private Object[][] dbData;
 
     public OthTablePanel(GeneralWard methods){
+        try {
+            dbData = methods.getOtherData();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         //Instantiating table with appropriate data and tablemodel
 
-        tableModel = new OthTableModel(columnName, data);        //Instance of OthtableModel
+        tableModel = new OthTableModel(columnName, dbData);        //Instance of OthtableModel
         table = new JTable(tableModel);         //Creating a table of model tablemodel (instance of MyTableModel)
         scrollPane = new JScrollPane(table);    //Creating scrollpane where table is located (for viewing purposes)
 

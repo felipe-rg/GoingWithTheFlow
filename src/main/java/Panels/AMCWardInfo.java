@@ -44,7 +44,7 @@ public class AMCWardInfo extends JPanel{
         transbut = new JButton(String.valueOf(methods.transferNumber));
         disbut = new JButton(String.valueOf(methods.dischargeNumber));
         othbut = new JButton(String.valueOf(methods.otherNumber));
-        totbut = new JButton(String.valueOf(methods.transferNumber+methods.dischargeNumber+methods.otherNumber+methods.incomingNumber));
+        totbut = new JButton(String.valueOf(methods.patientsInWard));
         //Editing Buttons
         editButton(inbut, transbut, disbut, othbut, totbut);
 

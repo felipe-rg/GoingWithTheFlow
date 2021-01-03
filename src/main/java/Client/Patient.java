@@ -16,7 +16,7 @@ public class Patient implements Serializable {
     private String initialDiagnosis;
     private boolean needsSideRoom;
     private boolean acceptedByMedicine;
-    private String nextDestination;
+    private int nextDestination;
     private LocalDateTime estimatedDateTimeOfNext;
     private boolean ttaSignedOff;
     private boolean suitableForDischargeLounge;
@@ -35,7 +35,7 @@ public class Patient implements Serializable {
     }
 
     public Patient(int id, String patientId,LocalDate dateOfBirth,int currentWardId,int currentBedId,String sex,LocalDateTime arrivalDateTime, String initialDiagnosis,
-                   boolean needsSideRoom,boolean acceptedByMedicine,String nextDestination,LocalDateTime estimatedTimeOfNext,
+                   boolean needsSideRoom,boolean acceptedByMedicine,int nextDestination,LocalDateTime estimatedTimeOfNext,
                    boolean ttaSignedOff,boolean suitableForDischargeLounge,String transferRequestStatus,boolean deceased) {
         this.id = id;
         this.patientId = patientId;
@@ -66,7 +66,7 @@ public class Patient implements Serializable {
     public String getInitialDiagnosis() {return initialDiagnosis;}
     public boolean getNeedsSideRoom() {return needsSideRoom;}
     public boolean getAcceptedByMedicine() {return acceptedByMedicine;}
-    public String getNextDestination() {return nextDestination;}
+    public int getNextDestination() {return nextDestination;}
     public LocalDateTime getEstimatedTimeOfNext() {return estimatedDateTimeOfNext;}
     public boolean getTtaSignedOff() {return ttaSignedOff;}
     public boolean getSuitableForDischargeLounge() {return suitableForDischargeLounge;}

@@ -1,5 +1,6 @@
 package Panels.TableFrames;
 
+import Methods.AMCWard;
 import Methods.GeneralWard;
 
 import javax.swing.*;
@@ -8,6 +9,8 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
@@ -19,7 +22,7 @@ public class TransTablePanel extends JPanel implements TableModelListener {
     private TransTableModel tableModel;
 
     //Columnames in our table
-    private String[] columnName = {"Bed Num",
+    private String[] columnName = {"Index",
             "Patient ID",
             "Sex",
             "Initial Diagnosis",
@@ -35,19 +38,20 @@ public class TransTablePanel extends JPanel implements TableModelListener {
     LocalDateTime localDateTime2 = LocalDateTime.of(0, Month.JULY, 1, 19, 30, 0);
     LocalDateTime localDateTime3 = LocalDateTime.of(0, Month.JULY, 1, 20, 20, 0);
 
-    //Data in each of the rows of our table
-    private Object[][] data = {
-            {1, 166128, "M", "Asthma", false, dateFormatter(localDateTime1), "Make Ward Request", "Delete Patient"},
-            {2, 234134, "F", "Internal Bleeding", true, dateFormatter(localDateTime2), "Make Ward Request", "Delete Patient"} ,
-            {3, 356456, "M", "Fracture", false, dateFormatter(localDateTime3), "Make Ward Request", "Delete Patient"}
-    };
+    private Object[][] dbData;
 
+    public TransTablePanel(AMCWard methods){
 
-
-    public TransTablePanel(GeneralWard methods){
+        try {
+            dbData = methods.getTransferData();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         //Instantiating table with appropriate data and tablemodel
 
-        tableModel = new TransTableModel(columnName, data);        //Instance of MytableModel
+        tableModel = new TransTableModel(columnName, dbData);        //Instance of MytableModel
         table = new JTable(tableModel);         //Creating a table of model tablemodel (instance of MyTableModel)
         scrollPane = new JScrollPane(table);    //Creating scrollpane where table is located (for viewing purposes)
 

@@ -36,7 +36,6 @@ public class BedButton extends JButton{
         if(status.equals("O")){
             this.setBackground(Color.decode("#E74C3C"));
             try {
-                System.out.println(BedId);
                 Patient p = methods.getPatient(BedId);
                 this.ETD = p.getEstimatedTimeOfNext();
             } catch (IOException e) {
