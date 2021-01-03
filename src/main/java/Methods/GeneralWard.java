@@ -107,7 +107,7 @@ public abstract class GeneralWard {
     //Returns all patients where they're next destination is the input ward
     //Used to see who needs to be accepted/rejected or who needs to be put in a bed once accepted
     public ArrayList<Patient> getIncomingList() throws IOException, SQLException {
-        ArrayList<String> json = client.makeGetRequest("*", "patients", "nextDestination="+wardId);
+        ArrayList<String> json = client.makeGetRequest("*", "patients", "nextdestination="+wardId);
         return client.patientsFromJson(json);
     }
 
@@ -181,6 +181,9 @@ public abstract class GeneralWard {
 
     public void acceptByMedicine(int patientId) throws IOException, SQLException {
         client.makePutRequest("patients", "acceptedbymedicine=true", "id="+patientId);
+    }
+    public void rejectByMedicine(int patientId) throws IOException, SQLException {
+        client.makePutRequest("patients", "acceptedbymedicine=false", "id="+patientId);
     }
 
     //Changes transfer request status to rejected
@@ -262,8 +265,7 @@ public abstract class GeneralWard {
     //Edits the designated column in the table for the patient
     //Used to edit qualities of patient, eg their sex
     public void editPatient(int patientId, String columnId, String newVal) throws IOException, SQLException {
-        //String SQLstr = "UPDATE patients SET "+columnId+ " = "+newVal+" WHERE id =" +patientId+";";
-        client.makePutRequest("patients", columnId="="+newVal, "id="+patientId);
+        client.makePutRequest("patients", columnId+"="+newVal, "id="+patientId);
     }
 
     public void editPatientETON(int patientId, LocalDateTime newVal) throws IOException, SQLException {

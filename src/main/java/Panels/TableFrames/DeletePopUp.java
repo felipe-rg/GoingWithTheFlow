@@ -36,9 +36,9 @@ public class DeletePopUp {
         yesButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Object patientId = tableModel.getValueAt(table.getSelectedRow(), 0);
+                int patientID = tableModel.getPatientID(table.getSelectedRow());
                 try {
-                    methods.deletePatient((int)patientId);
+                    methods.deletePatient(patientID);
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 }

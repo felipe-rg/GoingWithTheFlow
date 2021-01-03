@@ -35,12 +35,13 @@ public class InTablePanel extends JPanel implements TableModelListener {
 
     private Object[][] dbData;
 
+    private GeneralWard methods;
 
     //Constructor
     public InTablePanel(GeneralWard methods) {
-
+        this.methods = methods;
         try {
-            dbData = methods.getIncomingData();
+            dbData = this.methods.getIncomingData();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (SQLException throwables) {
@@ -92,6 +93,16 @@ public class InTablePanel extends JPanel implements TableModelListener {
         this.add(scrollPane);
     }
 
+    private void editPatient(int patientId, String column, boolean value){
+        try {
+            methods.editPatient(patientId, column, String.valueOf(value));
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
 
     //Method Noticing table changed and printing what changed
     @Override
@@ -104,11 +115,18 @@ public class InTablePanel extends JPanel implements TableModelListener {
         //Name of the column and data introduced
         String columnName = tableModel.getColumnName(column);
         Object data = tableModel.getValueAt(row, column);
-        //Bednumber of row selected
-        Object bedNum = tableModel.getValueAt(row, 0);
+
+        int patientId = tableModel.getPatientID(table.getSelectedRow());
 
         //Printing out what has been edited
-        System.out.println("Patient bed: " + bedNum + "     Edited '" + columnName+ "': " +data);
+        System.out.println("Patient bed: " + patientId + "     Edited '" + columnName+ "': " +data);
+
+        if(columnName == "Accepted by Medicine"){
+            editPatient(patientId, "acceptedbymedicine", (boolean)data);
+        }
+        if(columnName == "Side Room"){
+            editPatient(patientId, "needssideroom", (boolean)data);
+        }
 
         /*
             The button to assign a bed will only be clickable if the patient has been accepted by medicine.
