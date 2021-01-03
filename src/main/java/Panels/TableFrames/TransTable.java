@@ -1,15 +1,17 @@
 package Panels.TableFrames;
 
+import Methods.GeneralWard;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class TransTable {
 
-    public TransTable(){
+    public TransTable(GeneralWard methods){
         JFrame frame = new JFrame("Transferring Patients");
 
 
-        TransTablePanel transtablePanel = new TransTablePanel();
+        TransTablePanel transtablePanel = new TransTablePanel(methods);
 
 
         MainPanel mainPanel = new MainPanel(false, "TRANSFERRING PATIENTS");

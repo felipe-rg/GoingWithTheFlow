@@ -33,21 +33,6 @@ public class InTablePanel extends JPanel implements TableModelListener {
             "Bed",
             "Delete Button"};
 
-
-    //This is how we will receive the time from the database (LocalDateTime)
-    LocalDateTime localDateTime1 = LocalDateTime.of(0, Month.JULY, 1, 13, 00, 0);
-    LocalDateTime localDateTime2 = LocalDateTime.of(0, Month.JULY, 1, 14, 00, 0);
-    LocalDateTime localDateTime3 = LocalDateTime.of(0, Month.JULY, 1, 14, 18, 0);
-    //We will input the time into the table as a string so we do dateFormatter first like i did below
-
-
-    //Data in each of the rows of our table
-    private Object[][] data = {
-            {1, 166128, "M", "Asthma", false, dateFormatter(localDateTime1), true, "Select Bed", "Delete Patient"},
-            {2, 234134, "F", "Internal Bleeding", true, dateFormatter(localDateTime2), false, "Select Bed", "Delete Patient"},
-            {3, 356456, "M", "Fracture", false, dateFormatter(localDateTime3), true, "Select Bed", "Delete Patient"}
-    };
-
     private Object[][] dbData;
 
 
@@ -78,7 +63,7 @@ public class InTablePanel extends JPanel implements TableModelListener {
         Action deletePopUp = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new DeletePopUp(table, tableModel);
+                new DeletePopUp(table, tableModel, methods);
             }
         };
 

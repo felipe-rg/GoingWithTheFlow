@@ -1,5 +1,7 @@
 package Panels.TableFrames;
 
+import Methods.GeneralWard;
+
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -45,7 +47,7 @@ public class DisTablePanel extends JPanel implements TableModelListener {
     };
 
 
-    public DisTablePanel(){
+    public DisTablePanel(GeneralWard methods){
         //Instantiating table with appropriate data and tablemodel
 
         tableModel = new DisTableModel(columnName, data);        //Instance of MytableModel
@@ -59,7 +61,7 @@ public class DisTablePanel extends JPanel implements TableModelListener {
         Action deletePopUp = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new DeletePopUp(table, tableModel);
+                new DeletePopUp(table, tableModel, methods);
             }
         };
         //Assigning the column that will have the delete buttons

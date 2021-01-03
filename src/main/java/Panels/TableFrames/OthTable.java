@@ -1,14 +1,16 @@
 package Panels.TableFrames;
 
+import Methods.GeneralWard;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class OthTable {
 
-    public OthTable(){
+    public OthTable(GeneralWard methods){
         JFrame frame = new JFrame("Others");
 
-        OthTablePanel othTablePanel = new OthTablePanel();
+        OthTablePanel othTablePanel = new OthTablePanel(methods);
 
 
 

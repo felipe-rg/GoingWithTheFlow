@@ -1,5 +1,7 @@
 package Panels.TableFrames;
 
+import Methods.GeneralWard;
+
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -42,7 +44,7 @@ public class TransTablePanel extends JPanel implements TableModelListener {
 
 
 
-    public TransTablePanel(){
+    public TransTablePanel(GeneralWard methods){
         //Instantiating table with appropriate data and tablemodel
 
         tableModel = new TransTableModel(columnName, data);        //Instance of MytableModel
@@ -57,7 +59,7 @@ public class TransTablePanel extends JPanel implements TableModelListener {
         Action deletePopUp = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new DeletePopUp(table, tableModel);
+                new DeletePopUp(table, tableModel, methods);
             }
         };
         Action requestWard = new AbstractAction() {

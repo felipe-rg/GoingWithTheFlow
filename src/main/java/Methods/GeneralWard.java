@@ -129,6 +129,10 @@ public abstract class GeneralWard {
         return data;
     }
 
+    public void deletePatient(int patientId) throws IOException {
+        client.makeDeleteRequest("patients", "id="+patientId);
+    }
+
     //Returns all patients in ward who have had a TTA signoff
     //todo make it not tta but discharge
     //Used to see who will be leaving and when

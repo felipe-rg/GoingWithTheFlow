@@ -1,14 +1,17 @@
 package Panels.TableFrames;
 
+import Methods.GeneralWard;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 
 public class DeletePopUp {
 
-    public DeletePopUp(JTable table, MyTableModel tableModel){
+    public DeletePopUp(JTable table, MyTableModel tableModel, GeneralWard methods){
         //We create new frame
         JFrame deleteRowConfirmation = new JFrame("Delete Confirmation");
         deleteRowConfirmation.setSize(400,300);
@@ -33,6 +36,12 @@ public class DeletePopUp {
         yesButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Object patientId = tableModel.getValueAt(table.getSelectedRow(), 0);
+                try {
+                    methods.deletePatient((int)patientId);
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
                 tableModel.removeRow(table.getSelectedRow());
                 deleteRowConfirmation.dispose();
             }

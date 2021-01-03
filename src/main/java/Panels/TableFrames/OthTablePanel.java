@@ -1,5 +1,7 @@
 package Panels.TableFrames;
 
+import Methods.GeneralWard;
+
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -43,7 +45,7 @@ public class OthTablePanel extends JPanel implements TableModelListener {
     };
 
 
-    public OthTablePanel(){
+    public OthTablePanel(GeneralWard methods){
         //Instantiating table with appropriate data and tablemodel
 
         tableModel = new OthTableModel(columnName, data);        //Instance of OthtableModel
@@ -57,7 +59,7 @@ public class OthTablePanel extends JPanel implements TableModelListener {
         Action deletePopUp = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new DeletePopUp(table, tableModel);
+                new DeletePopUp(table, tableModel, methods);
             }
         };
 

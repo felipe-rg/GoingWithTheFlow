@@ -1,5 +1,7 @@
 package Panels.TableFrames;
 
+import Methods.GeneralWard;
+
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -35,7 +37,7 @@ public class TotTablePanel extends JPanel implements TableModelListener {
     };
 
 
-    public TotTablePanel(){
+    public TotTablePanel(GeneralWard methods){
         //Instantiating table with appropriate data and tablemodel
 
         tableModel = new TotTableModel(columnName, data);        //Instance of MytableModel
@@ -49,7 +51,7 @@ public class TotTablePanel extends JPanel implements TableModelListener {
         Action deletePopUp = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new DeletePopUp(table, tableModel);
+                new DeletePopUp(table, tableModel, methods);
             }
         };
 

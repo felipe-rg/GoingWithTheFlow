@@ -60,28 +60,28 @@ public class AMCWardInfo extends JPanel{
         transbut.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                TransTable transTable = new TransTable();
+                TransTable transTable = new TransTable(methods);
             }
         });
 
         disbut.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                DisTable disTable = new DisTable();
+                DisTable disTable = new DisTable(methods);
             }
         });
 
         othbut.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                OthTable othTable = new OthTable();
+                OthTable othTable = new OthTable(methods);
             }
         });
 
         totbut.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                TotTable totTable = new TotTable();
+                TotTable totTable = new TotTable(methods);
             }
         });
 

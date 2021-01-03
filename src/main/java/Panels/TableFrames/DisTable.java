@@ -1,16 +1,18 @@
 package Panels.TableFrames;
 
+import Methods.GeneralWard;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class DisTable {
 
-    public DisTable(){
+    public DisTable(GeneralWard methods){
         //Creating new frame
         JFrame frame = new JFrame("Discharge Patients");
 
         //Creating panel containing the table
-        DisTablePanel distablePanel = new DisTablePanel();
+        DisTablePanel distablePanel = new DisTablePanel(methods);
 
         //Creating the mainpanel that will contain all panels
         MainPanel mainPanel = new MainPanel(false, "DISCHARGE PATIENTS");

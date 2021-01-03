@@ -113,7 +113,7 @@ class MyTableModel extends AbstractTableModel {
     //Removing a row (the one entered as a parameter)
     public void removeRow(int row){
         dataVector.remove(row);         //Remove row from data vector
-        fireTableRowsDeleted(row, row); //Updates the data
+        //fireTableRowsDeleted(row, row); //Updates the data
     }
 
     //Changing value of a table cell
