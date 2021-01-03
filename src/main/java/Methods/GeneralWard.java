@@ -111,7 +111,7 @@ public abstract class GeneralWard {
         for(int i=0; i<patients.size(); i++) {
             Patient p = patients.get(i);
             data[i][0] = p.getId();
-            data[i][1] = p.getNameInitials();
+            data[i][1] = p.getPatientId();
             data[i][2] = p.getSex();
             data[i][3] = p.getInitialDiagnosis();
             data[i][4] = p.getNeedsSideRoom();

@@ -12,8 +12,7 @@ public class AandE implements requestable{
     }
 
     //Creates patient with essential information
-    public void createPatient(String initials, String sex, String initialDiagnosis, boolean sideroom) throws IOException, SQLException {
-        Patient p = new Patient(initials, sex, initialDiagnosis, sideroom);
+    public void createPatient(Patient p) throws IOException {
         client.makePostRequest(p);
     }
 

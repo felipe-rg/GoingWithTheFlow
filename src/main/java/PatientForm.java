@@ -1,12 +1,13 @@
 import Client.Patient;
+import Methods.AandE;
 import Panels.Title;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.time.LocalDate;
-import java.util.stream.IntStream;
 
 public class PatientForm {
 
@@ -76,7 +77,7 @@ public class PatientForm {
         JComboBox<Integer> month = new JComboBox<>(months);
         panelDOB.add(month);
 
-        int currentYear = 2020;
+        int currentYear = 2021;
         Integer[] years = new Integer[currentYear];
         inc=currentYear;
         for(int i=0;i<currentYear;i++){
@@ -85,9 +86,6 @@ public class PatientForm {
         }
         JComboBox<Integer> year = new JComboBox<>(years);
         panelDOB.add(year);
-
-       LocalDate DOB = LocalDate.of(  (Integer) year.getSelectedItem(),  (Integer) month.getSelectedItem(),  (Integer) day.getSelectedItem() );
-
 
         JLabel infoIll = new JLabel("Initial Diagnosis     " , SwingConstants.RIGHT);
         JTextField pIll = new JTextField( 10 );
@@ -116,7 +114,14 @@ public class PatientForm {
                     JOptionPane.showMessageDialog(null, "Invalid Patient ID", "Warning", JOptionPane.INFORMATION_MESSAGE);
                 }
                 else {
-                    Patient p = new Patient( pID.getText() , (String) pSex.getSelectedItem() ,pIll.getText(), SR);
+                    LocalDate DOB = LocalDate.of(  (Integer) year.getSelectedItem(),  (Integer) month.getSelectedItem(),  (Integer) day.getSelectedItem() );
+                    Patient p = new Patient( pID.getText(),(String) pSex.getSelectedItem() ,DOB,pIll.getText(), SR);
+                    AandE aneUser = new AandE(1);
+                    try {
+                        aneUser.createPatient(p);
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
 
                     JOptionPane.showMessageDialog(null, "Patient has been added to database", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
                     f.dispose();
