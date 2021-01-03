@@ -28,7 +28,7 @@ public class WardInfo extends JPanel{
         this.setPreferredSize(new Dimension(300,600));
         this.setBackground(Color.white);
 
-        this.setLayout(new GridLayout(10,1));
+        this.setLayout(new GridLayout(8,1));
 
         //Labels
         inLabel = new JLabel("Incoming Patients");
