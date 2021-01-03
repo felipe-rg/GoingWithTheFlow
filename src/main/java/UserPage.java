@@ -61,9 +61,7 @@ public class UserPage {
         });
 
         ArrayList<Ward> wards = new ArrayList<Ward>();
-        Ward testward = new Ward();
-        testward.setId(3);
-        testward.setWardName("TestWard");
+        Ward testward = new Ward(3, "TestWard");
         wards.add(testward);
         //FIXME get all wards more efficiently
         for(int i=3; i<20; i++) {
@@ -85,7 +83,7 @@ public class UserPage {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     frame.dispose();
-                    LongStayGUI gui = new LongStayGUI(w.getId());                        // constructs control page (new Jframe)
+                    LongStayGUI gui = new LongStayGUI(w.getWardId());                        // constructs control page (new Jframe)
                 }
             });
             longstayButtons.add(lsWard);

@@ -13,5 +13,4 @@
     <orderEntry type="library" scope="RUNTIME" name="Gradle: org.postgresql:postgresql:42.2.18" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: org.checkerframework:checker-qual:3.5.0" level="project" />
   </component>
-  <component name="TestModuleProperties" production-module="GoingWithTheFlow.main" />
 </module>

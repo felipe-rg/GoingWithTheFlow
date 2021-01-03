@@ -56,7 +56,7 @@ public class WardInfo extends JPanel{
         inbut.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                InTable inTable = new InTable();
+                InTable inTable = new InTable(methods);
             }
         });
 

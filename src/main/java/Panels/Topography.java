@@ -28,14 +28,10 @@ public class Topography extends JPanel{
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         if(dbBeds.size()==0){
             for(int i=1; i<9; i++){
-                Bed bed = new Bed();
-                bed.setId(i);
-                bed.setStatus("E");
-                bed.setForSex("M");
-                bed.setWardId(2);
-                bed.setHasSideRoom(false);
+                Bed bed = new Bed(i, 2,"E","M", false);
                 dbBeds.add(bed);
             }
         }
@@ -64,7 +60,7 @@ public class Topography extends JPanel{
             } else {
                 y = 450;
             }
-            BedButton newBed = new BedButton(methods, b.getId(), b.getStatus(), b.getForSex(), b.getHasSideRoom(), x, y);
+            BedButton newBed = new BedButton(methods, b.getBedId(), b.getStatus(), b.getForSex(), b.getHasSideRoom(), x, y);
             beds.add(newBed);
             this.add(newBed);
         }

@@ -1,16 +1,18 @@
 package Panels.TableFrames;
 
+import Methods.GeneralWard;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class InTable {
 
-    public InTable(){
+    public InTable(GeneralWard methods){
         //We create a new frame
         JFrame frame = new JFrame("Incoming Patients");
 
         //Creating panel containing the table
-        InTablePanel inTablePanel = new InTablePanel();
+        InTablePanel inTablePanel = new InTablePanel(methods);
 
         //We create the mainPanel where everything will be
         MainPanel mainPanel = new MainPanel(true, "INCOMING PATIENTS");

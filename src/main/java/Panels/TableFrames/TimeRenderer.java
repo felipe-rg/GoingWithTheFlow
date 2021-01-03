@@ -22,7 +22,7 @@ public class TimeRenderer extends DefaultTableCellRenderer {
         //timeNowS is the time now as a string ("HH:mm")
         //timeArrival is a string ("HH:mm") of the time the patient entered the A&E
         String timeNowS = DateFormatter(LocalDateTime.now());
-        String timeArrival = (String)value;
+        String timeArrival = String.valueOf(value);
 
         //Time spent in hospital already
         double timeInHospital = timeDifference(timeArrival, timeNowS);

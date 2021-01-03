@@ -1,5 +1,7 @@
 package Panels.TableFrames;
 
+import Methods.GeneralWard;
+
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -7,6 +9,8 @@ import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
@@ -44,15 +48,23 @@ public class InTablePanel extends JPanel implements TableModelListener {
             {3, 356456, "M", "Fracture", false, dateFormatter(localDateTime3), true, "Select Bed", "Delete Patient"}
     };
 
-
+    private Object[][] dbData;
 
 
     //Constructor
-    public InTablePanel() {
+    public InTablePanel(GeneralWard methods) {
+
+        try {
+            dbData = methods.getIncomingData();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
 
         //Instantiating table with appropriate data and tablemodel
 
-        tableModel = new InTableModel(columnName, data);        //Instance of IntableModel extending from MyTableModel
+        tableModel = new InTableModel(columnName, dbData);        //Instance of IntableModel extending from MyTableModel
         table = new JTable(tableModel);         //Creating a table of model tablemodel
         scrollPane = new JScrollPane(table);    //Creating scrollpane where table is located (for viewing purposes)
 

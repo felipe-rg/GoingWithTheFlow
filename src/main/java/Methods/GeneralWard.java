@@ -88,7 +88,7 @@ public abstract class GeneralWard {
     //Updates local variables with appropriate numbers
     public void wardNumbers() throws IOException, SQLException {
         //Incoming patients
-        incomingNumber = getIncomingList(wardId).size();
+        incomingNumber = getIncomingList().size();
 
         //Discharge patients
         dischargeNumber = getDischargeList(wardId).size();
@@ -106,14 +106,14 @@ public abstract class GeneralWard {
 
     //Returns all patients where they're next destination is the input ward
     //Used to see who needs to be accepted/rejected or who needs to be put in a bed once accepted
-    public ArrayList<Patient> getIncomingList(int wardId) throws IOException, SQLException {
-        ArrayList<String> json = client.makeGetRequest("id", "patients", "nextDestination="+wardId);
+    public ArrayList<Patient> getIncomingList() throws IOException, SQLException {
+        ArrayList<String> json = client.makeGetRequest("*", "patients", "nextDestination="+wardId);
         return client.patientsFromJson(json);
     }
 
     public Object[][] getIncomingData() throws IOException, SQLException {
-        ArrayList<Patient> patients = getIncomingList(wardId);
-        Object[][] data = new Object[patients.size()][8];
+        ArrayList<Patient> patients = getIncomingList();
+        Object[][] data = new Object[patients.size()][9];
         for(int i=0; i<patients.size(); i++) {
             Patient p = patients.get(i);
             data[i][0] = p.getId();
