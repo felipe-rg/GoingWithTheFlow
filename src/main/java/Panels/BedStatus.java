@@ -14,22 +14,22 @@ public class BedStatus extends JPanel{
     public BedStatus(GeneralWard methods){
         this.setPreferredSize(new Dimension(300,100));
 
-        greenBeds = new JLabel();
+        greenBeds = new JLabel("3");
         greenBeds.setBackground(Color.decode("#2ECC71"));
 
-        ambarBeds = new JLabel();
+        ambarBeds = new JLabel("3");
         ambarBeds.setBackground(Color.decode("#F39C12"));
 
-        redBeds = new JLabel();
+        redBeds = new JLabel("3");
         redBeds.setBackground(Color.decode("#E74C3C"));
 
+        //
         setLabel(greenBeds, ambarBeds, redBeds);
 
         this.setLayout(new GridLayout(1,3));
         add(greenBeds);
         add(ambarBeds);
         add(redBeds);
-
 
     }
 
