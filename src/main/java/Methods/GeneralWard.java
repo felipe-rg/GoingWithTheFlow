@@ -92,7 +92,7 @@ public abstract class GeneralWard {
         incomingNumber = getIncomingList().size();
 
         //Discharge patients
-        dischargeNumber = getDischargeList(wardId).size();
+        dischargeNumber = getDischargeList().size();
 
         //Other patients
         otherNumber = getOtherList(wardId).size();
@@ -142,12 +142,30 @@ public abstract class GeneralWard {
     //Returns all patients in ward who have had a TTA signoff
     //todo make it not tta but discharge
     //Used to see who will be leaving and when
-    public ArrayList<Patient> getDischargeList(int wardId) throws IOException, SQLException {
-        ArrayList<String> json = client.makeGetRequest("*", "patients", "currentLocation="+wardId);
+    public ArrayList<Patient> getDischargeList() throws IOException, SQLException {
+        ArrayList<String> json = client.makeGetRequest("*", "patients", "currentwardid="+wardId);
         ArrayList<Patient> patients = client.patientsFromJson(json);
-        json = client.makeGetRequest("*", "patients", "ttasignedoff=TRUE");
+        json = client.makeGetRequest("*", "patients", "nextdestination=6");
         ArrayList<Patient> discharging = client.patientsFromJson(json);
         return client.crossReference(patients, discharging);
+    }
+
+    public Object[][] getDischargeData() throws IOException, SQLException {
+        ArrayList<Patient> patients = getDischargeList();
+        Object[][] data = new Object[patients.size()][9];
+        for(int i=0; i<patients.size(); i++) {
+            Patient p = patients.get(i);
+            data[i][0] = p.getId();
+            data[i][1] = p.getPatientId();
+            data[i][2] = p.getSex();
+            data[i][3] = p.getInitialDiagnosis();
+            data[i][4] = p.getNeedsSideRoom();
+            data[i][5] = p.getTtaSignedOff();
+            data[i][6] = p.getSuitableForDischargeLounge();
+            data[i][7] = dateFormatter(p.getEstimatedTimeOfNext());
+            data[i][8] = "Delete Patient";
+        }
+        return data;
     }
 
     //Returns all patients in ward who have died

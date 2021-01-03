@@ -8,6 +8,8 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
@@ -20,7 +22,7 @@ public class DisTablePanel extends JPanel implements TableModelListener {
     private DisTableModel tableModel;
 
     //Columnames in our table
-    private String[] columnName = {"Bed num",
+    private String[] columnName = {"Index",
             "Patient ID",
             "Sex",
             "Initial Diagnosis",
@@ -46,11 +48,24 @@ public class DisTablePanel extends JPanel implements TableModelListener {
             {3, 356456, "M", "Fracture", false, false, true, dateFormatter(localDateTime3), "Delete Patient"}
     };
 
+    private Object[][] dbData;
+
+    private GeneralWard methods;
 
     public DisTablePanel(GeneralWard methods){
+
+        this.methods = methods;
+
+        try {
+            dbData = methods.getDischargeData();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         //Instantiating table with appropriate data and tablemodel
 
-        tableModel = new DisTableModel(columnName, data);        //Instance of MytableModel
+        tableModel = new DisTableModel(columnName, dbData);        //Instance of MytableModel
         table = new JTable(tableModel);         //Creating a table of model tablemodel (instance of MyTableModel)
         scrollPane = new JScrollPane(table);    //Creating scrollpane where table is located (for viewing purposes)
 
@@ -71,6 +86,16 @@ public class DisTablePanel extends JPanel implements TableModelListener {
         this.add(scrollPane);
     }
 
+    private void editPatient(int patientId, String column, boolean value){
+        try {
+            methods.editPatient(patientId, column, String.valueOf(value));
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
     @Override
     public void tableChanged(TableModelEvent e) {
         //Row and column being edited
@@ -81,11 +106,21 @@ public class DisTablePanel extends JPanel implements TableModelListener {
         //Name of the column and data introduced
         String columnName = tableModel.getColumnName(column);
         Object data = tableModel.getValueAt(row, column);
-        //Bednumber of row selected
-        Object bedNum = tableModel.getValueAt(row, 0);
+
+        int patientId = tableModel.getPatientID(table.getSelectedRow());
 
         //Printing out what has been edited
-        System.out.println("Patient bed: " + bedNum + "     Edited '" + columnName+ "': " +data);
+        System.out.println("Patient bed: " + patientId + "     Edited '" + columnName+ "': " +data);
+        if(columnName == "TTA Done?"){
+            editPatient(patientId, "ttasignedoff", (boolean)data);
+        }
+        if(columnName == "Side Room"){
+            editPatient(patientId, "needssideroom", (boolean)data);
+        }
+        if(columnName == "Discharge Lounge"){
+            editPatient(patientId, "suitablefordischargelounge", (boolean)data);
+        }
+
     }
 
     private Object dateFormatter(LocalDateTime localDateTime) {
