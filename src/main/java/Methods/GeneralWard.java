@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.sql.Array;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public abstract class GeneralWard {
@@ -121,12 +122,17 @@ public abstract class GeneralWard {
             data[i][2] = p.getSex();
             data[i][3] = p.getInitialDiagnosis();
             data[i][4] = p.getNeedsSideRoom();
-            data[i][5] = p.getArrivalDateTime();
+            data[i][5] = dateFormatter(p.getArrivalDateTime());
             data[i][6] = p.getAcceptedByMedicine();
             data[i][7] = "Select Bed";
             data[i][8] = "Delete Patient";
             }
         return data;
+    }
+
+    public String dateFormatter(LocalDateTime localDateTime){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        return localDateTime.format(formatter);
     }
 
     public void deletePatient(int patientId) throws IOException {
