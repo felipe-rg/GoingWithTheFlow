@@ -67,7 +67,7 @@ public abstract class GeneralWard {
                 //todo colour bed red with slash
             }
             else {
-                json = client.makeGetRequest("*", "patients", "bedid="+b.getBedId());
+                json = client.makeGetRequest("*", "patients", "currentbedid="+b.getBedId());
                 ArrayList<Patient> patients = client.patientsFromJson(json);
                 if(patients.get(0).getEstimatedTimeOfNext()==null){
                     redBeds = redBeds+1;
@@ -98,7 +98,7 @@ public abstract class GeneralWard {
     }
 
     public void refresh() throws IOException, SQLException {
-        bedColours();
+       //bedColours();
         wardNumbers();
     }
 
@@ -280,8 +280,12 @@ public abstract class GeneralWard {
     }
 
     public Patient getPatient(int bedId) throws IOException, SQLException {
-        ArrayList<String> json = client.makeGetRequest("*","patients", "bedid="+bedId);
-        return client.patientsFromJson(json).get(0);
+        ArrayList<String> json = client.makeGetRequest("*","patients", "currentbedid="+bedId);
+        ArrayList<Patient> patients = client.patientsFromJson(json);
+        if(patients.size()==0){
+            return null;
+        }
+        return patients.get(0);
     }
 
     //Changes deceased column to true

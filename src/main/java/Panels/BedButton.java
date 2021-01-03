@@ -33,8 +33,19 @@ public class BedButton extends JButton{
         this.setFont(new Font("Verdana", Font.PLAIN, 30));
         this.setBounds(x, y, 70, 140);
         this.setOpaque(true);
-        if(status.equals("F")){this.setBackground(Color.decode("#E74C3C")); }
-        if(status.equals("E")){this.setBackground(Color.decode("#2ECC71")); }
+        if(status.equals("O")){
+            this.setBackground(Color.decode("#E74C3C"));
+            try {
+                System.out.println(BedId);
+                Patient p = methods.getPatient(BedId);
+                this.ETD = p.getEstimatedTimeOfNext();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+        if(status.equals("F")){this.setBackground(Color.decode("#2ECC71")); }
         if(status.equals("C")){this.setBackground(Color.BLACK); }
     }
 
@@ -51,7 +62,7 @@ public class BedButton extends JButton{
 
     public void makeFull(){
         //TODO setBed
-        this.status = "F";
+        this.status = "O";
         this.setBackground(Color.decode("#E74C3C"));
         this.repaint();
     }
@@ -63,7 +74,7 @@ public class BedButton extends JButton{
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        this.setStatus("E");
+        this.setStatus("F");
         this.setBackground(Color.decode("#2ECC71"));
     }
     public void makeClosed(){
@@ -274,7 +285,7 @@ public class BedButton extends JButton{
             confirmButton.addActionListener(evt -> {
 
                 // change bed color if bed goes from empty to full
-                if (this.getStatus().equals("E")) {
+                if (this.getStatus().equals("F")) {
                     this.makeFull();
                 }
 

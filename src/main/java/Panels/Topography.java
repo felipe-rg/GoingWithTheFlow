@@ -28,13 +28,6 @@ public class Topography extends JPanel{
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        if(dbBeds.size()==0){
-            for(int i=1; i<9; i++){
-                Bed bed = new Bed(i, 2,"E","M", false);
-                dbBeds.add(bed);
-            }
-        }
         this.setBackground(Color.WHITE);
         this.setPreferredSize(new Dimension(100, 70));
         this.setLayout(null);
@@ -70,8 +63,8 @@ public class Topography extends JPanel{
 
         for (BedButton b : beds){
             b.addActionListener(evt -> {
-                if(b.getStatus().equals("F")){ b.printInfoFull(); }
-                if(b.getStatus().equals("E") || b.getStatus().equals("C")){ b.printInfoEmpty(); }
+                if(b.getStatus().equals("O")){ b.printInfoFull(); }
+                if(b.getStatus().equals("F") || b.getStatus().equals("C")){ b.printInfoEmpty(); }
 
                 // every time something is done to the beds, check whether the bedstatus must change and update it
                 CountBeds();
@@ -85,8 +78,8 @@ public class Topography extends JPanel{
         OCount = GCount = RCount = 0;
         for (BedButton b : beds) {
             if (b.getStatus().equals("C")) { RCount = RCount + 1; }
-            if (b.getStatus().equals("E")) { GCount = GCount + 1; }
-            if (b.getStatus().equals("F")) {
+            if (b.getStatus().equals("F")) { GCount = GCount + 1; }
+            if (b.getStatus().equals("O")) {
 
                 if((b.getETD().getHour() == 0) && (b.getETD().getMinute() == 0)){ RCount = RCount + 1; }
                 else{ OCount = OCount + 1; }
