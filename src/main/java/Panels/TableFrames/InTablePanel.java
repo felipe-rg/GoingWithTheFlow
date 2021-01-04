@@ -1,6 +1,6 @@
 package Panels.TableFrames;
 
-import Client.Client;
+import Client.*;
 import Client.Ward;
 import Methods.GeneralWard;
 
@@ -109,34 +109,43 @@ public class InTablePanel extends JPanel implements TableModelListener {
     private void selectBed(int patientId){
         Client client = new Client();
         JFrame infoFrame = new JFrame();
-
+        ArrayList<Bed> acceptableBeds = new ArrayList<Bed>();
+        try {
+            acceptableBeds = methods.getAcceptableBeds(patientId);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         //edit info Frame
         infoFrame.setSize(300,300);
         infoFrame.setBackground(Color.WHITE);
         infoFrame.setVisible(true);
         infoFrame.setLocation(300,300);
 
-        ArrayList<Ward> wards = new ArrayList<Ward>();
-        //FIXME get all wards more efficiently
-        for(int i=3; i<8; i++) {
+        infoFrame.setLayout(new GridLayout(acceptableBeds.size()+1,2));
+        ButtonGroup beds = new ButtonGroup();
+        for(Bed w:acceptableBeds){
+            JRadioButton lsWard = new JRadioButton(String.valueOf(w.getBedId()));
+            lsWard.setActionCommand(String.valueOf(w.getBedId()));
+            lsWard.setFont(new Font("Verdana", Font.PLAIN, 20));
+            beds.add(lsWard);
+            infoFrame.add(lsWard);
+        }
+        JButton submitWard = new JButton("Submit");
+        infoFrame.add(submitWard);
+        submitWard.addActionListener(evt -> {
+            String selected = beds.getSelection().getActionCommand();
             try {
-                ArrayList<String> json = client.makeGetRequest("*", "wards", "wardid="+i);
-                if(json.size()!=0){
-                    Ward ward = client.wardsFromJson(json).get(0);
-                    wards.add(ward);
-                }
+                ArrayList<String> json = client.makeGetRequest("*", "beds", "bedid='"+selected+"'");
+                Bed bed = client.bedsFromJson(json).get(0);
+                methods.setBed(patientId, bed.getBedId());
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-        infoFrame.setLayout(new GridLayout(wards.size(),2));
-        ButtonGroup longstayWards = new ButtonGroup();
-        for(Ward w:wards){
-            JRadioButton lsWard = new JRadioButton(w.getWardName());     // creates button to access longstay ward
-            lsWard.setFont(new Font("Verdana", Font.PLAIN, 20));
-            longstayWards.add(lsWard);
-            infoFrame.add(lsWard);
-        }
+            catch (SQLException throwables) {
+            throwables.printStackTrace();
+            }
+            infoFrame.dispose();
+        });
 
     }
 

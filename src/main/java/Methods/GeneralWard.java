@@ -253,7 +253,7 @@ public abstract class GeneralWard {
                 acceptableBeds.add(b);
             }
         }
-        return acceptableBeds;
+        return bedsInWard;
     }
 
     //Changes transfer request status to confirmed
@@ -283,12 +283,13 @@ public abstract class GeneralWard {
     //Refreshes ward to update numbers
     //Used to assign a bed and change patient location
     public void setBed(int patientId, int bedId) throws IOException, SQLException {
-        client.makePutRequest("patients", "bedid="+bedId, "id="+patientId);
-        ArrayList<String> json = client.makeGetRequest("wardid", "beds", "bedid="+bedId);
-        int wardid = client.patientsFromJson(json).get(0).getId();
-        client.makePutRequest("patients", "currentlocation="+wardid, "id="+patientId);
-        client.makePutRequest("patients", "nextlocation=0", "id="+patientId);
-        client.makePutRequest("beds", "status='O'", "id="+bedId);
+        client.makePutRequest("patients", "currentbedid="+bedId, "id="+patientId);
+        ArrayList<String> json = client.makeGetRequest("*", "beds", "bedid="+bedId);
+        int wardid = client.bedsFromJson(json).get(0).getWardId();
+        System.out.println(wardid);
+        client.makePutRequest("patients", "currentwardid="+wardid, "id="+patientId);
+        client.makePutRequest("patients", "nextdestination=0", "id="+patientId);
+        client.makePutRequest("beds", "status='O'", "bedid="+bedId);
         refresh();
     }
 

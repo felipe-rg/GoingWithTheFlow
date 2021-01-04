@@ -165,13 +165,6 @@ public class BedButton extends JButton{
             infoFrame.dispose();
         });
 
-
-        JButton setETDButton = new JButton("Add ETD");
-        setETDButton.addActionListener(evt -> {
-            setETDFrame(finalP);
-            infoFrame.dispose();
-        });
-
         JButton selectWardButton = new JButton("Make Transfer Request");
         selectWardButton.addActionListener(evt -> {
             selectWard(finalP);
@@ -187,7 +180,6 @@ public class BedButton extends JButton{
         infoFrame.add(diaLabel);
         infoFrame.add(ETDLabel);
         infoFrame.add(selectWardButton);
-        infoFrame.add(setETDButton);
         infoFrame.add(editButton);
         infoFrame.add(deleteButton);
     }
@@ -215,7 +207,7 @@ public class BedButton extends JButton{
                 e.printStackTrace();
             }
         }
-        infoFrame.setLayout(new GridLayout(wards.size()+1,1));
+        infoFrame.setLayout(new GridLayout(wards.size()+2,1));
         ButtonGroup longstayWards = new ButtonGroup();
         for(Ward w:wards){
             JRadioButton lsWard = new JRadioButton(w.getWardName());
@@ -224,6 +216,11 @@ public class BedButton extends JButton{
             longstayWards.add(lsWard);
             infoFrame.add(lsWard);
         }
+        JButton setETDButton = new JButton("Select time from now");
+        setETDButton.addActionListener(evt -> {
+            setETDFrame(p);
+        });
+        infoFrame.add(setETDButton);
         JButton submitWard = new JButton("Submit");
         infoFrame.add(submitWard);
         submitWard.addActionListener(evt -> {
