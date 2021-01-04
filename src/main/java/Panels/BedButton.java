@@ -1,6 +1,6 @@
 package Panels;
 
-import Client.Patient;
+import Client.*;
 import Methods.GeneralWard;
 import com.sun.tools.javac.tree.JCTree;
 import jdk.vm.ci.meta.Local;
@@ -13,7 +13,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Enumeration;
+import javax.swing.JRadioButton;
 
 public class BedButton extends JButton{
     private int BedId;   // kept as string in case e decide to name them with characters too
@@ -169,6 +172,12 @@ public class BedButton extends JButton{
             infoFrame.dispose();
         });
 
+        JButton selectWardButton = new JButton("Make Transfer Request");
+        selectWardButton.addActionListener(evt -> {
+            selectWard(finalP);
+            infoFrame.dispose();
+        });
+
         // add the labels to the frame
         infoFrame.setLayout(new GridLayout(10,1));
         infoFrame.add(bedIdLabel);
@@ -177,10 +186,59 @@ public class BedButton extends JButton{
         infoFrame.add(srLabel);
         infoFrame.add(diaLabel);
         infoFrame.add(ETDLabel);
-
+        infoFrame.add(selectWardButton);
         infoFrame.add(setETDButton);
         infoFrame.add(editButton);
         infoFrame.add(deleteButton);
+    }
+
+    private void selectWard(Patient p){
+        Client client = new Client();
+        JFrame infoFrame = new JFrame();
+
+        //edit info Frame
+        infoFrame.setSize(300,300);
+        infoFrame.setBackground(Color.WHITE);
+        infoFrame.setVisible(true);
+        infoFrame.setLocation(300,300);
+
+        ArrayList<Ward> wards = new ArrayList<Ward>();
+        //FIXME get all wards more efficiently
+        for(int i=3; i<8; i++) {
+            try {
+                ArrayList<String> json = client.makeGetRequest("*", "wards", "wardid="+i);
+                if(json.size()!=0){
+                    Ward ward = client.wardsFromJson(json).get(0);
+                    wards.add(ward);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        infoFrame.setLayout(new GridLayout(wards.size()+1,1));
+        ButtonGroup longstayWards = new ButtonGroup();
+        for(Ward w:wards){
+            JRadioButton lsWard = new JRadioButton(w.getWardName());
+            lsWard.setActionCommand(w.getWardName());
+            lsWard.setFont(new Font("Verdana", Font.PLAIN, 20));
+            longstayWards.add(lsWard);
+            infoFrame.add(lsWard);
+        }
+        JButton submitWard = new JButton("Submit");
+        infoFrame.add(submitWard);
+        submitWard.addActionListener(evt -> {
+            String selected = longstayWards.getSelection().getActionCommand();
+            try {
+                ArrayList<String> json = client.makeGetRequest("*", "wards", "wardname='"+selected+"'");
+                Ward ward = client.wardsFromJson(json).get(0);
+                client.makePutRequest("patients", "nextdestination="+ward.getWardId(), "id="+p.getId());
+                client.makePutRequest("patients", "transferrequeststatus='P'", "id="+p.getId());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            infoFrame.dispose();
+        });
+
     }
 
     public void printInfoEmpty(){

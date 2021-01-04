@@ -1,5 +1,7 @@
 package Panels.TableFrames;
 
+import Client.Client;
+import Client.Ward;
 import Methods.GeneralWard;
 
 import javax.swing.*;
@@ -14,6 +16,7 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 
 public class InTablePanel extends JPanel implements TableModelListener {
@@ -75,7 +78,7 @@ public class InTablePanel extends JPanel implements TableModelListener {
             public void actionPerformed(ActionEvent e) {
                 int patientID = tableModel.getPatientID(table.getSelectedRow());
                 System.out.println("'Select Bed' button clicked.  PatientID: " + patientID);
-
+                selectBed(patientID);
             }
         };
 
@@ -101,6 +104,40 @@ public class InTablePanel extends JPanel implements TableModelListener {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+    }
+
+    private void selectBed(int patientId){
+        Client client = new Client();
+        JFrame infoFrame = new JFrame();
+
+        //edit info Frame
+        infoFrame.setSize(300,300);
+        infoFrame.setBackground(Color.WHITE);
+        infoFrame.setVisible(true);
+        infoFrame.setLocation(300,300);
+
+        ArrayList<Ward> wards = new ArrayList<Ward>();
+        //FIXME get all wards more efficiently
+        for(int i=3; i<8; i++) {
+            try {
+                ArrayList<String> json = client.makeGetRequest("*", "wards", "wardid="+i);
+                if(json.size()!=0){
+                    Ward ward = client.wardsFromJson(json).get(0);
+                    wards.add(ward);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        infoFrame.setLayout(new GridLayout(wards.size(),2));
+        ButtonGroup longstayWards = new ButtonGroup();
+        for(Ward w:wards){
+            JRadioButton lsWard = new JRadioButton(w.getWardName());     // creates button to access longstay ward
+            lsWard.setFont(new Font("Verdana", Font.PLAIN, 20));
+            longstayWards.add(lsWard);
+            infoFrame.add(lsWard);
+        }
+
     }
 
 
