@@ -2,6 +2,7 @@ package Panels;
 
 import Methods.AMCWard;
 import Methods.GeneralWard;
+import Methods.LongstayWard;
 import Panels.TableFrames.*;
 import Panels.TableFrames.DisTable;
 import Panels.TableFrames.InTable;
@@ -29,32 +30,56 @@ public class WardInfo extends JPanel{
     JButton totbut;
     Topography top;
     WardInfo here;
+    GeneralWard methods;
 
-    public WardInfo(Topography top, GeneralWard methods){
-        setup(top, methods);
+    public WardInfo(Topography top, LongstayWard methods){
+        this.methods = methods;
+        this.top = top;
+        this.setLayout(new GridLayout(8,1));
+        setup();
+        //Adding labels and buttons into Panel
+        add(inLabel);
+        add(inbut);
+        add(disLabel);
+        add(disbut);
+        add(othLabel);
+        add(othbut);
+        add(totLabel);
+        add(totbut);
     }
 
-    public void WardInfo(Topography top, AMCWard methods){
-        setup(top, methods);
+    public WardInfo(Topography top, AMCWard methods){
+        this.methods = methods;
+        this.top = top;
+        this.setLayout(new GridLayout(10,1));
+        setup();
         transLabel = new JLabel("Transferring Patients");
         transbut = new JButton(String.valueOf(methods.transferNumber));
+        editLabel(transLabel);
+        editButton(transbut);
         transbut.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 TransTable transTable = new TransTable(methods);
             }
         });
+        //Adding labels and buttons into Panel
+        add(inLabel);
+        add(inbut);
         add(transLabel);
         add(transbut);
+        add(disLabel);
+        add(disbut);
+        add(othLabel);
+        add(othbut);
+        add(totLabel);
+        add(totbut);
     }
 
-    private void setup(Topography top, GeneralWard methods){
+    private void setup(){
         here = this;
-        this.top = top;
         this.setPreferredSize(new Dimension(300,600));
         this.setBackground(Color.white);
-
-        this.setLayout(new GridLayout(8,1));
 
         //Labels
         inLabel = new JLabel("Incoming Patients");
@@ -101,18 +126,6 @@ public class WardInfo extends JPanel{
                 TotTable totTable = new TotTable(methods);
             }
         });
-
-
-
-        //Adding labels and buttons into Panel
-        add(inLabel);
-        add(inbut);
-        add(disLabel);
-        add(disbut);
-        add(othLabel);
-        add(othbut);
-        add(totLabel);
-        add(totbut);
     }
 
     public void editLabel(JLabel... a){
@@ -140,6 +153,13 @@ public class WardInfo extends JPanel{
         for(JButton i:a){
             add(i);
         }
+    }
+
+    public void refresh(){
+        inbut = new JButton(String.valueOf(methods.incomingNumber));
+        disbut = new JButton(String.valueOf(methods.dischargeNumber));
+        othbut = new JButton(String.valueOf(methods.otherNumber));
+        totbut = new JButton(String.valueOf(methods.patientsInWard));
     }
 
 

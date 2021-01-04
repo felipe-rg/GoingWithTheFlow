@@ -18,18 +18,42 @@ public class UIController {
     Title title;
     BedStatus bedStatus;
     WardInfo wardInfo;
+    LongstayWard methods;
+    AMCWard method;
 
 
     //Constructor
-    public UIController(JButton backButton, GeneralWard methods){
+    public UIController(JButton backButton, LongstayWard methods){
+        this.methods = methods;
+        setupOne();
+        bedStatus = new BedStatus(methods);
+        topography = new Topography(bedStatus, methods);
+        title = new Title("AMC GUI", backButton);
+        wardInfo = new WardInfo(topography, methods);
+
+        setupTwo();
+    }
+
+    public UIController(JButton backButton, AMCWard methods){
+        this.method = methods;
+        setupOne();
+
+        bedStatus = new BedStatus(method);
+        topography = new Topography(bedStatus, method);
+        title = new Title("AMC GUI", backButton);
+        wardInfo = new WardInfo(topography, method);
+
+        setupTwo();
+
+    }
+
+    private void setupOne(){
         //Instantiating Panels
         mainPanel = new JPanel();
         rhsPanel = new JPanel();
-        bedStatus = new BedStatus(methods);
-        topography = new Topography(bedStatus, methods);
-        title = new Title("Longstay GUI", backButton);
-        wardInfo = new WardInfo(topography, methods);
+    }
 
+    private void setupTwo(){
         //Giving the panels a black border
         outline(topography,title, rhsPanel);
 
@@ -43,9 +67,6 @@ public class UIController {
         rhsPanel.add(wardInfo, BorderLayout.CENTER);
 
         mainPanel.add(rhsPanel, BorderLayout.EAST);
-
-
-        //window.setInterval(UpdateBedStatus(),10000);
     }
 
     //Function returning the mainPanel
