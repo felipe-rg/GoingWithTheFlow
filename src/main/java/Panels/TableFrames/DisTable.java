@@ -4,10 +4,12 @@ import Methods.GeneralWard;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class DisTable {
 
-    public DisTable(GeneralWard methods){
+    public DisTable(Panels.Topography top, Panels.WardInfo wardinfo, GeneralWard methods){
         //Creating new frame
         JFrame frame = new JFrame("Discharge Patients");
 
@@ -24,5 +26,11 @@ public class DisTable {
         frame.setExtendedState(Frame.MAXIMIZED_BOTH);
         frame.setVisible(true);                                             // makes JFrame visible
         frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+        frame.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent we) {
+                top.refresh();
+                wardinfo.refresh();
+            }
+        });
     }
 }

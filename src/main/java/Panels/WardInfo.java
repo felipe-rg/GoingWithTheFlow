@@ -60,7 +60,7 @@ public class WardInfo extends JPanel{
         transbut.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                TransTable transTable = new TransTable(methods);
+                TransTable transTable = new TransTable(top, here, methods);
             }
         });
         //Adding labels and buttons into Panel
@@ -109,21 +109,21 @@ public class WardInfo extends JPanel{
         disbut.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                DisTable disTable = new DisTable(methods);
+                DisTable disTable = new DisTable(top, here, methods);
             }
         });
 
         othbut.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                OthTable othTable = new OthTable(methods);
+                OthTable othTable = new OthTable(top, here, methods);
             }
         });
 
         totbut.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                TotTable totTable = new TotTable(methods);
+                TotTable totTable = new TotTable(top, here, methods);
             }
         });
     }

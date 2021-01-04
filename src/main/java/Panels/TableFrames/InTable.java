@@ -31,6 +31,7 @@ public class InTable {
         frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent we) {
                 top.refresh();
+                wardinfo.refresh();
             }
         });
     }

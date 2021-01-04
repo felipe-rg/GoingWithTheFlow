@@ -171,6 +171,10 @@ public abstract class GeneralWard {
     }
 
     public void deletePatient(int patientId) throws IOException {
+        ArrayList<String> json = client.makeGetRequest("*", "patients", "id="+patientId);
+        ArrayList<Patient> patients = client.patientsFromJson(json);
+        int bedid = patients.get(0).getCurrentBedId();
+        client.makePutRequest("beds", "status='F'", "bedid="+bedid);
         client.makeDeleteRequest("patients", "id="+patientId);
     }
 
