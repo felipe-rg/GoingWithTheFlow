@@ -26,7 +26,7 @@ public class InTablePanel extends JPanel implements TableModelListener {
     private InTableModel tableModel;
 
     //Columnames in our table
-    private String[] columnName = {"Index",
+    private String[] amcColumnName = {"Index",
             "Patient ID",
             "Sex",
             "Initial Diagnosis",
@@ -36,24 +36,48 @@ public class InTablePanel extends JPanel implements TableModelListener {
             "Bed",
             "Delete Button"};
 
+    private String[] lsColumnName = {"Index",
+            "Patient ID",
+            "Sex",
+            "Initial Diagnosis",
+            "Side Room",
+            "Estimated Time Arrival", //Remove Colour
+            "Transfer Request Status", //Boolean, P = pending, C = confirmed, R = rejected
+            "Bed",
+            "Delete Button"};
+
     private Object[][] dbData;
 
     private GeneralWard methods;
 
     //Constructor
     public InTablePanel(GeneralWard methods) {
+
         this.methods = methods;
-        try {
-            dbData = this.methods.getIncomingData();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+
+        if(methods.wardId==2){
+            try {
+                dbData = this.methods.getIncomingData();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+            tableModel = new InTableModel(amcColumnName, dbData);        //Instance of IntableModel extending from MyTableModel
+        }
+        else {
+            try {
+                dbData = this.methods.getLSIncomingData();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+            tableModel = new InTableModel(lsColumnName, dbData);
         }
 
         //Instantiating table with appropriate data and tablemodel
 
-        tableModel = new InTableModel(columnName, dbData);        //Instance of IntableModel extending from MyTableModel
         table = new JTable(tableModel);         //Creating a table of model tablemodel
         scrollPane = new JScrollPane(table);    //Creating scrollpane where table is located (for viewing purposes)
 
@@ -96,15 +120,16 @@ public class InTablePanel extends JPanel implements TableModelListener {
         this.add(scrollPane);
     }
 
-    private void editPatient(int patientId, String column, boolean value){
+    private void editPatient(int patientId, String column, String value){
         try {
-            methods.editPatient(patientId, column, String.valueOf(value));
+            methods.editPatient(patientId, column, value);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
     }
+
 
     private void selectBed(int patientId){
         Client client = new Client();
@@ -168,10 +193,13 @@ public class InTablePanel extends JPanel implements TableModelListener {
         System.out.println("Patient bed: " + patientId + "     Edited '" + columnName+ "': " +data);
 
         if(columnName == "Accepted by Medicine"){
-            editPatient(patientId, "acceptedbymedicine", (boolean)data);
+            editPatient(patientId, "acceptedbymedicine", String.valueOf(data));
         }
         if(columnName == "Side Room"){
-            editPatient(patientId, "needssideroom", (boolean)data);
+            editPatient(patientId, "needssideroom", String.valueOf(data));
+        }
+        if(columnName == "Transfer Request Status"){
+            editPatient(patientId, "transferrequeststatus", "'"+data+"'");
         }
 
         /*

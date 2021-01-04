@@ -17,10 +17,20 @@ public class InTableModel extends MyTableModel{
         if (columnIndex<4 || columnIndex==5){
             return false;
         }
-        //If the checkbox "accepted by medicine" has been clicked, then we can click the button
-        if (columnIndex==7 && (boolean)this.getValueAt(rowIndex, 6)==false){
-            return false;
+        if(this.getValueAt(rowIndex, 6).getClass() == boolean.class){
+            //If the checkbox "accepted by medicine" has been clicked, then we can click the button
+            if (columnIndex == 7 && (boolean) this.getValueAt(rowIndex, 6) == false) {
+                return false;
+            }
+            else return true;
         }
-        else return true;
+        if(this.getValueAt(rowIndex, 6).getClass() == String.class){
+            //If the checkbox "accepted by medicine" has been clicked, then we can click the button
+            if (columnIndex == 7 && String.valueOf(this.getValueAt(rowIndex, 6)) != "C") {
+                return false;
+            }
+            else return true;
+        }
+        else{ return true;}
     }
 }

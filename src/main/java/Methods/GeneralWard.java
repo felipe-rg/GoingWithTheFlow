@@ -131,6 +131,24 @@ public abstract class GeneralWard {
         return data;
     }
 
+    public Object[][] getLSIncomingData() throws IOException, SQLException {
+        ArrayList<Patient> patients = getIncomingList();
+        Object[][] data = new Object[patients.size()][9];
+        for(int i=0; i<patients.size(); i++) {
+            Patient p = patients.get(i);
+            data[i][0] = p.getId();
+            data[i][1] = p.getPatientId();
+            data[i][2] = p.getSex();
+            data[i][3] = p.getInitialDiagnosis();
+            data[i][4] = p.getNeedsSideRoom();
+            data[i][5] = dateFormatter(p.getEstimatedTimeOfNext());
+            data[i][6] = p.getTransferRequestStatus();
+            data[i][7] = "Select Bed";
+            data[i][8] = "Delete Patient";
+        }
+        return data;
+    }
+
     public ArrayList<Patient> getPatientList() throws IOException, SQLException {
         ArrayList<String> json = client.makeGetRequest("*", "patients", "currentwardid="+wardId);
         return client.patientsFromJson(json);
@@ -252,8 +270,7 @@ public abstract class GeneralWard {
         json = client.makeGetRequest("*", "patients", "id="+patientId);
         Patient patientInfo = client.patientsFromJson(json).get(0);
         for(Bed b: bedsInWard){
-            if(b.getStatus() == "F" && patientInfo.getSex() == b.getForSex()
-                    && patientInfo.getNeedsSideRoom() == b.getHasSideRoom()) {
+            if(b.getStatus() == "F") {
                 acceptableBeds.add(b);
             }
         }
