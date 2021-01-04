@@ -314,11 +314,11 @@ public abstract class GeneralWard {
     //Changes patient's transfer request status to confirmed
     //Used to undo a setBed and will still appear on incoming list
     public void removePatient(int patientId, int bedId) throws IOException, SQLException {
-        client.makePutRequest("patients", "bedid=Null", "id="+patientId);
-        client.makePutRequest("beds", "occupied='F'", "id="+bedId);
-        client.makePutRequest("patients", "currentlocation=Null", "id="+patientId);
-        ArrayList<String> json = client.makeGetRequest("wardid", "beds", "id="+bedId);
-        int wardid = client.patientsFromJson(json).get(0).getId();
+        client.makePutRequest("patients", "currentbedid=0", "id="+patientId);
+        client.makePutRequest("beds", "status='F'", "bedid="+bedId);
+        client.makePutRequest("patients", "currentwardid=0", "id="+patientId);
+        ArrayList<String> json = client.makeGetRequest("*", "beds", "bedid="+bedId);
+        int wardid = client.bedsFromJson(json).get(0).getWardId();
         client.makePutRequest("patients", "nextdestination="+wardid, "id="+patientId);
         client.makePutRequest("patients", "transferrequeststatus='C'", "id="+patientId);
     }

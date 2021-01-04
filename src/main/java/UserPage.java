@@ -35,7 +35,7 @@ public class UserPage {
             @Override
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();                                                        // closes current JFrame
-                AMCGUI AMC = new AMCGUI();                                              // constructs AMC GUI (a new JFrame)
+                GUI AMC = new GUI(2);                                              // constructs AMC GUI (a new JFrame)
             }
         });
 
@@ -81,7 +81,7 @@ public class UserPage {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     frame.dispose();
-                    LongStayGUI gui = new LongStayGUI(w.getWardId());                        // constructs control page (new Jframe)
+                    GUI gui = new GUI(w.getWardId());                        // constructs control page (new Jframe)
                 }
             });
             longstayButtons.add(lsWard);

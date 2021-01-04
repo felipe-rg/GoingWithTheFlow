@@ -1,4 +1,5 @@
 import Methods.AMCWard;
+import Methods.GeneralWard;
 import Methods.LongstayWard;
 import Panels.UIController;
 
@@ -10,13 +11,17 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.sql.SQLException;
 
-public class LongStayGUI {
+public class GUI {
     JButton backButton;
     LongstayWard methods;
+    AMCWard method;
 
-    public LongStayGUI(int wardId) {
+    public GUI(int wardId) {
         try {
-            methods = new LongstayWard(wardId);
+            if(wardId == 2) {
+                method = new AMCWard(2);
+            }
+            else { methods = new LongstayWard(wardId);}
         } catch (IOException e) {
             e.printStackTrace();
         } catch (SQLException throwables) {
@@ -39,7 +44,11 @@ public class LongStayGUI {
         });
 
         //Creating UIController than generates all panels
-        UIController UIc = new UIController(backButton, methods);
+        UIController UIc = null;
+        if(wardId == 2) {
+            UIc = new UIController(backButton, method);
+        }
+        else { UIc = new UIController(backButton, methods);}
         frame.add(UIc.getMainPanel());
 
         frame.setVisible(true);

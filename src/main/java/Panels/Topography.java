@@ -17,11 +17,14 @@ public class Topography extends JPanel{
     Integer OCount;
     Integer GCount;
     ArrayList<Bed> dbBeds;
+    BedStatus bedstatus;
 
     public Topography(BedStatus bedstatus, GeneralWard methods) {
         /*RCount = methods.redBeds;
         OCount = methods.orangeBeds;
         GCount = methods.redBeds;*/
+
+        this.bedstatus = bedstatus;
 
         try {
             dbBeds = methods.getBeds();
@@ -53,7 +56,7 @@ public class Topography extends JPanel{
             } else {
                 y = 450;
             }
-            BedButton newBed = new BedButton(methods, b.getBedId(), b.getStatus(), b.getForSex(), b.getHasSideRoom(), x, y);
+            BedButton newBed = new BedButton(this, methods, b.getBedId(), b.getStatus(), b.getForSex(), b.getHasSideRoom(), x, y);
             beds.add(newBed);
             this.add(newBed);
         }
@@ -92,6 +95,11 @@ public class Topography extends JPanel{
         bedstatus.setAmbarBedsNum(OCount);
         bedstatus.setGreenBedsNum(GCount);
         bedstatus.setRedBedsNum(RCount);
+    }
+
+    public void refresh(){
+        CountBeds();
+        updateBedStatus(bedstatus);
     }
 
 }

@@ -22,13 +22,16 @@ public class BedButton extends JButton{
     private Boolean sideroom;
     private GeneralWard methods;
     private LocalDateTime ETD;
+    Topography top;
     //constructor; when instantiating a bed its location must be specified with x and y.
-    public BedButton(GeneralWard methods, int BedId, String status, String sex, Boolean sideroom, Integer x, Integer y) {
+    public BedButton(Topography top, GeneralWard methods, int BedId, String status, String sex, Boolean sideroom, Integer x, Integer y) {
         this.BedId = BedId;
         this.status = status; //f = free, o = occupied, c = closed
         this.sideroom = sideroom;
         this.sex = sex;
         this.methods = methods;
+
+        this.top = top;
 
         this.setText(String.valueOf(BedId));
         this.setFont(new Font("Verdana", Font.PLAIN, 30));
@@ -65,6 +68,7 @@ public class BedButton extends JButton{
         this.status = "O";
         this.setBackground(Color.decode("#E74C3C"));
         this.repaint();
+        refreshTopography();
     }
     public void makeEmpty(Patient p){
         try {
@@ -76,6 +80,7 @@ public class BedButton extends JButton{
         }
         this.setStatus("F");
         this.setBackground(Color.decode("#2ECC71"));
+        refreshTopography();
     }
     public void makeClosed(){
         try {
@@ -87,6 +92,7 @@ public class BedButton extends JButton{
         }
         this.setStatus("C");
         this.setBackground(Color.BLACK);
+        refreshTopography();
     }
 
     public void makeOpen(){
@@ -99,6 +105,11 @@ public class BedButton extends JButton{
         }
         this.setStatus("F");
         this.setBackground(Color.decode("#2ECC71"));
+        refreshTopography();
+    }
+
+    public void refreshTopography(){
+        top.refresh();
     }
 
     public void setSex(String sex){this.sex = sex;}

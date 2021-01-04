@@ -27,9 +27,30 @@ public class WardInfo extends JPanel{
     JButton disbut;
     JButton othbut;
     JButton totbut;
+    Topography top;
+    WardInfo here;
 
+    public WardInfo(Topography top, GeneralWard methods){
+        setup(top, methods);
+    }
 
-    public WardInfo(GeneralWard methods){
+    public void WardInfo(Topography top, AMCWard methods){
+        setup(top, methods);
+        transLabel = new JLabel("Transferring Patients");
+        transbut = new JButton(String.valueOf(methods.transferNumber));
+        transbut.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                TransTable transTable = new TransTable(methods);
+            }
+        });
+        add(transLabel);
+        add(transbut);
+    }
+
+    private void setup(Topography top, GeneralWard methods){
+        here = this;
+        this.top = top;
         this.setPreferredSize(new Dimension(300,600));
         this.setBackground(Color.white);
 
@@ -56,7 +77,7 @@ public class WardInfo extends JPanel{
         inbut.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                InTable inTable = new InTable(methods);
+                InTable inTable = new InTable(top, here, methods);
             }
         });
 
@@ -92,7 +113,6 @@ public class WardInfo extends JPanel{
         add(othbut);
         add(totLabel);
         add(totbut);
-
     }
 
     public void editLabel(JLabel... a){
