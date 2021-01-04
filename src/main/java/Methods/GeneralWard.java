@@ -327,7 +327,7 @@ public abstract class GeneralWard {
     //Used to edit qualities of bed, eg which sex it is for
     public void editBed(int bedId, String columnId, String newVal) throws IOException, SQLException {
         //String SQLstr = "UPDATE beds SET "+columnId+ " = "+newVal+" WHERE id =" +bedId+";";
-        client.makePutRequest("beds", columnId+"="+newVal, "id="+bedId);
+        client.makePutRequest("beds", columnId+"="+newVal, "bedid="+bedId);
     }
 
     //todo do we need this?
@@ -352,8 +352,7 @@ public abstract class GeneralWard {
     }
 
     public void editPatientETON(int patientId, LocalDateTime newVal) throws IOException, SQLException {
-        //String SQLstr = "UPDATE patients SET "+columnId+ " = "+newVal+" WHERE id =" +patientId+";";
-        client.makePutRequest("patients", "estimatedtimeofnext="+newVal, "id="+patientId);
+        client.makePutRequest("patients", "estimatedatetimeofnext='"+newVal+"'", "id="+patientId);
     }
 
 

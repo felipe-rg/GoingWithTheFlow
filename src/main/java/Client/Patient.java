@@ -3,6 +3,7 @@ package Client;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Patient implements Serializable {
 
@@ -58,7 +59,7 @@ public class Patient implements Serializable {
     public int getAge(){return age;}
     public int getId() {return id;}
     public String getPatientId() {return patientId;}
-    public LocalDate getDateOfBirth() {return dateOfBirth;}
+    public String getDateOfBirth() {return dateFormatter(dateOfBirth);}
     public int getCurrentWardId() {return currentWardId;}
     public int getCurrentBedId() {return currentBedId;}
     public String getSex() {return sex;}
@@ -72,4 +73,8 @@ public class Patient implements Serializable {
     public boolean getSuitableForDischargeLounge() {return suitableForDischargeLounge;}
     public String getTransferRequestStatus() {return transferRequestStatus;}
     public boolean getDeceased() {return deceased;}
+    public String dateFormatter(LocalDate localDateTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/YYYY");
+        return localDateTime.format(formatter);
+    }
 }
