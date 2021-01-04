@@ -26,7 +26,8 @@ public class UIController {
         topography = new Topography();
 
         JButton backButton = new JButton("Go Back to User Page");
-        title = new Title("AMU Ward" , backButton);
+        JButton refreshButton = new JButton ("Refresh page");
+        title = new Title("AMU Ward" , backButton , refreshButton);
         bedStatus = new BedStatus();
         wardInfo = new WardInfo();
 

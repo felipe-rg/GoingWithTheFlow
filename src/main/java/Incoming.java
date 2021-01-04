@@ -1,28 +1,45 @@
 import Client.Patient;
+import Methods.ControlCentre;
 import Panels.Title;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class Incoming {
 
-    public Incoming(ArrayList<Patient> incomingPatients) {
+    public Incoming(ArrayList<Patient> incomingPatients , ControlCentre methods) {
 
         JFrame f = new JFrame();                   //creates JFrame
         JPanel mainPanel = new JPanel();           // creates MainPanel
         mainPanel.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, Color.BLACK));
 
         JButton backButton = new JButton("Go Back");    // creates back button
-        Title titlePanel = new Title("Incoming Patients from A&E" , backButton);
+        JButton refreshButton = new JButton("Refresh Page");
+        Title titlePanel = new Title("Incoming Patients from A&E" , backButton , refreshButton);
         titlePanel.setBorder(BorderFactory.createMatteBorder(0, 0, 3, 0, Color.BLACK));
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 f.dispose();                                    // closes incoming page
                 ControlUnit control = new ControlUnit();        // opens control unit page (new JFrame
+            }
+        });
+        refreshButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {    // when refresh button is selected
+                f.dispose();                                // current frame will close
+                try {
+                    Incoming page = new Incoming(methods.seeIncomingList() , methods);    // class will be called again
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
             }
         });
 

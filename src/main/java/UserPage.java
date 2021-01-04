@@ -3,12 +3,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Level;
 
 public class UserPage {
 
     static GraphicsConfiguration gc;
 
     public UserPage() {
+
 
         JFrame frame = new JFrame(gc);                                                  // create a JFrame
 
@@ -72,7 +74,7 @@ public class UserPage {
         frame.setExtendedState(Frame.MAXIMIZED_BOTH);                           // frame will occupy the whole screen
         frame.setVisible(true);                                                 // makes JFrame visible
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);          // This closes the program when the frame is closed
-    }
+        }
 
     // padding method improves visual layout
     public void padding(JPanel panel){

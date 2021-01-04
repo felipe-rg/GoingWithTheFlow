@@ -5,7 +5,7 @@ import java.awt.*;
 
 public class Title extends JPanel{
 
-    public Title(String title , JButton back ){
+    public Title(String title , JButton back , JButton refresh ){
 
         //Editing Panel itself
         this.setPreferredSize(new Dimension(1200,100));
@@ -13,10 +13,14 @@ public class Title extends JPanel{
         this.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
 
+        // Adding a refresh button
+        c.insets = new Insets(0,50,0,0);
+        add(refresh , c);
+
         //Adding label
         JLabel titleLabel = new JLabel(title);
         titleLabel.setFont(new Font("Verdana", Font.PLAIN, 50));
-        c.insets = new Insets(0,400,0,0);
+        c.insets = new Insets(0,250,0,0);
         add(titleLabel , c);
 
         //Adding Back Button

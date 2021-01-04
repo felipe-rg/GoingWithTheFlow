@@ -1,3 +1,4 @@
+import Methods.ControlCentre;
 import Panels.Title;
 
 import javax.swing.*;
@@ -5,11 +6,13 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class LongStay {
 
-    public LongStay(ArrayList<ArrayList<String>> info) {
+    public LongStay(ArrayList<ArrayList<String>> info , ControlCentre methods) {
     //Todo Input format is not nice - think of better way
 
 
@@ -19,7 +22,8 @@ public class LongStay {
 
         //title panel
         JButton backButton = new JButton("Go Back");
-        Title titlePanel = new Title("Long-stay Ward Overview" , backButton);
+        JButton refreshButton = new JButton("Refresh Page");
+        Title titlePanel = new Title("Long-stay Ward Overview" , backButton, refreshButton);
         titlePanel.setBorder(BorderFactory.createMatteBorder(0, 0, 3, 0, Color.BLACK));
         backButton.addActionListener(new ActionListener() {
             @Override
@@ -28,11 +32,23 @@ public class LongStay {
                 ControlUnit control = new ControlUnit();
             }
         });
+        refreshButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {    // when refresh button is selected
+                f.dispose();                                // current frame will close
+                try {
+                    LongStay page = new LongStay(methods.getAllWardInfo() , methods);    // class will be called again
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+        });
 
         JPanel infoPanel = new JPanel();
 
         JLabel LSinfo = new JLabel("Longstay ward table goes here");
-
 
         infoPanel.add(LSinfo);
 
