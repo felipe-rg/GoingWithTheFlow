@@ -17,7 +17,7 @@ public class Incoming {
 
     //private GeneralWard methods;
 
-    public Incoming(ArrayList<Patient> incomingPatients, ControlCentre methods) {
+    public Incoming(ControlCentre methods) {
 
         JFrame f = new JFrame();                   //creates JFrame
         JPanel mainPanel = new JPanel();           // creates MainPanel
@@ -39,13 +39,7 @@ public class Incoming {
             @Override
             public void actionPerformed(ActionEvent e) {    // when refresh button is selected
                 f.dispose();                                // current frame will close
-                try {
-                    Incoming page = new Incoming(methods.seeIncomingList() , methods);    // class will be called again
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
+                Incoming page = new Incoming(methods);    // class will be called again
             }
         });
 
@@ -54,6 +48,9 @@ public class Incoming {
         //JPanel inTablePanel = new InTablePanel(methods);
 
         //JLabel AMU1info = new JLabel("A&E Patient table goes here");
+
+        //methods.getIncomingData gives data for table
+
         JPanel leftPanel = new JPanel();
         JPanel rightPanel = new JPanel();
         JPanel colorCodePanel = new ColorCodePanel();

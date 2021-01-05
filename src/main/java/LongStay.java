@@ -36,13 +36,7 @@ public class LongStay {
             @Override
             public void actionPerformed(ActionEvent e) {    // when refresh button is selected
                 f.dispose();                                // current frame will close
-                try {
-                    LongStay page = new LongStay(methods.getAllWardInfo() , methods);    // class will be called again
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
+                //LongStay page = new LongStay(methods.getAllWardInfo() , methods);    // class will be called again
             }
         });
 

@@ -56,7 +56,7 @@ public class TotTablePanel extends JPanel implements TableModelListener {
         };
 
         //
-        ButtonColumn deletePatient = new ButtonColumn(table, deletePopUp, 8);
+        ButtonColumn deletePatient = new ButtonColumn(table, deletePopUp, 7);
 
         this.setLayout(new GridLayout());
         this.add(scrollPane);
