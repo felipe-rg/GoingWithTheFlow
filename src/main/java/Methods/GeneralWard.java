@@ -163,7 +163,13 @@ public abstract class GeneralWard {
 
     }
 
-
+    //If bed is free, bed needs to be green
+    //If bed is closed, bed needs to be black
+    //If patient is leaving in more than four hours - or no leaving time is set
+    //(arrival=leaving) then bed needs to be red
+    //If patient is leaving in less than 3 hours, bed needs to be orange
+    //if patient is leaving in the past - tehy should have left already -
+    //bed needs to be blue
     public String getBedColour(int BedID) throws IOException {
         ArrayList<String> json = client.makeGetRequest("*", "beds", "bedid="+BedID);
         ArrayList<Bed> beds = client.bedsFromJson(json);
@@ -198,14 +204,17 @@ public abstract class GeneralWard {
         }
     }
 
+    //Outputs an array of three integers which holds the number of
+    // green, orange, or red beds
+    //TODO could be mixed with getBedColour?
     public int[] getBedStatus() throws IOException {
         int[] output = new int[3];
         ArrayList<String> json = client.makeGetRequest("*", "beds", "wardid="+wardId);
         ArrayList<Bed> beds = client.bedsFromJson(json);
         if(beds.size()==0){
-            output[0] = 0;
-            output[1] = 0;
-            output[2] = 0;
+            output[0] = 0;//Green
+            output[1] = 0;//Orange
+            output[2] = 0;//Red
         }
         for(Bed newBed:beds) {
             if (newBed.getStatus().equals("F")) {
