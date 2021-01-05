@@ -19,24 +19,24 @@ public class UIController {
 
 
     //Constructor
-    public UIController(JButton backButton, LongstayWard methods){
+    public UIController(JButton backButton, JButton refreshButton,  LongstayWard methods){
         this.methods = methods;
         setupOne();
         bedStatus = new BedStatus(methods);
         topography = new Topography(bedStatus, methods);
-        title = new Title("AMC GUI", backButton);
+        title = new Title("AMC GUI", backButton, refreshButton, 420, 420);
         wardInfo = new WardInfo(topography, methods);
 
         setupTwo();
     }
 
-    public UIController(JButton backButton, AMCWard methods){
+    public UIController(JButton backButton, JButton refreshButton, AMCWard methods){
         this.method = methods;
         setupOne();
 
         bedStatus = new BedStatus(method);
         topography = new Topography(bedStatus, method);
-        title = new Title("AMC GUI", backButton);
+        title = new Title("AMC GUI", backButton, refreshButton, 420, 420);
         wardInfo = new WardInfo(topography, method);
 
         setupTwo();

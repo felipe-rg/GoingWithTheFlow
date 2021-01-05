@@ -18,13 +18,22 @@ public class PatientForm {
         mainPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK , 3));
 
         JButton backButton = new JButton("Cancel & go back");
-        Title titlePanel = new Title("A&E Incoming Patient Form" , backButton);
+        JButton refreshButton = new JButton("Refresh Page");
+        Title titlePanel = new Title("A&E Incoming Patient Form" , backButton, refreshButton, 100, 50);
         titlePanel.setBorder(BorderFactory.createMatteBorder(0, 0, 3, 0, Color.BLACK));
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 f.dispose();
                 UserPage user = new UserPage();
+            }
+        });
+
+        refreshButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {    // when refresh button is selected
+                f.dispose();                                // current frame will close
+                PatientForm form = new PatientForm();       // class will be called again
             }
         });
 

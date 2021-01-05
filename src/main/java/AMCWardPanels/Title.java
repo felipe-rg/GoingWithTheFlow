@@ -5,27 +5,26 @@ import java.awt.*;
 
 public class Title extends JPanel{
 
-    //Declaring the two components
-    JLabel titleLabel;
+    public Title(String title , JButton back , JButton refresh,  int titleInsets, int backInsets){
 
-    public Title(String title, JButton backButton){
         //Editing Panel itself
         this.setPreferredSize(new Dimension(1200,100));
         this.setBackground(Color.white);
-        //Setting layout
         this.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
 
+        // Adding a refresh button
+        c.insets = new Insets(0, 30,0,0);
+        add(refresh , c);
 
-        //Title Label
-        titleLabel = new JLabel(title);
+        //Adding label
+        JLabel titleLabel = new JLabel(title);
         titleLabel.setFont(new Font("Verdana", Font.PLAIN, 50));
-        c.insets = new Insets(0,570,0,0);
-        this.add(titleLabel, c);
+        c.insets = new Insets(0,titleInsets,0,0);
+        add(titleLabel , c);
 
-        //Button
-        c.insets = new Insets(0,430,0,0);
-        this.add(backButton, c);
-
+        //Adding Back Button
+        c.insets = new Insets(0,backInsets,0,0);
+        add(back , c);
     }
 }
