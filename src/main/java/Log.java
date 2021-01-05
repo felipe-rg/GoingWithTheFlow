@@ -6,7 +6,6 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 public class Log {
-
     public Logger logger;
     FileHandler fileHandler;                  // fileHandler will maintain the logging file
 

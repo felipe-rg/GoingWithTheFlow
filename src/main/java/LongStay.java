@@ -1,8 +1,7 @@
+import AMCWardPanels.Title;
 import Methods.ControlCentre;
-import Panels.Title;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,7 +11,7 @@ import java.util.ArrayList;
 
 public class LongStay {
 
-    public LongStay(ArrayList<ArrayList<String>> info , ControlCentre methods) {
+    public LongStay(ArrayList<ArrayList<String>> info, ControlCentre methods) {
     //Todo Input format is not nice - think of better way
 
 
@@ -23,7 +22,7 @@ public class LongStay {
         //title panel
         JButton backButton = new JButton("Go Back");
         JButton refreshButton = new JButton("Refresh Page");
-        Title titlePanel = new Title("Long-stay Ward Overview" , backButton, refreshButton);
+        Title titlePanel = new Title("Long-stay Ward Overview" , backButton, refreshButton, 250, 250);
         titlePanel.setBorder(BorderFactory.createMatteBorder(0, 0, 3, 0, Color.BLACK));
         backButton.addActionListener(new ActionListener() {
             @Override
@@ -32,6 +31,7 @@ public class LongStay {
                 ControlUnit control = new ControlUnit();
             }
         });
+
         refreshButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {    // when refresh button is selected
@@ -46,9 +46,11 @@ public class LongStay {
             }
         });
 
+
         JPanel infoPanel = new JPanel();
 
         JLabel LSinfo = new JLabel("Longstay ward table goes here");
+
 
         infoPanel.add(LSinfo);
 

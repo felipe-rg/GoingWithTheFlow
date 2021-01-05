@@ -1,16 +1,18 @@
+import Client.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.logging.Level;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class UserPage {
 
     static GraphicsConfiguration gc;
 
     public UserPage() {
-
+        Client client = new Client();
 
         JFrame frame = new JFrame(gc);                                                  // create a JFrame
 
@@ -33,7 +35,7 @@ public class UserPage {
             @Override
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();                                                        // closes current JFrame
-                AMCGUI AMC = new AMCGUI();                                              // constructs AMC GUI (a new JFrame)
+                GUI AMC = new GUI(2);                                              // constructs AMC GUI (a new JFrame)
             }
         });
 
@@ -58,12 +60,43 @@ public class UserPage {
             }
         });
 
-        userPanel.setLayout(new GridLayout(4,1));                     // sets user panel layout
+        ArrayList<Ward> wards = new ArrayList<Ward>();
+        //FIXME get all wards more efficiently
+        for(int i=3; i<6; i++) {
+            try {
+                ArrayList<String> json = client.makeGetRequest("*", "wards", "wardid="+i);
+                if(json.size()!=0){
+                    Ward ward = client.wardsFromJson(json).get(0);
+                    wards.add(ward);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        ArrayList<JButton> longstayButtons = new ArrayList<>();
+        for(Ward w:wards){
+            JButton lsWard = new JButton("Click here to view "+w.getWardName());     // creates button to access longstay ward
+            lsWard.setFont(new Font("Verdana", Font.PLAIN, 20));
+            lsWard.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    frame.dispose();
+                    GUI gui = new GUI(w.getWardId());                        // constructs control page (new Jframe)
+                }
+            });
+            longstayButtons.add(lsWard);
+        }
+
+
+        userPanel.setLayout(new GridLayout(4+longstayButtons.size(),1));                     // sets user panel layout
         padding(userPanel);                                                    // adds padding to user panel
         userPanel.add(userLabel);                                              // adds components to user panel
         userPanel.add(wardButton);
         userPanel.add(controlButton);
         userPanel.add(formButton);
+        for(JButton j:longstayButtons){
+            userPanel.add(j);
+        }
 
         mainPanel.setLayout(new BorderLayout());
         mainPanel.add(titlePanel , BorderLayout.NORTH);                         // adds title to the top of panel
@@ -74,7 +107,7 @@ public class UserPage {
         frame.setExtendedState(Frame.MAXIMIZED_BOTH);                           // frame will occupy the whole screen
         frame.setVisible(true);                                                 // makes JFrame visible
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);          // This closes the program when the frame is closed
-        }
+    }
 
     // padding method improves visual layout
     public void padding(JPanel panel){

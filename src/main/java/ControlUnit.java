@@ -1,6 +1,6 @@
 import Methods.ControlCentre;
-import Panels.Title;
-
+import AMCWardPanels.Title;
+import Methods.GeneralWard;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,18 +11,19 @@ import java.sql.SQLException;
 
 public class ControlUnit {
 
-    JFrame f;                             // creates fields
+    JFrame f;                                                           // creates relevant fields
     JPanel mainPanel;
 
     JPanel incomingPanel;
     JPanel longStayPanel;
     JPanel AMCPanel;
 
+
     ControlCentre methods;
 
     public ControlUnit() {
         try {
-            methods = new ControlCentre();          //Methods for control centre                               // constructor for control page
+            methods = new ControlCentre();              //Methods for control centre                               // constructor for control page
         } catch (IOException e) {
             e.printStackTrace();
         } catch (SQLException throwables) {
@@ -36,7 +37,7 @@ public class ControlUnit {
         // Title Panel
         JButton backButton = new JButton("Go Back To User Page");  // creates back button
         JButton refreshButton = new JButton("Refresh Page");
-        Title titlePanel = new Title("AMC Status" , backButton , refreshButton);   // see Title class
+        Title titlePanel = new Title("AMC Status" , backButton, refreshButton, 400, 380);   // calls title class to create panel for title
         titlePanel.setBorder(BorderFactory.createMatteBorder(0, 0, 3, 0, Color.BLACK));
 
         backButton.addActionListener(new ActionListener() {             // waits for mouse to click button
@@ -58,7 +59,7 @@ public class ControlUnit {
         // Incoming Panel
         incomingPanel = new JPanel();
         outline(incomingPanel);
-        panelPadding(incomingPanel);                             // adds padding to the JPanel
+        panelPadding(incomingPanel);                                    // adds padding to the JPanel
 
         incomingPanel.setLayout(new GridLayout(8,1));  // sets layout type of panel to be vertical
 
@@ -69,14 +70,13 @@ public class ControlUnit {
         // incoming from A&E info
         JLabel text1 = new JLabel("Number of Patients coming from A&E:");
         text1.setFont (text1.getFont ().deriveFont (14.0f));
+        //labelPadding(text1);
 
-        // total number of patients coming from A&E
         JLabel total = new JLabel(String.valueOf(methods.getRedPatients()+methods.getGreenPatients()+methods.getOrangePatients()) , SwingConstants.CENTER);
         text1.setFont (text1.getFont ().deriveFont (14.0f));
         labelPadding(text1);
 
-        // incoming patients with traffic light to represent time of arrival
-        JButton r = new JButton(String.valueOf(methods.getRedPatients()));
+        JButton r = new JButton(String.valueOf(methods.getRedPatients()));           // incoming patients with traffic light to represent time of arrival
         r.setBackground(Color.RED);
         r.setHorizontalAlignment(SwingConstants.CENTER);
         JButton y = new JButton(String.valueOf(methods.getOrangePatients()));
@@ -96,7 +96,7 @@ public class ControlUnit {
             public void actionPerformed(ActionEvent e) {
                 f.dispose();
                 try {
-                    Incoming ipList = new Incoming(methods.seeIncomingList() , methods);           // opens incoming patient list (new JFrame)
+                    Incoming ipList = new Incoming(methods.seeIncomingList(), methods);           // opens incoming patient list (new JFrame)
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 } catch (SQLException throwables) {
@@ -142,7 +142,7 @@ public class ControlUnit {
             public void actionPerformed(ActionEvent e) {
                 f.dispose();
                 try {
-                    LongStay LSpage = new LongStay(methods.getAllWardInfo() , methods);           // opens long stay ward overview
+                    LongStay LSpage = new LongStay(methods.getAllWardInfo(), methods);           // opens long stay ward overview
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 } catch (SQLException throwables) {

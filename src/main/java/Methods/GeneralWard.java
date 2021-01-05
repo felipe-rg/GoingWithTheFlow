@@ -6,6 +6,11 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import java.sql.Array;
 import java.sql.SQLException;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public abstract class GeneralWard {
@@ -25,8 +30,8 @@ public abstract class GeneralWard {
 
     public GeneralWard(int wardId) throws IOException, SQLException {
         this.wardId = wardId;
-        getWardName();
         client = new Client();
+        getWardName();
         refresh();
     }
 
@@ -34,7 +39,12 @@ public abstract class GeneralWard {
     public void getWardName() throws IOException {
         ArrayList<String> json = client.makeGetRequest("wardname", "wards", "id="+wardId);
         ArrayList<Ward> wards = client.wardsFromJson(json);
-        wardName = wards.get(0).getWardName();
+        if(wards.size()!=0) {
+            wardName = wards.get(0).getWardName();
+        }
+        else {
+            wardName = "Unknown Ward";
+        }
     }
 
     //Updates local variables with appropriate numbers
@@ -44,7 +54,6 @@ public abstract class GeneralWard {
         greenBeds =0;
         orangeBeds =0;
         redBeds =0;
-        patientsInWard=0;
         //get bed Ids for hardcoded bed numbers / bednumber = bedid
         ArrayList<String> json = client.makeGetRequest("*", "beds", "wardid="+wardId);
         ArrayList<Bed> beds = client.bedsFromJson(json);
@@ -61,18 +70,14 @@ public abstract class GeneralWard {
                 //todo colour bed red with slash
             }
             else {
-                json = client.makeGetRequest("*", "patients", "bedid="+b.getBedId());
+                json = client.makeGetRequest("*", "patients", "currentbedid="+b.getBedId());
                 ArrayList<Patient> patients = client.patientsFromJson(json);
                 if(patients.get(0).getEstimatedTimeOfNext()==null){
                     redBeds = redBeds+1;
-                    //add to patient in ward
-                    patientsInWard = patientsInWard+1;
                     //todo colour bed red
                 }
                 else {
                     orangeBeds = orangeBeds+1;
-                    //add to patient in ward
-                    patientsInWard = patientsInWard+1;
                     //todo colour bed orange
                 }
             }
@@ -82,17 +87,20 @@ public abstract class GeneralWard {
     //Updates local variables with appropriate numbers
     public void wardNumbers() throws IOException, SQLException {
         //Incoming patients
-        incomingNumber = getIncomingList(wardId).size();
+        incomingNumber = getIncomingList().size();
 
         //Discharge patients
-        dischargeNumber = getDischargeList(wardId).size();
+        dischargeNumber = getDischargeList().size();
 
         //Other patients
-        otherNumber = getOtherList(wardId).size();
+        otherNumber = getOtherList().size();
+
+        //Patients in ward
+        patientsInWard = getPatientList().size();
     }
 
     public void refresh() throws IOException, SQLException {
-        bedColours();
+       //bedColours();
         wardNumbers();
     }
 
@@ -100,22 +108,22 @@ public abstract class GeneralWard {
 
     //Returns all patients where they're next destination is the input ward
     //Used to see who needs to be accepted/rejected or who needs to be put in a bed once accepted
-    public ArrayList<Patient> getIncomingList(int wardId) throws IOException, SQLException {
-        ArrayList<String> json = client.makeGetRequest("id", "patients", "nextDestination="+wardId);
+    public ArrayList<Patient> getIncomingList() throws IOException, SQLException {
+        ArrayList<String> json = client.makeGetRequest("*", "patients", "nextdestination="+wardId);
         return client.patientsFromJson(json);
     }
 
     public Object[][] getIncomingData() throws IOException, SQLException {
-        ArrayList<Patient> patients = getIncomingList(wardId);
-        Object[][] data = new Object[patients.size()][8];
+        ArrayList<Patient> patients = getIncomingList();
+        Object[][] data = new Object[patients.size()][9];
         for(int i=0; i<patients.size(); i++) {
             Patient p = patients.get(i);
             data[i][0] = p.getId();
-            data[i][1] = p.getNameInitials();
+            data[i][1] = p.getPatientId();
             data[i][2] = p.getSex();
             data[i][3] = p.getInitialDiagnosis();
             data[i][4] = p.getNeedsSideRoom();
-            data[i][5] = p.getArrivalDateTime();
+            data[i][5] = dateFormatter(p.getArrivalDateTime());
             data[i][6] = p.getAcceptedByMedicine();
             data[i][7] = "Select Bed";
             data[i][8] = "Delete Patient";
@@ -123,26 +131,154 @@ public abstract class GeneralWard {
         return data;
     }
 
+    public Object[][] getLSIncomingData() throws IOException, SQLException {
+        ArrayList<Patient> patients = getIncomingList();
+        Object[][] data = new Object[patients.size()][9];
+        for(int i=0; i<patients.size(); i++) {
+            Patient p = patients.get(i);
+            data[i][0] = p.getId();
+            data[i][1] = p.getPatientId();
+            data[i][2] = p.getSex();
+            data[i][3] = p.getInitialDiagnosis();
+            data[i][4] = p.getNeedsSideRoom();
+            data[i][5] = dateFormatter(p.getEstimatedTimeOfNext());
+            data[i][6] = p.getTransferRequestStatus();
+            data[i][7] = "Select Bed";
+            data[i][8] = "Delete Patient";
+        }
+        return data;
+    }
+
+
+    public ArrayList<Patient> getPatientList() throws IOException, SQLException {
+        ArrayList<String> json = client.makeGetRequest("*", "patients", "currentwardid="+wardId);
+        return client.patientsFromJson(json);
+    }
+
+    public Object[][] getPatientData() throws IOException, SQLException {
+        ArrayList<Patient> patients = getPatientList();
+        Object[][] data = new Object[patients.size()][8];
+        for(int i=0; i<patients.size(); i++) {
+            Patient p = patients.get(i);
+            data[i][0] = p.getId();
+            data[i][1] = p.getPatientId();
+            data[i][2] = p.getSex();
+            data[i][3] = p.getInitialDiagnosis();
+            data[i][4] = p.getNeedsSideRoom();
+            data[i][5] = durationFormatter(Duration.between(p.getArrivalDateTime(), LocalDateTime.now()));
+            if(p.getNextDestination()==0){
+                data[i][6] = null;
+            }
+            ArrayList<String> json = client.makeGetRequest("*", "wards", "wardid="+p.getNextDestination());
+            ArrayList<Ward> wards = client.wardsFromJson(json);
+            if(wards.size()!=0){
+                data[i][6] = wards.get(0).getWardName();
+            }
+            data[i][7] = "Delete Patient";
+        }
+        return data;
+    }
+
+    public String durationFormatter(Duration duration){
+        long hours = duration.toHours();
+        return String.valueOf(hours);
+    }
+
+    public String dateFormatter(LocalDateTime localDateTime){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        return localDateTime.format(formatter);
+    }
+
+    public void deletePatient(int patientId) throws IOException {
+        ArrayList<String> json = client.makeGetRequest("*", "patients", "id="+patientId);
+        ArrayList<Patient> patients = client.patientsFromJson(json);
+        int bedid = patients.get(0).getCurrentBedId();
+        client.makePutRequest("beds", "status='F'", "bedid="+bedid);
+        client.makeDeleteRequest("patients", "id="+patientId);
+    }
+
     //Returns all patients in ward who have had a TTA signoff
     //todo make it not tta but discharge
     //Used to see who will be leaving and when
-    public ArrayList<Patient> getDischargeList(int wardId) throws IOException, SQLException {
-        ArrayList<String> json = client.makeGetRequest("*", "patients", "currentLocation="+wardId);
+    public ArrayList<Patient> getDischargeList() throws IOException, SQLException {
+        ArrayList<String> json = client.makeGetRequest("*", "patients", "currentwardid="+wardId);
         ArrayList<Patient> patients = client.patientsFromJson(json);
-        json = client.makeGetRequest("*", "patients", "ttasignedoff=TRUE");
+        json = client.makeGetRequest("*", "patients", "nextdestination=6");
         ArrayList<Patient> discharging = client.patientsFromJson(json);
         return client.crossReference(patients, discharging);
     }
 
-    //Returns all patients in ward who have died
-    //todo make it not just dying
+    public Object[][] getDischargeData() throws IOException, SQLException {
+        ArrayList<Patient> patients = getDischargeList();
+        Object[][] data = new Object[patients.size()][10];
+        for(int i=0; i<patients.size(); i++) {
+            Patient p = patients.get(i);
+            data[i][0] = p.getId();
+            data[i][1] = p.getCurrentBedId();
+            data[i][2] = p.getPatientId();
+            data[i][3] = p.getSex();
+            data[i][4] = p.getInitialDiagnosis();
+            data[i][5] = p.getNeedsSideRoom();
+            data[i][6] = p.getTtaSignedOff();
+            data[i][7] = p.getSuitableForDischargeLounge();
+            data[i][8] = dateFormatter(p.getEstimatedTimeOfNext());
+            data[i][9] = "Delete Patient";
+        }
+        return data;
+    }
+
+    //Returns all patients in ward who have died or going to ICU
+    //FIXME better way?
     //Used to see who will be leaving and when
-    public ArrayList<Patient> getOtherList(int wardId) throws IOException, SQLException {
+    public ArrayList<Patient> getOtherList() throws IOException, SQLException {
         ArrayList<String> json = client.makeGetRequest("id", "patients", "currentLocation="+wardId);
         ArrayList<Patient> patients = client.patientsFromJson(json);
         json = client.makeGetRequest("id", "patients", "deceased=true");
         ArrayList<Patient> deceased = client.patientsFromJson(json);
-        return client.crossReference(patients, deceased);
+        json = client.makeGetRequest("id", "patients", "nextdestination=7");
+        ArrayList<Patient> toICU = client.patientsFromJson(json);
+        ArrayList<Patient> ICUorRIP = client.crossReference(toICU, deceased);
+        return client.crossReference(patients, ICUorRIP);
+    }
+
+    public Object[][] getOtherData() throws IOException, SQLException {
+        ArrayList<Patient> patients = getOtherList();
+        Object[][] data = new Object[patients.size()][9];
+        for(int i=0; i<patients.size(); i++) {
+            Patient p = patients.get(i);
+            data[i][0] = p.getId();
+            data[i][1] = p.getCurrentBedId();
+            data[i][2] = p.getPatientId();
+            data[i][3] = p.getSex();
+            data[i][4] = p.getInitialDiagnosis();
+            data[i][5] = p.getNeedsSideRoom();
+            data[i][6] = dateFormatter(p.getEstimatedTimeOfNext());
+            ArrayList<String> json = client.makeGetRequest("*", "wards", "wardid="+p.getNextDestination());
+            ArrayList<Ward> wards = client.wardsFromJson(json);
+            if(wards.size()!=0){
+                data[i][7] = wards.get(0).getWardName();
+            }
+            data[i][8] = "Delete Patient";
+        }
+        return data;
+    }
+
+
+
+    // Returns a list of beds in the ward which have the correct characteristics for the chosen patient
+    // Used when clicking select bed in incoming table
+    public ArrayList<Bed> getAcceptableBeds(int patientId) throws IOException {
+        ArrayList<Bed> acceptableBeds = new ArrayList<Bed>();
+        ArrayList<String> json = client.makeGetRequest("*", "beds", "wardid="+wardId);
+        ArrayList<Bed> bedsInWard = client.bedsFromJson(json);
+        json = client.makeGetRequest("*", "patients", "id="+patientId);
+        Patient patientInfo = client.patientsFromJson(json).get(0);
+        for(Bed b: bedsInWard){
+            if(b.getStatus() == "F") {
+                acceptableBeds.add(b);
+            }
+        }
+        return bedsInWard;
     }
 
     //Changes transfer request status to confirmed
@@ -153,6 +289,9 @@ public abstract class GeneralWard {
 
     public void acceptByMedicine(int patientId) throws IOException, SQLException {
         client.makePutRequest("patients", "acceptedbymedicine=true", "id="+patientId);
+    }
+    public void rejectByMedicine(int patientId) throws IOException, SQLException {
+        client.makePutRequest("patients", "acceptedbymedicine=false", "id="+patientId);
     }
 
     //Changes transfer request status to rejected
@@ -169,12 +308,13 @@ public abstract class GeneralWard {
     //Refreshes ward to update numbers
     //Used to assign a bed and change patient location
     public void setBed(int patientId, int bedId) throws IOException, SQLException {
-        client.makePutRequest("patients", "bedid="+bedId, "id="+patientId);
-        ArrayList<String> json = client.makeGetRequest("wardid", "beds", "id="+bedId);
-        int wardid = client.patientsFromJson(json).get(0).getId();
-        client.makePutRequest("patients", "currentlocation="+wardid, "id="+patientId);
-        client.makePutRequest("patients", "nextlocation=NULL", "id="+patientId);
-        client.makePutRequest("beds", "status='O'", "id="+bedId);
+        client.makePutRequest("patients", "currentbedid="+bedId, "id="+patientId);
+        ArrayList<String> json = client.makeGetRequest("*", "beds", "bedid="+bedId);
+        int wardid = client.bedsFromJson(json).get(0).getWardId();
+        System.out.println(wardid);
+        client.makePutRequest("patients", "currentwardid="+wardid, "id="+patientId);
+        client.makePutRequest("patients", "nextdestination=0", "id="+patientId);
+        client.makePutRequest("beds", "status='O'", "bedid="+bedId);
         refresh();
     }
 
@@ -200,11 +340,11 @@ public abstract class GeneralWard {
     //Changes patient's transfer request status to confirmed
     //Used to undo a setBed and will still appear on incoming list
     public void removePatient(int patientId, int bedId) throws IOException, SQLException {
-        client.makePutRequest("patients", "bedid=Null", "id="+patientId);
-        client.makePutRequest("beds", "occupied='F'", "id="+bedId);
-        client.makePutRequest("patients", "currentlocation=Null", "id="+patientId);
-        ArrayList<String> json = client.makeGetRequest("wardid", "beds", "id="+bedId);
-        int wardid = client.patientsFromJson(json).get(0).getId();
+        client.makePutRequest("patients", "currentbedid=0", "id="+patientId);
+        client.makePutRequest("beds", "status='F'", "bedid="+bedId);
+        client.makePutRequest("patients", "currentwardid=0", "id="+patientId);
+        ArrayList<String> json = client.makeGetRequest("*", "beds", "bedid="+bedId);
+        int wardid = client.bedsFromJson(json).get(0).getWardId();
         client.makePutRequest("patients", "nextdestination="+wardid, "id="+patientId);
         client.makePutRequest("patients", "transferrequeststatus='C'", "id="+patientId);
     }
@@ -213,7 +353,7 @@ public abstract class GeneralWard {
     //Used to edit qualities of bed, eg which sex it is for
     public void editBed(int bedId, String columnId, String newVal) throws IOException, SQLException {
         //String SQLstr = "UPDATE beds SET "+columnId+ " = "+newVal+" WHERE id =" +bedId+";";
-        client.makePutRequest("beds", columnId+"="+newVal, "id="+bedId);
+        client.makePutRequest("beds", columnId+"="+newVal, "bedid="+bedId);
     }
 
     //todo do we need this?
@@ -234,9 +374,13 @@ public abstract class GeneralWard {
     //Edits the designated column in the table for the patient
     //Used to edit qualities of patient, eg their sex
     public void editPatient(int patientId, String columnId, String newVal) throws IOException, SQLException {
-        //String SQLstr = "UPDATE patients SET "+columnId+ " = "+newVal+" WHERE id =" +patientId+";";
-        client.makePutRequest("patients", columnId="="+newVal, "id="+patientId);
+        client.makePutRequest("patients", columnId+"="+newVal, "id="+patientId);
     }
+
+    public void editPatientETON(int patientId, LocalDateTime newVal) throws IOException, SQLException {
+        client.makePutRequest("patients", "estimatedatetimeofnext='"+newVal+"'", "id="+patientId);
+    }
+
 
     //Returns all info about the patient
     //Used to retrieve specific info
@@ -245,11 +389,25 @@ public abstract class GeneralWard {
         return client.patientsFromJson(json);
     }
 
+    public Patient getPatient(int bedId) throws IOException, SQLException {
+        ArrayList<String> json = client.makeGetRequest("*","patients", "currentbedid="+bedId);
+        ArrayList<Patient> patients = client.patientsFromJson(json);
+        if(patients.size()==0){
+            return null;
+        }
+        return patients.get(0);
+    }
+
     //Changes deceased column to true
     //Used to indicate that a patient has died
     //todo do we need it this specific?
     public void ripPatient(int patientId) throws IOException {
         client.makePutRequest("patients", "deceased=true", "id="+patientId);
+    }
+
+    public ArrayList<Bed> getBeds() throws IOException {
+        ArrayList<String> json = client.makeGetRequest("*", "beds", "wardid="+wardId);
+        return client.bedsFromJson(json);
     }
 
     //Returns the beds in the ward

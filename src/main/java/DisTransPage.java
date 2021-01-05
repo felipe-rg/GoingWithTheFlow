@@ -1,10 +1,8 @@
 import Client.Patient;
+import AMCWardPanels.Title;
 import Methods.ControlCentre;
-import Methods.GeneralWard;
-import Panels.Title;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,7 +11,7 @@ import java.util.ArrayList;
 
 public class DisTransPage {
 
-    public DisTransPage(ArrayList<Patient> transfers, ArrayList<Patient> discharges , ControlCentre methods)  {
+    public DisTransPage(ArrayList<Patient> transfers, ArrayList<Patient> discharges, ControlCentre methods) {
 
         JFrame f = new JFrame();
         JPanel mainPanel = new JPanel();
@@ -21,7 +19,7 @@ public class DisTransPage {
 
         JButton backButton = new JButton("Go Back");
         JButton refreshButton = new JButton("Refresh Page");
-        Title titlePanel = new Title("Discharge and Transfer Lists" , backButton , refreshButton);
+        Title titlePanel = new Title("Discharge and Transfer Lists" , backButton, refreshButton, 220, 200);
         titlePanel.setBorder(BorderFactory.createMatteBorder(0, 0, 3, 0, Color.BLACK));
 
         backButton.addActionListener(new ActionListener() {
@@ -62,9 +60,5 @@ public class DisTransPage {
         f.setVisible(true);
         f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         f.setExtendedState(Frame.MAXIMIZED_BOTH);
-    }
-
-    public void panelPadding(JPanel panel){                                              // adds padding to JLabels for better spacing
-        panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
     }
 }
