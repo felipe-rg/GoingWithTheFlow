@@ -1,4 +1,5 @@
 import AMCWardPanels.Title;
+import CUTablePanels.LongStayTablePanel;
 import Methods.ControlCentre;
 
 import javax.swing.*;
@@ -42,11 +43,12 @@ public class LongStay {
 
 
         JPanel infoPanel = new JPanel();
+        infoPanel.setLayout(new GridLayout());
 
-        JLabel LSinfo = new JLabel("Longstay ward table goes here");
+        LongStayTablePanel longStayTablePanel = new LongStayTablePanel(methods);
 
+        infoPanel.add(longStayTablePanel);
 
-        infoPanel.add(LSinfo);
 
         mainPanel.setLayout(new BorderLayout());                                    // defines layout of MainPanel
         mainPanel.add(titlePanel, BorderLayout.NORTH);

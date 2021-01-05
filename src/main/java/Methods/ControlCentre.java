@@ -263,6 +263,7 @@ public class ControlCentre implements statusable{
     //stats needed for longstay
     public ArrayList<ArrayList<String>> getLongStayList() throws IOException, SQLException {
         ArrayList<ArrayList<String>> output = new ArrayList<>();
+        //For each of the wards, create array of strings with all info necessary; add them into output and return output
         for(int i=3; i<6; i++){
             ArrayList<String> wardInfo = getWardInfo(i);
             output.add(wardInfo);
@@ -334,9 +335,11 @@ public class ControlCentre implements statusable{
 
     public Object[][] getLongStayData() throws IOException, SQLException {
         ArrayList<ArrayList<String>> longStayList = getLongStayList();
-        Object[][] data= new Object[longStayList.size()][1];
-        for(int i=0; i<longStayList.size(); i++){
-            data[0][i] = longStayList.get(i);
+        Object[][] data= new Object[3][9];
+        for(int i=0; i<3; i++){
+            for(int j=0; j<9; j++) {
+                data[i][j] = longStayList.get(i).get(j);
+            }
         }
         return data;
 
