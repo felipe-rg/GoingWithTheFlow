@@ -19,7 +19,7 @@ public class PatientForm {
 
         JButton backButton = new JButton("Cancel & go back");
         JButton refreshButton = new JButton("Refresh Page");
-        Title titlePanel = new Title("A&E Incoming Patient Form" , backButton, refreshButton, 100, 50);
+        Title titlePanel = new Title("A&E Incoming Patient Form" , backButton, refreshButton, 230, 200);
         titlePanel.setBorder(BorderFactory.createMatteBorder(0, 0, 3, 0, Color.BLACK));
         backButton.addActionListener(new ActionListener() {
             @Override
