@@ -32,22 +32,6 @@ public class DisTablePanel extends JPanel implements TableModelListener {
             "ETD",
             "Delete Button"};
 
-
-    //This is how we will receive the date from the database
-    //We need to input it into the table as doing dateFormatter first like i did below
-    LocalDateTime localDateTime1 = LocalDateTime.of(0, Month.JULY, 1, 9, 00, 0);
-    LocalDateTime localDateTime2 = LocalDateTime.of(0, Month.JULY, 1, 10, 07, 0);
-    LocalDateTime localDateTime3 = LocalDateTime.of(0, Month.JULY, 1, 12, 20, 0);
-
-
-
-    //Data in each of the rows of our table
-    private Object[][] data = {
-            {1, 166128, "M", "Asthma", false, true, true, dateFormatter(localDateTime1), "Delete Patient"},
-            {2, 234134, "F", "Internal Bleeding", true, false, false, dateFormatter(localDateTime2), "Delete Patient"},
-            {3, 356456, "M", "Fracture", false, false, true, dateFormatter(localDateTime3), "Delete Patient"}
-    };
-
     private Object[][] dbData;
 
     private GeneralWard methods;
@@ -86,6 +70,7 @@ public class DisTablePanel extends JPanel implements TableModelListener {
         this.add(scrollPane);
     }
 
+    //Used to change the patient information on the database
     private void editPatient(int patientId, String column, boolean value){
         try {
             methods.editPatient(patientId, column, String.valueOf(value));
@@ -121,11 +106,6 @@ public class DisTablePanel extends JPanel implements TableModelListener {
             editPatient(patientId, "suitablefordischargelounge", (boolean)data);
         }
 
-    }
-
-    private Object dateFormatter(LocalDateTime localDateTime) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-        return localDateTime.format(formatter);
     }
 
     public void setupTable(JTable table){

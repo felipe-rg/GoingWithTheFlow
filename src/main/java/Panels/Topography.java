@@ -20,9 +20,6 @@ public class Topography extends JPanel{
     BedStatus bedstatus;
 
     public Topography(BedStatus bedstatus, GeneralWard methods) {
-        /*RCount = methods.redBeds;
-        OCount = methods.orangeBeds;
-        GCount = methods.redBeds;*/
 
         this.bedstatus = bedstatus;
 
@@ -56,7 +53,7 @@ public class Topography extends JPanel{
             } else {
                 y = 450;
             }
-            BedButton newBed = new BedButton(this, methods, b.getBedId(), b.getStatus(), b.getForSex(), b.getHasSideRoom(), x, y);
+            BedButton newBed = new BedButton(this, methods, b, x, y);
             beds.add(newBed);
             this.add(newBed);
         }
@@ -66,8 +63,8 @@ public class Topography extends JPanel{
 
         for (BedButton b : beds){
             b.addActionListener(evt -> {
-                if(b.getStatus().equals("O")){ b.printInfoFull(); }
-                if(b.getStatus().equals("F") || b.getStatus().equals("C")){ b.printInfoEmpty(); }
+                if(b.getBedButtonStatus().equals("O")){ b.printInfoFull(); }
+                if(b.getBedButtonStatus().equals("F") || b.getBedButtonStatus().equals("C")){ b.printInfoEmpty(); }
 
                 // every time something is done to the beds, check whether the bedstatus must change and update it
                 CountBeds();
@@ -80,11 +77,14 @@ public class Topography extends JPanel{
     public void CountBeds() {
         OCount = GCount = RCount = 0;
         for (BedButton b : beds) {
-            if (b.getStatus().equals("C")) { RCount = RCount + 1; }
-            if (b.getStatus().equals("F")) { GCount = GCount + 1; }
-            if (b.getStatus().equals("O")) {
-
-                if((b.getETD().getHour() == 0) && (b.getETD().getMinute() == 0)){ RCount = RCount + 1; }
+            if (b.getBedButtonStatus().equals("C")) { RCount = RCount + 1; }
+            if (b.getBedButtonStatus().equals("F")) { GCount = GCount + 1; }
+            if (b.getBedButtonStatus().equals("O")) {
+                LocalDateTime leaving = b.getBedButtonETD();
+                LocalDateTime now = LocalDateTime.now();
+                if(leaving.isBefore(now.plusHours(4))){
+                    RCount = RCount + 1;
+                }
                 else{ OCount = OCount + 1; }
             }
         }

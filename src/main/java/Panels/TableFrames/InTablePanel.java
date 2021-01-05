@@ -36,13 +36,14 @@ public class InTablePanel extends JPanel implements TableModelListener {
             "Bed",
             "Delete Button"};
 
+    //Long stay ward table is slightly different
     private String[] lsColumnName = {"Index",
             "Patient ID",
             "Sex",
             "Initial Diagnosis",
             "Side Room",
-            "Estimated Time Arrival", //Remove Colour
-            "Transfer Request Status", //Boolean, P = pending, C = confirmed, R = rejected
+            "Estimated Time Arrival", //TODO remove Colour
+            "Transfer Request Status",
             "Bed",
             "Delete Button"};
 
@@ -52,9 +53,10 @@ public class InTablePanel extends JPanel implements TableModelListener {
 
     //Constructor
     public InTablePanel(GeneralWard methods) {
-
+        //Methods hold communication with database
         this.methods = methods;
 
+        //If the ward is amc then we use amc data
         if(methods.wardId==2){
             try {
                 dbData = this.methods.getIncomingData();
@@ -63,8 +65,9 @@ public class InTablePanel extends JPanel implements TableModelListener {
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
-            tableModel = new InTableModel(amcColumnName, dbData);        //Instance of IntableModel extending from MyTableModel
+            tableModel = new InTableModel(amcColumnName, dbData);
         }
+        //if the ward is not amc we use long stay data
         else {
             try {
                 dbData = this.methods.getLSIncomingData();
@@ -120,6 +123,7 @@ public class InTablePanel extends JPanel implements TableModelListener {
         this.add(scrollPane);
     }
 
+    //Used to change the patient information on the database
     private void editPatient(int patientId, String column, String value){
         try {
             methods.editPatient(patientId, column, value);
@@ -130,38 +134,55 @@ public class InTablePanel extends JPanel implements TableModelListener {
         }
     }
 
-
+    //Function to assign a patient to a bed
     private void selectBed(int patientId){
-        Client client = new Client();
-        JFrame infoFrame = new JFrame();
+        //Create array of acceptable beds (correct gender, not occupied etc)
         ArrayList<Bed> acceptableBeds = new ArrayList<Bed>();
         try {
             acceptableBeds = methods.getAcceptableBeds(patientId);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //edit info Frame
+
+        // Create a button group, on which all beds will be assigned
+        ButtonGroup beds = new ButtonGroup();
+
+        //Create for information to be displayed on
+        JFrame infoFrame = new JFrame();
         infoFrame.setSize(300,300);
         infoFrame.setBackground(Color.WHITE);
         infoFrame.setVisible(true);
         infoFrame.setLocation(300,300);
+        //We need a row for each bed and a row for the submit button
+        infoFrame.setLayout(new GridLayout(acceptableBeds.size()+1,1));
 
-        infoFrame.setLayout(new GridLayout(acceptableBeds.size()+1,2));
-        ButtonGroup beds = new ButtonGroup();
+        //Loop all beds
         for(Bed w:acceptableBeds){
+            //Create a button per bed
             JRadioButton lsWard = new JRadioButton(String.valueOf(w.getBedId()));
+            //This is what is returned by ButtonGroup.getSelected()
             lsWard.setActionCommand(String.valueOf(w.getBedId()));
+            //Make it look pretty
             lsWard.setFont(new Font("Verdana", Font.PLAIN, 20));
+            //Add to button group
             beds.add(lsWard);
+            //Add to frame
             infoFrame.add(lsWard);
         }
+
+        // Create a submit button and add it to the frame
+
         JButton submitWard = new JButton("Submit");
         infoFrame.add(submitWard);
+
+        //When submit button is pressed, we assign the bed
         submitWard.addActionListener(evt -> {
+            //Retrieve our selected button
             String selected = beds.getSelection().getActionCommand();
             try {
-                ArrayList<String> json = client.makeGetRequest("*", "beds", "bedid='"+selected+"'");
-                Bed bed = client.bedsFromJson(json).get(0);
+                //Find bed
+                Bed bed = methods.getBed(Integer.parseInt(selected));
+                //Assign patient to bed
                 methods.setBed(patientId, bed.getBedId());
             } catch (IOException e) {
                 e.printStackTrace();
@@ -211,11 +232,6 @@ public class InTablePanel extends JPanel implements TableModelListener {
         tableModel.isCellEditable(row, column);
     }
 
-    //Transforming a LocalDateTime object into a string displaying hours and minutes in the form "HH:mm"
-    public String dateFormatter(LocalDateTime localDateTime){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-        return localDateTime.format(formatter);
-    }
 
 
     public void setupTable(JTable table) {
