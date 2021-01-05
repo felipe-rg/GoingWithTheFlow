@@ -249,11 +249,11 @@ public abstract class GeneralWard {
         json = client.makeGetRequest("*", "patients", "id="+patientId);
         Patient patientInfo = client.patientsFromJson(json).get(0);
         for(Bed b: bedsInWard){
-            if(b.getStatus() == "F") {
+            if(b.getStatus().equals("F") && b.getHasSideRoom() == patientInfo.getNeedsSideRoom() && b.getForSex().equals(patientInfo.getSex())) {
                 acceptableBeds.add(b);
             }
         }
-        return bedsInWard;
+        return acceptableBeds;
     }
 
     //Used to assign a bed and change patient location
