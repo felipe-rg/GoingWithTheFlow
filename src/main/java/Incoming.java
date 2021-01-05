@@ -15,7 +15,7 @@ public class Incoming {
 
     private GeneralWard methods;
 
-    public Incoming(ArrayList<Patient> incomingPatients, ControlCentre methods) {
+    public Incoming(ArrayList<Patient> incomingPatients) {
 
         JFrame f = new JFrame();                   //creates JFrame
         JPanel mainPanel = new JPanel();           // creates MainPanel

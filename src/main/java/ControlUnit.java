@@ -87,7 +87,7 @@ public class ControlUnit {
             public void actionPerformed(ActionEvent e) {
                 f.dispose();
                 try {
-                    Incoming ipList = new Incoming(methods.seeIncomingList(), methods);           // opens incoming patient list (new JFrame)
+                    Incoming ipList = new Incoming(methods.seeIncomingList());           // opens incoming patient list (new JFrame)
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 } catch (SQLException throwables) {
