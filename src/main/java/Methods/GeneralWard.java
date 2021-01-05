@@ -247,15 +247,18 @@ public abstract class GeneralWard {
 
     // Returns a list of beds in the ward which have the correct characteristics for the chosen patient
     // Used when clicking select bed in incoming table
-    //FIXME
     public ArrayList<Bed> getAcceptableBeds(int patientId) throws IOException {
         ArrayList<Bed> acceptableBeds = new ArrayList<Bed>();
         ArrayList<String> json = client.makeGetRequest("*", "beds", "wardid="+wardId);
         ArrayList<Bed> bedsInWard = client.bedsFromJson(json);
         json = client.makeGetRequest("*", "patients", "id="+patientId);
         Patient patientInfo = client.patientsFromJson(json).get(0);
+        boolean gender = false;
         for(Bed b: bedsInWard){
-            if(b.getStatus().equals("F") && b.getHasSideRoom() == patientInfo.getNeedsSideRoom() && b.getForSex().equals(patientInfo.getSex())) {
+            if(b.getForSex().equals(patientInfo.getSex()) || b.getForSex().equals("Uni")){
+                gender = true;
+            }
+            if(b.getStatus().equals("F") && b.getHasSideRoom() == patientInfo.getNeedsSideRoom() && gender) {
                 acceptableBeds.add(b);
             }
         }
