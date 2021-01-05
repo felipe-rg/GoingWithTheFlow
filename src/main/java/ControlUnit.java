@@ -1,5 +1,6 @@
 import Methods.ControlCentre;
-import Panels.Title;
+import AMCWardPanels.Title;
+import Methods.GeneralWard;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,6 +17,7 @@ public class ControlUnit {
     JPanel incomingPanel;
     JPanel longStayPanel;
     JPanel AMCPanel;
+
 
     ControlCentre methods;
 
@@ -34,7 +36,8 @@ public class ControlUnit {
 
         // Title Panel
         JButton backButton = new JButton("Go Back To User Page");  // creates back button
-        Title titlePanel = new Title("AMC Status" , backButton);   // calls title class to create panel for title
+        JButton refreshButton = new JButton("Refresh Page");
+        Title titlePanel = new Title("AMC Status" , backButton, refreshButton, 400, 380);   // calls title class to create panel for title
         titlePanel.setBorder(BorderFactory.createMatteBorder(0, 0, 3, 0, Color.BLACK));
 
         backButton.addActionListener(new ActionListener() {             // waits for mouse to click button
@@ -42,6 +45,14 @@ public class ControlUnit {
             public void actionPerformed(ActionEvent e) {
                 f.dispose();                                            // closes control page
                 UserPage user = new UserPage();                         // creates user page (new JFrame)
+            }
+        });
+
+        refreshButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {    // when refresh button is selected
+                f.dispose();                                // current frame will close
+                ControlUnit control = new ControlUnit();    // class will be called again
             }
         });
 
@@ -85,7 +96,7 @@ public class ControlUnit {
             public void actionPerformed(ActionEvent e) {
                 f.dispose();
                 try {
-                    Incoming ipList = new Incoming(methods.seeIncomingList());           // opens incoming patient list (new JFrame)
+                    Incoming ipList = new Incoming(methods.seeIncomingList(), methods);           // opens incoming patient list (new JFrame)
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 } catch (SQLException throwables) {
@@ -131,7 +142,7 @@ public class ControlUnit {
             public void actionPerformed(ActionEvent e) {
                 f.dispose();
                 try {
-                    LongStay LSpage = new LongStay(methods.getAllWardInfo());           // opens long stay ward overview
+                    LongStay LSpage = new LongStay(methods.getAllWardInfo(), methods);           // opens long stay ward overview
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 } catch (SQLException throwables) {
@@ -197,7 +208,7 @@ public class ControlUnit {
             public void actionPerformed(ActionEvent e) {
                 f.dispose();
                 try {
-                    DisTransPage dtList = new DisTransPage(methods.seeTransferList(), methods.seeDischargeList());           // opens transfer/discharge lists
+                    DisTransPage dtList = new DisTransPage(methods.seeTransferList(), methods.seeDischargeList(), methods);           // opens transfer/discharge lists
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 }

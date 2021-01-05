@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import java.util.logging.Level;
+
 
 public class Main {
 
@@ -21,7 +23,20 @@ public class Main {
     public static void main(String[] args) throws IOException {
 
 
-        UserPage user = new UserPage();
+        try{
+            Log log = new Log("log.txt");       // creates log class and text file to save logs
+            log.logger.setLevel(Level.WARNING);         // only logs errors greater than warnings
+
+            UserPage user = new UserPage();
+
+            log.logger.warning("Logger is setup");
+        }
+        catch (Exception e){ }
+
+
+
+
+    }
         /*Client c = new Client();
         LocalDate d = LocalDate.of(2005,1,18);
         //Patient p = new Patient("1111111111","Female",d,"eye pain",true);
@@ -38,4 +53,3 @@ public class Main {
         }*/
     }
 
-}

@@ -19,21 +19,22 @@ public class AMCWard extends GeneralWard{
     //Returns an object to be used in transfer table
     public Object[][] getTransferData() throws IOException, SQLException {
         ArrayList<Patient> patients = getTransferList();
-        Object[][] data = new Object[patients.size()][8];
+        Object[][] data = new Object[patients.size()][9];
         for(int i=0; i<patients.size(); i++) {
             Patient p = patients.get(i);
             data[i][0] = p.getId();
-            data[i][1] = p.getPatientId();
-            data[i][2] = p.getSex();
-            data[i][3] = p.getInitialDiagnosis();
-            data[i][4] = p.getNeedsSideRoom();
-            data[i][5] = dateFormatter(p.getEstimatedTimeOfNext());
+            data[i][1] = p.getCurrentBedId();
+            data[i][2] = p.getPatientId();
+            data[i][3] = p.getSex();
+            data[i][4] = p.getInitialDiagnosis();
+            data[i][5] = p.getNeedsSideRoom();
+            data[i][6] = dateFormatter(p.getEstimatedTimeOfNext());
             ArrayList<String> json = client.makeGetRequest("*", "wards", "wardid="+p.getNextDestination());
             ArrayList<Ward> wards = client.wardsFromJson(json);
             if(wards.size()!=0){
-                data[i][6] = wards.get(0).getWardName();
+                data[i][7] = wards.get(0).getWardName();
             }
-            data[i][7] = "Delete Patient";
+            data[i][8] = "Delete Patient";
         }
         return data;
     }

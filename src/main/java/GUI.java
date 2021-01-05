@@ -1,7 +1,6 @@
 import Methods.AMCWard;
-import Methods.GeneralWard;
 import Methods.LongstayWard;
-import Panels.UIController;
+import AMCWardPanels.UIController;
 
 //AMU GUI
 import javax.swing.*;
@@ -13,10 +12,13 @@ import java.sql.SQLException;
 
 public class GUI {
     JButton backButton;
+    JButton refreshButton;
     LongstayWard methods;
     AMCWard method;
+    int wardId;
 
     public GUI(int wardId) {
+        this.wardId = wardId;
         try {
             if(wardId == 2) {
                 method = new AMCWard(2);
@@ -43,12 +45,22 @@ public class GUI {
             }
         });
 
+        refreshButton = new JButton("Refresh Page");
+        refreshButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+                GUI gui  = new GUI(wardId);
+
+            }
+        });
+
         //Creating UIController than generates all panels
         UIController UIc = null;
         if(wardId == 2) {
-            UIc = new UIController(backButton, method);
+            UIc = new UIController(backButton, refreshButton, method);
         }
-        else { UIc = new UIController(backButton, methods);}
+        else { UIc = new UIController(backButton, refreshButton, methods);}
         frame.add(UIc.getMainPanel());
 
         frame.setVisible(true);
