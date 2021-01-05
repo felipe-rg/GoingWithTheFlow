@@ -48,18 +48,6 @@ public abstract class GeneralWard {
         return output;
     }
 
-    //Needed to format the time difference in getPatientData
-    public String durationFormatter(Duration duration){
-        long hours = duration.toHours();
-        return String.valueOf(hours);
-    }
-
-    //Needed to format the times used in tables
-    public String dateFormatter(LocalDateTime localDateTime){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-        return localDateTime.format(formatter);
-    }
-
     //Removes a patient from the database
     //Ensures that if they were in a bed then the bed status is made free
     public void deletePatient(int patientId) throws IOException {
