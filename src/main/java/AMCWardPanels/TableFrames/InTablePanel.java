@@ -1,7 +1,9 @@
 package AMCWardPanels.TableFrames;
 
+import AMCWardPanels.WardInfo;
 import Client.*;
 import Methods.GeneralWard;
+import Methods.tableInfo.IncomingTableData;
 
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
@@ -47,31 +49,21 @@ public class InTablePanel extends JPanel implements TableModelListener {
 
     private GeneralWard methods;
 
+    private WardInfo wardInfo;
+
     //Constructor
-    public InTablePanel(GeneralWard methods) {
+    public InTablePanel(GeneralWard methods, IncomingTableData incomingTableData, WardInfo wardInfo) {
+        this.wardInfo = wardInfo;
+        dbData = incomingTableData.getData();
         //Methods hold communication with database
         this.methods = methods;
 
         //If the ward is amc then we use amc data
         if(methods.getWardId()==2){
-            try {
-                dbData = this.methods.getIncomingData();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
             tableModel = new InTableModel(amcColumnName, dbData);
         }
         //if the ward is not amc we use long stay data
         else {
-            try {
-                dbData = this.methods.getLSIncomingData();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
             tableModel = new InTableModel(lsColumnName, dbData);
         }
 
@@ -180,6 +172,8 @@ public class InTablePanel extends JPanel implements TableModelListener {
                 Bed bed = methods.getBed(Integer.parseInt(selected));
                 //Assign patient to bed
                 methods.setBed(patientId, bed.getBedId());
+                wardInfo.refresh();
+
             } catch (IOException e) {
                 e.printStackTrace();
             }

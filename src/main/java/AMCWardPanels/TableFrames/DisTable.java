@@ -1,6 +1,7 @@
 package AMCWardPanels.TableFrames;
 
 import Methods.GeneralWard;
+import Methods.tableInfo.DischargeTableData;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,12 +10,12 @@ import java.awt.event.WindowEvent;
 
 public class DisTable {
 
-    public DisTable(AMCWardPanels.Topography top, AMCWardPanels.WardInfo wardinfo, GeneralWard methods){
+    public DisTable(AMCWardPanels.Topography top, AMCWardPanels.WardInfo wardinfo, GeneralWard methods, DischargeTableData dischargeTableData){
         //Creating new frame
         JFrame frame = new JFrame("Discharge Patients");
 
         //Creating panel containing the table
-        DisTablePanel distablePanel = new DisTablePanel(methods);
+        DisTablePanel distablePanel = new DisTablePanel(methods, dischargeTableData);
 
         //Creating the mainpanel that will contain all panels
         MainPanel mainPanel = new MainPanel(false, "DISCHARGE PATIENTS");

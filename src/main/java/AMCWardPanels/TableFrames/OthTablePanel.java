@@ -1,7 +1,9 @@
 package AMCWardPanels.TableFrames;
 
 import Methods.GeneralWard;
+import Methods.tableInfo.OtherTableData;
 
+import javax.print.attribute.standard.MediaSize;
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -34,15 +36,9 @@ public class OthTablePanel extends JPanel implements TableModelListener {
 
     private Object[][] dbData;
 
-    public OthTablePanel(GeneralWard methods){
+    public OthTablePanel(GeneralWard methods, OtherTableData otherTableData){
+        dbData = otherTableData.getData();
 
-        try {
-            dbData = methods.getOtherData();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
         //Instantiating table with appropriate data and tablemodel
 
         tableModel = new OthTableModel(columnName, dbData);        //Instance of OthtableModel

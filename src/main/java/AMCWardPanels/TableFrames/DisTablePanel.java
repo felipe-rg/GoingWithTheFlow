@@ -2,6 +2,7 @@ package AMCWardPanels.TableFrames;
 
 import AMCWardPanels.TableFrames.DisTableModel;
 import Methods.GeneralWard;
+import Methods.tableInfo.DischargeTableData;
 
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
@@ -37,17 +38,10 @@ public class DisTablePanel extends JPanel implements TableModelListener {
 
     private GeneralWard methods;
 
-    public DisTablePanel(GeneralWard methods){
+    public DisTablePanel(GeneralWard methods, DischargeTableData dischargeTableData){
 
         this.methods = methods;
-
-        try {
-            dbData = methods.getDischargeData();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+        dbData =dischargeTableData.getData();
         //Instantiating table with appropriate data and tablemodel
 
         tableModel = new DisTableModel(columnName, dbData);        //Instance of MytableModel

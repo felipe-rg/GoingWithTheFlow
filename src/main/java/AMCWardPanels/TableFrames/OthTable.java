@@ -1,6 +1,7 @@
 package AMCWardPanels.TableFrames;
 
 import Methods.GeneralWard;
+import Methods.tableInfo.OtherTableData;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,10 +10,10 @@ import java.awt.event.WindowEvent;
 
 public class OthTable {
 
-    public OthTable(AMCWardPanels.Topography top, AMCWardPanels.WardInfo wardinfo, GeneralWard methods){
+    public OthTable(AMCWardPanels.Topography top, AMCWardPanels.WardInfo wardinfo, GeneralWard methods, OtherTableData otherTableData){
         JFrame frame = new JFrame("Others");
 
-        OthTablePanel othTablePanel = new OthTablePanel(methods);
+        OthTablePanel othTablePanel = new OthTablePanel(methods, otherTableData);
 
 
 
