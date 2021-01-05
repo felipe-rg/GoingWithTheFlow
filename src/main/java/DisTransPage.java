@@ -59,7 +59,7 @@ public class DisTransPage {
         //JLabel TransferList = new JLabel("Transfer Patient List goes here");
         //JLabel DischargeList = new JLabel("Discharge Patient List goes here");
 
-        disTransTablePanel = new DisTransTablePanel(disMethods, transMethods);
+        disTransTablePanel = new DisTransTablePanel(methods);
 
         infoPanel.add(disTransTablePanel);
 

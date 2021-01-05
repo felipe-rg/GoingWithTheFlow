@@ -3,6 +3,7 @@ package CUTablePanels;
 import AMCWardPanels.TableFrames.MultiLineTableHeaderRenderer;
 import AMCWardPanels.TableFrames.MyTableModel;
 import Methods.AMCWard;
+import Methods.ControlCentre;
 import Methods.GeneralWard;
 
 import javax.swing.*;
@@ -48,17 +49,9 @@ public class DisTransTablePanel extends JPanel {
     private GeneralWard disMethods;
     private AMCWard transMethods;
 
-    public DisTransTablePanel(GeneralWard disMethods, AMCWard transMethods) {
-        this.disMethods = disMethods;
-        this.transMethods = transMethods;
+    public DisTransTablePanel(ControlCentre methods) {
 
-        try {
-            disData = disMethods.getCUDisData();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+
 
         disTableModel = new MyTableModel(disColumnName, disData);
         disTable = new JTable(disTableModel);
