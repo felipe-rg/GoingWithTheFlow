@@ -1,9 +1,13 @@
-import Panels.Title;
+import Methods.ControlCentre;
+import AMCWardPanels.Title;
+import Methods.GeneralWard;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.sql.SQLException;
 
 public class ControlUnit {
 
@@ -14,7 +18,17 @@ public class ControlUnit {
     JPanel longStayPanel;
     JPanel AMCPanel;
 
-    public ControlUnit() {                                              // constructor for control page
+
+    ControlCentre methods;
+
+    public ControlUnit() {
+        try {
+            methods = new ControlCentre();              //Methods for control centre                               // constructor for control page
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
 
         f = new JFrame();
         mainPanel = new JPanel();
@@ -22,7 +36,8 @@ public class ControlUnit {
 
         // Title Panel
         JButton backButton = new JButton("Go Back To User Page");  // creates back button
-        Title titlePanel = new Title("AMC Status" , backButton);   // calls title class to create panel for title
+        JButton refreshButton = new JButton("Refresh Page");
+        Title titlePanel = new Title("AMC Status" , backButton, refreshButton, 400, 380);   // calls title class to create panel for title
         titlePanel.setBorder(BorderFactory.createMatteBorder(0, 0, 3, 0, Color.BLACK));
 
         backButton.addActionListener(new ActionListener() {             // waits for mouse to click button
@@ -33,12 +48,20 @@ public class ControlUnit {
             }
         });
 
+        refreshButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {    // when refresh button is selected
+                f.dispose();                                // current frame will close
+                ControlUnit control = new ControlUnit();    // class will be called again
+            }
+        });
+
         // Incoming Panel
         incomingPanel = new JPanel();
         outline(incomingPanel);
         panelPadding(incomingPanel);                                    // adds padding to the JPanel
 
-        incomingPanel.setLayout(new BoxLayout(incomingPanel, BoxLayout.Y_AXIS));  // sets layout type of panel to be vertical
+        incomingPanel.setLayout(new GridLayout(8,1));  // sets layout type of panel to be vertical
 
         JLabel incomingTitle = new JLabel("Incoming from A&E");
         incomingTitle.setFont (incomingTitle.getFont ().deriveFont (24.0f));
@@ -47,15 +70,19 @@ public class ControlUnit {
         // incoming from A&E info
         JLabel text1 = new JLabel("Number of Patients coming from A&E:");
         text1.setFont (text1.getFont ().deriveFont (14.0f));
+        //labelPadding(text1);
+
+        JLabel total = new JLabel(String.valueOf(methods.getRedPatients()+methods.getGreenPatients()+methods.getOrangePatients()) , SwingConstants.CENTER);
+        text1.setFont (text1.getFont ().deriveFont (14.0f));
         labelPadding(text1);
 
-        JButton r = new JButton("2");           // incoming patients with traffic light to represent time of arrival
+        JButton r = new JButton(String.valueOf(methods.getRedPatients()));           // incoming patients with traffic light to represent time of arrival
         r.setBackground(Color.RED);
         r.setHorizontalAlignment(SwingConstants.CENTER);
-        JButton y = new JButton("4");
+        JButton y = new JButton(String.valueOf(methods.getOrangePatients()));
         y.setBackground(Color.YELLOW);
         y.setHorizontalAlignment(SwingConstants.CENTER);
-        JButton g = new JButton("6");
+        JButton g = new JButton(String.valueOf(methods.getGreenPatients()));
         g.setBackground(Color.GREEN);
         g.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -68,12 +95,19 @@ public class ControlUnit {
             @Override
             public void actionPerformed(ActionEvent e) {
                 f.dispose();
-                Incoming ipList = new Incoming();           // opens incoming patient list (new JFrame)
+                try {
+                    Incoming ipList = new Incoming(methods.seeIncomingList(), methods);           // opens incoming patient list (new JFrame)
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
             }
         });
 
         incomingPanel.add(incomingTitle);                   // adds components to incoming panel
         incomingPanel.add(text1);
+        incomingPanel.add(total);
         incomingPanel.add(r);
         incomingPanel.add(y);
         incomingPanel.add(g);
@@ -84,17 +118,17 @@ public class ControlUnit {
         longStayPanel = new JPanel();
         outline(longStayPanel);
         panelPadding(longStayPanel);
-        longStayPanel.setLayout(new BoxLayout(longStayPanel, BoxLayout.Y_AXIS));
+        longStayPanel.setLayout(new GridLayout(6,1));
 
         JLabel titleLS = new JLabel("Long Stay Wards");
         titleLS.setFont (titleLS.getFont ().deriveFont (24.0f));
         labelPadding(titleLS);
 
-        JLabel lcap = new JLabel("Longstay Ward Capacity: 95%");                       // add info
+        JLabel lcap = new JLabel("Longstay Ward Capacity: "+methods.getLongstayCapacityPerc()+"%");                       // add info
         lcap.setFont (lcap.getFont ().deriveFont (14.0f));
         labelPadding(lcap);
 
-        JLabel freeBed2 = new JLabel("Number of Free Beds: 13");                       // add info
+        JLabel freeBed2 = new JLabel("Number of Free Beds: "+methods.getLongstayFreeBeds());                       // add info
         freeBed2.setFont (freeBed2.getFont ().deriveFont (14.0f));
         labelPadding(freeBed2);
 
@@ -107,7 +141,13 @@ public class ControlUnit {
             @Override
             public void actionPerformed(ActionEvent e) {
                 f.dispose();
-                LongStay LSpage = new LongStay();           // opens long stay ward overview
+                try {
+                    LongStay LSpage = new LongStay(methods.getAllWardInfo(), methods);           // opens long stay ward overview
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
             }
         });
 
@@ -127,22 +167,22 @@ public class ControlUnit {
         titleAMC.setHorizontalAlignment(JLabel.CENTER);
         titleAMC.setFont (titleAMC.getFont ().deriveFont (24.0f));
 
-        JLabel capAMC = new JLabel("AMC Ward Capacity: 95%");          // make dynamic
+        JLabel capAMC = new JLabel("AMC Ward Capacity: "+methods.getAmcCapacityPerc()+"%");          // make dynamic
         labelPadding(capAMC);
         capAMC.setHorizontalAlignment(JLabel.CENTER);
         capAMC.setFont (capAMC.getFont ().deriveFont (18.0f));
 
-        JLabel freeBedAMC = new JLabel("Free beds: 5");          // make dynamic
+        JLabel freeBedAMC = new JLabel("Free beds: "+methods.getFreeBeds());          // make dynamic
         labelPadding(freeBedAMC);
         freeBedAMC.setHorizontalAlignment(JLabel.CENTER);
         freeBedAMC.setFont (capAMC.getFont ().deriveFont (18.0f));
 
-        JLabel disAMC = new JLabel("Number of discharges today: 4");          // make dynamic
+        JLabel disAMC = new JLabel("Number of discharges today: "+methods.getDischargePatients());          // make dynamic
         labelPadding(disAMC);
         disAMC.setHorizontalAlignment(JLabel.CENTER);
         disAMC.setFont (disAMC.getFont ().deriveFont (18.0f));
 
-        JLabel tranAMC = new JLabel("Number of transfers today: 3");          // make dynamic
+        JLabel tranAMC = new JLabel("Number of transfers today: "+methods.getTransferPatients());          // make dynamic
         labelPadding(tranAMC);
         tranAMC.setHorizontalAlignment(JLabel.CENTER);
         tranAMC.setFont (tranAMC.getFont ().deriveFont (18.0f));
@@ -157,6 +197,7 @@ public class ControlUnit {
             public void actionPerformed(ActionEvent e) {
                 f.dispose();
                 AMCInfo AMCPage = new AMCInfo();                // opens AMC ward overview page (new JFrame)
+                // todo - more sense if all on homescreen?
             }
         });
 
@@ -166,7 +207,11 @@ public class ControlUnit {
             @Override
             public void actionPerformed(ActionEvent e) {
                 f.dispose();
-                DisTransPage dtList = new DisTransPage();           // opens transfer/discharge lists
+                try {
+                    DisTransPage dtList = new DisTransPage(methods.seeTransferList(), methods.seeDischargeList(), methods);           // opens transfer/discharge lists
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
             }
         });
 
