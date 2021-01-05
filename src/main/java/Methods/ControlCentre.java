@@ -334,12 +334,10 @@ public class ControlCentre implements statusable{
 
     public Object[][] getLongStayData() throws IOException, SQLException {
         ArrayList<ArrayList<String>> longStayList = getLongStayList();
-        Object[][] data= new Object[longStayList.size()][7];
+        Object[][] data= new Object[longStayList.size()][1];
         for(int i=0; i<longStayList.size(); i++){
-
-
+            data[0][i] = longStayList.get(i);
         }
-
         return data;
 
 
@@ -348,11 +346,9 @@ public class ControlCentre implements statusable{
 
     public Object[][] getAMCData() throws IOException, SQLException {
         ArrayList<String> amcList = getAMCList();
-        Object[][] data= new Object[amcList.size()][7];
+        Object[][] data= new Object[1][amcList.size()];
         for(int i=0; i<amcList.size(); i++){
-            data[i][0] = "9";
-
-
+            data[0][i] = amcList.get(i);
         }
 
         return data;

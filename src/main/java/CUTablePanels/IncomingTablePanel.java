@@ -27,10 +27,15 @@ public class IncomingTablePanel extends JPanel{
             "Arrival at A&E",
             "Accepted by Medicine",
     };
+
+
     //Data that will be inputed into table
     private Object data[][];
 
     private ControlCentre methods;
+
+
+
 
     public IncomingTablePanel(ControlCentre methods){
 

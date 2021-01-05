@@ -184,7 +184,7 @@ public class ControlUnit {
             @Override
             public void actionPerformed(ActionEvent e) {
                 f.dispose();
-                AMCInfo AMCPage = new AMCInfo();                // opens AMC ward overview page (new JFrame)
+                AMCInfo AMCPage = new AMCInfo(methods);                // opens AMC ward overview page (new JFrame)
                 // todo - more sense if all on homescreen?
             }
         });

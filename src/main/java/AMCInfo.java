@@ -1,4 +1,6 @@
 import AMCWardPanels.Title;
+import CUTablePanels.AMCInfoTablePanel;
+import Methods.ControlCentre;
 
 import javax.swing.*;
 import java.awt.*;
@@ -7,7 +9,7 @@ import java.awt.event.ActionListener;
 
 public class AMCInfo {
 
-    public AMCInfo() {
+    public AMCInfo(ControlCentre methods) {
 
         JFrame f = new JFrame();
         JPanel mainPanel = new JPanel();
@@ -30,20 +32,17 @@ public class AMCInfo {
             @Override
             public void actionPerformed(ActionEvent e) {    // when refresh button is selected
                 f.dispose();                                // current frame will close
-                AMCInfo page = new AMCInfo();               // class will be called again
+                AMCInfo page = new AMCInfo(methods);               // class will be called again
             }
         });
 
         JPanel infoPanel = new JPanel();
-        infoPanel.setLayout(new GridLayout(1,3));
+        AMCInfoTablePanel amcInfoTablePanel = new AMCInfoTablePanel(methods);
+        infoPanel.setLayout(new GridLayout());
+        infoPanel.add(amcInfoTablePanel);
 
-        JLabel AMU1info = new JLabel("AMU 1 table goes here");
-        JLabel AMU2info = new JLabel("AMU 2 table goes here");
-        JLabel AAU1info = new JLabel("AAU 1 table goes here");
 
-        infoPanel.add(AMU1info);
-        infoPanel.add(AMU2info);
-        infoPanel.add(AAU1info);
+
 
         mainPanel.setLayout(new BorderLayout());
         mainPanel.add(titlePanel , BorderLayout.NORTH);
