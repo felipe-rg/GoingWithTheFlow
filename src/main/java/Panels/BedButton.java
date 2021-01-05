@@ -36,22 +36,27 @@ public class BedButton extends JButton{
         this.setBounds(x, y, 70, 140);
         this.setOpaque(true);
 
-        //Colours bed is occupied
+        String colour = null;
+        try {
+            colour = methods.getBedColour(bed.getBedId());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println(colour);
+        this.setBackground(Color.decode(colour));
+        /*//Colours bed is occupied
         if(bed.getStatus().equals("O")){
             try {
                 //Get patient in bed
-                Patient p = methods.getPatient(bed.getBedId());
-                String colour = methods.getBedColour(p.getId());
+                String colour = methods.getBedColour(bed.getBedId());
                 this.setBackground(Color.decode(colour));
 
             } catch (IOException e) {
                 e.printStackTrace();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
             }
         }
         if(bed.getStatus().equals("F")){this.setBackground(Color.decode("#2ECC71")); }
-        if(bed.getStatus().equals("C")){this.setBackground(Color.BLACK); }
+        if(bed.getStatus().equals("C")){this.setBackground(Color.BLACK); }*/
     }
 
     // functions that return bed information
@@ -74,29 +79,6 @@ public class BedButton extends JButton{
         this.setBackground(Color.decode("#2ECC71"));
         refreshTopography();
     }
-
-    //Used to close an empty bed for cleaning etc
-    public void makeClosed(){
-        try {
-            methods.editBed(bed.getBedId(), "status", "'C'");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        this.setBackground(Color.BLACK);
-        refreshTopography();
-    }
-
-    //Used to close open a closed bed
-    public void makeOpen(){
-        try {
-            methods.editBed(bed.getBedId(), "status", "'F'");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        this.setBackground(Color.decode("#2ECC71"));
-        refreshTopography();
-    }
-
 
     // creates a frame with a panel inside, then 3 labels with the patient information and an 'edit' button. Once clicked, the edit button calls the 'inputNewInfo' function
     public void printInfoFull(){
@@ -122,11 +104,21 @@ public class BedButton extends JButton{
         JLabel genderLabel = new JLabel("Gender: "+p.getSex(),SwingConstants.CENTER);
         JLabel srLabel = new JLabel("Sideroom: "+bed.getHasSideRoom(), SwingConstants.CENTER);
         JLabel diaLabel = new JLabel("Diagnosis: "+p.getInitialDiagnosis(), SwingConstants.CENTER);
-
-        // formating ETD time
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-        String ETDTime = p.getEstimatedTimeOfNext().format(formatter);
-        JLabel ETDLabel = new JLabel("ETD: "+ETDTime, SwingConstants.CENTER);
+        JLabel nextDestLabel = null;
+        try {
+            nextDestLabel = new JLabel("Next Destination:   "+methods.getWardName(p.getNextDestination()), SwingConstants.CENTER);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        JLabel ETDLabel = new JLabel();
+        if(p.getEstimatedTimeOfNext().isEqual(p.getArrivalDateTime())){
+            ETDLabel = new JLabel("ETD: N/A", SwingConstants.CENTER);
+        }
+        else {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+            String ETDTime = p.getEstimatedTimeOfNext().format(formatter);
+            ETDLabel = new JLabel("ETD: "+ETDTime, SwingConstants.CENTER);
+        }
 
         //jbutton for editing bed
         JButton editButton = new JButton("Edit Patient Information");
@@ -157,6 +149,7 @@ public class BedButton extends JButton{
         infoFrame.add(genderLabel);
         infoFrame.add(srLabel);
         infoFrame.add(diaLabel);
+        infoFrame.add(nextDestLabel);
         infoFrame.add(ETDLabel);
         infoFrame.add(selectWardButton);
         infoFrame.add(editButton);
@@ -291,9 +284,14 @@ public class BedButton extends JButton{
                 String status = null;
                 if(pStat.getSelectedItem()=="Open"){
                     status = "'F'";
-                } else { status = "'C'"; }
+                    this.setBackground(Color.decode("#2ECC71"));
+                } else {
+                    status = "'C'";
+                    this.setBackground(Color.BLACK);
+                }
 
                 methods.editBed(bed.getBedId(), "status", status);
+                refreshTopography();
 
             } catch (IOException e) {
                 e.printStackTrace();

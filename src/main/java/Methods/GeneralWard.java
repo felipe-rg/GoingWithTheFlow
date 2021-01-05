@@ -32,20 +32,22 @@ public abstract class GeneralWard {
     public GeneralWard(int wardId) throws IOException, SQLException {
         this.wardId = wardId;
         client = new Client();
-        getWardName();
+        wardName = getWardName(wardId);
         wardNumbers();
     }
 
     //Set the variable wardName from input wardId
-    public void getWardName() throws IOException {
-        ArrayList<String> json = client.makeGetRequest("wardname", "wards", "id="+wardId);
+    public String getWardName(int wardID) throws IOException {
+        ArrayList<String> json = client.makeGetRequest("*", "wards", "wardid="+wardID);
         ArrayList<Ward> wards = client.wardsFromJson(json);
+        String output = null;
         if(wards.size()!=0) {
-            wardName = wards.get(0).getWardName();
+            output = wards.get(0).getWardName();
         }
         else {
-            wardName = "Unknown Ward";
+            output = "No Destination";
         }
+        return output;
     }
 
     //Updates local variables with appropriate numbers
@@ -175,14 +177,19 @@ public abstract class GeneralWard {
     //Returns all patients in ward who have died or going to ICU
     //Used in getOtherData and local othernumber
     public ArrayList<Patient> getOtherList() throws IOException, SQLException {
+        ArrayList<Patient> output = new ArrayList<Patient>();
         ArrayList<String> json = client.makeGetRequest("id", "patients", "currentLocation="+wardId);
         ArrayList<Patient> patients = client.patientsFromJson(json);
         json = client.makeGetRequest("id", "patients", "deceased=true");
         ArrayList<Patient> deceased = client.patientsFromJson(json);
+        output = client.crossReference(patients, deceased);
         json = client.makeGetRequest("id", "patients", "nextdestination=7");
         ArrayList<Patient> toICU = client.patientsFromJson(json);
-        ArrayList<Patient> ICUorRIP = client.crossReference(toICU, deceased);
-        return client.crossReference(patients, ICUorRIP);
+        ArrayList<Patient> ICUFromWard = client.crossReference(toICU, patients);
+        for(Patient p:ICUFromWard){
+            output.add(p);
+        }
+        return output;
     }
 
     //returns an object to be used in the other table
@@ -337,22 +344,40 @@ public abstract class GeneralWard {
 
     }
 
-    public String getBedColour(int patientId) throws IOException {
-        ArrayList<String> json = client.makeGetRequest("*", "patients", "id="+patientId);
-        ArrayList<Patient> patients = client.patientsFromJson(json);
-        if(patients.size()==0){
-            System.out.println("No patient found");
-            return null;
+
+    public String getBedColour(int BedID) throws IOException {
+        ArrayList<String> json = client.makeGetRequest("*", "beds", "bedid="+BedID);
+        ArrayList<Bed> beds = client.bedsFromJson(json);
+        if(beds.size()==0){
+            return "#2ECC71";
         }
-        LocalDateTime leaving = patients.get(0).getEstimatedTimeOfNext();
-        LocalDateTime now = LocalDateTime.now();
-        if(leaving.isBefore(now.plusHours(+4))){
-            return "#E74C3C";
+        Bed newBed = beds.get(0);
+        System.out.println(newBed.getStatus());
+        if(newBed.getStatus().equals("F")){
+            return "#2ECC71";
+        }
+        if(newBed.getStatus().equals("C")){
+            return "#000000";
         }
         else {
-            return "#F89820";
+            json = client.makeGetRequest("*", "patients", "currentbedid="+newBed.getBedId());
+            ArrayList<Patient> patients = client.patientsFromJson(json);
+            if(patients.size()==0){
+                return "#2ECC71";
+            }
+            LocalDateTime arrival = patients.get(0).getArrivalDateTime();
+            LocalDateTime leaving = patients.get(0).getEstimatedTimeOfNext();
+            LocalDateTime now = LocalDateTime.now();
+            if(arrival.isEqual(leaving) || leaving.isAfter(now.plusHours(4))){
+                return "#E74C3C";
+            }
+            else if(leaving.isBefore(now)){
+                return "#1531e8";
+            }
+            else{
+                return "#F89820";
+            }
         }
-
     }
 
 }

@@ -42,7 +42,7 @@ public class InTablePanel extends JPanel implements TableModelListener {
             "Sex",
             "Initial Diagnosis",
             "Side Room",
-            "Estimated Time Arrival", //TODO remove Colour
+            "Estimated Time Arrival", //TODO remove Colour in longstay
             "Transfer Request Status",
             "Bed",
             "Delete Button"};
