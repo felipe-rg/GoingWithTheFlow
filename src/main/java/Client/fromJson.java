@@ -47,4 +47,16 @@ public class fromJson {
         }
         return output;
     }
+
+    public ArrayList<Bed> bedCrossReference(ArrayList<Bed> beds, ArrayList<Bed> bed){
+        ArrayList<Bed> output = new ArrayList<Bed>();
+        for(Bed p:beds){
+            for(Bed pt:bed){
+                if(p.getBedId()==pt.getBedId()){
+                    output.add(p);
+                }
+            }
+        }
+        return output;
+    }
 }

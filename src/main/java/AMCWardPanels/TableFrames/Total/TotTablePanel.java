@@ -59,7 +59,7 @@ public class TotTablePanel extends JPanel implements TableModelListener {
         };
 
         //
-        ButtonColumn deletePatient = new ButtonColumn(table, deletePopUp, 8);
+        ButtonColumn deletePatient = new ButtonColumn(table, deletePopUp, 7);
 
         this.setLayout(new GridLayout());
         this.add(scrollPane);
@@ -84,10 +84,6 @@ public class TotTablePanel extends JPanel implements TableModelListener {
         System.out.println("Patient bed: " + bedNum + "     Edited '" + columnName+ "': " +data);
     }
 
-    private Object dateFormatter(LocalDateTime localDateTime) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-        return localDateTime.format(formatter);
-    }
 
     public void setupTable(JTable table) {
         table.setRowHeight(35);                                     //Setting rowheight

@@ -6,18 +6,18 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class AMCWard extends GeneralWard implements requestable{
-    public int transferNumber;
+public class AMCWard extends GeneralWard{
+    private int transferNumber;
 
     public AMCWard(int wardId) throws IOException, SQLException {
         super(wardId);
-        amcRefresh();
-    }
-
-    public void amcRefresh() throws IOException, SQLException {
+        //Sets transfer number for homescreen
         transferNumber = getTransferList().size();
     }
 
+    public int getTransferNumber(){return transferNumber;}
+
+    //Returns an object to be used in transfer table
     public Object[][] getTransferData() throws IOException, SQLException {
         ArrayList<Patient> patients = getTransferList();
         Object[][] data = new Object[patients.size()][9];
@@ -40,6 +40,9 @@ public class AMCWard extends GeneralWard implements requestable{
         return data;
     }
 
+
+    //Used in transferNumber and getTransferData
+    //Returns patients intending to transfer to other wards
     //FIXME definitely better way
     public ArrayList<Patient> getTransferList() throws IOException, SQLException {
         ArrayList<String> json = client.makeGetRequest("*", "patients", "currentwardid="+wardId);
@@ -53,14 +56,5 @@ public class AMCWard extends GeneralWard implements requestable{
         ArrayList<Patient> goingToICUorWard = client.crossReference(notStaying,notDischarge);
         ArrayList<Patient> transfers = client.crossReference(goingToICUorWard,notICU);
         return client.crossReference(patients,transfers);
-    }
-
-    //Changes next destination of patient to ideal desination
-    //Changes transferrequest status to pending
-    //Used to request a transfer to a new ward from AMC
-    @Override
-    public void makeRequest(int patientId, int idealDestination) throws IOException, SQLException {
-        client.makePutRequest("patients", "nextdestination="+idealDestination, "id="+patientId);
-        client.makePutRequest("patients", "transferrequeststatus='P'", "id="+patientId);
     }
 }

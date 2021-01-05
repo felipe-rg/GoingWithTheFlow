@@ -27,9 +27,11 @@ public class DisTable {
         frame.setExtendedState(Frame.MAXIMIZED_BOTH);
         frame.setVisible(true);                                             // makes JFrame visible
         frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+
+        //When we close table, we refresh the homescreen
         frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent we) {
-                top.refresh();
+                top.refresh(methods);
                 wardinfo.refresh();
             }
         });

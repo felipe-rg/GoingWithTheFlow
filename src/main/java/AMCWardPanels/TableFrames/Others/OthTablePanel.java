@@ -38,6 +38,7 @@ public class OthTablePanel extends JPanel implements TableModelListener {
     private Object[][] dbData;
 
     public OthTablePanel(GeneralWard methods){
+
         try {
             dbData = methods.getOtherData();
         } catch (IOException e) {
@@ -86,12 +87,6 @@ public class OthTablePanel extends JPanel implements TableModelListener {
         //Printing out what has been edited
         System.out.println("Patient bed: " + bedNum + "     Edited '" + columnName+ "': " +data);
 
-    }
-
-    //Transforming a LocalDateTime object into a string displaying hours and minutes in the form "HH:mm"
-    public String dateFormatter(LocalDateTime localDateTime){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-        return localDateTime.format(formatter);
     }
 
     public void setupTable(JTable table) {

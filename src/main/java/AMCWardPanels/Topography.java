@@ -2,10 +2,12 @@ package AMCWardPanels;
 
 import Client.Bed;
 import Methods.GeneralWard;
+import com.sun.tools.javac.jvm.Gen;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Topography extends JPanel{
@@ -17,9 +19,6 @@ public class Topography extends JPanel{
     BedStatus bedstatus;
 
     public Topography(BedStatus bedstatus, GeneralWard methods) {
-        /*RCount = methods.redBeds;
-        OCount = methods.orangeBeds;
-        GCount = methods.redBeds;*/
 
         this.bedstatus = bedstatus;
 
@@ -53,37 +52,35 @@ public class Topography extends JPanel{
             } else {
                 y = 450;
             }
-            BedButton newBed = new BedButton(this, methods, b.getBedId(), b.getStatus(), b.getForSex(), b.getHasSideRoom(), x, y);
+            BedButton newBed = new BedButton(this, methods, b, x, y);
             beds.add(newBed);
             this.add(newBed);
         }
 
-        CountBeds();
+        CountBeds(methods);
         updateBedStatus(bedstatus);
 
         for (BedButton b : beds){
             b.addActionListener(evt -> {
-                if(b.getStatus().equals("O")){ b.printInfoFull(); }
-                if(b.getStatus().equals("F") || b.getStatus().equals("C")){ b.printInfoEmpty(); }
+                if(b.getBedButtonStatus().equals("O")){ b.printInfoFull(); }
+                if(b.getBedButtonStatus().equals("F") || b.getBedButtonStatus().equals("C")){ b.printInfoEmpty(); }
 
                 // every time something is done to the beds, check whether the bedstatus must change and update it
-                CountBeds();
+                CountBeds(methods);
                 updateBedStatus(bedstatus);
             });
         }
     }
 
     // counts how many red-green-orange beds there are
-    public void CountBeds() {
-        OCount = GCount = RCount = 0;
-        for (BedButton b : beds) {
-            if (b.getStatus().equals("C")) { RCount = RCount + 1; }
-            if (b.getStatus().equals("F")) { GCount = GCount + 1; }
-            if (b.getStatus().equals("O")) {
-
-                if((b.getETD().getHour() == 0) && (b.getETD().getMinute() == 0)){ RCount = RCount + 1; }
-                else{ OCount = OCount + 1; }
-            }
+    public void CountBeds(GeneralWard methods) {
+        try {
+            int status[] = methods.getBedStatus();
+            GCount = status[0];
+            OCount = status[1];
+            RCount = status[2];
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -94,8 +91,8 @@ public class Topography extends JPanel{
         bedstatus.setRedBedsNum(RCount);
     }
 
-    public void refresh(){
-        CountBeds();
+    public void refresh(GeneralWard methods){
+        CountBeds(methods);
         updateBedStatus(bedstatus);
     }
 
