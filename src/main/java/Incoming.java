@@ -1,3 +1,4 @@
+import CUTablePanels.IncomingTablePanel;
 import Client.Patient;
 import AMCWardPanels.TableFrames.ColorCodePanel;
 import AMCWardPanels.Title;
@@ -43,17 +44,16 @@ public class Incoming {
 
         JPanel infoPanel = new JPanel();                        // creates info panel
 
-        //JPanel inTablePanel = new InTablePanel(methods);
+        JPanel incomingTablePanel = new IncomingTablePanel(methods);
 
-        //JLabel AMU1info = new JLabel("A&E Patient table goes here");
 
-        //methods.getIncomingData gives data for table
 
         JPanel leftPanel = new JPanel();
         JPanel rightPanel = new JPanel();
+        //JPanel middlePanel = new JPanel();
         JPanel colorCodePanel = new ColorCodePanel();
 
-        leftPanel.setPreferredSize(new Dimension(100,100));
+        leftPanel.setPreferredSize(new Dimension(100,0));
         rightPanel.setPreferredSize(new Dimension(100,100));
         colorCodePanel.setPreferredSize(new Dimension(100,100));
 
@@ -61,7 +61,7 @@ public class Incoming {
         infoPanel.add(leftPanel, BorderLayout.WEST);
         infoPanel.add(rightPanel, BorderLayout.EAST);
         infoPanel.add(colorCodePanel, BorderLayout.SOUTH);
-        //infoPanel.add(inTablePanel, BorderLayout.CENTER);
+        infoPanel.add(incomingTablePanel, BorderLayout.CENTER);
 
 
         mainPanel.setLayout(new BorderLayout());

@@ -241,7 +241,7 @@ public class ControlCentre implements statusable{
     }
 
     //Patients being transferred from amc
-    public ArrayList<Patient> getTransfersList() throws IOException, SQLException {
+    public ArrayList<Patient> getTransferList() throws IOException, SQLException {
         ArrayList<Patient> output = new ArrayList<Patient>();
         ArrayList<String> json = client.makeGetRequest("*", "patients", "nextdestination=3");
         ArrayList<Patient> intoThree = client.patientsFromJson(json);
@@ -278,10 +278,46 @@ public class ControlCentre implements statusable{
 
 
 
-    //Returns an object to be used in the incoming table of the amc app
-    public Object[][] getDischargeData() throws IOException, SQLException {
+    //Returns an object to be used in the discharge table of the Control Unit
+    public Object[][] getDisData() throws IOException, SQLException {
         ArrayList<Patient> patients = getDischargeList();
-        Object[][] data = new Object[patients.size()][9];
+        Object[][] data = new Object[patients.size()][8];
+        for(int i=0; i<patients.size(); i++) {
+            Patient p = patients.get(i);
+            data[i][0] = p.getId();
+            data[i][1] = p.getCurrentBedId();
+            data[i][2] = p.getPatientId();
+            data[i][3] = p.getSex();
+            data[i][4] = p.getInitialDiagnosis();
+            data[i][5] = p.getTtaSignedOff();
+            data[i][6] = p.getSuitableForDischargeLounge();
+            data[i][7] = dateFormatter(p.getEstimatedTimeOfNext());
+        }
+        return data;
+    }
+
+    //Returns an object to be used in the Transfer table of the Control Unit
+    public Object[][] getTransData() throws IOException, SQLException {
+        ArrayList<Patient> patients = getTransferList();
+        Object[][] data = new Object[patients.size()][8];
+        for(int i=0; i<patients.size(); i++) {
+            Patient p = patients.get(i);
+            data[i][0] = p.getId();
+            data[i][1] = p.getCurrentBedId();
+            data[i][2] = p.getPatientId();
+            data[i][3] = p.getSex();
+            data[i][4] = p.getNeedsSideRoom();
+            data[i][5] = p.getInitialDiagnosis();
+            data[i][6] = p.getNextDestination();
+            data[i][7] = dateFormatter(p.getEstimatedTimeOfNext());
+        }
+        return data;
+    }
+
+    //Returns an object to be used in the Incoming table of the Control Unit
+    public Object[][] getIncomingData() throws IOException, SQLException {
+        ArrayList<Patient> patients = getIncomingList();
+        Object[][] data = new Object[patients.size()][7];
         for(int i=0; i<patients.size(); i++) {
             Patient p = patients.get(i);
             data[i][0] = p.getId();
@@ -289,13 +325,40 @@ public class ControlCentre implements statusable{
             data[i][2] = p.getSex();
             data[i][3] = p.getInitialDiagnosis();
             data[i][4] = p.getNeedsSideRoom();
-            data[i][5] = dateFormatter(p.getArrivalDateTime());
+            data[i][5] = p.getArrivalDateTime();
             data[i][6] = p.getAcceptedByMedicine();
-            data[i][7] = "Select Bed";
-            data[i][8] = "Delete Patient";
         }
         return data;
     }
+
+
+    public Object[][] getLongStayData() throws IOException, SQLException {
+        ArrayList<ArrayList<String>> longStayList = getLongStayList();
+        Object[][] data= new Object[longStayList.size()][7];
+        for(int i=0; i<longStayList.size(); i++){
+
+
+        }
+
+        return data;
+
+
+    }
+
+
+    public Object[][] getAMCData() throws IOException, SQLException {
+        ArrayList<String> amcList = getAMCList();
+        Object[][] data= new Object[amcList.size()][7];
+        for(int i=0; i<amcList.size(); i++){
+            data[i][0] = "9";
+
+
+        }
+
+        return data;
+    }
+
+
     //Needed to format the time difference in getPatientData
     public String durationFormatter(Duration duration){
         long hours = duration.toHours();

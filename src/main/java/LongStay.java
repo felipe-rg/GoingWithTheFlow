@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class LongStay {
 
-    public LongStay(ArrayList<ArrayList<String>> info, ControlCentre methods) {
+    public LongStay(ControlCentre methods) {
     //Todo Input format is not nice - think of better way
 
 

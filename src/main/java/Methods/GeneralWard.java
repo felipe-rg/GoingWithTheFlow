@@ -17,8 +17,9 @@ import java.util.ArrayList;
 //Instantiated when a ward is chosen - implemented as AMC or longstay
 
 public abstract class GeneralWard {
+
     protected Client client;
-    protected int wardId;
+    public int wardId;
     private String wardName;
     private Patient patient;
     private Bed bed;
@@ -91,7 +92,7 @@ public abstract class GeneralWard {
             data[i][2] = p.getSex();
             data[i][3] = p.getInitialDiagnosis();
             data[i][4] = p.getNeedsSideRoom();
-            data[i][5] = dateFormatter(p.getArrivalDateTime());
+            data[i][5] = p.getArrivalDateTime();
             data[i][6] = p.getAcceptedByMedicine();
             data[i][7] = "Select Bed";
             data[i][8] = "Delete Patient";

@@ -25,11 +25,14 @@ public class DisTransTablePanel extends JPanel {
     private MyTableModel disTableModel;
 
     //Columnames in our tables
-    private String[] transColumnName = {"Patient ID",
+    private String[] transColumnName = {"Index",
+            "Bed ID",
+            "Patient ID",
             "Sex",
             "Side Room",
             "Diagnosis",
             "New ward",
+            "ETT"
     };
 
     private String[] disColumnName = {"Index",
@@ -46,38 +49,59 @@ public class DisTransTablePanel extends JPanel {
     private Object disData[][];
 
 
-    private GeneralWard disMethods;
-    private AMCWard transMethods;
+    private ControlCentre methods;
+
 
     public DisTransTablePanel(ControlCentre methods) {
+        this.methods = methods;
 
+        //Filling disData with all relevant data from database
+        try {
+            disData = methods.getDisData();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //Filling transData with all relevant data from database
+        try {
+            transData = methods.getTransData();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
 
 
         disTableModel = new MyTableModel(disColumnName, disData);
         disTable = new JTable(disTableModel);
         disSp = new JScrollPane(disTable);
 
-        setupTable(disTable);
+        transTableModel = new MyTableModel(transColumnName, transData);
+        transTable = new JTable(transTableModel);
+        transSp = new JScrollPane(transTable);
 
-        this.setLayout(new GridLayout());
-        this.add(disSp);
+        setupTable(disTable, transTable);
 
+        this.setLayout(new GridLayout(2, 1));
+        addSp(disSp, transSp);
     }
 
-
-    //Sets rowheight and edits the tableheader
-    public void setupTable(JTable... tables) {
-        //Editing table
-        for (JTable t : tables) {
-            t.setRowHeight(35);                                     //Setting rowheight
-            t.getTableHeader().setDefaultRenderer(new MultiLineTableHeaderRenderer());
+        //Sets rowheight and edits the tableheader
+        public void setupTable (JTable...tables){
+            //Editing table
+            for (JTable t : tables) {
+                t.setRowHeight(35);                                     //Setting rowheight
+                t.getTableHeader().setDefaultRenderer(new MultiLineTableHeaderRenderer());
+            }
         }
-    }
 
-    public void addSp(JScrollPane... scrollPanes) {
-        for (JScrollPane sp : scrollPanes) {
-            this.add(sp);
+        public void addSp (JScrollPane...scrollPanes){
+            for (JScrollPane sp : scrollPanes) {
+                this.add(sp);
+            }
         }
-    }
+
 
 }

@@ -19,9 +19,7 @@ public class DisTransPage {
     private AMCWard transMethods;
     private DisTransTablePanel disTransTablePanel;
 
-    public DisTransPage(ArrayList<Patient> transfers, ArrayList<Patient> discharges, ControlCentre methods) {
-        
-
+    public DisTransPage(ControlCentre methods) {
 
         JFrame f = new JFrame();
         JPanel mainPanel = new JPanel();
