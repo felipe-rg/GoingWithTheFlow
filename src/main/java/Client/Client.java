@@ -59,7 +59,7 @@ public class Client extends fromJson{
 
             // Read the body of the response
             while ((inputLine = bufferedReader.readLine()) != null) {
-                System.out.println(inputLine);
+
             }
             bufferedReader.close();
         }
@@ -79,7 +79,7 @@ public class Client extends fromJson{
 
         // Read the body of the response
         while ((inputLine = bufferedReader.readLine()) != null) {
-            System.out.println(inputLine);
+
         }
         bufferedReader.close();
     }
@@ -98,7 +98,7 @@ public class Client extends fromJson{
 
         // Read the body of the response
         while ((inputLine = bufferedReader.readLine()) != null) {
-            System.out.println(inputLine);
+
         }
         bufferedReader.close();
     }
