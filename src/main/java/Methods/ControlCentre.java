@@ -142,7 +142,9 @@ public class ControlCentre implements statusable{
     @Override
     public ArrayList<String> getWardInfo(int wardId) throws IOException, SQLException {
         ArrayList<String> numbers = new ArrayList<String>();
-        //format = wardname, capacity, Male free, female free, either sex free, expected male discharge, expected female discharge, ICU, RIP
+        //format = FOR ALL - wardname, capacity, Male free, female free, either sex free, expected male discharge, expected female discharge,
+        // IF AMC - male transfer, female transfer
+        // FOR ALL - ICU, RIP
 
         ArrayList<String> json = client.makeGetRequest("*", "wards", "wardid="+wardId);
         ArrayList<Ward> wards = client.wardsFromJson(json);

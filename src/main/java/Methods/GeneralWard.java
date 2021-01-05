@@ -417,7 +417,6 @@ public abstract class GeneralWard {
                     output[2] = output[2] + 1;
                 } else {
                     output[1] = output[1] + 1;
-                    System.out.println(newBed.getBedId());
                 }
             }
         }
