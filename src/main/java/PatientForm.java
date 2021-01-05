@@ -119,40 +119,33 @@ public class PatientForm {
             @Override
             public void actionPerformed(ActionEvent e) {
                 AandE aneUser = new AandE(1);
-                if (pID.getText().length() != 10){
-                    JOptionPane.showMessageDialog(null, "Invalid Patient ID", "Warning", JOptionPane.INFORMATION_MESSAGE);
-                }
+                Patient p = null;
                 try {
-                    if (aneUser.checkExistingId(pID.getText())){
-                        JOptionPane.showMessageDialog(null, "Already existing Patient ID", "Warning", JOptionPane.INFORMATION_MESSAGE);
+                    if (pID.getText().length() != 10){
+                        JOptionPane.showMessageDialog(null, "Invalid Patient ID! It must contain 10 digits.", "Warning", JOptionPane.INFORMATION_MESSAGE);
                     }
-
+                    else if (aneUser.checkExistingId(pID.getText())) {
+                        JOptionPane.showMessageDialog(null, "Already existing Patient ID! Try again.", "Warning", JOptionPane.INFORMATION_MESSAGE);
+                    }
                     else {
-                        LocalDate DOB = LocalDate.of(  (Integer) year.getSelectedItem(),  (Integer) month.getSelectedItem(),  (Integer) day.getSelectedItem() );
-                        Patient p = new Patient( pID.getText(),(String) pSex.getSelectedItem() ,DOB,pIll.getText(), SR);
-
-                        try {
-                            aneUser.createPatient(p);
-                        } catch (IOException ioException) {
-                            ioException.printStackTrace();
-                        }
-                        try {
-                            if(aneUser.checkAddedPatient(p)) {
-                                JOptionPane.showMessageDialog(null, "Patient has been added to database", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
-                                f.dispose();
-                                UserPage user = new UserPage();
-                            }
-                            else {JOptionPane.showMessageDialog(null, "Patient not added to database!\nTry again.", "Warning", JOptionPane.INFORMATION_MESSAGE);}
-                        } catch (IOException ioException) {
-                            ioException.printStackTrace();
-                        }
-
+                        LocalDate DOB = LocalDate.of((Integer) year.getSelectedItem(), (Integer) month.getSelectedItem(), (Integer) day.getSelectedItem());
+                        p = new Patient(pID.getText(), (String) pSex.getSelectedItem(), DOB, pIll.getText(), SR);
+                        aneUser.createPatient(p);
                     }
+
+                    if(aneUser.checkAddedPatient(p)) {
+                        JOptionPane.showMessageDialog(null, "Patient has been added to database.", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
+                        f.dispose();
+                        UserPage user = new UserPage();
+                    }
+                    else {JOptionPane.showMessageDialog(null, "Patient has NOT been added to database! Try again", "Warning", JOptionPane.INFORMATION_MESSAGE);}
+
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 }
             }
         });
+
         JPanel panelSub = new JPanel();
         panelSub.add(submit);
         padding(panelSub);
