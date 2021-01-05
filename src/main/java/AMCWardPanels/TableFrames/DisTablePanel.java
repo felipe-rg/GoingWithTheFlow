@@ -1,5 +1,6 @@
-package Panels.TableFrames;
+package AMCWardPanels.TableFrames;
 
+import AMCWardPanels.TableFrames.DisTableModel;
 import Methods.GeneralWard;
 
 import javax.swing.*;
