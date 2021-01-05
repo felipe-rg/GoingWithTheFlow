@@ -1,17 +1,27 @@
+import CUTablePanels.DisTransTablePanel;
 import Client.Patient;
 import AMCWardPanels.Title;
+import Methods.AMCWard;
 import Methods.ControlCentre;
+import Methods.GeneralWard;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class DisTransPage {
 
+    private GeneralWard disMethods;
+    private AMCWard transMethods;
+    private DisTransTablePanel disTransTablePanel;
+
     public DisTransPage(ArrayList<Patient> transfers, ArrayList<Patient> discharges, ControlCentre methods) {
+        
+
 
         JFrame f = new JFrame();
         JPanel mainPanel = new JPanel();
@@ -44,13 +54,14 @@ public class DisTransPage {
 
 
         JPanel infoPanel = new JPanel();
-        infoPanel.setLayout(new GridLayout( 2 , 1));
+        infoPanel.setLayout(new GridLayout( ));
 
-        JLabel TransferList = new JLabel("Transfer Patient List goes here");
-        JLabel DischargeList = new JLabel("Discharge Patient List goes here");
+        //JLabel TransferList = new JLabel("Transfer Patient List goes here");
+        //JLabel DischargeList = new JLabel("Discharge Patient List goes here");
 
-        infoPanel.add(TransferList);
-        infoPanel.add(DischargeList);
+        disTransTablePanel = new DisTransTablePanel(disMethods, transMethods);
+
+        infoPanel.add(disTransTablePanel);
 
         mainPanel.setLayout(new BorderLayout());                                    // defines layout of MainPanel
         mainPanel.add(titlePanel, BorderLayout.NORTH);

@@ -1,5 +1,8 @@
-package AMCWardPanels.TableFrames;
+package AMCWardPanels.TableFrames.Total;
 
+import AMCWardPanels.TableFrames.ButtonColumn;
+import AMCWardPanels.TableFrames.DeletePopUp;
+import AMCWardPanels.TableFrames.MultiLineTableHeaderRenderer;
 import Methods.GeneralWard;
 
 import javax.swing.*;

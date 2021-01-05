@@ -3,11 +3,11 @@ package AMCWardPanels;
 import Methods.AMCWard;
 import Methods.GeneralWard;
 import Methods.LongstayWard;
-import AMCWardPanels.TableFrames.DisTable;
-import AMCWardPanels.TableFrames.InTable;
-import AMCWardPanels.TableFrames.OthTable;
-import AMCWardPanels.TableFrames.TotTable;
-import AMCWardPanels.TableFrames.TransTable;
+import AMCWardPanels.TableFrames.Discharge.DisTable;
+import AMCWardPanels.TableFrames.Incoming.InTable;
+import AMCWardPanels.TableFrames.Others.OthTable;
+import AMCWardPanels.TableFrames.Total.TotTable;
+import AMCWardPanels.TableFrames.Transfer.TransTable;
 
 import javax.swing.*;
 import java.awt.*;

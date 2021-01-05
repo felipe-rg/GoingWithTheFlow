@@ -35,6 +35,7 @@ public abstract class GeneralWard {
         refresh();
     }
 
+
     //Set the variable wardName from input wardId
     public void getWardName() throws IOException {
         ArrayList<String> json = client.makeGetRequest("wardname", "wards", "id="+wardId);
@@ -123,7 +124,7 @@ public abstract class GeneralWard {
             data[i][2] = p.getSex();
             data[i][3] = p.getInitialDiagnosis();
             data[i][4] = p.getNeedsSideRoom();
-            data[i][5] = dateFormatter(p.getArrivalDateTime());
+            data[i][5] = p.getArrivalDateTime();
             data[i][6] = p.getAcceptedByMedicine();
             data[i][7] = "Select Bed";
             data[i][8] = "Delete Patient";
@@ -426,5 +427,26 @@ public abstract class GeneralWard {
         ArrayList<Patient> patients = client.patientsFromJson(json);
         patient = patients.get(0);
     }
+
+
+
+    //FUNCTIONS FOR TABLES IN CONTROLUNIT
+    public Object[][] getCUDisData() throws IOException, SQLException {
+        ArrayList<Patient> patients = getDischargeList();
+        Object[][] disData = new Object[patients.size()][8];
+        for(int i=0; i<patients.size(); i++) {
+            Patient p = patients.get(i);
+            disData[i][0] = p.getId();
+            disData[i][1] = p.getCurrentBedId();
+            disData[i][2] = p.getPatientId();
+            disData[i][3] = p.getSex();
+            disData[i][4] = p.getInitialDiagnosis();
+            disData[i][5] = p.getTtaSignedOff();
+            disData[i][6] = p.getSuitableForDischargeLounge();
+            disData[i][7] = dateFormatter(p.getEstimatedTimeOfNext());
+        }
+        return disData;
+    }
+
 
 }

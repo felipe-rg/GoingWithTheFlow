@@ -1,9 +1,7 @@
 import Client.Patient;
 import AMCWardPanels.TableFrames.ColorCodePanel;
-import AMCWardPanels.TableFrames.InTablePanel;
 import AMCWardPanels.Title;
 import Methods.ControlCentre;
-import Methods.GeneralWard;
 
 import javax.swing.*;
 import java.awt.*;

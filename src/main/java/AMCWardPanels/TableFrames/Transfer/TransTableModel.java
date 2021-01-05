@@ -1,8 +1,10 @@
-package AMCWardPanels.TableFrames;
+package AMCWardPanels.TableFrames.Transfer;
+
+import AMCWardPanels.TableFrames.MyTableModel;
 
 import java.util.Vector;
 
-public class TransTableModel extends MyTableModel{
+public class TransTableModel extends MyTableModel {
     public TransTableModel(String[] columnName, Object[][] data) {
         super(columnName, data);
     }

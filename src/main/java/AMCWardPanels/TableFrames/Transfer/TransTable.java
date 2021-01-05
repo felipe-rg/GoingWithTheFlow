@@ -1,5 +1,6 @@
-package AMCWardPanels.TableFrames;
+package AMCWardPanels.TableFrames.Transfer;
 
+import AMCWardPanels.TableFrames.MainPanel;
 import Methods.AMCWard;
 
 import javax.swing.*;

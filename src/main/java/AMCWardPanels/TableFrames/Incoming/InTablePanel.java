@@ -1,9 +1,10 @@
-/*
-package CUTableFrames;
-import AMCWardPanels.TableFrames.*;
+package AMCWardPanels.TableFrames.Incoming;
 
+import AMCWardPanels.TableFrames.ButtonColumn;
+import AMCWardPanels.TableFrames.DeletePopUp;
+import AMCWardPanels.TableFrames.MultiLineTableHeaderRenderer;
+import AMCWardPanels.TableFrames.TimeRenderer;
 import Client.*;
-import Methods.ControlCentre;
 import Methods.GeneralWard;
 
 import javax.swing.*;
@@ -18,7 +19,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 
-public class CUInTablePanel extends JPanel implements TableModelListener {
+public class InTablePanel extends JPanel implements TableModelListener {
     //Table and scrollpane where table sits
     private JTable table;
     private JScrollPane scrollPane;
@@ -47,13 +48,14 @@ public class CUInTablePanel extends JPanel implements TableModelListener {
 
     private Object[][] dbData;
 
-    private ControlCentre methods;
+    private GeneralWard methods;
 
     //Constructor
-    public CUInTablePanel(ControlCentre methods) {
+    public InTablePanel(GeneralWard methods) {
 
         this.methods = methods;
 
+        if(methods.wardId==2){
             try {
                 dbData = this.methods.getIncomingData();
             } catch (IOException e) {
@@ -165,7 +167,7 @@ public class CUInTablePanel extends JPanel implements TableModelListener {
                 e.printStackTrace();
             }
             catch (SQLException throwables) {
-                throwables.printStackTrace();
+            throwables.printStackTrace();
             }
             infoFrame.dispose();
         });
@@ -206,11 +208,9 @@ public class CUInTablePanel extends JPanel implements TableModelListener {
             has been accepted by medicine or not. If they have been accepted by medicine, then the button
             can be clicked, if not then it does not work.
          */
-/*
         tableModel.isCellEditable(row, column);
     }
- */
-    /*
+
     //Transforming a LocalDateTime object into a string displaying hours and minutes in the form "HH:mm"
     public String dateFormatter(LocalDateTime localDateTime){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
@@ -228,4 +228,5 @@ public class CUInTablePanel extends JPanel implements TableModelListener {
         table.getModel().addTableModelListener(this);
     }
 }
-*/
+
+

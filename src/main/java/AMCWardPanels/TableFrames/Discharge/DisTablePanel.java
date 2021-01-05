@@ -1,6 +1,9 @@
-package AMCWardPanels.TableFrames;
+package AMCWardPanels.TableFrames.Discharge;
 
-import Methods.AMCWard;
+import AMCWardPanels.TableFrames.ButtonColumn;
+import AMCWardPanels.TableFrames.DeletePopUp;
+import AMCWardPanels.TableFrames.MultiLineTableHeaderRenderer;
+import Methods.GeneralWard;
 
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
@@ -12,11 +15,12 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class TransTablePanel extends JPanel implements TableModelListener {
+public class DisTablePanel extends JPanel implements TableModelListener {
+
     //Table and scrollpane where table sits
     private JTable table;
     private JScrollPane scrollPane;
-    private TransTableModel tableModel;
+    private DisTableModel tableModel;
 
     //Columnames in our table
     private String[] columnName = {"Index",
@@ -25,17 +29,23 @@ public class TransTablePanel extends JPanel implements TableModelListener {
             "Sex",
             "Initial Diagnosis",
             "Side Room",
-            "ETT",
-            "New Ward",
-            "Delete Button"
-            };
+            "TTA Done?",
+            "Discharge Lounge",
+            "ETD",
+            "Delete Button"};
+
+
 
     private Object[][] dbData;
 
-    public TransTablePanel(AMCWard methods){
+    private GeneralWard methods;
+
+    public DisTablePanel(GeneralWard methods){
+
+        this.methods = methods;
 
         try {
-            dbData = methods.getTransferData();
+            dbData = methods.getDischargeData();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (SQLException throwables) {
@@ -43,68 +53,75 @@ public class TransTablePanel extends JPanel implements TableModelListener {
         }
         //Instantiating table with appropriate data and tablemodel
 
-        tableModel = new TransTableModel(columnName, dbData);        //Instance of MytableModel
+        tableModel = new DisTableModel(columnName, dbData);        //Instance of MytableModel
         table = new JTable(tableModel);         //Creating a table of model tablemodel (instance of MyTableModel)
         scrollPane = new JScrollPane(table);    //Creating scrollpane where table is located (for viewing purposes)
-
-
 
         //Editing table
         setupTable(table);
 
+        //Action happening when we press delete button
         Action deletePopUp = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new DeletePopUp(table, tableModel, methods);
             }
         };
-        Action requestWard = new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("New Ward selected");
-            }
-        };
-
-
-        ButtonColumn deletePatient = new ButtonColumn(table, deletePopUp, 8);
-
+        //Assigning the column that will have the delete buttons
+        ButtonColumn deletePatient = new ButtonColumn(table, deletePopUp, 9);
 
         this.setLayout(new GridLayout());
         this.add(scrollPane);
     }
 
-
-
+    private void editPatient(int patientId, String column, boolean value){
+        try {
+            methods.editPatient(patientId, column, String.valueOf(value));
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
 
     @Override
     public void tableChanged(TableModelEvent e) {
         //Row and column being edited
         int row = e.getFirstRow();
         int column = e.getColumn();
-        tableModel = (TransTableModel)e.getSource();   //Tablemodel used
+        tableModel = (DisTableModel)e.getSource();   //Tablemodel used
 
         //Name of the column and data introduced
         String columnName = tableModel.getColumnName(column);
         Object data = tableModel.getValueAt(row, column);
-        //Bednumber of row selected
-        Object bedNum = tableModel.getValueAt(row, 0);
+
+        int patientId = tableModel.getPatientID(table.getSelectedRow());
 
         //Printing out what has been edited
-        System.out.println("Patient bed: " + bedNum + "     Edited '" + columnName+ "': " +data);
+        System.out.println("Patient bed: " + patientId + "     Edited '" + columnName+ "': " +data);
+        if(columnName == "TTA Done?"){
+            editPatient(patientId, "ttasignedoff", (boolean)data);
+        }
+        if(columnName == "Side Room"){
+            editPatient(patientId, "needssideroom", (boolean)data);
+        }
+        if(columnName == "Discharge Lounge"){
+            editPatient(patientId, "suitablefordischargelounge", (boolean)data);
+        }
 
     }
 
-    //Transforming a LocalDateTime object into a string displaying hours and minutes in the form "HH:mm"
-    public String dateFormatter(LocalDateTime localDateTime){
+    private Object dateFormatter(LocalDateTime localDateTime) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         return localDateTime.format(formatter);
     }
 
-    public void setupTable(JTable table) {
+    public void setupTable(JTable table){
         table.setRowHeight(35);                                     //Setting rowheight
         table.getTableHeader().setDefaultRenderer(new MultiLineTableHeaderRenderer());  //Setting header renderer
 
         //Adding a listener to see user edits
         table.getModel().addTableModelListener(this);
+
     }
 }

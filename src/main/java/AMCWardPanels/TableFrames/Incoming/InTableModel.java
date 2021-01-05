@@ -1,8 +1,10 @@
-package AMCWardPanels.TableFrames;
+package AMCWardPanels.TableFrames.Incoming;
+
+import AMCWardPanels.TableFrames.MyTableModel;
 
 import java.util.Vector;
 
-public class InTableModel extends MyTableModel{
+public class InTableModel extends MyTableModel {
 
     public InTableModel(String[] columnName, Object[][] data) {
         super(columnName, data);

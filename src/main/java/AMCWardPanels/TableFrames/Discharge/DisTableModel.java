@@ -1,8 +1,10 @@
-package AMCWardPanels.TableFrames;
+package AMCWardPanels.TableFrames.Discharge;
+
+import AMCWardPanels.TableFrames.MyTableModel;
 
 import java.util.Vector;
 
-public class DisTableModel extends MyTableModel{
+public class DisTableModel extends MyTableModel {
     public DisTableModel(String[] columnName, Object[][] data) {
         super(columnName, data);
     }

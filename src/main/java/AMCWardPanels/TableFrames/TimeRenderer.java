@@ -3,6 +3,7 @@ package AMCWardPanels.TableFrames;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -21,25 +22,28 @@ public class TimeRenderer extends DefaultTableCellRenderer {
 
         //timeNowS is the time now as a string ("HH:mm")
         //timeArrival is a string ("HH:mm") of the time the patient entered the A&E
-        String timeNowS = DateFormatter(LocalDateTime.now());
+        String timeNowS = dateFormatter(LocalDateTime.now());
         String timeArrival = String.valueOf(value);
 
-        //Time spent in hospital already
-        double timeInHospital = timeDifference(timeArrival, timeNowS);
 
         //Making label opaque so we can see the color
         timeLabel.setOpaque(true);
 
+        long timeInHospital = durationFormatter(Duration.between((LocalDateTime)value, LocalDateTime.now()));
 
-        if (timeInHospital < 2){                                    //Making background green
+        if (timeInHospital < 2){//Making background green
+            timeLabel.setText(dateFormatter((LocalDateTime) value));
             timeLabel.setBackground(Color.decode("#8ABB59"));
+
         }
 
         else if (timeInHospital > 2 && timeInHospital < 3){         //Making background amber
+            timeLabel.setText(dateFormatter((LocalDateTime) value));
             timeLabel.setBackground(Color.decode("#F9D88C"));
         }
 
         else {
+            timeLabel.setText(dateFormatter((LocalDateTime) value));
             timeLabel.setBackground(Color.decode("#F76262"));       //Making background red
         }
 
@@ -48,55 +52,16 @@ public class TimeRenderer extends DefaultTableCellRenderer {
 
 
     //Transforming a LocalDateTime object into a string displaying hours and minutes in the form "HH:mm"
-    public String DateFormatter(LocalDateTime time){
+    public String dateFormatter(LocalDateTime time){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         return time.format(formatter);
     }
 
-    //Function finding the difference in time between time now  and arrival time (time2-time1)
-    public double timeDifference(String time1, String time2){
 
-        //Hours in int
-        int hour1 = findHour(time1);
-        int hour2 = findHour(time2);
 
-        //Minutes in int
-        int minutes1 = findMinutes(time1);
-        int minutes2 = findMinutes(time2);
-
-        //Hours and minutes in double for example 9:30 would be 9.5
-        double hourMinutes1 = hour1 + (double)minutes1/60;
-        double hourMinutes2 = hour2 + (double)minutes2/60;
-
-        //We return time in hospital
-        return (hourMinutes2 - hourMinutes1);
-
-    }
-
-    //Finding hour from an inputted string in the form "HH:mm"
-    public int findHour(String time){
-        //If the hour has two digits >9 then we get the two first characters in string
-        if (time.length() == 5){
-            return Integer.parseInt(time.substring(0,2));
-        }
-        //If the hour has one digit <10 then we get only the first digit
-        else if (time.length() == 4){
-            return Integer.parseInt(time.substring(0,1));
-        }
-        else return 0;
-    }
-
-    //Finding minutes from an inputted string in the form "HH:mm"
-    public int findMinutes(String time){
-        //If the hour has two digits >9 then the whole time string will have length 5
-        if (time.length() == 5){
-            return Integer.parseInt(time.substring(3,5));
-        }
-        //If the hour has one digits <10 then the whole time string will have length 4
-        else if (time.length() == 4){
-            return Integer.parseInt(time.substring(2,4));
-        }
-        else return 0;
+    public long durationFormatter(Duration duration){
+        long hours = duration.toHours();
+        return hours;
     }
 
 }
