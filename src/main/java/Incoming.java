@@ -1,5 +1,9 @@
 import Client.Patient;
-import Panels.Title;
+import AMCWardPanels.TableFrames.ColorCodePanel;
+import AMCWardPanels.TableFrames.InTablePanel;
+import AMCWardPanels.Title;
+import Methods.ControlCentre;
+import Methods.GeneralWard;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,7 +13,9 @@ import java.util.ArrayList;
 
 public class Incoming {
 
-    public Incoming(ArrayList<Patient> incomingPatients) {
+    private GeneralWard methods;
+
+    public Incoming(ArrayList<Patient> incomingPatients, ControlCentre methods) {
 
         JFrame f = new JFrame();                   //creates JFrame
         JPanel mainPanel = new JPanel();           // creates MainPanel
@@ -28,9 +34,23 @@ public class Incoming {
 
         JPanel infoPanel = new JPanel();                        // creates info panel
 
-        JLabel AMU1info = new JLabel("A&E Patient table goes here");
+        //JPanel inTablePanel = new InTablePanel(methods);
 
-        infoPanel.add(AMU1info);
+        //JLabel AMU1info = new JLabel("A&E Patient table goes here");
+        JPanel leftPanel = new JPanel();
+        JPanel rightPanel = new JPanel();
+        JPanel colorCodePanel = new ColorCodePanel();
+
+        leftPanel.setPreferredSize(new Dimension(100,100));
+        rightPanel.setPreferredSize(new Dimension(100,100));
+        colorCodePanel.setPreferredSize(new Dimension(100,100));
+
+        infoPanel.setLayout(new BorderLayout());
+        infoPanel.add(leftPanel, BorderLayout.WEST);
+        infoPanel.add(rightPanel, BorderLayout.EAST);
+        infoPanel.add(colorCodePanel, BorderLayout.SOUTH);
+        //infoPanel.add(inTablePanel, BorderLayout.CENTER);
+
 
         mainPanel.setLayout(new BorderLayout());
         mainPanel.add(titlePanel, BorderLayout.NORTH);

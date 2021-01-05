@@ -1,6 +1,6 @@
 import Client.Patient;
 import Methods.AandE;
-import Panels.Title;
+import AMCWardPanels.Title;
 
 import javax.swing.*;
 import java.awt.*;

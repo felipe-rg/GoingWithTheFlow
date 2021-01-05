@@ -1,7 +1,6 @@
 import Methods.AMCWard;
-import Methods.GeneralWard;
 import Methods.LongstayWard;
-import Panels.UIController;
+import AMCWardPanels.UIController;
 
 //AMU GUI
 import javax.swing.*;

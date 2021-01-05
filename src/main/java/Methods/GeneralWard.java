@@ -149,6 +149,7 @@ public abstract class GeneralWard {
         return data;
     }
 
+
     public ArrayList<Patient> getPatientList() throws IOException, SQLException {
         ArrayList<String> json = client.makeGetRequest("*", "patients", "currentwardid="+wardId);
         return client.patientsFromJson(json);
@@ -156,7 +157,7 @@ public abstract class GeneralWard {
 
     public Object[][] getPatientData() throws IOException, SQLException {
         ArrayList<Patient> patients = getPatientList();
-        Object[][] data = new Object[patients.size()][9];
+        Object[][] data = new Object[patients.size()][8];
         for(int i=0; i<patients.size(); i++) {
             Patient p = patients.get(i);
             data[i][0] = p.getId();
@@ -209,18 +210,19 @@ public abstract class GeneralWard {
 
     public Object[][] getDischargeData() throws IOException, SQLException {
         ArrayList<Patient> patients = getDischargeList();
-        Object[][] data = new Object[patients.size()][9];
+        Object[][] data = new Object[patients.size()][10];
         for(int i=0; i<patients.size(); i++) {
             Patient p = patients.get(i);
             data[i][0] = p.getId();
-            data[i][1] = p.getPatientId();
-            data[i][2] = p.getSex();
-            data[i][3] = p.getInitialDiagnosis();
-            data[i][4] = p.getNeedsSideRoom();
-            data[i][5] = p.getTtaSignedOff();
-            data[i][6] = p.getSuitableForDischargeLounge();
-            data[i][7] = dateFormatter(p.getEstimatedTimeOfNext());
-            data[i][8] = "Delete Patient";
+            data[i][1] = p.getCurrentBedId();
+            data[i][2] = p.getPatientId();
+            data[i][3] = p.getSex();
+            data[i][4] = p.getInitialDiagnosis();
+            data[i][5] = p.getNeedsSideRoom();
+            data[i][6] = p.getTtaSignedOff();
+            data[i][7] = p.getSuitableForDischargeLounge();
+            data[i][8] = dateFormatter(p.getEstimatedTimeOfNext());
+            data[i][9] = "Delete Patient";
         }
         return data;
     }
@@ -245,20 +247,22 @@ public abstract class GeneralWard {
         for(int i=0; i<patients.size(); i++) {
             Patient p = patients.get(i);
             data[i][0] = p.getId();
-            data[i][1] = p.getPatientId();
-            data[i][2] = p.getSex();
-            data[i][3] = p.getInitialDiagnosis();
-            data[i][4] = p.getNeedsSideRoom();
-            data[i][5] = dateFormatter(p.getEstimatedTimeOfNext());
+            data[i][1] = p.getCurrentBedId();
+            data[i][2] = p.getPatientId();
+            data[i][3] = p.getSex();
+            data[i][4] = p.getInitialDiagnosis();
+            data[i][5] = p.getNeedsSideRoom();
+            data[i][6] = dateFormatter(p.getEstimatedTimeOfNext());
             ArrayList<String> json = client.makeGetRequest("*", "wards", "wardid="+p.getNextDestination());
             ArrayList<Ward> wards = client.wardsFromJson(json);
             if(wards.size()!=0){
-                data[i][6] = wards.get(0).getWardName();
+                data[i][7] = wards.get(0).getWardName();
             }
             data[i][8] = "Delete Patient";
         }
         return data;
     }
+
 
 
     // Returns a list of beds in the ward which have the correct characteristics for the chosen patient

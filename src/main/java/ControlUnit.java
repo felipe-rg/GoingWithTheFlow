@@ -1,5 +1,6 @@
 import Methods.ControlCentre;
-import Panels.Title;
+import AMCWardPanels.Title;
+import Methods.GeneralWard;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,6 +18,7 @@ public class ControlUnit {
     JPanel longStayPanel;
     JPanel AMCPanel;
 
+    GeneralWard gWMethods;
     ControlCentre methods;
 
     public ControlUnit() {
@@ -85,7 +87,7 @@ public class ControlUnit {
             public void actionPerformed(ActionEvent e) {
                 f.dispose();
                 try {
-                    Incoming ipList = new Incoming(methods.seeIncomingList());           // opens incoming patient list (new JFrame)
+                    Incoming ipList = new Incoming(methods.seeIncomingList(), methods);           // opens incoming patient list (new JFrame)
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 } catch (SQLException throwables) {
