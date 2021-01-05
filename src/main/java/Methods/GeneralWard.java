@@ -17,15 +17,15 @@ import java.util.ArrayList;
 //Instantiated when a ward is chosen - implemented as AMC or longstay
 
 public abstract class GeneralWard {
-    public Client client;
-    public int wardId;
+    protected Client client;
+    protected int wardId;
     private String wardName;
-    public Patient patient;
-    public Bed bed;
-    public int incomingNumber;
-    public int dischargeNumber;
-    public int otherNumber;
-    public int patientsInWard;
+    private Patient patient;
+    private Bed bed;
+    private int incomingNumber;
+    private int dischargeNumber;
+    private int otherNumber;
+    private int patientsInWard;
 
     //Constructor creates a client to link to the database
     //Instantiates the local variables for homescreen numbers or use in methods
@@ -35,6 +35,12 @@ public abstract class GeneralWard {
         wardName = getWardName(wardId);
         wardNumbers();
     }
+
+    public int getIncomingNumber(){return incomingNumber;}
+    public int getDischargeNumber(){return dischargeNumber;}
+    public int getOtherNumber(){return otherNumber;}
+    public int getPatientsInWard(){return patientsInWard;}
+    public int getWardId(){return wardId;}
 
     //Set the variable wardName from input wardId
     public String getWardName(int wardID) throws IOException {
@@ -352,7 +358,6 @@ public abstract class GeneralWard {
             return "#2ECC71";
         }
         Bed newBed = beds.get(0);
-        System.out.println(newBed.getStatus());
         if(newBed.getStatus().equals("F")){
             return "#2ECC71";
         }
@@ -378,6 +383,43 @@ public abstract class GeneralWard {
                 return "#F89820";
             }
         }
+    }
+
+    public int[] getBedStatus() throws IOException {
+        int[] output = new int[3];
+        ArrayList<String> json = client.makeGetRequest("*", "beds", "wardid="+wardId);
+        ArrayList<Bed> beds = client.bedsFromJson(json);
+        if(beds.size()==0){
+            output[0] = 0;
+            output[1] = 0;
+            output[2] = 0;
+        }
+        for(Bed newBed:beds) {
+            if (newBed.getStatus().equals("F")) {
+                output[0] = output[0] + 1;
+            }
+            if (newBed.getStatus().equals("C")) {
+                output[2] = output[2] + 1;
+            }
+            if(newBed.getStatus().equals("O")) {
+                json = client.makeGetRequest("*", "patients", "currentbedid=" + newBed.getBedId());
+                ArrayList<Patient> patients = client.patientsFromJson(json);
+                if (patients.size() == 0) {
+                   continue;
+                }
+                LocalDateTime arrival = patients.get(0).getArrivalDateTime();
+                LocalDateTime leaving = patients.get(0).getEstimatedTimeOfNext();
+                LocalDateTime now = LocalDateTime.now();
+                if (arrival.isEqual(leaving) || leaving.isAfter(now.plusHours(4)) || leaving.isBefore(now)) {
+                    output[2] = output[2] + 1;
+                } else {
+                    output[1] = output[1] + 1;
+                    System.out.println(newBed.getBedId());
+                }
+            }
+        }
+        return output;
+
     }
 
 }

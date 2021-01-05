@@ -7,14 +7,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class AMCWard extends GeneralWard{
-    public int transferNumber;
-
+    private int transferNumber;
 
     public AMCWard(int wardId) throws IOException, SQLException {
         super(wardId);
         //Sets transfer number for homescreen
         transferNumber = getTransferList().size();
     }
+
+    public int getTransferNumber(){return transferNumber;}
 
     //Returns an object to be used in transfer table
     public Object[][] getTransferData() throws IOException, SQLException {

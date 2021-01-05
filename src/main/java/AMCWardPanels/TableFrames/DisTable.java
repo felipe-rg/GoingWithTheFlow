@@ -30,7 +30,7 @@ public class DisTable {
         //When we close table, we refresh the homescreen
         frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent we) {
-                top.refresh();
+                top.refresh(methods);
                 wardinfo.refresh();
             }
         });

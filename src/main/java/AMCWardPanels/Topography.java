@@ -2,6 +2,7 @@ package AMCWardPanels;
 
 import Client.Bed;
 import Methods.GeneralWard;
+import com.sun.tools.javac.jvm.Gen;
 
 import javax.swing.*;
 import java.awt.*;
@@ -56,7 +57,7 @@ public class Topography extends JPanel{
             this.add(newBed);
         }
 
-        CountBeds();
+        CountBeds(methods);
         updateBedStatus(bedstatus);
 
         for (BedButton b : beds){
@@ -65,26 +66,21 @@ public class Topography extends JPanel{
                 if(b.getBedButtonStatus().equals("F") || b.getBedButtonStatus().equals("C")){ b.printInfoEmpty(); }
 
                 // every time something is done to the beds, check whether the bedstatus must change and update it
-                CountBeds();
+                CountBeds(methods);
                 updateBedStatus(bedstatus);
             });
         }
     }
 
     // counts how many red-green-orange beds there are
-    public void CountBeds() {
-        OCount = GCount = RCount = 0;
-        for (BedButton b : beds) {
-            if (b.getBedButtonStatus().equals("C")) { RCount = RCount + 1; }
-            if (b.getBedButtonStatus().equals("F")) { GCount = GCount + 1; }
-            if (b.getBedButtonStatus().equals("O")) {
-                LocalDateTime leaving = b.getBedButtonETD();
-                LocalDateTime now = LocalDateTime.now();
-                if(leaving.isBefore(now.plusHours(4))){
-                    RCount = RCount + 1;
-                }
-                else{ OCount = OCount + 1; }
-            }
+    public void CountBeds(GeneralWard methods) {
+        try {
+            int status[] = methods.getBedStatus();
+            GCount = status[0];
+            OCount = status[1];
+            RCount = status[2];
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -95,8 +91,8 @@ public class Topography extends JPanel{
         bedstatus.setRedBedsNum(RCount);
     }
 
-    public void refresh(){
-        CountBeds();
+    public void refresh(GeneralWard methods){
+        CountBeds(methods);
         updateBedStatus(bedstatus);
     }
 

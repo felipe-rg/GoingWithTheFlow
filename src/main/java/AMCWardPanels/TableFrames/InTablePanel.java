@@ -53,7 +53,7 @@ public class InTablePanel extends JPanel implements TableModelListener {
         this.methods = methods;
 
         //If the ward is amc then we use amc data
-        if(methods.wardId==2){
+        if(methods.getWardId()==2){
             try {
                 dbData = this.methods.getIncomingData();
             } catch (IOException e) {

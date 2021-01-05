@@ -53,7 +53,7 @@ public class WardInfo extends JPanel{
         this.setLayout(new GridLayout(10,1));
         setup();
         transLabel = new JLabel("Transferring Patients");
-        transbut = new JButton(String.valueOf(methods.transferNumber));
+        transbut = new JButton(String.valueOf(methods.getTransferNumber()));
         editLabel(transLabel);
         editButton(transbut);
         transbut.addActionListener(new ActionListener() {
@@ -89,10 +89,10 @@ public class WardInfo extends JPanel{
         editLabel(inLabel, disLabel, othLabel, totLabel);
 
         //Buttons
-        inbut = new JButton(String.valueOf(methods.incomingNumber));
-        disbut = new JButton(String.valueOf(methods.dischargeNumber));
-        othbut = new JButton(String.valueOf(methods.otherNumber));
-        totbut = new JButton(String.valueOf(methods.patientsInWard));
+        inbut = new JButton(String.valueOf(methods.getIncomingNumber()));
+        disbut = new JButton(String.valueOf(methods.getDischargeNumber()));
+        othbut = new JButton(String.valueOf(methods.getOtherNumber()));
+        totbut = new JButton(String.valueOf(methods.getPatientsInWard()));
         //Editing Buttons
         editButton(inbut, disbut, othbut, totbut);
 
@@ -155,10 +155,10 @@ public class WardInfo extends JPanel{
     }
 
     public void refresh(){
-        inbut = new JButton(String.valueOf(methods.incomingNumber));
-        disbut = new JButton(String.valueOf(methods.dischargeNumber));
-        othbut = new JButton(String.valueOf(methods.otherNumber));
-        totbut = new JButton(String.valueOf(methods.patientsInWard));
+        inbut = new JButton(String.valueOf(methods.getIncomingNumber()));
+        disbut = new JButton(String.valueOf(methods.getDischargeNumber()));
+        othbut = new JButton(String.valueOf(methods.getOtherNumber()));
+        totbut = new JButton(String.valueOf(methods.getPatientsInWard()));
     }
 
 

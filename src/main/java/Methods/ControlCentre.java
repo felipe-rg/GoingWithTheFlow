@@ -4,8 +4,10 @@ import Client.*;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
@@ -254,5 +256,66 @@ public class ControlCentre implements statusable{
     @Override
     public ArrayList<Patient> getPatientInfo(int wardId) {
         return null;
+    }
+
+    //Returns all patients who are being discharged
+    public ArrayList<Patient> getDischargeList() throws IOException, SQLException {
+        ArrayList<String> json = client.makeGetRequest("*", "patients", "nextdestination=6");
+        return client.patientsFromJson(json);
+    }
+
+    //Patients being transferred from amc
+    public ArrayList<Patient> getTransfersList() throws IOException, SQLException {
+        ArrayList<String> json = client.makeGetRequest("*", "patients", "nextdestination=6");
+        return client.patientsFromJson(json);
+    }
+
+    //stats needed for amclist
+    public ArrayList<Patient> getAMCList() throws IOException, SQLException {
+        ArrayList<String> json = client.makeGetRequest("*", "patients", "currentwardid=2");
+        return client.patientsFromJson(json);
+    }
+
+    //stats needed for longstay
+    public ArrayList<Patient> getLongStayList() throws IOException, SQLException {
+        ArrayList<String> json = client.makeGetRequest("*", "patients", "nextdestination=6");
+        return client.patientsFromJson(json);
+    }
+
+    public ArrayList<Patient> getIncomingList() throws IOException, SQLException {
+        ArrayList<String> json = client.makeGetRequest("*", "patients", "nextdestination=6");
+        return client.patientsFromJson(json);
+    }
+
+
+
+    //Returns an object to be used in the incoming table of the amc app
+    public Object[][] getDischargeData() throws IOException, SQLException {
+        ArrayList<Patient> patients = getDischargeList();
+        Object[][] data = new Object[patients.size()][9];
+        for(int i=0; i<patients.size(); i++) {
+            Patient p = patients.get(i);
+            data[i][0] = p.getId();
+            data[i][1] = p.getPatientId();
+            data[i][2] = p.getSex();
+            data[i][3] = p.getInitialDiagnosis();
+            data[i][4] = p.getNeedsSideRoom();
+            data[i][5] = dateFormatter(p.getArrivalDateTime());
+            data[i][6] = p.getAcceptedByMedicine();
+            data[i][7] = "Select Bed";
+            data[i][8] = "Delete Patient";
+        }
+        return data;
+    }
+    //Needed to format the time difference in getPatientData
+    public String durationFormatter(Duration duration){
+        long hours = duration.toHours();
+        return String.valueOf(hours);
+    }
+
+    //Needed to format the times used in tables
+    public String dateFormatter(LocalDateTime localDateTime){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        return localDateTime.format(formatter);
     }
 }

@@ -59,7 +59,7 @@ public class BedButton extends JButton{
     public void setETD(LocalDateTime time){this.ETD = time;}
     //Refreshes the numbers in topography when things are changed
     public void refreshTopography(){
-        top.refresh();
+        top.refresh(methods);
     }
 
     //Used when removing a patient from a bed
@@ -367,7 +367,7 @@ public class BedButton extends JButton{
         final JComboBox<String> pSex = new JComboBox<String>(sex);
 
         JLabel infoDia = new JLabel("Diagnosis:     " , SwingConstants.RIGHT);
-            JTextField diaTextField = new JTextField("PleaseTypeOneWordOnly");
+            JTextField diaTextField = new JTextField(p.getInitialDiagnosis());
 
 
 
@@ -380,6 +380,7 @@ public class BedButton extends JButton{
                 try {
                     //Change date of birth
                     LocalDate DOB = LocalDate.of(  (Integer) year.getSelectedItem(),  (Integer) month.getSelectedItem(),  (Integer) day.getSelectedItem() );
+
                     methods.editPatient(p.getId(), "dateofbirth", "'"+DOB+"'");
                     //Todo initial diagnosis multiple words!
                     methods.editPatient(p.getId(), "initialdiagnosis", "'"+diaTextField.getText()+"'");
