@@ -118,27 +118,34 @@ public class PatientForm {
         submit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
-                if (pID.getText().length() != 10){
-                    JOptionPane.showMessageDialog(null, "Invalid Patient ID", "Warning", JOptionPane.INFORMATION_MESSAGE);
-                }
-                else {
-                    LocalDate DOB = LocalDate.of(  (Integer) year.getSelectedItem(),  (Integer) month.getSelectedItem(),  (Integer) day.getSelectedItem() );
-                    Patient p = new Patient( pID.getText(),(String) pSex.getSelectedItem() ,DOB,pIll.getText(), SR);
-                    AandE aneUser = new AandE(1);
-                    try {
+                AandE aneUser = new AandE(1);
+                Patient p = null;
+                try {
+                    if (pID.getText().length() != 10){
+                        JOptionPane.showMessageDialog(null, "Invalid Patient ID! It must contain 10 digits.", "Warning", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    else if (aneUser.checkExistingId(pID.getText())) {
+                        JOptionPane.showMessageDialog(null, "Already existing Patient ID! Try again.", "Warning", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    else {
+                        LocalDate DOB = LocalDate.of((Integer) year.getSelectedItem(), (Integer) month.getSelectedItem(), (Integer) day.getSelectedItem());
+                        p = new Patient(pID.getText(), (String) pSex.getSelectedItem(), DOB, pIll.getText(), SR);
                         aneUser.createPatient(p);
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
                     }
 
-                    JOptionPane.showMessageDialog(null, "Patient has been added to database", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
-                    f.dispose();
-                    UserPage user = new UserPage();
-
+                    if(aneUser.checkAddedPatient(p)) {
+                        JOptionPane.showMessageDialog(null, "Patient has been added to database.", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
+                        f.dispose();
+                        UserPage user = new UserPage();
                     }
+                    else {JOptionPane.showMessageDialog(null, "Patient has NOT been added to database! Try again", "Warning", JOptionPane.INFORMATION_MESSAGE);}
+
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
                 }
+            }
         });
+
         JPanel panelSub = new JPanel();
         panelSub.add(submit);
         padding(panelSub);
