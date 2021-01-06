@@ -53,6 +53,8 @@ public class Client extends fromJson{
         try (OutputStream outputStream = conn.getOutputStream()) {
             outputStream.write(body, 0, body.length);
         }
+        BufferedReader bufferedReader = new BufferedReader(new
+                InputStreamReader(conn.getInputStream(), "utf-8"));
     }
 
     public void makePutRequest(String table,String change,String condition) throws IOException {
