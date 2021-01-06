@@ -1,3 +1,4 @@
+import AMCWardPanels.TableFrames.MainPanel;
 import CUTablePanels.DisTransTablePanel;
 import Client.Patient;
 import AMCWardPanels.Title;
@@ -47,19 +48,18 @@ public class DisTransPage {
         });
 
 
-        JPanel infoPanel = new JPanel();
-        infoPanel.setLayout(new GridLayout( ));
+        MainPanel mainTablePanel = new MainPanel(false, " ", 3);
 
         //JLabel TransferList = new JLabel("Transfer Patient List goes here");
         //JLabel DischargeList = new JLabel("Discharge Patient List goes here");
 
         disTransTablePanel = new DisTransTablePanel(methods);
 
-        infoPanel.add(disTransTablePanel);
+        mainTablePanel.add(disTransTablePanel, BorderLayout.CENTER);
 
         mainPanel.setLayout(new BorderLayout());                                    // defines layout of MainPanel
         mainPanel.add(titlePanel, BorderLayout.NORTH);
-        mainPanel.add(infoPanel, BorderLayout.CENTER);
+        mainPanel.add(mainTablePanel, BorderLayout.CENTER);
 
         f.getContentPane().add(mainPanel);                                          // adds MainPanel to JFrame
         f.setVisible(true);

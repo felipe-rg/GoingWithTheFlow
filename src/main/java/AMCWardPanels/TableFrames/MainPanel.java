@@ -9,7 +9,7 @@ import java.awt.*;
 
  */
 public class MainPanel extends JPanel {
-    public MainPanel(Boolean colorCode, String title, boolean addTitle){
+    public MainPanel(Boolean colorCode, String title, int condition){
 
         //Creating panels
         JPanel leftPanel = new JPanel();
@@ -29,10 +29,9 @@ public class MainPanel extends JPanel {
         smallTopPanel.setPreferredSize(new Dimension(100,40));
 
         //Setting preferredsize (not extremely important because it is a BorderLayout)
-        leftPanel.setPreferredSize(new Dimension(100,100));
+
         rightPanel.setPreferredSize(new Dimension(100,100));
         topPanel.setPreferredSize(new Dimension(100,100));
-        bottomPanel.setPreferredSize(new Dimension(100,100));
         colorCodePanel.setPreferredSize(new Dimension(100,100));
 
         //SettingLayout and adding Panels
@@ -40,16 +39,43 @@ public class MainPanel extends JPanel {
         this.add(leftPanel, BorderLayout.WEST);
         this.add(rightPanel, BorderLayout.EAST);
 
-        if (addTitle == true){
+        if (condition == 1){
             this.add(topPanel, BorderLayout.NORTH);
+            leftPanel.setPreferredSize(new Dimension(100,100));
+            bottomPanel.setPreferredSize(new Dimension(100,100));
         }
 
-        if(addTitle == false){
+        if(condition == 2 || condition ==3){
             this.add(smallTopPanel, BorderLayout.NORTH);
+            bottomPanel.setPreferredSize(new Dimension(100,50));
+
+            if (condition==2){
+                leftPanel.setPreferredSize(new Dimension(100,100));
+            }
+
+            if (condition ==3){
+                leftPanel.setPreferredSize(new Dimension(250,100));
+                leftPanel.setLayout(new GridLayout(2,1));
+
+                //Defining Labels
+                JLabel transLabel = new JLabel("<html>Transfer<br>Patients</html>");
+                JLabel disLabel = new JLabel("<html>Discharge<br>Patients</html>");
+                //Editing labels
+                setLabel(transLabel, disLabel);
+                //Adding labels to left panel
+                leftPanel.add(transLabel);
+                leftPanel.add(disLabel);
+            }
+
+
         }
 
-        //Depending on the value of the boolean colorCode we will have the bottom panel displaying the colors
-        //or not (only true for the 'inTable' atm).
+        if(condition == 3){
+
+        }
+
+
+        //Depending on the value of the boolean colorCode we will have the bottom panel displaying the colors or not
         if (colorCode == true){
             this.add(colorCodePanel, BorderLayout.SOUTH);
         }
@@ -57,6 +83,16 @@ public class MainPanel extends JPanel {
             this.add(bottomPanel, BorderLayout.SOUTH);
         }
 
+    }
+
+    //Function in which you introduce labels and they are automatically edited
+    public void setLabel(JLabel ... a){
+        for (JLabel i:a){
+            i.setOpaque(true);
+            i.setHorizontalAlignment(JLabel.CENTER);
+            i.setVerticalAlignment(JLabel.CENTER);
+            i.setFont(new Font("Verdana", Font.PLAIN, 30));
+        }
     }
 
 }

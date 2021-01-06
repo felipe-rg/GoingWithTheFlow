@@ -18,7 +18,7 @@ public class TotTable {
         TotTablePanel totTablePanel = new TotTablePanel(methods);
         DisTablePanel disTablePanel = new DisTablePanel(methods);
         //We create the mainPanel where everything will be
-        MainPanel mainPanel = new MainPanel(false, "TOTAL PATIENTS IN WARD", true);
+        MainPanel mainPanel = new MainPanel(false, "TOTAL PATIENTS IN WARD", 1);
         //We add the table to the mainPanel
         //mainPanel.add(totTablePanel, BorderLayout.CENTER);
         mainPanel.add(totTablePanel, BorderLayout.CENTER);

@@ -73,19 +73,26 @@ public class DisTransTablePanel extends JPanel {
             throwables.printStackTrace();
         }
 
-
+        //Instantiating tablemodel, table and scrollpane
         disTableModel = new MyTableModel(disColumnName, disData);
         disTable = new JTable(disTableModel);
         disSp = new JScrollPane(disTable);
 
+        //Instantiating tablemodel, table and scrollpane
         transTableModel = new MyTableModel(transColumnName, transData);
         transTable = new JTable(transTableModel);
         transSp = new JScrollPane(transTable);
 
+        //Editing the tables so they look good
         setupTable(disTable, transTable);
 
-        this.setLayout(new GridLayout(2, 1));
-        addSp(disSp, transSp);
+
+
+        GridLayout gridLayout = new GridLayout(2,1);
+        gridLayout.setVgap(50);
+
+        this.setLayout(gridLayout);
+        addSp(transSp, disSp);
     }
 
         //Sets rowheight and edits the tableheader
@@ -97,6 +104,7 @@ public class DisTransTablePanel extends JPanel {
             }
         }
 
+        //Function that adds all scrollpanes entered into this panel
         public void addSp (JScrollPane...scrollPanes){
             for (JScrollPane sp : scrollPanes) {
                 this.add(sp);

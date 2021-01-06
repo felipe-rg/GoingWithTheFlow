@@ -17,7 +17,7 @@ public class OthTable {
 
 
 
-        MainPanel mainPanel = new MainPanel(false, "OTHER PATIENTS", true);
+        MainPanel mainPanel = new MainPanel(false, "OTHER PATIENTS", 1);
         mainPanel.add(othTablePanel, BorderLayout.CENTER);
 
 
