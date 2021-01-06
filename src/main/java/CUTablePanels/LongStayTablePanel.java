@@ -54,7 +54,7 @@ public class LongStayTablePanel extends JPanel {
     public void setupTable (JTable...tables){
         //Editing table
         for (JTable t : tables) {
-            t.setRowHeight(35);                                     //Setting rowheight
+            t.setRowHeight(195);                                     //Setting rowheight
             t.getTableHeader().setDefaultRenderer(new MultiLineTableHeaderRenderer());
         }
     }

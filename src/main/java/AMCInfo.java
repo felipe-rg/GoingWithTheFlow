@@ -1,3 +1,4 @@
+import AMCWardPanels.TableFrames.MainPanel;
 import AMCWardPanels.Title;
 import CUTablePanels.AMCInfoTablePanel;
 import Methods.ControlCentre;
@@ -36,17 +37,19 @@ public class AMCInfo {
             }
         });
 
-        JPanel infoPanel = new JPanel();
+        MainPanel mainTablePanel = new MainPanel(false, " ",4);
+
+
         AMCInfoTablePanel amcInfoTablePanel = new AMCInfoTablePanel(methods);
-        infoPanel.setLayout(new GridLayout());
-        infoPanel.add(amcInfoTablePanel);
+
+        mainTablePanel.add(amcInfoTablePanel, BorderLayout.CENTER);
 
 
 
 
         mainPanel.setLayout(new BorderLayout());
         mainPanel.add(titlePanel , BorderLayout.NORTH);
-        mainPanel.add(infoPanel , BorderLayout.CENTER);
+        mainPanel.add(mainTablePanel , BorderLayout.CENTER);
 
         f.getContentPane().add(mainPanel);
         f.setVisible(true);

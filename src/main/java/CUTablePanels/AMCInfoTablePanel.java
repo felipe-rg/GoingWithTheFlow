@@ -75,9 +75,11 @@ public class AMCInfoTablePanel extends JPanel {
         JPanel nuthin = new JPanel();
         nuthin.setSize(800, 200);
 
+        GridLayout gridLayout = new GridLayout(3,1);
+        gridLayout.setVgap(50);
 
         //Adding stuff to the JPanel (this class itself)
-        this.setLayout(new GridLayout(7,1));
+        this.setLayout(gridLayout);
         this.addSp(AMC1Sp, AMC2Sp, AAUSp);
     }
 

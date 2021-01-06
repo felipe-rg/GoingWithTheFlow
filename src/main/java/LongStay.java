@@ -1,3 +1,4 @@
+import AMCWardPanels.TableFrames.MainPanel;
 import AMCWardPanels.Title;
 import CUTablePanels.LongStayTablePanel;
 import Methods.ControlCentre;
@@ -42,17 +43,16 @@ public class LongStay {
         });
 
 
-        JPanel infoPanel = new JPanel();
-        infoPanel.setLayout(new GridLayout());
+        MainPanel mainTablePanel = new MainPanel(false, " ", 2);
 
         LongStayTablePanel longStayTablePanel = new LongStayTablePanel(methods);
 
-        infoPanel.add(longStayTablePanel);
+        mainTablePanel.add(longStayTablePanel, BorderLayout.CENTER);
 
 
         mainPanel.setLayout(new BorderLayout());                                    // defines layout of MainPanel
         mainPanel.add(titlePanel, BorderLayout.NORTH);
-        mainPanel.add(infoPanel, BorderLayout.CENTER);
+        mainPanel.add(mainTablePanel, BorderLayout.CENTER);
 
         f.getContentPane().add(mainPanel);                                          // adds MainPanel to JFrame
         f.setVisible(true);
