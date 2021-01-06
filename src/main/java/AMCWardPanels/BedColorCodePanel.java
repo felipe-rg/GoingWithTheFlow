@@ -14,8 +14,6 @@ public class BedColorCodePanel extends JPanel {
         JPanel bluePanel = createColorPanels("ETD Passed", Color.blue);
 
         this.setLayout(new GridLayout(1,5));
-        this.setBackground(Color.WHITE);
-        this.setOpaque(true);
         addPanels(greenPanel, amberPanel, redPanel, blackPanel, bluePanel);
 
     }
@@ -39,6 +37,7 @@ public class BedColorCodePanel extends JPanel {
 
         colorPanel.add(colorButton);
         colorPanel.add(colorLabel);
+        colorPanel.setBackground(Color.white);
 
 
         return colorPanel;
@@ -47,6 +46,7 @@ public class BedColorCodePanel extends JPanel {
     public void setLabel(JLabel ... a){
         for (JLabel i:a){
             i.setOpaque(true);
+            i.setBackground(Color.white);
             i.setHorizontalAlignment(JLabel.CENTER);
             i.setVerticalAlignment(JLabel.CENTER);
             i.setFont(new Font("Verdana", Font.PLAIN, 12));
