@@ -1,5 +1,6 @@
-package AMCWardPanels.TableFrames;
+package AMCWardPanels.TableFrames.Discharge;
 
+import AMCWardPanels.TableFrames.MainPanel;
 import Methods.GeneralWard;
 import Methods.tableInfo.DischargeTableData;
 
@@ -18,7 +19,7 @@ public class DisTable {
         DisTablePanel distablePanel = new DisTablePanel(methods, dischargeTableData);
 
         //Creating the mainpanel that will contain all panels
-        MainPanel mainPanel = new MainPanel(false, "DISCHARGE PATIENTS");
+        MainPanel mainPanel = new MainPanel(false, "DISCHARGE PATIENTS", 1);
         //Adding the tablepanel to the main panel
         mainPanel.add(distablePanel, BorderLayout.CENTER);
 

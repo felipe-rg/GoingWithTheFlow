@@ -1,5 +1,7 @@
-package AMCWardPanels.TableFrames;
+package AMCWardPanels.TableFrames.Total;
 
+import AMCWardPanels.TableFrames.Discharge.DisTablePanel;
+import AMCWardPanels.TableFrames.MainPanel;
 import Methods.GeneralWard;
 import Methods.tableInfo.TotalTableData;
 
@@ -16,7 +18,7 @@ public class TotTable {
         //We create the tablepanel with the table
         TotTablePanel totTablePanel = new TotTablePanel(methods, totalTableData);
         //We create the mainPanel where everything will be
-        MainPanel mainPanel = new MainPanel(false, "TOTAL PATIENTS IN WARD");
+        MainPanel mainPanel = new MainPanel(false, "TOTAL PATIENTS IN WARD", 1);
         //We add the table to the mainPanel
         //mainPanel.add(totTablePanel, BorderLayout.CENTER);
         mainPanel.add(totTablePanel, BorderLayout.CENTER);

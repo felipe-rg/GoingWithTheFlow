@@ -1,5 +1,6 @@
-package AMCWardPanels.TableFrames;
+package AMCWardPanels.TableFrames.Incoming;
 
+import AMCWardPanels.TableFrames.MainPanel;
 import Methods.GeneralWard;
 import Methods.tableInfo.IncomingTableData;
 
@@ -18,7 +19,7 @@ public class InTable {
         InTablePanel inTablePanel = new InTablePanel(methods, incomingTableData, wardinfo);
 
         //We create the mainPanel where everything will be
-        MainPanel mainPanel = new MainPanel(true, "INCOMING PATIENTS");
+        MainPanel mainPanel = new MainPanel(true, "INCOMING PATIENTS", 1);
 
         //We add the tablePanel to the mainPanel
         mainPanel.add(inTablePanel, BorderLayout.CENTER);

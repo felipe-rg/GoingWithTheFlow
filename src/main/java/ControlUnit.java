@@ -135,7 +135,7 @@ public class ControlUnit {
             @Override
             public void actionPerformed(ActionEvent e) {
                 f.dispose();
-                //LongStay LSpage = new LongStay(methods.getAllWardInfo(), methods);           // opens long stay ward overview
+                LongStay LSpage = new LongStay(methods);           // opens long stay ward overview
             }
         });
 
@@ -184,7 +184,7 @@ public class ControlUnit {
             @Override
             public void actionPerformed(ActionEvent e) {
                 f.dispose();
-                AMCInfo AMCPage = new AMCInfo();                // opens AMC ward overview page (new JFrame)
+                AMCInfo AMCPage = new AMCInfo(methods);                // opens AMC ward overview page (new JFrame)
                 // todo - more sense if all on homescreen?
             }
         });
@@ -195,7 +195,7 @@ public class ControlUnit {
             @Override
             public void actionPerformed(ActionEvent e) {
                 f.dispose();
-                //DisTransPage dtList = new DisTransPage(methods.seeTransferList(), methods.seeDischargeList(), methods);           // opens transfer/discharge lists
+                DisTransPage dtList = new DisTransPage(methods);           // opens transfer/discharge lists
             }
         });
 

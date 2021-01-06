@@ -1,5 +1,6 @@
-package AMCWardPanels.TableFrames;
+package AMCWardPanels.TableFrames.Transfer;
 
+import AMCWardPanels.TableFrames.MainPanel;
 import Methods.AMCWard;
 import Methods.tableInfo.TransTableData;
 
@@ -17,7 +18,7 @@ public class TransTable {
 
         TransTablePanel transtablePanel = new TransTablePanel(methods, transTableData);
 
-        MainPanel mainPanel = new MainPanel(false, "TRANSFERRING PATIENTS");
+        MainPanel mainPanel = new MainPanel(false, "TRANSFERRING PATIENTS", 1);
 
         mainPanel.add(transtablePanel, BorderLayout.CENTER);
 

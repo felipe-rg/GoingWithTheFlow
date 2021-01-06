@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 public abstract class GeneralWard {
     protected Client client;
-    protected int wardId;
+    public int wardId;
     private String wardName;
     private Patient patient;
     private Bed bed;
