@@ -4,8 +4,10 @@ import AMCWardPanels.TableFrames.ButtonColumn;
 import AMCWardPanels.TableFrames.DeletePopUp;
 import AMCWardPanels.TableFrames.MultiLineTableHeaderRenderer;
 import AMCWardPanels.TableFrames.TimeRenderer;
+import AMCWardPanels.WardInfo;
 import Client.*;
 import Methods.GeneralWard;
+import Methods.tableInfo.IncomingTableData;
 
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
@@ -51,28 +53,13 @@ public class InTablePanel extends JPanel implements TableModelListener {
     private GeneralWard methods;
 
     //Constructor
-    public InTablePanel(GeneralWard methods) {
-
+    public InTablePanel(GeneralWard methods, IncomingTableData incomingTableData, WardInfo wardInfo) {
         this.methods = methods;
-
+        dbData = incomingTableData.getData();
         if(methods.wardId==2){
-            try {
-                dbData = this.methods.getIncomingData();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
             tableModel = new InTableModel(amcColumnName, dbData);        //Instance of IntableModel extending from MyTableModel
         }
         else {
-            try {
-                dbData = this.methods.getLSIncomingData();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
             tableModel = new InTableModel(lsColumnName, dbData);
         }
 

@@ -17,16 +17,11 @@ import java.util.ArrayList;
 //Instantiated when a ward is chosen - implemented as AMC or longstay
 
 public abstract class GeneralWard {
-
     protected Client client;
     public int wardId;
     private String wardName;
     private Patient patient;
     private Bed bed;
-    private int incomingNumber;
-    private int dischargeNumber;
-    private int otherNumber;
-    private int patientsInWard;
 
     //Constructor creates a client to link to the database
     //Instantiates the local variables for homescreen numbers or use in methods
@@ -34,14 +29,10 @@ public abstract class GeneralWard {
         this.wardId = wardId;
         client = new Client();
         wardName = getWardName(wardId);
-        wardNumbers();
     }
 
-    public int getIncomingNumber(){return incomingNumber;}
-    public int getDischargeNumber(){return dischargeNumber;}
-    public int getOtherNumber(){return otherNumber;}
-    public int getPatientsInWard(){return patientsInWard;}
     public int getWardId(){return wardId;}
+    public Client getClient(){return client;}
 
     //Set the variable wardName from input wardId
     public String getWardName(int wardID) throws IOException {
@@ -55,184 +46,6 @@ public abstract class GeneralWard {
             output = "No Destination";
         }
         return output;
-    }
-
-    //Updates local variables with appropriate numbers
-    public void wardNumbers() throws IOException, SQLException {
-        //Incoming patients
-        incomingNumber = getIncomingList().size();
-
-        //Discharge patients
-        dischargeNumber = getDischargeList().size();
-
-        //Other patients
-        otherNumber = getOtherList().size();
-
-        //Patients in ward
-        patientsInWard = getPatientList().size();
-    }
-
-
-
-    //Returns all patients where they're next destination is the current ward
-    //Used in getIncomingData and local incomingNumber
-    public ArrayList<Patient> getIncomingList() throws IOException, SQLException {
-        ArrayList<String> json = client.makeGetRequest("*", "patients", "nextdestination="+wardId);
-        return client.patientsFromJson(json);
-    }
-
-    //Returns an object to be used in the incoming table of the amc app
-    public Object[][] getIncomingData() throws IOException, SQLException {
-        ArrayList<Patient> patients = getIncomingList();
-        Object[][] data = new Object[patients.size()][9];
-        for(int i=0; i<patients.size(); i++) {
-            Patient p = patients.get(i);
-            data[i][0] = p.getId();
-            data[i][1] = p.getPatientId();
-            data[i][2] = p.getSex();
-            data[i][3] = p.getInitialDiagnosis();
-            data[i][4] = p.getNeedsSideRoom();
-            data[i][5] = p.getArrivalDateTime();
-            data[i][6] = p.getAcceptedByMedicine();
-            data[i][7] = "Select Bed";
-            data[i][8] = "Delete Patient";
-            }
-        return data;
-    }
-
-    //returns an object to be used in the incoming table of the long stay apps
-    public Object[][] getLSIncomingData() throws IOException, SQLException {
-        ArrayList<Patient> patients = getIncomingList();
-        Object[][] data = new Object[patients.size()][9];
-        for(int i=0; i<patients.size(); i++) {
-            Patient p = patients.get(i);
-            data[i][0] = p.getId();
-            data[i][1] = p.getPatientId();
-            data[i][2] = p.getSex();
-            data[i][3] = p.getInitialDiagnosis();
-            data[i][4] = p.getNeedsSideRoom();
-            data[i][5] = dateFormatter(p.getEstimatedTimeOfNext());
-            data[i][6] = p.getTransferRequestStatus();
-            data[i][7] = "Select Bed";
-            data[i][8] = "Delete Patient";
-        }
-        return data;
-    }
-
-    //Returns all patients in the ward
-    //Used in getPatientData and local patientsInWard
-    public ArrayList<Patient> getPatientList() throws IOException, SQLException {
-        ArrayList<String> json = client.makeGetRequest("*", "patients", "currentwardid="+wardId);
-        return client.patientsFromJson(json);
-    }
-
-    //returns an object to be used in the total patients in ward tables
-    public Object[][] getPatientData() throws IOException, SQLException {
-        ArrayList<Patient> patients = getPatientList();
-        Object[][] data = new Object[patients.size()][9];
-        for(int i=0; i<patients.size(); i++) {
-            Patient p = patients.get(i);
-            data[i][0] = p.getId();
-            data[i][1] = p.getPatientId();
-            data[i][2] = p.getSex();
-            data[i][3] = p.getInitialDiagnosis();
-            data[i][4] = p.getNeedsSideRoom();
-            data[i][5] = durationFormatter(Duration.between(p.getArrivalDateTime(), LocalDateTime.now()));
-            if(p.getNextDestination()==0){
-                data[i][6] = null;
-            }
-            ArrayList<String> json = client.makeGetRequest("*", "wards", "wardid="+p.getNextDestination());
-            ArrayList<Ward> wards = client.wardsFromJson(json);
-            if(wards.size()!=0){
-                data[i][6] = wards.get(0).getWardName();
-            }
-            data[i][7] = "Delete Patient";
-        }
-        return data;
-    }
-
-
-    //Returns all patients in ward who are going to be discharged
-    //Used in getDischargeData and local dischargeNumber
-    public ArrayList<Patient> getDischargeList() throws IOException, SQLException {
-        ArrayList<String> json = client.makeGetRequest("*", "patients", "currentwardid="+wardId);
-        ArrayList<Patient> patients = client.patientsFromJson(json);
-        json = client.makeGetRequest("*", "patients", "nextdestination=6");
-        ArrayList<Patient> discharging = client.patientsFromJson(json);
-        return client.crossReference(patients, discharging);
-    }
-
-    //Returns an object to be used in the discharge tables
-    public Object[][] getDischargeData() throws IOException, SQLException {
-        ArrayList<Patient> patients = getDischargeList();
-        Object[][] data = new Object[patients.size()][10];
-        for(int i=0; i<patients.size(); i++) {
-            Patient p = patients.get(i);
-            data[i][0] = p.getId();
-            data[i][1] = p.getCurrentBedId();
-            data[i][2] = p.getPatientId();
-            data[i][3] = p.getSex();
-            data[i][4] = p.getInitialDiagnosis();
-            data[i][5] = p.getNeedsSideRoom();
-            data[i][6] = p.getTtaSignedOff();
-            data[i][7] = p.getSuitableForDischargeLounge();
-            data[i][8] = dateFormatter(p.getEstimatedTimeOfNext());
-            data[i][9] = "Delete Patient";
-        }
-        return data;
-    }
-
-    //Returns all patients in ward who have died or going to ICU
-    //Used in getOtherData and local othernumber
-    public ArrayList<Patient> getOtherList() throws IOException, SQLException {
-        ArrayList<Patient> output = new ArrayList<Patient>();
-        ArrayList<String> json = client.makeGetRequest("id", "patients", "currentLocation="+wardId);
-        ArrayList<Patient> patients = client.patientsFromJson(json);
-        json = client.makeGetRequest("id", "patients", "deceased=true");
-        ArrayList<Patient> deceased = client.patientsFromJson(json);
-        output = client.crossReference(patients, deceased);
-        json = client.makeGetRequest("id", "patients", "nextdestination=7");
-        ArrayList<Patient> toICU = client.patientsFromJson(json);
-        ArrayList<Patient> ICUFromWard = client.crossReference(toICU, patients);
-        for(Patient p:ICUFromWard){
-            output.add(p);
-        }
-        return output;
-    }
-
-    //returns an object to be used in the other table
-    public Object[][] getOtherData() throws IOException, SQLException {
-        ArrayList<Patient> patients = getOtherList();
-        Object[][] data = new Object[patients.size()][9];
-        for(int i=0; i<patients.size(); i++) {
-            Patient p = patients.get(i);
-            data[i][0] = p.getId();
-            data[i][1] = p.getPatientId();
-            data[i][2] = p.getSex();
-            data[i][3] = p.getInitialDiagnosis();
-            data[i][4] = p.getNeedsSideRoom();
-            data[i][5] = dateFormatter(p.getEstimatedTimeOfNext());
-            ArrayList<String> json = client.makeGetRequest("*", "wards", "wardid="+p.getNextDestination());
-            ArrayList<Ward> wards = client.wardsFromJson(json);
-            if(wards.size()!=0){
-                data[i][6] = wards.get(0).getWardName();
-            }
-            data[i][8] = "Delete Patient";
-        }
-        return data;
-    }
-
-
-    //Needed to format the time difference in getPatientData
-    public String durationFormatter(Duration duration){
-        long hours = duration.toHours();
-        return String.valueOf(hours);
-    }
-
-    //Needed to format the times used in tables
-    public String dateFormatter(LocalDateTime localDateTime){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-        return localDateTime.format(formatter);
     }
 
     //Removes a patient from the database
@@ -274,8 +87,6 @@ public abstract class GeneralWard {
         client.makePutRequest("patients", "nextdestination=0", "id="+patientId);
         //Changes bed status to occupied
         client.makePutRequest("beds", "status='O'", "bedid="+bedId);
-        //Refreshes ward to update numbers
-        wardNumbers();
     }
 
     //Used to undo a setBed and will still appear on incoming list
@@ -352,7 +163,13 @@ public abstract class GeneralWard {
 
     }
 
-
+    //If bed is free, bed needs to be green
+    //If bed is closed, bed needs to be black
+    //If patient is leaving in more than four hours - or no leaving time is set
+    //(arrival=leaving) then bed needs to be red
+    //If patient is leaving in less than 3 hours, bed needs to be orange
+    //if patient is leaving in the past - tehy should have left already -
+    //bed needs to be blue
     public String getBedColour(int BedID) throws IOException {
         ArrayList<String> json = client.makeGetRequest("*", "beds", "bedid="+BedID);
         ArrayList<Bed> beds = client.bedsFromJson(json);
@@ -387,14 +204,17 @@ public abstract class GeneralWard {
         }
     }
 
+    //Outputs an array of three integers which holds the number of
+    // green, orange, or red beds
+    //TODO could be mixed with getBedColour?
     public int[] getBedStatus() throws IOException {
         int[] output = new int[3];
         ArrayList<String> json = client.makeGetRequest("*", "beds", "wardid="+wardId);
         ArrayList<Bed> beds = client.bedsFromJson(json);
         if(beds.size()==0){
-            output[0] = 0;
-            output[1] = 0;
-            output[2] = 0;
+            output[0] = 0;//Green
+            output[1] = 0;//Orange
+            output[2] = 0;//Red
         }
         for(Bed newBed:beds) {
             if (newBed.getStatus().equals("F")) {
@@ -421,7 +241,6 @@ public abstract class GeneralWard {
             }
         }
         return output;
-
     }
 
 }
