@@ -31,19 +31,18 @@ public class TimeRenderer extends DefaultTableCellRenderer {
 
         long timeInHospital = durationFormatter(Duration.between((LocalDateTime)value, LocalDateTime.now()));
 
+        timeLabel.setText(dateFormatter((LocalDateTime) value));
+
         if (timeInHospital < 2){//Making background green
-            timeLabel.setText(dateFormatter((LocalDateTime) value));
             timeLabel.setBackground(Color.decode("#8ABB59"));
 
         }
 
-        else if (timeInHospital > 2 && timeInHospital < 3){         //Making background amber
-            timeLabel.setText(dateFormatter((LocalDateTime) value));
+        if (timeInHospital > 2 && timeInHospital < 3){         //Making background amber
             timeLabel.setBackground(Color.decode("#F9D88C"));
         }
 
         else {
-            timeLabel.setText(dateFormatter((LocalDateTime) value));
             timeLabel.setBackground(Color.decode("#F76262"));       //Making background red
         }
 
