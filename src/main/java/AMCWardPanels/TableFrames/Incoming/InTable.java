@@ -18,7 +18,7 @@ public class InTable {
         InTablePanel inTablePanel = new InTablePanel(methods);
 
         //We create the mainPanel where everything will be
-        MainPanel mainPanel = new MainPanel(true, "INCOMING PATIENTS");
+        MainPanel mainPanel = new MainPanel(true, "INCOMING PATIENTS", true);
 
         //We add the tablePanel to the mainPanel
         mainPanel.add(inTablePanel, BorderLayout.CENTER);

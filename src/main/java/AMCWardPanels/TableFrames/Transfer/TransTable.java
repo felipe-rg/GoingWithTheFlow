@@ -17,7 +17,7 @@ public class TransTable {
 
         TransTablePanel transtablePanel = new TransTablePanel(methods);
 
-        MainPanel mainPanel = new MainPanel(false, "TRANSFERRING PATIENTS");
+        MainPanel mainPanel = new MainPanel(false, "TRANSFERRING PATIENTS", true);
 
         mainPanel.add(transtablePanel, BorderLayout.CENTER);
 

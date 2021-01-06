@@ -1,3 +1,4 @@
+import AMCWardPanels.TableFrames.MainPanel;
 import CUTablePanels.IncomingTablePanel;
 import Client.Patient;
 import AMCWardPanels.TableFrames.ColorCodePanel;
@@ -42,31 +43,19 @@ public class Incoming {
             }
         });
 
-        JPanel infoPanel = new JPanel();                        // creates info panel
+        //
 
+        //TablePanel containing the incoming table scrollpane
         JPanel incomingTablePanel = new IncomingTablePanel(methods);
 
-
-
-        JPanel leftPanel = new JPanel();
-        JPanel rightPanel = new JPanel();
-        //JPanel middlePanel = new JPanel();
-        JPanel colorCodePanel = new ColorCodePanel();
-
-        leftPanel.setPreferredSize(new Dimension(100,0));
-        rightPanel.setPreferredSize(new Dimension(100,100));
-        colorCodePanel.setPreferredSize(new Dimension(100,100));
-
-        infoPanel.setLayout(new BorderLayout());
-        infoPanel.add(leftPanel, BorderLayout.WEST);
-        infoPanel.add(rightPanel, BorderLayout.EAST);
-        infoPanel.add(colorCodePanel, BorderLayout.SOUTH);
-        infoPanel.add(incomingTablePanel, BorderLayout.CENTER);
+        //MainPanel that contains panels on the sides to make table be at the centre
+        MainPanel mainTablePanel = new MainPanel(false, " ", false);
+        mainTablePanel.add(incomingTablePanel, BorderLayout.CENTER);
 
 
         mainPanel.setLayout(new BorderLayout());
         mainPanel.add(titlePanel, BorderLayout.NORTH);
-        mainPanel.add(infoPanel, BorderLayout.CENTER);
+        mainPanel.add(mainTablePanel, BorderLayout.CENTER);
 
         f.getContentPane().add(mainPanel);
         f.setVisible(true);

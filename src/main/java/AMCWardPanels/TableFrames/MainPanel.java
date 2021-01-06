@@ -9,7 +9,7 @@ import java.awt.*;
 
  */
 public class MainPanel extends JPanel {
-    public MainPanel(Boolean colorCode, String title){
+    public MainPanel(Boolean colorCode, String title, boolean addTitle){
 
         //Creating panels
         JPanel leftPanel = new JPanel();
@@ -24,6 +24,10 @@ public class MainPanel extends JPanel {
         titleLabel.setHorizontalAlignment(JLabel.CENTER);
         topPanel.add(titleLabel);
 
+        //Creating small top panel to be introuced in case no titlepanel is needed
+        JPanel smallTopPanel = new JPanel();
+        smallTopPanel.setPreferredSize(new Dimension(100,40));
+
         //Setting preferredsize (not extremely important because it is a BorderLayout)
         leftPanel.setPreferredSize(new Dimension(100,100));
         rightPanel.setPreferredSize(new Dimension(100,100));
@@ -35,7 +39,14 @@ public class MainPanel extends JPanel {
         this.setLayout(new BorderLayout());
         this.add(leftPanel, BorderLayout.WEST);
         this.add(rightPanel, BorderLayout.EAST);
-        this.add(topPanel, BorderLayout.NORTH);
+
+        if (addTitle == true){
+            this.add(topPanel, BorderLayout.NORTH);
+        }
+
+        if(addTitle == false){
+            this.add(smallTopPanel, BorderLayout.NORTH);
+        }
 
         //Depending on the value of the boolean colorCode we will have the bottom panel displaying the colors
         //or not (only true for the 'inTable' atm).

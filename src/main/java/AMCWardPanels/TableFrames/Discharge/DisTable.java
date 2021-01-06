@@ -18,7 +18,7 @@ public class DisTable {
         DisTablePanel distablePanel = new DisTablePanel(methods);
 
         //Creating the mainpanel that will contain all panels
-        MainPanel mainPanel = new MainPanel(false, "DISCHARGE PATIENTS");
+        MainPanel mainPanel = new MainPanel(false, "DISCHARGE PATIENTS", true);
         //Adding the tablepanel to the main panel
         mainPanel.add(distablePanel, BorderLayout.CENTER);
 
