@@ -11,8 +11,10 @@ public class AMCInfoData extends CCWardData implements dataForTable{
     private int amcInfoNumber;
     Client client;
     ArrayList<String> amcInfoList;
+    private int wardId;
 
-    public AMCInfoData(Client client){
+    public AMCInfoData(Client client, int wardId){
+        this.wardId = wardId;
         this.client = client;
     };
 
@@ -34,7 +36,7 @@ public class AMCInfoData extends CCWardData implements dataForTable{
 
     private ArrayList<String> getList(){
         try {
-            return getWardInfo(2, client);
+            return getWardInfo(wardId, client);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (SQLException throwables) {
@@ -42,4 +44,5 @@ public class AMCInfoData extends CCWardData implements dataForTable{
         }
         return null;
     }
+
 }

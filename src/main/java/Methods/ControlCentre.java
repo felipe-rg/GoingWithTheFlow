@@ -57,32 +57,61 @@ public class ControlCentre {
         dischargePatients = 0;
         transferPatients = 0;
 
-        ArrayList<String> json = client.makeGetRequest("*", "patients", "currentwardid=2"); //amc id is 2
-        ArrayList<Patient> amcPatients = client.patientsFromJson(json); //All amc patients
+        ArrayList<String> json = client.makeGetRequest("*", "wards", "wardtype='AMU'");
+        ArrayList<Ward> amuWards = client.wardsFromJson(json); //All amc wards
 
-        json = client.makeGetRequest("*", "beds", "wardid=2");
-        ArrayList<Bed> amcBeds = client.bedsFromJson(json); //All amc beds
+        ArrayList<Patient> amcPatients = new ArrayList<Patient>(); //All amc patients
+        ArrayList<Bed> amcBeds = new ArrayList<Bed>();
+        for(Ward w:amuWards){
+            int wardid = w.getWardId();
+
+            json = client.makeGetRequest("*", "patients", "currentwardid="+wardid);
+            if(json.size()!=0) {
+                amcPatients.addAll(client.patientsFromJson(json));
+            }
+            json = client.makeGetRequest("*", "beds", "wardid="+wardid);
+            if(json.size()!=0) {
+                amcBeds.addAll(client.bedsFromJson(json));
+            }
+        }
 
         amcCapacityPerc = amcPatients.size()*100/amcBeds.size();
 
         json = client.makeGetRequest("*", "beds", "status='F'");
-        ArrayList<Bed> allFreeBeds = client.bedsFromJson(json); //All amc beds
 
+        ArrayList<Bed> allFreeBeds = new ArrayList<Bed>();
+        if(json.size()!=0) {
+            allFreeBeds = client.bedsFromJson(json); //All free beds
+        }
         ArrayList<Bed> amcFreeBeds = client.bedCrossReference(allFreeBeds, amcBeds);
 
         freeBeds = amcFreeBeds.size();
 
-        json = client.makeGetRequest("*", "patients", "nextdestination=6");
-        ArrayList<Patient> discharges = client.patientsFromJson(json); //All amc patients
+        json = client.makeGetRequest("*", "wards", "wardtype='discharge'");
+        ArrayList<Ward> dischargeWards = client.wardsFromJson(json); //All discharge areas
+
+        ArrayList<Patient> discharges = new ArrayList<Patient>();
+        for(Ward w:dischargeWards) {
+            json = client.makeGetRequest("*", "patients", "nextdestination="+w.getWardId());
+            if(json.size()!=0) {
+                discharges = client.patientsFromJson(json); //All amc patients
+            }
+        }
 
         ArrayList<Patient> amcDischarges = client.crossReference(amcPatients, discharges);
         dischargePatients = amcDischarges.size();
 
-        ArrayList<Patient> toLong = new ArrayList<Patient>();
-        for(int i=3; i<6; i++){
-            json = client.makeGetRequest("*", "patients", "nextdestination="+i);
-            toLong.addAll(client.patientsFromJson(json));
+        json = client.makeGetRequest("*", "wards", "wardtype='LS'");
+        ArrayList<Ward> lsWards = client.wardsFromJson(json); //All long stay wards
+
+        ArrayList<Patient> toLong= new ArrayList<Patient>();
+        for(Ward w:lsWards) {
+            json = client.makeGetRequest("*", "patients", "nextdestination="+w.getWardId());
+            if(json.size()!=0) {
+                toLong.addAll(client.patientsFromJson(json));
+            }
         }
+
         transferPatients = toLong.size();
     }
 
@@ -94,15 +123,20 @@ public class ControlCentre {
 
         ArrayList<Patient> inLong = new ArrayList<Patient>();
         ArrayList<Bed> longBed = new ArrayList<Bed>();
-        for(int i=3; i<6; i++){
-            ArrayList<String> json = client.makeGetRequest("*", "patients", "currentwardid="+i);
+
+        ArrayList<String> json = client.makeGetRequest("*", "wards", "wardtype='LS'");
+        ArrayList<Ward> lsWards = client.wardsFromJson(json); //All long stay wards
+
+        for(Ward w:lsWards) {
+            json = client.makeGetRequest("*", "patients", "currentwardid="+w.getWardId());
             inLong.addAll(client.patientsFromJson(json));
-            json = client.makeGetRequest("*", "beds", "wardid="+i);
+            json = client.makeGetRequest("*", "beds", "wardid="+w.getWardId());
             longBed.addAll(client.bedsFromJson(json));
         }
         longStayCapacity = inLong.size();
-        ArrayList<String> json = client.makeGetRequest("*", "beds", "status='F'");
-        ArrayList<Bed> allFreeBeds = client.bedsFromJson(json); //All amc beds
+
+        json = client.makeGetRequest("*", "beds", "status='F'");
+        ArrayList<Bed> allFreeBeds = client.bedsFromJson(json); //All free beds
 
         ArrayList<Bed> longFreeBeds = client.bedCrossReference(allFreeBeds, longBed);
 
@@ -115,15 +149,22 @@ public class ControlCentre {
         greenPatients = 0;
         redPatients = 0;
         orangePatients = 0;
+        ArrayList<Patient> toAMU = new ArrayList<Patient>();
 
-        ArrayList<String> json = client.makeGetRequest("*", "patients", "currentwardid=1");
-        ArrayList<Patient> inAandE = client.patientsFromJson(json);
+        ArrayList<String> json = client.makeGetRequest("*", "wards", "wardtype='AMU'");
+        ArrayList<Ward> amuWards = client.wardsFromJson(json); //All amc wards
+
+        for(Ward w:amuWards){
+            json = client.makeGetRequest("*", "patients", "nextdestination="+w.getWardId());
+            toAMU.addAll(client.patientsFromJson(json));
+        }
+
 
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime red = now.minusHours(3);
         LocalDateTime orange = now.minusHours(2);
 
-        for(Patient p : inAandE){
+        for(Patient p : toAMU){
             LocalDateTime patientArrival = p.getArrivalDateTime();
             if(patientArrival.isAfter(orange)){
                 greenPatients = greenPatients +1;
@@ -135,6 +176,18 @@ public class ControlCentre {
                 redPatients = redPatients +1;
             }
         }
+    }
+
+    public ArrayList<Ward> findAMUWards(){
+        try {
+            ArrayList<String> json = client.makeGetRequest("*", "wards", "wardtype='AMU'");
+            if(json.size()!=0){
+                return client.wardsFromJson(json);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }
