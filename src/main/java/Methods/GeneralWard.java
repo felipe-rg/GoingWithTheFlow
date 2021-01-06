@@ -17,8 +17,9 @@ import java.util.ArrayList;
 //Instantiated when a ward is chosen - implemented as AMC or longstay
 
 public abstract class GeneralWard {
+
     protected Client client;
-    protected int wardId;
+    public int wardId;
     private String wardName;
     private Patient patient;
     private Bed bed;
@@ -91,7 +92,7 @@ public abstract class GeneralWard {
             data[i][2] = p.getSex();
             data[i][3] = p.getInitialDiagnosis();
             data[i][4] = p.getNeedsSideRoom();
-            data[i][5] = dateFormatter(p.getArrivalDateTime());
+            data[i][5] = p.getArrivalDateTime();
             data[i][6] = p.getAcceptedByMedicine();
             data[i][7] = "Select Bed";
             data[i][8] = "Delete Patient";
@@ -164,18 +165,19 @@ public abstract class GeneralWard {
     //Returns an object to be used in the discharge tables
     public Object[][] getDischargeData() throws IOException, SQLException {
         ArrayList<Patient> patients = getDischargeList();
-        Object[][] data = new Object[patients.size()][9];
+        Object[][] data = new Object[patients.size()][10];
         for(int i=0; i<patients.size(); i++) {
             Patient p = patients.get(i);
             data[i][0] = p.getId();
-            data[i][1] = p.getPatientId();
-            data[i][2] = p.getSex();
-            data[i][3] = p.getInitialDiagnosis();
-            data[i][4] = p.getNeedsSideRoom();
-            data[i][5] = p.getTtaSignedOff();
-            data[i][6] = p.getSuitableForDischargeLounge();
-            data[i][7] = dateFormatter(p.getEstimatedTimeOfNext());
-            data[i][8] = "Delete Patient";
+            data[i][1] = p.getCurrentBedId();
+            data[i][2] = p.getPatientId();
+            data[i][3] = p.getSex();
+            data[i][4] = p.getInitialDiagnosis();
+            data[i][5] = p.getNeedsSideRoom();
+            data[i][6] = p.getTtaSignedOff();
+            data[i][7] = p.getSuitableForDischargeLounge();
+            data[i][8] = dateFormatter(p.getEstimatedTimeOfNext());
+            data[i][9] = "Delete Patient";
         }
         return data;
     }

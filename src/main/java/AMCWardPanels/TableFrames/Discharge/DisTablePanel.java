@@ -1,18 +1,18 @@
-package AMCWardPanels.TableFrames;
+package AMCWardPanels.TableFrames.Discharge;
 
-import AMCWardPanels.TableFrames.DisTableModel;
+import AMCWardPanels.TableFrames.ButtonColumn;
+import AMCWardPanels.TableFrames.DeletePopUp;
+import AMCWardPanels.TableFrames.MultiLineTableHeaderRenderer;
 import Methods.GeneralWard;
 
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
-import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.time.Month;
 import java.time.format.DateTimeFormatter;
 
 public class DisTablePanel extends JPanel implements TableModelListener {
@@ -24,6 +24,7 @@ public class DisTablePanel extends JPanel implements TableModelListener {
 
     //Columnames in our table
     private String[] columnName = {"Index",
+            "Bed ID",
             "Patient ID",
             "Sex",
             "Initial Diagnosis",
@@ -32,6 +33,8 @@ public class DisTablePanel extends JPanel implements TableModelListener {
             "Discharge Lounge",
             "ETD",
             "Delete Button"};
+
+
 
     private Object[][] dbData;
 
@@ -65,13 +68,12 @@ public class DisTablePanel extends JPanel implements TableModelListener {
             }
         };
         //Assigning the column that will have the delete buttons
-        ButtonColumn deletePatient = new ButtonColumn(table, deletePopUp, 8);
+        ButtonColumn deletePatient = new ButtonColumn(table, deletePopUp, 9);
 
         this.setLayout(new GridLayout());
         this.add(scrollPane);
     }
 
-    //Used to change the patient information on the database
     private void editPatient(int patientId, String column, boolean value){
         try {
             methods.editPatient(patientId, column, String.valueOf(value));
@@ -107,6 +109,11 @@ public class DisTablePanel extends JPanel implements TableModelListener {
             editPatient(patientId, "suitablefordischargelounge", (boolean)data);
         }
 
+    }
+
+    private Object dateFormatter(LocalDateTime localDateTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        return localDateTime.format(formatter);
     }
 
     public void setupTable(JTable table){

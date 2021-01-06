@@ -1,5 +1,6 @@
-package AMCWardPanels.TableFrames;
+package AMCWardPanels.TableFrames.Others;
 
+import AMCWardPanels.TableFrames.MainPanel;
 import Methods.GeneralWard;
 
 import javax.swing.*;
@@ -16,7 +17,7 @@ public class OthTable {
 
 
 
-        MainPanel mainPanel = new MainPanel(false, "OTHER PATIENTS");
+        MainPanel mainPanel = new MainPanel(false, "OTHER PATIENTS", 1);
         mainPanel.add(othTablePanel, BorderLayout.CENTER);
 
 
