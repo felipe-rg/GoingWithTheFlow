@@ -131,15 +131,14 @@ public class PatientForm {
                         LocalDate DOB = LocalDate.of((Integer) year.getSelectedItem(), (Integer) month.getSelectedItem(), (Integer) day.getSelectedItem());
                         p = new Patient(pID.getText(), (String) pSex.getSelectedItem(), DOB, pIll.getText(), SR);
                         aneUser.createPatient(p);
-                    }
 
-                    if(aneUser.checkAddedPatient(p)) {
-                        JOptionPane.showMessageDialog(null, "Patient has been added to database.", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
-                        f.dispose();
-                        UserPage user = new UserPage();
+                        if(aneUser.checkAddedPatient(p)) {
+                            JOptionPane.showMessageDialog(null, "Patient has been added to database.", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
+                            f.dispose();
+                            UserPage user = new UserPage();
+                        }
+                        else {JOptionPane.showMessageDialog(null, "Patient has NOT been added to database! Try again", "Warning", JOptionPane.INFORMATION_MESSAGE);}
                     }
-                    else {JOptionPane.showMessageDialog(null, "Patient has NOT been added to database! Try again", "Warning", JOptionPane.INFORMATION_MESSAGE);}
-
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 }
