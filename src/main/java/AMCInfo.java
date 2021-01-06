@@ -2,6 +2,9 @@ import AMCWardPanels.TableFrames.MainPanel;
 import AMCWardPanels.Title;
 import CUTablePanels.AMCInfoTablePanel;
 import Methods.ControlCentre;
+import Methods.GeneralWard;
+import Methods.tableInfo.AMCInfoData;
+import Methods.tableInfo.OtherTableData;
 
 import javax.swing.*;
 import java.awt.*;

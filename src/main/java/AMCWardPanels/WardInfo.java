@@ -8,11 +8,6 @@ import AMCWardPanels.TableFrames.Incoming.InTable;
 import AMCWardPanels.TableFrames.Others.OthTable;
 import AMCWardPanels.TableFrames.Total.TotTable;
 import AMCWardPanels.TableFrames.Transfer.TransTable;
-import AMCWardPanels.TableFrames.DisTable;
-import AMCWardPanels.TableFrames.InTable;
-import AMCWardPanels.TableFrames.OthTable;
-import AMCWardPanels.TableFrames.TotTable;
-import AMCWardPanels.TableFrames.TransTable;
 import Methods.tableInfo.*;
 
 

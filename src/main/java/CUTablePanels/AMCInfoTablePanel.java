@@ -3,6 +3,7 @@ package CUTablePanels;
 import AMCWardPanels.TableFrames.MultiLineTableHeaderRenderer;
 import AMCWardPanels.TableFrames.MyTableModel;
 import Methods.ControlCentre;
+import Methods.tableInfo.AMCInfoData;
 
 import javax.swing.*;
 import java.awt.*;
@@ -45,15 +46,8 @@ public class AMCInfoTablePanel extends JPanel {
     private ControlCentre methods;
 
     public AMCInfoTablePanel(ControlCentre methods){
-
-        try {
-            dataAMC1 = methods.getAMCData();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
+        AMCInfoData amcInfoData = new AMCInfoData(methods.getClient());
+        dataAMC1 = amcInfoData.getData();
 
         //Instantiating table with appropriate data and tablemodel
 
