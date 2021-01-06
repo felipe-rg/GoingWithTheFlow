@@ -20,11 +20,6 @@ public class TimeRenderer extends DefaultTableCellRenderer {
         //Cells are by default rendered as a JLabel.
         JLabel timeLabel = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
-        //timeNowS is the time now as a string ("HH:mm")
-        //timeArrival is a string ("HH:mm") of the time the patient entered the A&E
-        String timeNowS = dateFormatter(LocalDateTime.now());
-        String timeArrival = String.valueOf(value);
-
 
         //Making label opaque so we can see the color
         timeLabel.setOpaque(true);
@@ -38,11 +33,11 @@ public class TimeRenderer extends DefaultTableCellRenderer {
 
         }
 
-        if (timeInHospital > 2 && timeInHospital < 3){         //Making background amber
+        if (timeInHospital >= 2 && timeInHospital < 3){         //Making background amber
             timeLabel.setBackground(Color.decode("#F9D88C"));
         }
 
-        else {
+        else if (timeInHospital >= 3){
             timeLabel.setBackground(Color.decode("#F76262"));       //Making background red
         }
 
