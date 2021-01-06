@@ -17,7 +17,7 @@ public class LongStayTablePanel extends JPanel {
 
     //Columnames in our table
     private String[] columnName = {"Ward",
-            "Capacity",
+            "Capacity (%)",
             "Male Free Beds",
             "Female Free Beds",
             "Male/Female Free Beds",

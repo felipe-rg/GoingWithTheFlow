@@ -28,7 +28,7 @@ public class AMCInfoTablePanel extends JPanel {
 
     //Columnames in our table
     private String[] columnName = {"Ward Name",
-            "Capacity",
+            "Capacity (%)",
             "Male Free Beds",
             "Female Free Beds",
             "Male/Female Free Beds",
