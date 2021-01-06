@@ -70,6 +70,12 @@ public class Topography extends JPanel{
                 updateBedStatus(bedstatus);
             });
         }
+
+        //Adding bottom panel indicating colorcode for beds
+        BedColorCodePanel bedColorCodePanel = new BedColorCodePanel();
+        bedColorCodePanel.setBounds(0, 690, 1136, 50);
+        this.add(bedColorCodePanel);
+
     }
 
     // counts how many red-green-orange beds there are
