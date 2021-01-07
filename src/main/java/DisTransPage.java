@@ -43,15 +43,14 @@ public class DisTransPage {
             @Override
             public void actionPerformed(ActionEvent e) {    // when refresh button is selected
                 f.dispose();                                // current frame will close
-                //DisTransPage page = new DisTransPage(methods.seeTransferList(), methods.seeDischargeList(), methods);    // class will be called again
+                DisTransPage page = new DisTransPage(methods);    // class will be called again
             }
         });
 
 
         MainPanel mainTablePanel = new MainPanel(false, " ", 3);
 
-        //JLabel TransferList = new JLabel("Transfer Patient List goes here");
-        //JLabel DischargeList = new JLabel("Discharge Patient List goes here");
+
 
         disTransTablePanel = new DisTransTablePanel(methods);
 
