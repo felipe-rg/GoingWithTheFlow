@@ -37,21 +37,8 @@ public class BedButton extends JButton{
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(colour);
         this.setBackground(Color.decode(colour));
-        /*//Colours bed is occupied
-        if(bed.getStatus().equals("O")){
-            try {
-                //Get patient in bed
-                String colour = methods.getBedColour(bed.getBedId());
-                this.setBackground(Color.decode(colour));
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        if(bed.getStatus().equals("F")){this.setBackground(Color.decode("#2ECC71")); }
-        if(bed.getStatus().equals("C")){this.setBackground(Color.BLACK); }*/
     }
 
     // functions that return bed information
@@ -461,7 +448,6 @@ public class BedButton extends JButton{
                 else{ this.setETD(LocalDateTime.now().plusMinutes(Minutes).plusHours(Hours)); }
             }
             try {
-                System.out.println(ETD);
                 methods.editPatient(p.getId(), "estimatedatetimeofnext", "'"+ETD+"'");
             } catch (IOException e) {
                 e.printStackTrace();

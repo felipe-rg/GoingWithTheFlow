@@ -3,6 +3,7 @@ package AMCWardPanels.TableFrames.Total;
 import AMCWardPanels.TableFrames.Discharge.DisTablePanel;
 import AMCWardPanels.TableFrames.MainPanel;
 import Methods.GeneralWard;
+import Methods.tableInfo.TotalTableData;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,12 +12,11 @@ import java.awt.event.WindowEvent;
 
 public class TotTable {
 
-    public TotTable(AMCWardPanels.Topography top, AMCWardPanels.WardInfo wardinfo, GeneralWard methods){
+    public TotTable(AMCWardPanels.Topography top, AMCWardPanels.WardInfo wardinfo, GeneralWard methods, TotalTableData totalTableData){
         //We create a new frame
         JFrame frame = new JFrame("Total Patients in Ward");
         //We create the tablepanel with the table
-        TotTablePanel totTablePanel = new TotTablePanel(methods);
-        DisTablePanel disTablePanel = new DisTablePanel(methods);
+        TotTablePanel totTablePanel = new TotTablePanel(methods, totalTableData);
         //We create the mainPanel where everything will be
         MainPanel mainPanel = new MainPanel(false, "TOTAL PATIENTS IN WARD", 1);
         //We add the table to the mainPanel

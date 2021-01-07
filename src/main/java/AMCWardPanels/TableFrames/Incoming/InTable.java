@@ -2,6 +2,7 @@ package AMCWardPanels.TableFrames.Incoming;
 
 import AMCWardPanels.TableFrames.MainPanel;
 import Methods.GeneralWard;
+import Methods.tableInfo.IncomingTableData;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,12 +11,12 @@ import java.awt.event.WindowEvent;
 
 public class InTable {
 
-    public InTable(AMCWardPanels.Topography top, AMCWardPanels.WardInfo wardinfo, GeneralWard methods){
+    public InTable(AMCWardPanels.Topography top, AMCWardPanels.WardInfo wardinfo, GeneralWard methods, IncomingTableData incomingTableData){
         //We create a new frame
         JFrame frame = new JFrame("Incoming Patients");
 
         //Creating panel containing the table
-        InTablePanel inTablePanel = new InTablePanel(methods);
+        InTablePanel inTablePanel = new InTablePanel(methods, incomingTableData, wardinfo);
 
         //We create the mainPanel where everything will be
         MainPanel mainPanel = new MainPanel(true, "INCOMING PATIENTS", 1);

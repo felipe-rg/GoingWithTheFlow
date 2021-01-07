@@ -1,11 +1,10 @@
 package AMCWardPanels.TableFrames.Incoming;
 
-import AMCWardPanels.TableFrames.ButtonColumn;
-import AMCWardPanels.TableFrames.DeletePopUp;
-import AMCWardPanels.TableFrames.MultiLineTableHeaderRenderer;
-import AMCWardPanels.TableFrames.TimeRenderer;
+import AMCWardPanels.TableFrames.*;
+import AMCWardPanels.WardInfo;
 import Client.*;
 import Methods.GeneralWard;
+import Methods.tableInfo.IncomingTableData;
 
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
@@ -23,7 +22,7 @@ public class InTablePanel extends JPanel implements TableModelListener {
     //Table and scrollpane where table sits
     private JTable table;
     private JScrollPane scrollPane;
-    private InTableModel tableModel;
+    private MyTableModel tableModel;
 
     //Columnames in our table
     private String[] amcColumnName = {"Index",
@@ -42,7 +41,7 @@ public class InTablePanel extends JPanel implements TableModelListener {
             "Initial Diagnosis",
             "Side Room",
             "Estimated Time Arrival", //Remove Colour
-            "Transfer Request Status", //Boolean, P = pending, C = confirmed, R = rejected
+            "Transfer Request Status", //String, P = pending, C = confirmed, R = rejected
             "Bed",
             "Delete Button"};
 
@@ -51,33 +50,22 @@ public class InTablePanel extends JPanel implements TableModelListener {
     private GeneralWard methods;
 
     //Constructor
-    public InTablePanel(GeneralWard methods) {
-
+    public InTablePanel(GeneralWard methods, IncomingTableData incomingTableData, WardInfo wardInfo) {
         this.methods = methods;
+        dbData = incomingTableData.getData();
+        try {
+            if (methods.getWardType(methods.wardId).equals("AMU")){
+                tableModel = new InTableModel(amcColumnName, dbData);        //Instance of IntableModel extending from MyTableModel
+            }
+            else {
+                tableModel = new LongInTableModel(lsColumnName, dbData);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        if(methods.wardId==2){
-            try {
-                dbData = this.methods.getIncomingData();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-            tableModel = new InTableModel(amcColumnName, dbData);        //Instance of IntableModel extending from MyTableModel
-        }
-        else {
-            try {
-                dbData = this.methods.getLSIncomingData();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-            tableModel = new InTableModel(lsColumnName, dbData);
-        }
 
         //Instantiating table with appropriate data and tablemodel
-
         table = new JTable(tableModel);         //Creating a table of model tablemodel
         scrollPane = new JScrollPane(table);    //Creating scrollpane where table is located (for viewing purposes)
 
@@ -181,7 +169,8 @@ public class InTablePanel extends JPanel implements TableModelListener {
         //Row and column being edited
         int row = e.getFirstRow();
         int column = e.getColumn();
-        tableModel = (InTableModel)e.getSource();   //Tablemodel used
+        tableModel = (MyTableModel)e.getSource();
+
 
         //Name of the column and data introduced
         String columnName = tableModel.getColumnName(column);
@@ -199,14 +188,17 @@ public class InTablePanel extends JPanel implements TableModelListener {
             editPatient(patientId, "needssideroom", String.valueOf(data));
         }
         if(columnName == "Transfer Request Status"){
-            editPatient(patientId, "transferrequeststatus", "'"+data+"'");
+            editPatient(patientId, "transferrequeststatus", "'"+ data+"'");
         }
 
         /*
-            The button to assign a bed will only be clickable if the patient has been accepted by medicine.
+            In the AMC button to assign a bed will only be clickable if the patient has been accepted by medicine.
             So every time a cell is edited we call the method isCellEditable that cheks whether the patient
             has been accepted by medicine or not. If they have been accepted by medicine, then the button
             can be clicked, if not then it does not work.
+
+            Similarly for Longstay Wards, if the request status is C (Confirmed) the cell select bed  will be
+            editable, if it is P (Pending) or R (Rejected) then the select bed button cannot be clicked.
          */
         tableModel.isCellEditable(row, column);
     }

@@ -2,12 +2,15 @@ package CUTablePanels;
 
 import AMCWardPanels.TableFrames.MultiLineTableHeaderRenderer;
 import AMCWardPanels.TableFrames.MyTableModel;
+import Client.Ward;
 import Methods.ControlCentre;
+import Methods.tableInfo.AMCInfoData;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class AMCInfoTablePanel extends JPanel {
 
@@ -32,8 +35,10 @@ public class AMCInfoTablePanel extends JPanel {
             "Male Free Beds",
             "Female Free Beds",
             "Male/Female Free Beds",
-            "Expected Male Discharge",
-            "Expected Female Discharge",
+            "Male Discharge",
+            "Female Discharge",
+            "Male Transfers",
+            "Female Transfers",
             "ICU Transfer",
             "RIP"
     };
@@ -45,32 +50,8 @@ public class AMCInfoTablePanel extends JPanel {
     private ControlCentre methods;
 
     public AMCInfoTablePanel(ControlCentre methods){
-
-        try {
-            dataAMC1 = methods.getAMCData();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-
-        //Instantiating table with appropriate data and tablemodel
-
-        AMC1TableModel = new MyTableModel(columnName, dataAMC1);        //Instance of MytableModel for AMC1
-        AMC2TableModel = new MyTableModel(columnName, dataAMC1);        //Instance of MytableModel for AMC2
-        AAUTableModel = new MyTableModel(columnName, dataAMC1);        //Instance of MytableModel for AAU
-
-        AMC1Table = new JTable(AMC1TableModel);         //Creating a table of model AMC1Tablemodel (instance of MyTableModel)
-        AMC2Table = new JTable(AMC2TableModel);
-        AAUTable = new JTable(AAUTableModel);
-
-        AMC1Sp = new JScrollPane(AMC1Table);    //Creating scrollpane where table is located (for viewing purposes)
-        AMC2Sp = new JScrollPane(AMC2Table);
-        AAUSp = new JScrollPane(AAUTable);
-
-        //Editing table
-        setupTable(AMC1Table, AMC2Table, AAUTable);
+        this.methods = methods;
+        ArrayList<Ward> amuWards = methods.findAMUWards();
 
         JPanel nuthin = new JPanel();
         nuthin.setSize(800, 200);
@@ -78,9 +59,17 @@ public class AMCInfoTablePanel extends JPanel {
         GridLayout gridLayout = new GridLayout(3,1);
         gridLayout.setVgap(50);
 
-        //Adding stuff to the JPanel (this class itself)
         this.setLayout(gridLayout);
-        this.addSp(AMC1Sp, AMC2Sp, AAUSp);
+
+        for(Ward w:amuWards){
+            AMCInfoData amcInfoData = new AMCInfoData(methods.getClient(), w.getWardId());
+            Object[][] data = amcInfoData.getData();
+            MyTableModel tableModel = new MyTableModel(columnName, data);
+            JTable table = new JTable(tableModel);
+            JScrollPane scroll = new JScrollPane(table);
+            setupTable(table);
+            this.addSp(scroll);
+        }
     }
 
     //Sets rowheight and edits the tableheader

@@ -3,6 +3,7 @@ package CUTablePanels;
 import AMCWardPanels.TableFrames.MultiLineTableHeaderRenderer;
 import AMCWardPanels.TableFrames.MyTableModel;
 import Methods.ControlCentre;
+import Methods.tableInfo.LongStayInfoData;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,16 +31,10 @@ public class LongStayTablePanel extends JPanel {
     private ControlCentre methods;
 
     public LongStayTablePanel(ControlCentre methods){
-
         this.methods = methods;
 
-        try {
-            data = methods.getLongStayData();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+        LongStayInfoData lsInfoData = new LongStayInfoData(methods.getClient());
+        data = lsInfoData.getData();
 
         tableModel = new MyTableModel(columnName, data);
         table = new JTable(tableModel);

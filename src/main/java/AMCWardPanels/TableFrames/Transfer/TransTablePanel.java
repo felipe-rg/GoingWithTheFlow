@@ -4,6 +4,7 @@ import AMCWardPanels.TableFrames.ButtonColumn;
 import AMCWardPanels.TableFrames.DeletePopUp;
 import AMCWardPanels.TableFrames.MultiLineTableHeaderRenderer;
 import Methods.AMCWard;
+import Methods.tableInfo.TransTableData;
 
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
@@ -35,15 +36,10 @@ public class TransTablePanel extends JPanel implements TableModelListener {
 
     private Object[][] dbData;
 
-    public TransTablePanel(AMCWard methods){
+    public TransTablePanel(AMCWard methods, TransTableData transTableData){
 
-        try {
-            dbData = methods.getTransferData();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+        dbData = transTableData.getData();
+
         //Instantiating table with appropriate data and tablemodel
 
         tableModel = new TransTableModel(columnName, dbData);        //Instance of MytableModel
