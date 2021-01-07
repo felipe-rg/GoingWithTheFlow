@@ -24,6 +24,7 @@ public class TotTablePanel extends JPanel implements TableModelListener {
 
     //Columnames in our table
     private String[] columnName = {"Index",
+            "Bed Id",
             "Patient ID",
             "Sex",
             "Initial Diagnosis",
@@ -54,7 +55,7 @@ public class TotTablePanel extends JPanel implements TableModelListener {
         };
 
         //
-        ButtonColumn deletePatient = new ButtonColumn(table, deletePopUp, 7);
+        ButtonColumn deletePatient = new ButtonColumn(table, deletePopUp, 8);
 
         this.setLayout(new GridLayout());
         this.add(scrollPane);

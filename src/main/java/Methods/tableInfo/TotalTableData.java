@@ -34,14 +34,16 @@ public class TotalTableData extends dateFormat implements dataForTable{
         for(int i=0; i<totalNumber; i++) {
             Patient p = totalList.get(i);
             data[i][0] = p.getId();
-            data[i][1] = p.getPatientId();
-            data[i][2] = p.getSex();
-            data[i][3] = p.getInitialDiagnosis();
-            data[i][4] = p.getNeedsSideRoom();
-            data[i][5] = durationFormatter(Duration.between(p.getArrivalDateTime(), LocalDateTime.now()));
+            data[i][1] = p.getCurrentBedId();
+            data[i][2] = p.getPatientId();
+            data[i][3] = p.getSex();
+            data[i][4] = p.getInitialDiagnosis();
+            data[i][5] = p.getNeedsSideRoom();
+            data[i][6] = durationFormatter(Duration.between(p.getArrivalDateTime(), LocalDateTime.now()));
+
 
             if(p.getNextDestination()==0){
-                data[i][6] = null;
+                data[i][7] = "";
             }
             ArrayList<String> json = null;
             try {
@@ -52,9 +54,9 @@ public class TotalTableData extends dateFormat implements dataForTable{
             ArrayList<Ward> wards = client.wardsFromJson(json);
 
             if(wards.size()!=0){
-                data[i][6] = wards.get(0).getWardName();
+                data[i][7] = wards.get(0).getWardName();
             }
-            data[i][7] = "Delete Patient";
+            data[i][8] = "Delete Patient";
         }
         return data;
     }
