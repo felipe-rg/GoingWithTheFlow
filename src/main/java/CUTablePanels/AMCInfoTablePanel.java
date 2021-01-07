@@ -35,8 +35,10 @@ public class AMCInfoTablePanel extends JPanel {
             "Male Free Beds",
             "Female Free Beds",
             "Male/Female Free Beds",
-            "Expected Male Discharge",
-            "Expected Female Discharge",
+            "Male Discharge",
+            "Female Discharge",
+            "Male Transfers",
+            "Female Transfers",
             "ICU Transfer",
             "RIP"
     };

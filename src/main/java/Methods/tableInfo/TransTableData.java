@@ -62,10 +62,12 @@ public class TransTableData extends dateFormat implements dataForTable{
             json = client.makeGetRequest("*", "patients", "currentwardid="+wardId);
             ArrayList<Patient> patients = client.patientsFromJson(json);
 
+            json = client.makeGetRequest("*", "wards", "wardtype='LS'");
+            ArrayList<Ward> lsWards = client.wardsFromJson(json);
             //Get all patients transferring to long stay wards
             ArrayList<Patient> transfers = new ArrayList<Patient>();
-            for(int i=3; i<6; i++){
-                json = client.makeGetRequest("*", "patients", "nextdestination="+i);
+            for(Ward w:lsWards){
+                json = client.makeGetRequest("*", "patients", "nextdestination="+w.getWardId());
                 transfers.addAll(client.patientsFromJson(json));
             }
 

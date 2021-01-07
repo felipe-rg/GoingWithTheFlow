@@ -50,8 +50,15 @@ public class DischargeTableData extends dateFormat implements dataForTable{
             ArrayList<String> json = client.makeGetRequest("*", "patients", "currentwardid="+wardId);
             ArrayList<Patient> patients = client.patientsFromJson(json);
 
-            json = client.makeGetRequest("*", "patients", "nextdestination=6");
-            ArrayList<Patient> discharging = client.patientsFromJson(json);
+            json = client.makeGetRequest("*", "wards", "wardtype='discharge'");
+            ArrayList<Ward> dischargeWards = client.wardsFromJson(json);
+
+            ArrayList<Patient> discharging = new ArrayList<Patient>();
+
+            for(Ward w: dischargeWards){
+                json = client.makeGetRequest("*", "patients", "nextdestination="+w.getWardId());
+                discharging.addAll(client.patientsFromJson(json));
+            }
 
             output = client.crossReference(patients, discharging);
         } catch (IOException e) {

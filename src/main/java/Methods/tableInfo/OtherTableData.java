@@ -58,18 +58,16 @@ public class OtherTableData  extends dateFormat implements dataForTable{
         try {
             ArrayList<String> json = client.makeGetRequest("*", "patients", "currentwardid="+wardId);
             ArrayList<Patient> patients = client.patientsFromJson(json);
+            ArrayList<Patient> othPatients = new ArrayList<Patient>();
 
-            json = client.makeGetRequest("*", "patients", "deceased=true");
-            ArrayList<Patient> deceased = client.patientsFromJson(json);
+            json = client.makeGetRequest("*", "wards", "wardtype='other'");
+            ArrayList<Ward> othDestinations = client.wardsFromJson(json);
 
-            output = client.crossReference(patients, deceased);
-
-            json = client.makeGetRequest("*", "patients", "nextdestination=7");
-            ArrayList<Patient> toICU = client.patientsFromJson(json);
-
-
-            output.addAll(client.crossReference(toICU, patients));
-
+            for(Ward w: othDestinations){
+                json = client.makeGetRequest("*", "patients", "nextdestination="+w.getWardId());
+                othPatients.addAll(client.patientsFromJson(json));
+            }
+            output.addAll(client.crossReference(othPatients, patients));
         } catch (IOException e) {
             e.printStackTrace();
         }

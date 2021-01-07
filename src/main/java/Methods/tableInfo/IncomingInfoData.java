@@ -4,6 +4,7 @@ import Client.*;
 import Methods.dateFormat;
 
 import java.io.IOException;
+import java.sql.Array;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -40,12 +41,19 @@ public class IncomingInfoData extends dateFormat implements dataForTable{
     }
 
     private ArrayList<Patient> getList(){
+        ArrayList<Patient> output = new ArrayList<Patient>();
         try {
-            ArrayList<String> json = client.makeGetRequest("*", "patients", "nextdestination=2");
-            return client.patientsFromJson(json);
+            ArrayList<String> json = client.makeGetRequest("*", "wards", "wardtype='AMU'");
+            ArrayList<Ward> amuWards = client.wardsFromJson(json);
+
+            for(Ward w:amuWards){
+                json = client.makeGetRequest("*", "patients", "nextdestination="+w.getWardId());
+                output.addAll(client.patientsFromJson(json));
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        return output;
     }
 }
