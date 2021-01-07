@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class IncomingTableData extends dateFormat implements dataForTable{
     private int incomingNumber;
     private int wardId;
+    private String wardType;
     Client client;
     ArrayList<Patient> incomingList;
 
@@ -28,7 +29,7 @@ public class IncomingTableData extends dateFormat implements dataForTable{
     @Override
     public Object[][] getData() {
         Object[][] data = new Object[incomingNumber][9];
-        if(wardId == 2) {
+        if(wardType.equals("AMU")) {
             for (int i = 0; i < incomingNumber; i++) {
                 Patient p = incomingList.get(i);
                 data[i][0] = p.getId();
@@ -36,7 +37,7 @@ public class IncomingTableData extends dateFormat implements dataForTable{
                 data[i][2] = p.getSex();
                 data[i][3] = p.getInitialDiagnosis();
                 data[i][4] = p.getNeedsSideRoom();
-                data[i][5] = dateFormatter(p.getArrivalDateTime());
+                data[i][5] = p.getArrivalDateTime();
                 data[i][6] = p.getAcceptedByMedicine();
                 data[i][7] = "Select Bed";
                 data[i][8] = "Delete Patient";
@@ -49,7 +50,7 @@ public class IncomingTableData extends dateFormat implements dataForTable{
                 data[i][2] = p.getSex();
                 data[i][3] = p.getInitialDiagnosis();
                 data[i][4] = p.getNeedsSideRoom();
-                data[i][5] = dateFormatter(p.getEstimatedTimeOfNext());
+                data[i][5] = p.getEstimatedTimeOfNext();
                 data[i][6] = p.getTransferRequestStatus();
                 data[i][7] = "Select Bed";
                 data[i][8] = "Delete Patient";
@@ -62,11 +63,16 @@ public class IncomingTableData extends dateFormat implements dataForTable{
         ArrayList<String> json = null;
         ArrayList<Patient> output = new ArrayList<Patient>();
         try {
+            //get ward
             json = client.makeGetRequest("*", "wards", "wardid="+wardId);
             ArrayList<Ward> ward = client.wardsFromJson(json);
-            if(ward.get(0).getWardType().equals("AMU")){
+            wardType = ward.get(0).getWardType();
+            //if ward is AMU then we find all incoming to all amu wards
+            if(wardType.equals("AMU")){
+                //get all amu wards
                 json = client.makeGetRequest("*", "wards", "wardtype='AMU'");
                 ArrayList<Ward> amuWard = client.wardsFromJson(json);
+                //get all patients in amu wards
                 for(Ward w:amuWard) {
                     json = client.makeGetRequest("*", "patients", "nextdestination=" + w.getWardId());
                     output.addAll(client.patientsFromJson(json));

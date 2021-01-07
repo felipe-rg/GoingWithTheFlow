@@ -48,6 +48,19 @@ public abstract class GeneralWard {
         return output;
     }
 
+    public String getWardType(int wardID) throws IOException {
+        ArrayList<String> json = client.makeGetRequest("*", "wards", "wardid="+wardID);
+        ArrayList<Ward> wards = client.wardsFromJson(json);
+        String output = null;
+        if(wards.size()!=0) {
+            output = wards.get(0).getWardType();
+        }
+        else {
+            output = "No Ward";
+        }
+        return output;
+    }
+
     //Removes a patient from the database
     //Ensures that if they were in a bed then the bed status is made free
     public void deletePatient(int patientId) throws IOException {
