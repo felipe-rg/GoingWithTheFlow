@@ -64,8 +64,10 @@ public class Topography extends JPanel{
         for (BedButton b : beds){
             b.addActionListener(evt -> {
                 if(b.getStatus().equals("O")){ b.printInfoFull(); }
-                if(b.getStatus().equals("F") || b.getStatus().equals("C")){ b.printInfoEmpty(); }
+                if(b.getStatus().equals("F")){ b.printInfoEmpty(); }
+                if(b.getStatus().equals("C")){ b.printInfoClosed(); }
 
+                System.out.println(b.getSex());
                 // every time something is done to the beds, check whether the bedstatus must change and update it
                 CountBeds();
                 updateBedStatus(bedstatus);
