@@ -249,7 +249,7 @@ public class BedButton extends JButton{
 
         JButton editDia = new JButton("Edit");
         editDia.addActionListener(evt -> {
-            editParameter("Diagnosis", finalP1);
+            editDiagnosis(finalP1);
             infoFrame.dispose();
         });
 
@@ -961,36 +961,89 @@ public class BedButton extends JButton{
         JPanel editPanel = new JPanel();
         editPanel.setLayout(new GridBagLayout());
 
+        JButton ConfirmButton = new JButton();
+
+        JComboBox<String> pSR = new JComboBox<>();
+        if(par.equals("Sideroom")){
+            String[] sideRoom = { "No Sideroom","Sideroom"};
+            pSR = new JComboBox<String>(sideRoom);
+            JPanel panelSR = new JPanel();
+            panelSR.add(pSR);
+            String sRoom = "false";
+            boolean sroo = false;
+            if (pSR.getSelectedItem() == "Sideroom") {
+                sRoom = "true";
+                sroo = true;}
+            final String SR = sRoom;
+            ConfirmButton = new JButton("Confirm");
+            boolean finalSroo = sroo;
+            ConfirmButton.addActionListener(evt -> {
+                try {
+                    methods.editPatient(p.getId(), "needssideroom", SR);
+                    methods.editBed(bed.getBedId(), "hassideroom", SR);
+                    bed.setSR(finalSroo);
+                } catch (IOException | SQLException e) {
+                    e.printStackTrace();
+                }
+                editFrame.dispose();
+                printInfoFull();
+            });
+        }
+        if(par.equals("Gender")){
+            String[] genders = { "Male","Female", "Uni"};
+            pSR = new JComboBox<String>(genders);
+            JPanel panelSR = new JPanel();
+            panelSR.add(pSR);
+
+            ConfirmButton = new JButton("Confirm");
+            JComboBox<String> finalPSR = pSR;
+            ConfirmButton.addActionListener(evt -> {
+                try {
+                    methods.editPatient(p.getId(), "sex", "'" + finalPSR.getSelectedItem() + "'");
+                } catch (IOException | SQLException e) {
+                    e.printStackTrace();
+                }
+                editFrame.dispose();
+                printInfoFull();
+            });
+        }
+
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridwidth = 1;
+        c.gridx = 0;
+        c.gridy = 0;
+        editPanel.add(pSR);
+        c.gridx = 1;
+        editPanel.add(ConfirmButton, c);
+
+        editFrame.add(editPanel);
+
+    }
+
+    // this one is used for sideroom, sex and diagnosis. which is it is chosen with 'par'
+    private void editDiagnosis(Patient p){
+        JFrame editFrame = new JFrame("Edit");
+        editFrame.setSize(300,200);
+        editFrame.setBackground(Color.WHITE);
+        editFrame.setVisible(true);
+        editFrame.setLocationRelativeTo(null);
+        JPanel editPanel = new JPanel();
+        editPanel.setLayout(new GridBagLayout());
+
         JTextField newp = new JTextField("New "+p);
 
         JButton ConfirmButton = new JButton("Confirm");
         ConfirmButton.addActionListener(evt -> {
+            try {
+                methods.editPatient(p.getId(), "initialdiagnosis", "'" + newp.getText() + "'");
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
             editFrame.dispose();
-            if(par.equals("Gender")){
-                try {
-                    //change sex
-                    methods.editPatient(p.getId(), "sex", "'"+newp.getText()+"'");
-                    p.setSex(newp.getText());
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
-            if(par.equals("Sideroom")){
-                bed.setSR(false);
-            }
-            if(par.equals("Diagnosis")){
-                try {
-
-                    methods.editPatient(p.getId(), "initialdiagnosis", "'" + newp.getText() + "'");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
+            printInfoFull();
         });
 
         GridBagConstraints c = new GridBagConstraints();
@@ -1001,7 +1054,6 @@ public class BedButton extends JButton{
         editFrame.add(editPanel);
 
     }
-
     // this function is used to change the parameters of empty beds: gender or sideroom.
     private void editBed(String par){
         JFrame editFrame = new JFrame("Edit");
@@ -1020,18 +1072,23 @@ public class BedButton extends JButton{
             pSR = new JComboBox<String>(sideRoom);
             JPanel panelSR = new JPanel();
             panelSR.add(pSR);
-            boolean sRoom = false;
-            if (pSR.getSelectedItem() == "Sideroom") { sRoom = true;}
-            final boolean SR = sRoom;
+            String sRoom = "false";
+            boolean sroo = false;
+            if (pSR.getSelectedItem() == "Sideroom") {
+                sRoom = "true";
+            sroo = true;}
+            final String SR = sRoom;
             ConfirmButton = new JButton("Confirm");
+            boolean finalSroo = sroo;
             ConfirmButton.addActionListener(evt -> {
                 try {
-                    methods.editBed(bed.getBedId(), "hassideroom", String.valueOf(SR));
-                    bed.setSR(SR);
+                    methods.editBed(bed.getBedId(), "hassideroom", SR);
+                    bed.setSR(finalSroo);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 editFrame.dispose();
+                printInfoEmpty();
             });
         }
         if(par.equals("Gender")){
@@ -1050,6 +1107,7 @@ public class BedButton extends JButton{
                     e.printStackTrace();
                 }
                 editFrame.dispose();
+                printInfoEmpty();
             });
         }
 
@@ -1064,7 +1122,4 @@ public class BedButton extends JButton{
 
         editFrame.add(editPanel);
     }
-
-
-
 }
