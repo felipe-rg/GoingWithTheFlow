@@ -4,6 +4,7 @@ import AMCWardPanels.TableFrames.ButtonColumn;
 import AMCWardPanels.TableFrames.DeletePopUp;
 import AMCWardPanels.TableFrames.MultiLineTableHeaderRenderer;
 import Methods.GeneralWard;
+import Methods.tableInfo.TotalTableData;
 
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
@@ -32,15 +33,9 @@ public class TotTablePanel extends JPanel implements TableModelListener {
             "Delete Button"};
 
     private Object[][] dbData;
-    public TotTablePanel(GeneralWard methods){
+    public TotTablePanel(GeneralWard methods, TotalTableData totalTableData){
+        dbData = totalTableData.getData();
 
-        try {
-            dbData = methods.getPatientData();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
         //Instantiating table with appropriate data and tablemodel
 
         tableModel = new TotTableModel(columnName, dbData);        //Instance of MytableModel

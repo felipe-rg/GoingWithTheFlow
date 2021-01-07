@@ -59,10 +59,12 @@ public class Client extends fromJson{
 
             // Read the body of the response
             while ((inputLine = bufferedReader.readLine()) != null) {
-
+                System.out.println(inputLine);
             }
             bufferedReader.close();
         }
+        BufferedReader bufferedReader = new BufferedReader(new
+                InputStreamReader(conn.getInputStream(), "utf-8"));
     }
 
     public void makePutRequest(String table,String change,String condition) throws IOException {
@@ -72,16 +74,8 @@ public class Client extends fromJson{
         conn.setRequestMethod("PUT");
         conn.setRequestProperty("Content-type", "application/html");
         conn.setRequestProperty("charset", "utf-8");
-
         BufferedReader bufferedReader = new BufferedReader(new
                 InputStreamReader(conn.getInputStream(), "utf-8"));
-        String inputLine;
-
-        // Read the body of the response
-        while ((inputLine = bufferedReader.readLine()) != null) {
-
-        }
-        bufferedReader.close();
     }
 
     public void makeDeleteRequest(String table,String condition) throws IOException {
@@ -91,16 +85,8 @@ public class Client extends fromJson{
         conn.setRequestMethod("DELETE");
         conn.setRequestProperty("Content-type", "application/html");
         conn.setRequestProperty("charset", "utf-8");
-
         BufferedReader bufferedReader = new BufferedReader(new
                 InputStreamReader(conn.getInputStream(), "utf-8"));
-        String inputLine;
-
-        // Read the body of the response
-        while ((inputLine = bufferedReader.readLine()) != null) {
-
-        }
-        bufferedReader.close();
     }
 
 

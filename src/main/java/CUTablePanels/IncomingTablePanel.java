@@ -6,6 +6,7 @@ import AMCWardPanels.TableFrames.TimeRenderer;
 import Methods.AMCWard;
 import Methods.ControlCentre;
 import Methods.GeneralWard;
+import Methods.tableInfo.IncomingInfoData;
 
 import javax.swing.*;
 import java.awt.*;
@@ -40,15 +41,9 @@ public class IncomingTablePanel extends JPanel{
     public IncomingTablePanel(ControlCentre methods){
 
         this.methods = methods;
-
+        IncomingInfoData incomingInfoData = new IncomingInfoData(methods.getClient());
+        data = incomingInfoData.getData();
         //Filling the data object with incoming patients data from database
-        try {
-            data = methods.getIncomingData();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
 
         tableModel = new MyTableModel(columnName, data);
         table = new JTable(tableModel);

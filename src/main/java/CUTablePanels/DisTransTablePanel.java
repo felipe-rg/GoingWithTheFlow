@@ -5,6 +5,8 @@ import AMCWardPanels.TableFrames.MyTableModel;
 import Methods.AMCWard;
 import Methods.ControlCentre;
 import Methods.GeneralWard;
+import Methods.tableInfo.DischargeInfoData;
+import Methods.tableInfo.TransInfoData;
 
 import javax.swing.*;
 import java.awt.*;
@@ -55,23 +57,10 @@ public class DisTransTablePanel extends JPanel {
     public DisTransTablePanel(ControlCentre methods) {
         this.methods = methods;
 
-        //Filling disData with all relevant data from database
-        try {
-            disData = methods.getDisData();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        //Filling transData with all relevant data from database
-        try {
-            transData = methods.getTransData();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+        DischargeInfoData dischargeInfoData = new DischargeInfoData(methods.getClient());
+        disData = dischargeInfoData.getData();
+        TransInfoData transInfoData = new TransInfoData(methods.getClient());
+        transData = transInfoData.getData();
 
         //Instantiating tablemodel, table and scrollpane
         disTableModel = new MyTableModel(disColumnName, disData);

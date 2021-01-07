@@ -1,3 +1,4 @@
+import Client.*;
 import Methods.AMCWard;
 import Methods.LongstayWard;
 import AMCWardPanels.UIController;
@@ -9,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class GUI {
     JButton backButton;
@@ -17,18 +19,11 @@ public class GUI {
     AMCWard method;
     int wardId;
 
-    public GUI(int wardId) {
-        this.wardId = wardId;
-        try {
-            if(wardId == 2) {
-                method = new AMCWard(2);
-            }
-            else { methods = new LongstayWard(wardId);}
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+    public GUI(Ward ward) {
+        Client c = new Client();
+        this.wardId = ward.getWardId();
+        ArrayList<String> json = null;
+
         JFrame frame = new JFrame();
         frame.setSize(1200, 800);
         frame.setTitle("Longstay GUI");
@@ -50,17 +45,34 @@ public class GUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
-                GUI gui  = new GUI(wardId);
+                GUI gui  = new GUI(ward);
 
             }
         });
 
         //Creating UIController than generates all panels
         UIController UIc = null;
-        if(wardId == 2) {
-            UIc = new UIController(backButton, refreshButton, method);
+        if(ward.getWardType().equals("AMU")) {
+            try {
+                method = new AMCWard(wardId);
+                UIc = new UIController(backButton, refreshButton, method);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
         }
-        else { UIc = new UIController(backButton, refreshButton, methods);}
+        else {
+            try {
+                methods = new LongstayWard(wardId);
+                UIc = new UIController(backButton, refreshButton, methods);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+
         frame.add(UIc.getMainPanel());
 
         frame.setVisible(true);
