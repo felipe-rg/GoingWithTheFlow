@@ -22,5 +22,9 @@ public class Bed implements Serializable {
     public String getStatus(){return status;}
     public String getForSex(){return forSex;}
     public boolean getHasSideRoom(){return hasSideRoom;}
+
+    public void setSR(Boolean SR){ hasSideRoom = SR; }
+    public void setSex(String forSex){ this.forSex = forSex; }
+    public void setStatus(String status){ this.status = status; }
 }
 
