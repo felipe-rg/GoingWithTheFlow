@@ -32,6 +32,7 @@ public class OthTable {
             public void windowClosing(WindowEvent we) {
                 top.refresh(methods);
                 wardinfo.refresh();
+                otherTableData.refresh();
             }
         });
     }

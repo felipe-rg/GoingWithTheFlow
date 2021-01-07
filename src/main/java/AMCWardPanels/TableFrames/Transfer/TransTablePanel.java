@@ -35,9 +35,11 @@ public class TransTablePanel extends JPanel implements TableModelListener {
             };
 
     private Object[][] dbData;
+    private AMCWard methods;
 
     public TransTablePanel(AMCWard methods, TransTableData transTableData){
 
+        this.methods = methods;
         dbData = transTableData.getData();
 
         //Instantiating table with appropriate data and tablemodel
@@ -90,7 +92,21 @@ public class TransTablePanel extends JPanel implements TableModelListener {
 
         //Printing out what has been edited
         System.out.println("Patient bed: " + bedNum + "     Edited '" + columnName+ "': " +data);
+        int patientId = tableModel.getPatientID(table.getSelectedRow());
 
+        if(columnName == "Side Room"){
+            editPatient(patientId, "needssideroom", (boolean)data);
+        }
+    }
+
+    private void editPatient(int patientId, String column, boolean value){
+        try {
+            methods.editPatient(patientId, column, String.valueOf(value));
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
     //Transforming a LocalDateTime object into a string displaying hours and minutes in the form "HH:mm"

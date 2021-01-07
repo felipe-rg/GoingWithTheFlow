@@ -213,7 +213,7 @@ public abstract class GeneralWard {
             LocalDateTime arrival = patients.get(0).getArrivalDateTime();
             LocalDateTime leaving = patients.get(0).getEstimatedTimeOfNext();
             LocalDateTime now = LocalDateTime.now();
-            if(arrival.isEqual(leaving) || leaving.isAfter(now.plusHours(4))){
+            if(arrival.isEqual(leaving)){
                 return "#E74C3C";
             }
             else if(leaving.isBefore(now)){

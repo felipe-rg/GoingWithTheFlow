@@ -132,37 +132,46 @@ public class InTablePanel extends JPanel implements TableModelListener {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //edit info Frame
-        infoFrame.setSize(300,300);
-        infoFrame.setBackground(Color.WHITE);
-        infoFrame.setVisible(true);
-        infoFrame.setLocation(300,300);
 
-        infoFrame.setLayout(new GridLayout(acceptableBeds.size()+1,2));
-        ButtonGroup beds = new ButtonGroup();
-        for(Bed w:acceptableBeds){
-            JRadioButton lsWard = new JRadioButton(String.valueOf(w.getBedId()));
-            lsWard.setActionCommand(String.valueOf(w.getBedId()));
-            lsWard.setFont(new Font("Verdana", Font.PLAIN, 20));
-            beds.add(lsWard);
-            infoFrame.add(lsWard);
+
+        if(acceptableBeds.size()!=0){
+            infoFrame.setSize(300,300);
+            infoFrame.setBackground(Color.WHITE);
+            infoFrame.setVisible(true);
+            infoFrame.setLocation(300,300);
+            infoFrame.setLayout(new GridLayout(acceptableBeds.size() + 1, 2));
+            ButtonGroup beds = new ButtonGroup();
+            for (Bed w : acceptableBeds) {
+                JRadioButton lsWard = new JRadioButton(String.valueOf(w.getBedId()));
+                lsWard.setActionCommand(String.valueOf(w.getBedId()));
+                lsWard.setFont(new Font("Verdana", Font.PLAIN, 20));
+                beds.add(lsWard);
+                infoFrame.add(lsWard);
+            }
+            JButton submitWard = new JButton("Submit");
+            infoFrame.add(submitWard);
+            submitWard.addActionListener(evt -> {
+                String selected = beds.getSelection().getActionCommand();
+                try {
+                    ArrayList<String> json = client.makeGetRequest("*", "beds", "bedid='" + selected + "'");
+                    Bed bed = client.bedsFromJson(json).get(0);
+                    methods.setBed(patientId, bed.getBedId());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+                infoFrame.dispose();
+            });
+        } else {
+            infoFrame.setSize(300,100);
+            infoFrame.setBackground(Color.WHITE);
+            infoFrame.setVisible(true);
+            infoFrame.setLocation(300,300);
+            JLabel noBeds = new JLabel("Currently No Acceptable Free Beds");
+            noBeds.setHorizontalAlignment(JLabel.CENTER);
+            infoFrame.add(noBeds);
         }
-        JButton submitWard = new JButton("Submit");
-        infoFrame.add(submitWard);
-        submitWard.addActionListener(evt -> {
-            String selected = beds.getSelection().getActionCommand();
-            try {
-                ArrayList<String> json = client.makeGetRequest("*", "beds", "bedid='"+selected+"'");
-                Bed bed = client.bedsFromJson(json).get(0);
-                methods.setBed(patientId, bed.getBedId());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-            infoFrame.dispose();
-        });
 
     }
 

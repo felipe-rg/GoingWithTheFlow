@@ -34,6 +34,7 @@ public class DisTable {
             public void windowClosing(WindowEvent we) {
                 top.refresh(methods);
                 wardinfo.refresh();
+                dischargeTableData.refresh();
             }
         });
     }

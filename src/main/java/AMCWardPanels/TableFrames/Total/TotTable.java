@@ -32,6 +32,7 @@ public class TotTable {
             public void windowClosing(WindowEvent we) {
                 top.refresh(methods);
                 wardinfo.refresh();
+                totalTableData.refresh();
             }
         });
     }

@@ -15,6 +15,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class WardInfo extends JPanel{
     //Labels
@@ -32,6 +33,12 @@ public class WardInfo extends JPanel{
     Topography top;
     WardInfo here;
     GeneralWard methods;
+
+    TransTableData transTableData;
+    OtherTableData otherTableData;
+    IncomingTableData incomingTableData;
+    DischargeTableData dischargeTableData;
+    TotalTableData totalTableData;
 
     public WardInfo(Topography top, LongstayWard methods){
         this.methods = methods;
@@ -54,7 +61,7 @@ public class WardInfo extends JPanel{
         this.top = top;
         this.setLayout(new GridLayout(10,1));
 
-        TransTableData transTableData = new TransTableData(methods.getClient(), methods.getWardId());
+        transTableData = new TransTableData(methods.getClient(), methods.getWardId());
         setup();
         transLabel = new JLabel("Transferring Patients");
         transbut = new JButton(String.valueOf(transTableData.getNumber()));
@@ -81,10 +88,10 @@ public class WardInfo extends JPanel{
 
     private void setup(){
         here = this;
-        OtherTableData otherTableData = new OtherTableData(methods.getClient(), methods.getWardId());
-        IncomingTableData incomingTableData = new IncomingTableData(methods.getClient(), methods.getWardId());
-        DischargeTableData dischargeTableData = new DischargeTableData(methods.getClient(), methods.getWardId());
-        TotalTableData totalTableData = new TotalTableData(methods.getClient(), methods.getWardId());
+        otherTableData = new OtherTableData(methods.getClient(), methods.getWardId());
+        incomingTableData = new IncomingTableData(methods.getClient(), methods.getWardId());
+        dischargeTableData = new DischargeTableData(methods.getClient(), methods.getWardId());
+        totalTableData = new TotalTableData(methods.getClient(), methods.getWardId());
         this.setPreferredSize(new Dimension(300,600));
         this.setBackground(Color.white);
 
@@ -164,14 +171,18 @@ public class WardInfo extends JPanel{
     }
 
     public void refresh(){
-        if(methods.getWardId() == 2){
-            TransTableData transTableData = new TransTableData(methods.getClient(), methods.getWardId());
-            transbut.setText(transTableData.getNumber());
+        try {
+            if(methods.getWardType(methods.getWardId()).equals("AMU")){
+                TransTableData transTableData = new TransTableData(methods.getClient(), methods.getWardId());
+                transbut.setText(transTableData.getNumber());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        OtherTableData otherTableData = new OtherTableData(methods.getClient(), methods.getWardId());
-        IncomingTableData incomingTableData = new IncomingTableData(methods.getClient(), methods.getWardId());
-        DischargeTableData dischargeTableData = new DischargeTableData(methods.getClient(), methods.getWardId());
-        TotalTableData totalTableData = new TotalTableData(methods.getClient(), methods.getWardId());
+        otherTableData = new OtherTableData(methods.getClient(), methods.getWardId());
+        incomingTableData = new IncomingTableData(methods.getClient(), methods.getWardId());
+        dischargeTableData = new DischargeTableData(methods.getClient(), methods.getWardId());
+        totalTableData = new TotalTableData(methods.getClient(), methods.getWardId());
         othbut.setText(otherTableData.getNumber());
         inbut.setText(incomingTableData.getNumber());
         disbut.setText(dischargeTableData.getNumber());
