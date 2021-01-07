@@ -13,32 +13,34 @@ import java.time.format.DateTimeFormatter;
         has spent in the hospital. If <2h then green, if in between 2-3h then amber and for >3h then red.
 
  */
+
 public class TimeRenderer extends DefaultTableCellRenderer {
 
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        //Cells are by default rendered as a JLabel.
+        //Cells are rendered as labels
         JLabel timeLabel = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-
 
         //Making label opaque so we can see the color
         timeLabel.setOpaque(true);
 
+        //This is the time in hospital (rounding to lowest hour)
         long timeInHospital = durationFormatter(Duration.between((LocalDateTime)value, LocalDateTime.now()));
 
+        //Editing text in label (the one that will be displayed in cell)
         timeLabel.setText(dateFormatter((LocalDateTime) value));
 
-        if (timeInHospital < 2){//Making background green
-            timeLabel.setBackground(Color.decode("#8ABB59"));
+        if (timeInHospital < 2){
+            timeLabel.setBackground(Color.decode("#8ABB59"));   //Making background green
 
         }
 
-        if (timeInHospital >= 2 && timeInHospital < 3){         //Making background amber
-            timeLabel.setBackground(Color.decode("#F9D88C"));
+        if (timeInHospital >= 2 && timeInHospital < 3){
+            timeLabel.setBackground(Color.decode("#F9D88C"));   //Making background amber
         }
 
         else if (timeInHospital >= 3){
-            timeLabel.setBackground(Color.decode("#F76262"));       //Making background red
+            timeLabel.setBackground(Color.decode("#F76262"));    //Making background red
         }
 
         return timeLabel;
