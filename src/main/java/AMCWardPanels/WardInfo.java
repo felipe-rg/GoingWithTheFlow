@@ -34,11 +34,6 @@ public class WardInfo extends JPanel{
     WardInfo here;
     GeneralWard methods;
 
-    TransTableData transTableData;
-    OtherTableData otherTableData;
-    IncomingTableData incomingTableData;
-    DischargeTableData dischargeTableData;
-    TotalTableData totalTableData;
 
     public WardInfo(Topography top, LongstayWard methods){
         this.methods = methods;
@@ -60,17 +55,15 @@ public class WardInfo extends JPanel{
         this.methods = methods;
         this.top = top;
         this.setLayout(new GridLayout(10,1));
-
-        transTableData = new TransTableData(methods.getClient(), methods.getWardId());
         setup();
         transLabel = new JLabel("Transferring Patients");
-        transbut = new JButton(String.valueOf(transTableData.getNumber()));
+        transbut = new JButton(String.valueOf(methods.getTransNumber()));
         editLabel(transLabel);
         editButton(transbut);
         transbut.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                TransTable transTable = new TransTable(top, here, methods, transTableData);
+                TransTable transTable = new TransTable(top, here, methods);
             }
         });
         //Adding labels and buttons into Panel
@@ -88,10 +81,6 @@ public class WardInfo extends JPanel{
 
     private void setup(){
         here = this;
-        otherTableData = new OtherTableData(methods.getClient(), methods.getWardId());
-        incomingTableData = new IncomingTableData(methods.getClient(), methods.getWardId());
-        dischargeTableData = new DischargeTableData(methods.getClient(), methods.getWardId());
-        totalTableData = new TotalTableData(methods.getClient(), methods.getWardId());
         this.setPreferredSize(new Dimension(300,600));
         this.setBackground(Color.white);
 
@@ -104,10 +93,10 @@ public class WardInfo extends JPanel{
         editLabel(inLabel, disLabel, othLabel, totLabel);
 
         //Buttons
-        inbut = new JButton(incomingTableData.getNumber());
-        disbut = new JButton(dischargeTableData.getNumber());
-        othbut = new JButton(otherTableData.getNumber());
-        totbut = new JButton(totalTableData.getNumber());
+        inbut = new JButton(String.valueOf(methods.getInNumber()));
+        disbut = new JButton(String.valueOf(methods.getDischargeNumber()));
+        othbut = new JButton(String.valueOf(methods.getOthNumber()));
+        totbut = new JButton(String.valueOf(methods.getPatientsInWard()));
 
         //Editing Buttons
         editButton(inbut, disbut, othbut, totbut);
@@ -117,28 +106,28 @@ public class WardInfo extends JPanel{
         inbut.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                InTable inTable = new InTable(top, here, methods, incomingTableData);
+                InTable inTable = new InTable(top, here, methods);
             }
         });
 
         disbut.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                DisTable disTable = new DisTable(top, here, methods, dischargeTableData);
+                DisTable disTable = new DisTable(top, here, methods);
             }
         });
 
         othbut.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                OthTable othTable = new OthTable(top, here, methods, otherTableData);
+                OthTable othTable = new OthTable(top, here, methods);
             }
         });
 
         totbut.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                TotTable totTable = new TotTable(top, here, methods, totalTableData);
+                TotTable totTable = new TotTable(top, here, methods);
             }
         });
     }
@@ -170,24 +159,36 @@ public class WardInfo extends JPanel{
         }
     }
 
+    public void setInText(){
+        inbut.setText(String.valueOf(methods.getInNumber()));
+    }
+    public void setOthText(){
+        inbut.setText(String.valueOf(methods.getOthNumber()));
+    }
+    public void setTransText(){
+        inbut.setText(String.valueOf(methods.getTransNumber()));
+    }
+    public void setDisText(){
+        inbut.setText(String.valueOf(methods.getDischargeNumber()));
+    }
+    public void setTotText(){
+        inbut.setText(String.valueOf(methods.getPatientsInWard()));
+    }
+
+
+
     public void refresh(){
         try {
             if(methods.getWardType(methods.getWardId()).equals("AMU")){
-                TransTableData transTableData = new TransTableData(methods.getClient(), methods.getWardId());
-                transbut.setText(transTableData.getNumber());
+                transbut.setText(String.valueOf(methods.getTransNumber()));
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        otherTableData = new OtherTableData(methods.getClient(), methods.getWardId());
-        incomingTableData = new IncomingTableData(methods.getClient(), methods.getWardId());
-        dischargeTableData = new DischargeTableData(methods.getClient(), methods.getWardId());
-        totalTableData = new TotalTableData(methods.getClient(), methods.getWardId());
-        othbut.setText(otherTableData.getNumber());
-        inbut.setText(incomingTableData.getNumber());
-        disbut.setText(dischargeTableData.getNumber());
-        totbut.setText(totalTableData.getNumber());
-
+        othbut.setText(String.valueOf(methods.getOthNumber()));
+        inbut.setText(String.valueOf(methods.getInNumber()));
+        disbut.setText(String.valueOf(methods.getDischargeNumber()));
+        totbut.setText(String.valueOf(methods.getPatientsInWard()));
     }
 
 

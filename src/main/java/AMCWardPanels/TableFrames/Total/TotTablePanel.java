@@ -35,7 +35,8 @@ public class TotTablePanel extends JPanel implements TableModelListener {
 
     private Object[][] dbData;
     private GeneralWard methods;
-    public TotTablePanel(GeneralWard methods, TotalTableData totalTableData){
+    public TotTablePanel(GeneralWard methods){
+        TotalTableData totalTableData = new TotalTableData(methods.getClient(),methods.getWardId());
 
         this.methods = methods;
         dbData = totalTableData.getData();

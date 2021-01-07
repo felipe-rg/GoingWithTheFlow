@@ -37,7 +37,8 @@ public class TransTablePanel extends JPanel implements TableModelListener {
     private Object[][] dbData;
     private AMCWard methods;
 
-    public TransTablePanel(AMCWard methods, TransTableData transTableData){
+    public TransTablePanel(AMCWard methods){
+        TransTableData transTableData = new TransTableData(methods.getClient(), methods.getWardId());
 
         this.methods = methods;
         dbData = transTableData.getData();

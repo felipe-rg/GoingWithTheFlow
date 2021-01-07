@@ -16,13 +16,13 @@ import java.awt.event.WindowEvent;
 
 public class DisTable {
 
-    public DisTable(AMCWardPanels.Topography top, AMCWardPanels.WardInfo wardinfo, GeneralWard methods, DischargeTableData dischargeTableData){
+    public DisTable(AMCWardPanels.Topography top, AMCWardPanels.WardInfo wardinfo, GeneralWard methods){
         //Create frame and mainPanel containing everything
         JFrame frame = new JFrame("Discharge Patients");
         JPanel mainPanel = new JPanel(new BorderLayout());
 
         //Creating panel containing the table
-        DisTablePanel disTablePanel = new DisTablePanel(methods, dischargeTableData);
+        DisTablePanel disTablePanel = new DisTablePanel(methods);
 
         //Buttons that will be displayed in the title panel at the top
         JButton backButton = new JButton("Back");
@@ -32,7 +32,7 @@ public class DisTable {
             @Override
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
-                new DisTable(top, wardinfo, methods, dischargeTableData);
+                new DisTable(top, wardinfo, methods);
             }
         });
 
@@ -65,13 +65,5 @@ public class DisTable {
         frame.setVisible(true);
         frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 
-        //When we close table, we refresh the homescreen
-        frame.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent we) {
-                top.refresh(methods);
-                wardinfo.refresh();
-                dischargeTableData.refresh();
-            }
-        });
     }
 }

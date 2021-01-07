@@ -4,6 +4,7 @@ import AMCWardPanels.TableFrames.*;
 import AMCWardPanels.WardInfo;
 import Client.*;
 import Methods.GeneralWard;
+import Methods.tableInfo.IncomingInfoData;
 import Methods.tableInfo.IncomingTableData;
 
 import javax.swing.*;
@@ -50,8 +51,9 @@ public class InTablePanel extends JPanel implements TableModelListener {
     private GeneralWard methods;
 
     //Constructor
-    public InTablePanel(GeneralWard methods, IncomingTableData incomingTableData, WardInfo wardInfo) {
+    public InTablePanel(GeneralWard methods) {
         this.methods = methods;
+        IncomingTableData incomingTableData = new IncomingTableData(methods.getClient(), methods.getWardId());
         dbData = incomingTableData.getData();
         try {
             if (methods.getWardType(methods.wardId).equals("AMU")){
@@ -149,14 +151,15 @@ public class InTablePanel extends JPanel implements TableModelListener {
             submitWard.addActionListener(evt -> {
                 String selected = beds.getSelection().getActionCommand();
                 try {
-                    ArrayList<String> json = client.makeGetRequest("*", "beds", "bedid='" + selected + "'");
-                    Bed bed = client.bedsFromJson(json).get(0);
+                    Bed bed = methods.getBed(selected);
                     methods.setBed(patientId, bed.getBedId());
+                    //update specific bed
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
+                tableModel.removeRow(table.getSelectedRow());
                 infoFrame.dispose();
             });
         } else {

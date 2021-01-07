@@ -1012,42 +1012,53 @@ public class BedButton extends JButton{
         JPanel editPanel = new JPanel();
         editPanel.setLayout(new GridBagLayout());
 
-        JTextField newp = new JTextField("New "+par);
+        JButton ConfirmButton = new JButton();
 
-        JButton ConfirmButton = new JButton("Confirm");
-        ConfirmButton.addActionListener(evt -> {
-            if(par.equals("Gender")){
+        JComboBox<String> pSR = new JComboBox<>();
+        if(par.equals("Sideroom")){
+            String[] sideRoom = { "No Sideroom","Sideroom"};
+            pSR = new JComboBox<String>(sideRoom);
+            JPanel panelSR = new JPanel();
+            panelSR.add(pSR);
+            boolean sRoom = false;
+            if (pSR.getSelectedItem() == "Sideroom") { sRoom = true;}
+            final boolean SR = sRoom;
+            ConfirmButton = new JButton("Confirm");
+            ConfirmButton.addActionListener(evt -> {
                 try {
-                    methods.editBed(bed.getBedId(), "forsex", "'"+newp.getText()+"'");
-                    bed.setSex(newp.getText());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                //} catch (SQLException throwables) {
-                //    throwables.printStackTrace();
-                }
-            }
-            if(par.equals("Sideroom")) {
-                try {
-                    //set side room
-                    methods.editBed(bed.getBedId(), "hassideroom", newp.getText());
-                    if (newp.getText().equals("true") || newp.getText().equals("True") || newp.getText().equals("T") || newp.getText().equals("Y") || newp.getText().equals("Yes") || newp.getText().equals("yes")) {
-                        bed.setSR(true);
-                    } else {
-                        bed.setSR(false);
-                    }
+                    methods.editBed(bed.getBedId(), "hassideroom", String.valueOf(SR));
+                    bed.setSR(SR);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }
-            editFrame.dispose();
-        });
+                editFrame.dispose();
+            });
+        }
+        if(par.equals("Gender")){
+            String[] genders = { "Male","Female", "Uni"};
+            pSR = new JComboBox<String>(genders);
+            JPanel panelSR = new JPanel();
+            panelSR.add(pSR);
+
+            ConfirmButton = new JButton("Confirm");
+            JComboBox<String> finalPSR = pSR;
+            ConfirmButton.addActionListener(evt -> {
+                try {
+                    methods.editBed(bed.getBedId(), "forsex", "'" + finalPSR.getSelectedItem() + "'");
+                    bed.setSex((String) finalPSR.getSelectedItem());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                editFrame.dispose();
+            });
+        }
 
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridwidth = 1;
         c.gridx = 0;
         c.gridy = 0;
-        editPanel.add(newp, c);
+        editPanel.add(pSR);
         c.gridx = 1;
         editPanel.add(ConfirmButton, c);
 

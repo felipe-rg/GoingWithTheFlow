@@ -16,14 +16,14 @@ import java.awt.event.WindowEvent;
 
 public class TotTable {
 
-    public TotTable(AMCWardPanels.Topography top, AMCWardPanels.WardInfo wardinfo, GeneralWard methods, TotalTableData totalTableData){
+    public TotTable(AMCWardPanels.Topography top, AMCWardPanels.WardInfo wardinfo, GeneralWard methods){
 
         //Create frame and mainPanel containing everything
         JFrame frame = new JFrame("Total Patients");
         JPanel mainPanel = new JPanel(new BorderLayout());
 
         //Creating panel containing the table
-        TotTablePanel totTablePanel = new TotTablePanel(methods, totalTableData);
+        TotTablePanel totTablePanel = new TotTablePanel(methods);
 
         //Buttons that will be displayed in the title panel
         JButton backButton = new JButton("Back");
@@ -34,7 +34,7 @@ public class TotTable {
             @Override
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
-                new TotTable(top, wardinfo, methods, totalTableData);
+                new TotTable(top, wardinfo, methods);
             }
         });
 
@@ -67,16 +67,5 @@ public class TotTable {
         frame.setVisible(true);
         frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 
-
-
-
-
-        frame.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent we) {
-                top.refresh(methods);
-                wardinfo.refresh();
-                totalTableData.refresh();
-            }
-        });
     }
 }

@@ -41,7 +41,8 @@ public class DisTablePanel extends JPanel implements TableModelListener {
 
     private GeneralWard methods;
 
-    public DisTablePanel(GeneralWard methods, DischargeTableData dischargeTableData){
+    public DisTablePanel(GeneralWard methods){
+        DischargeTableData dischargeTableData = new DischargeTableData(methods.getClient(), methods.getWardId());
 
         this.methods = methods;
         dbData =dischargeTableData.getData();
