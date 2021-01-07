@@ -40,16 +40,8 @@ public class TotalTableData extends dateFormat implements dataForTable{
             data[i][4] = p.getInitialDiagnosis();
             data[i][5] = p.getNeedsSideRoom();
             data[i][6] = durationFormatter(Duration.between(p.getArrivalDateTime(), LocalDateTime.now()));
-<<<<<<< HEAD
-
-            if(p.getNextDestination()==0){
-                data[i][7] = null;
-=======
-
-
             if(p.getNextDestination()==0){
                 data[i][7] = "";
->>>>>>> b5356f44fe736c80e18d0a3dbb661193831f6b6a
             }
             ArrayList<String> json = null;
             try {
