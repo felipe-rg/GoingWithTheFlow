@@ -383,6 +383,19 @@ public abstract class GeneralWard {
         return bedStatus;
     }
 
+    public void changeGreenBeds(int i){
+        bedStatus[0] = bedStatus[0] + i;
+        bedStat.setGreenBedsNum(bedStatus[0]);
+    }
+    public void changeOrangeBeds(int i){
+        bedStatus[1] = bedStatus[1] + i;
+        bedStat.setAmbarBedsNum(bedStatus[1]);
+    }
+    public void changeRedBeds(int i){
+        bedStatus[2] = bedStatus[2] + i;
+        bedStat.setRedBedsNum(bedStatus[2]);
+    }
+
     public int getPatientsInWard(){
         return patientsInWard;
     };

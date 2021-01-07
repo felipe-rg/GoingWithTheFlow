@@ -68,6 +68,8 @@ public class BedButton extends JButton{
     public void makeClosed(){
         try {
             methods.editBed(bed.getBedId(), "status", "'C'");
+            methods.changeGreenBeds(-1);
+            methods.changeRedBeds(1);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -489,6 +491,7 @@ public class BedButton extends JButton{
 
         ArrayList<Ward> wards = new ArrayList<Ward>();
         //FIXME get all wards more efficiently
+
         for(int i=3; i<8; i++) {
             try {
                 ArrayList<String> json = client.makeGetRequest("*", "wards", "wardid="+i);
@@ -755,7 +758,11 @@ public class BedButton extends JButton{
                 else{ this.setETD(LocalDateTime.now().plusMinutes(Minutes).plusHours(Hours)); }
             }
             try {
+                System.out.println(ETD);
                 methods.editPatient(p.getId(), "estimatedatetimeofnext", "'"+ETD+"'");
+                methods.changeRedBeds(-1);
+                methods.changeOrangeBeds(1);
+                this.setBackground(Color.decode("#F89820"));
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (SQLException throwables) {
@@ -849,6 +856,22 @@ public class BedButton extends JButton{
                 }
 
                 else{ this.setETD(LocalDateTime.now().plusMinutes(Minutes).plusHours(Hours)); }
+            }
+            try {
+                if(p.getEstimatedTimeOfNext().equals(p.getArrivalDateTime())){
+                    methods.changeRedBeds(-1);
+                    methods.changeOrangeBeds(1);
+                }
+                else if(p.getEstimatedTimeOfNext().isBefore(LocalDateTime.now())){
+                    methods.changeRedBeds(-1);
+                    methods.changeOrangeBeds(1);
+                }
+                methods.editPatient(p.getId(), "estimatedatetimeofnext", "'"+ETD+"'");
+                this.setBackground(Color.decode("#F89820"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
             }
             /*
             try {
@@ -989,8 +1012,8 @@ public class BedButton extends JButton{
                 printInfoFull();
             });
         }
-        if(par.equals("Gender")){
-            String[] genders = { "Male","Female", "Uni"};
+        else if(par.equals("Gender")){
+            String[] genders = { "Male","Female"};
             pSR = new JComboBox<String>(genders);
             JPanel panelSR = new JPanel();
             panelSR.add(pSR);
@@ -1091,7 +1114,7 @@ public class BedButton extends JButton{
                 printInfoEmpty();
             });
         }
-        if(par.equals("Gender")){
+        else if(par.equals("Gender")){
             String[] genders = { "Male","Female", "Uni"};
             pSR = new JComboBox<String>(genders);
             JPanel panelSR = new JPanel();
