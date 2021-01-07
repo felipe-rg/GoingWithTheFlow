@@ -52,6 +52,16 @@ public class Client extends fromJson{
         // Write the body of the request
         try (OutputStream outputStream = conn.getOutputStream()) {
             outputStream.write(body, 0, body.length);
+
+            BufferedReader bufferedReader = new BufferedReader(new
+                    InputStreamReader(conn.getInputStream(), "utf-8"));
+            String inputLine;
+
+            // Read the body of the response
+            while ((inputLine = bufferedReader.readLine()) != null) {
+                System.out.println(inputLine);
+            }
+            bufferedReader.close();
         }
     }
 
