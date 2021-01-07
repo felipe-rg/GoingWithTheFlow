@@ -92,6 +92,16 @@ public abstract class GeneralWard {
 
     //Used to assign a bed and change patient location
     public void setBed(int patientId, int bedId) throws IOException, SQLException {
+
+        ArrayList<String> json = client.makeGetRequest("*", "patients", "id="+patientId);
+        ArrayList<Patient> pats = client.patientsFromJson(json);
+        LocalDateTime arrival = null;
+        if(pats.size()!=0){
+            arrival = pats.get(0).getArrivalDateTime();
+        }
+        //Sets time of next to time of arrival which means the bed colour is red
+        client.makePutRequest("patients", "estimateddatetimeofnext='"+arrival+"'", "id="+patientId);
+
         //Changes patient bedid to bedId
         client.makePutRequest("patients", "currentbedid="+bedId, "id="+patientId);
         //Changes patient current location to where the bed is

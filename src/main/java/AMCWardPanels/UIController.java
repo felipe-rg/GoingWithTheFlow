@@ -26,7 +26,7 @@ public class UIController {
         bedStatus = new BedStatus(methods);
         topography = new Topography(bedStatus, methods);
         try {
-            title = new Title(methods.getWardName(methods.getWardId())+"GUI", backButton, refreshButton, 420, 420);
+            title = new Title(methods.getWardName(methods.getWardId()), backButton, refreshButton, 420, 420);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -42,7 +42,7 @@ public class UIController {
         bedStatus = new BedStatus(method);
         topography = new Topography(bedStatus, method);
         try {
-            title = new Title(method.getWardName(method.getWardId())+"GUI", backButton, refreshButton, 420, 420);
+            title = new Title(method.getWardName(method.getWardId()), backButton, refreshButton, 420, 420);
         } catch (IOException e) {
             e.printStackTrace();
         }
