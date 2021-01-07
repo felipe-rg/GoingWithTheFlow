@@ -347,6 +347,7 @@ Jan 07, 2021 5:30:55 PM Main main
 WARNING: Logger is setup
 Jan 07, 2021 5:35:11 PM Main main
 WARNING: Logger is setup
+<<<<<<< HEAD
 Jan 07, 2021 5:07:26 PM Main main
 WARNING: Logger is setup
 Jan 07, 2021 5:13:07 PM Main main
@@ -364,4 +365,6 @@ WARNING: Logger is setup
 Jan 07, 2021 5:35:10 PM Main main
 WARNING: Logger is setup
 Jan 07, 2021 5:56:24 PM Main main
+Jan 07, 2021 7:24:11 PM Main main
 WARNING: Logger is setup
+Jan 07, 2021 7:25:24 PM Main main

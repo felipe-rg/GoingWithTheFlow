@@ -38,12 +38,12 @@ public class LongStay {
             @Override
             public void actionPerformed(ActionEvent e) {    // when refresh button is selected
                 f.dispose();                                // current frame will close
-                //LongStay page = new LongStay(methods.getAllWardInfo() , methods);    // class will be called again
+                LongStay page = new LongStay(methods);    // class will be called again
             }
         });
 
 
-        MainPanel mainTablePanel = new MainPanel(false, " ", 2);
+        MainPanel mainTablePanel = new MainPanel(false,  2);
 
         LongStayTablePanel longStayTablePanel = new LongStayTablePanel(methods);
 

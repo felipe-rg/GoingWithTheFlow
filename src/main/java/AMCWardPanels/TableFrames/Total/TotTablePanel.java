@@ -24,6 +24,7 @@ public class TotTablePanel extends JPanel implements TableModelListener {
 
     //Columnames in our table
     private String[] columnName = {"Index",
+            "Bed Id",
             "Patient ID",
             "Sex",
             "Initial Diagnosis",
