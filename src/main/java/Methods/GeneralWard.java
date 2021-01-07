@@ -80,11 +80,24 @@ public abstract class GeneralWard {
             othWardIds[i] = othWards.get(i).getWardId();
         }
 
-        json = client.makeGetRequest("*", "patients", "nextdestination="+wardId);
-        if(json.size()!=0){
-            ArrayList<Patient> incoming = client.patientsFromJson(json);
-            inNumber = incoming.size();
+        json = client.makeGetRequest("*", "wards", "wardid="+wardId);
+        ArrayList<Ward> thiswards = client.wardsFromJson(json);
+        Ward thisWard = thiswards.get(0);
+
+        if(thisWard.getWardType().equals("AMU")){
+            json = client.makeGetRequest("*", "patients", "nextdestination=2");
+            if(json.size()!=0){
+                ArrayList<Patient> incoming = client.patientsFromJson(json);
+                inNumber = incoming.size();
+            }
+        } else {
+            json = client.makeGetRequest("*", "patients", "nextdestination=" + wardId);
+            if (json.size() != 0) {
+                ArrayList<Patient> incoming = client.patientsFromJson(json);
+                inNumber = incoming.size();
+            }
         }
+
     }
 
     public int getWardId(){return wardId;}
