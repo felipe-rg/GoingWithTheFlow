@@ -5,6 +5,10 @@ import Methods.GeneralWard;
 import javax.swing.*;
 import java.awt.*;
 
+/*
+        This panel displays the number of free (green), occupied (red) and about to become free (amber) beds.
+ */
+
 public class BedStatus extends JPanel{
     JLabel greenBeds;
     JLabel ambarBeds;
@@ -13,6 +17,7 @@ public class BedStatus extends JPanel{
     public BedStatus(GeneralWard methods){
         this.setPreferredSize(new Dimension(300,100));
 
+        //Creating and changing color of labels
         greenBeds = new JLabel("3");
         greenBeds.setBackground(Color.decode("#2ECC71"));
 
@@ -22,9 +27,10 @@ public class BedStatus extends JPanel{
         redBeds = new JLabel("3");
         redBeds.setBackground(Color.decode("#E74C3C"));
 
-        //
+        //Editing labels
         setLabel(greenBeds, ambarBeds, redBeds);
 
+        //Defining layout and  adding labels
         this.setLayout(new GridLayout(1,3));
         add(greenBeds);
         add(ambarBeds);
@@ -42,6 +48,7 @@ public class BedStatus extends JPanel{
         }
     }
 
+    //Functions allowing us to change the number in each of the labels
     public void setGreenBedsNum(Integer numberIn){
         greenBeds.setText(numberIn.toString());
     }

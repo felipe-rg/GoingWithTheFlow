@@ -45,17 +45,26 @@ public class InTablePanel extends JPanel implements TableModelListener {
             "Bed",
             "Delete Button"};
 
+    //2D object containing all data that will be inputed into table
     private Object[][] dbData;
 
+    //Methods we will call
     private GeneralWard methods;
 
     //Constructor
     public InTablePanel(GeneralWard methods, IncomingTableData incomingTableData, WardInfo wardInfo) {
         this.methods = methods;
+        //Filling our data
         dbData = incomingTableData.getData();
+
+        /*
+            Depending on from which GUI we call the InTablePanel we will use a tablemodel or another
+            in AMC Ward GUI we use InTableModel and in Longstay Ward GUI we use LongInTableModel.
+            Both of these models extend from MyTableModel
+         */
         try {
             if (methods.getWardType(methods.wardId).equals("AMU")){
-                tableModel = new InTableModel(amcColumnName, dbData);        //Instance of IntableModel extending from MyTableModel
+                tableModel = new InTableModel(amcColumnName, dbData);
             }
             else {
                 tableModel = new LongInTableModel(lsColumnName, dbData);
@@ -68,7 +77,6 @@ public class InTablePanel extends JPanel implements TableModelListener {
         //Instantiating table with appropriate data and tablemodel
         table = new JTable(tableModel);         //Creating a table of model tablemodel
         scrollPane = new JScrollPane(table);    //Creating scrollpane where table is located (for viewing purposes)
-
 
 
         //Editing table
@@ -95,12 +103,12 @@ public class InTablePanel extends JPanel implements TableModelListener {
         };
 
 
-        //Creating button column instancess and assigning them to column 7 and 8
+        //Creating button column instancess and assigning them to column 7 and 8 (select bed and delete)
         ButtonColumn selectBed = new ButtonColumn(table, selectBedAction, 7);
         ButtonColumn deletePatient = new ButtonColumn(table, deletePopUp, 8);
 
         //Making the renderer of the Arrival at A&E column our custom TimeRenderer (in charge of changing
-        //The background color
+        //the background color
         table.getColumnModel().getColumn(5).setCellRenderer(new TimeRenderer());
 
 
@@ -203,13 +211,7 @@ public class InTablePanel extends JPanel implements TableModelListener {
         tableModel.isCellEditable(row, column);
     }
 
-    //Transforming a LocalDateTime object into a string displaying hours and minutes in the form "HH:mm"
-    public String dateFormatter(LocalDateTime localDateTime){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-        return localDateTime.format(formatter);
-    }
-
-
+    //Editing table
     public void setupTable(JTable table) {
         //Setting rowheight
         table.setRowHeight(35);

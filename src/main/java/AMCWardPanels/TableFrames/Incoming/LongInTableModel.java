@@ -18,7 +18,7 @@ public class LongInTableModel extends MyTableModel {
     public boolean isCellEditable(int rowIndex, int columnIndex) {
 
 
-        //We make delete button, side and room and request status editable
+        //We make delete button, side room and request status editable
         if (columnIndex == 8 || columnIndex == 4 || columnIndex ==6){return true;}
 
         //If request status is "C" (Confirmed) then we can click select bed button

@@ -5,6 +5,7 @@ import AMCWardPanels.TableFrames.MyTableModel;
 import java.util.Vector;
 
 public class TotTableModel extends MyTableModel {
+
     public TotTableModel(String[] columnName, Object[][] data) {
         super(columnName, data);
     }
