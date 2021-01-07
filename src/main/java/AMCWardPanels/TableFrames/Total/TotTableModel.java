@@ -1,8 +1,10 @@
-package AMCWardPanels.TableFrames;
+package AMCWardPanels.TableFrames.Total;
+
+import AMCWardPanels.TableFrames.MyTableModel;
 
 import java.util.Vector;
 
-public class TotTableModel extends MyTableModel{
+public class TotTableModel extends MyTableModel {
     public TotTableModel(String[] columnName, Object[][] data) {
         super(columnName, data);
     }
@@ -13,7 +15,7 @@ public class TotTableModel extends MyTableModel{
 
     //Overriding the parent's isCellEditable method
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-        if (columnIndex==5 || columnIndex==8){
+        if (columnIndex==4 || columnIndex==7){
             return true;
         }
 

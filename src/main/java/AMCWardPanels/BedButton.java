@@ -14,111 +14,59 @@ import java.util.ArrayList;
 import javax.swing.JRadioButton;
 
 public class BedButton extends JButton{
-    private int BedId;   // kept as string in case e decide to name them with characters too
-    private String status;    // free (f), if it is occupied (o) or closed (c)
-    private String sex;    // when empty, gender = x
-    private Boolean sideroom;
+    private Bed bed;
     private GeneralWard methods;
     private LocalDateTime ETD;
     Topography top;
-    //constructor; when instantiating a bed its location must be specified with x and y.
-    public BedButton(Topography top, GeneralWard methods, int BedId, String status, String sex, Boolean sideroom, Integer x, Integer y) {
-        this.BedId = BedId;
-        this.status = status; //f = free, o = occupied, c = closed
-        this.sideroom = sideroom;
-        this.sex = sex;
-        this.methods = methods;
 
+    //constructor; when instantiating a bed its location must be specified with x and y.
+    public BedButton(Topography top, GeneralWard methods, Bed bed, Integer x, Integer y) {
+        this.bed = bed;
+        this.methods = methods;
         this.top = top;
 
-        this.setText(String.valueOf(BedId));
+        //Makes bed pretty
+        this.setText(String.valueOf(bed.getBedId()));
         this.setFont(new Font("Verdana", Font.PLAIN, 30));
         this.setBounds(x, y, 70, 140);
         this.setOpaque(true);
-        if(status.equals("O")){
-            this.setBackground(Color.decode("#E74C3C"));
-            try {
-                Patient p = methods.getPatient(BedId);
-                this.ETD = p.getEstimatedTimeOfNext();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
+
+        String colour = null;
+        try {
+            colour = methods.getBedColour(bed.getBedId());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        if(status.equals("F")){this.setBackground(Color.decode("#2ECC71")); }
-        if(status.equals("C")){this.setBackground(Color.BLACK); }
+        this.setBackground(Color.decode(colour));
+
     }
 
     // functions that return bed information
-    public int getID(){
-        return this.BedId;
-    }
-    public String getStatus(){ return this.status; }
-    public Boolean getSR(){ return this.sideroom; }
-    public String getSex(){ return this.sex; }
     public LocalDateTime getETD(){return this.ETD;}
     public void setETD(LocalDateTime time){this.ETD = time;}
-
-
-    public void makeFull(){
-        //TODO setBed
-        this.status = "O";
-        this.setBackground(Color.decode("#E74C3C"));
-        this.repaint();
-        refreshTopography();
+    //Refreshes the numbers in topography when things are changed
+    public void refreshTopography(){
+        top.refresh(methods);
     }
+
+    //Used when removing a patient from a bed
     public void makeEmpty(Patient p){
         try {
-            methods.removePatient(p.getId(), BedId);
+            methods.removePatient(p.getId(), bed.getBedId());
         } catch (IOException e) {
             e.printStackTrace();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        this.setStatus("F");
         this.setBackground(Color.decode("#2ECC71"));
         refreshTopography();
     }
-    public void makeClosed(){
-        try {
-            methods.editBed(BedId, "status", "'C'");
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        this.setStatus("C");
-        this.setBackground(Color.BLACK);
-        refreshTopography();
-    }
-
-    public void makeOpen(){
-        try {
-            methods.editBed(BedId, "status", "'F'");
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        this.setStatus("F");
-        this.setBackground(Color.decode("#2ECC71"));
-        refreshTopography();
-    }
-
-    public void refreshTopography(){
-        top.refresh();
-    }
-
-    public void setSex(String sex){this.sex = sex;}
-    public void setSR(Boolean sr){ this.sideroom = sr; }
-    public void setStatus(String status){ this.status = status; }
 
     // creates a frame with a panel inside, then 3 labels with the patient information and an 'edit' button. Once clicked, the edit button calls the 'inputNewInfo' function
     public void printInfoFull(){
         Patient p = new Patient();
         try {
-            p = methods.getPatient(BedId);
+            p = methods.getPatient(bed.getBedId());
         } catch (IOException e) {
             e.printStackTrace();
         } catch (SQLException throwables) {
@@ -133,16 +81,26 @@ public class BedButton extends JButton{
         infoFrame.setLocation(300,300);
 
         // labels with the bed information using methods from class Bed
-        JLabel bedIdLabel = new JLabel("Bed ID: "+this.getID(),SwingConstants.CENTER);
+        JLabel bedIdLabel = new JLabel("Bed ID: "+bed.getBedId(),SwingConstants.CENTER);
         JLabel ageLabel = new JLabel("Date of Birth: "+p.getDateOfBirth(),SwingConstants.CENTER);
         JLabel genderLabel = new JLabel("Gender: "+p.getSex(),SwingConstants.CENTER);
-        JLabel srLabel = new JLabel("Sideroom: "+this.getSR(), SwingConstants.CENTER);
+        JLabel srLabel = new JLabel("Sideroom: "+bed.getHasSideRoom(), SwingConstants.CENTER);
         JLabel diaLabel = new JLabel("Diagnosis: "+p.getInitialDiagnosis(), SwingConstants.CENTER);
-
-        // formating ETD time
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-        String ETDTime = p.getEstimatedTimeOfNext().format(formatter);
-        JLabel ETDLabel = new JLabel("ETD: "+ETDTime, SwingConstants.CENTER);
+        JLabel nextDestLabel = null;
+        try {
+            nextDestLabel = new JLabel("Next Destination:   "+methods.getWardName(p.getNextDestination()), SwingConstants.CENTER);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        JLabel ETDLabel = new JLabel();
+        if(p.getEstimatedTimeOfNext().isEqual(p.getArrivalDateTime())){
+            ETDLabel = new JLabel("ETD: N/A", SwingConstants.CENTER);
+        }
+        else {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+            String ETDTime = p.getEstimatedTimeOfNext().format(formatter);
+            ETDLabel = new JLabel("ETD: "+ETDTime, SwingConstants.CENTER);
+        }
 
         //jbutton for editing bed
         JButton editButton = new JButton("Edit Patient Information");
@@ -173,6 +131,7 @@ public class BedButton extends JButton{
         infoFrame.add(genderLabel);
         infoFrame.add(srLabel);
         infoFrame.add(diaLabel);
+        infoFrame.add(nextDestLabel);
         infoFrame.add(ETDLabel);
         infoFrame.add(selectWardButton);
         infoFrame.add(editButton);
@@ -243,9 +202,9 @@ public class BedButton extends JButton{
         infoFrame.setLocation(300,300);
 
         // labels with the bed information using methods from class Bed
-        JLabel bedIdLabel = new JLabel("Bed ID: "+this.getID(),SwingConstants.CENTER);
-        JLabel srLabel = new JLabel("Sideroom: "+this.getSR(), SwingConstants.CENTER);
-        JLabel sexLabel = new JLabel("Gender: "+this.getSex(), SwingConstants.CENTER);
+        JLabel bedIdLabel = new JLabel("Bed ID: "+bed.getBedId(),SwingConstants.CENTER);
+        JLabel srLabel = new JLabel("Sideroom: "+bed.getHasSideRoom(), SwingConstants.CENTER);
+        JLabel sexLabel = new JLabel("Gender: "+bed.getForSex(), SwingConstants.CENTER);
 
         //jbutton for editing bed
         JButton editButton = new JButton("Edit Bed Info");
@@ -299,24 +258,25 @@ public class BedButton extends JButton{
 
             try {
                 //set side room
-                methods.editBed(BedId, "hassideroom", (String)pSR.getSelectedItem());
-                if(pSR.getSelectedItem() == "true"){
-                    this.sideroom = true;
-                } else {
-                    this.sideroom = false;
-                }
-                //set Sex
-                methods.editBed(BedId, "forsex", "'"+pSex.getSelectedItem()+"'");
-                this.sex = (String)pSex.getSelectedItem();
+                methods.editBed(bed.getBedId(), "hassideroom", (String)pSR.getSelectedItem());
 
-                if((String)pStat.getSelectedItem() == "Open"){
-                    makeOpen();
-                } else { makeClosed();}
+                //set Sex
+                methods.editBed(bed.getBedId(), "forsex", "'"+pSex.getSelectedItem()+"'");
+
+                String status = null;
+                if(pStat.getSelectedItem()=="Open"){
+                    status = "'F'";
+                    this.setBackground(Color.decode("#2ECC71"));
+                } else {
+                    status = "'C'";
+                    this.setBackground(Color.BLACK);
+                }
+
+                methods.editBed(bed.getBedId(), "status", status);
+                refreshTopography();
 
             } catch (IOException e) {
                 e.printStackTrace();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
             }
 
 
@@ -394,7 +354,7 @@ public class BedButton extends JButton{
         final JComboBox<String> pSex = new JComboBox<String>(sex);
 
         JLabel infoDia = new JLabel("Diagnosis:     " , SwingConstants.RIGHT);
-            JTextField diaTextField = new JTextField("PleaseTypeOneWordOnly");
+            JTextField diaTextField = new JTextField(p.getInitialDiagnosis());
 
 
 
@@ -403,22 +363,17 @@ public class BedButton extends JButton{
             JButton confirmButton = new JButton("Submit");
             confirmButton.addActionListener(evt -> {
 
-                // change bed color if bed goes from empty to full
-                if (this.getStatus().equals("F")) {
-                    this.makeFull();
-                }
-
                 // asign new values for gender, age and diagnosis
                 try {
                     //Change date of birth
                     LocalDate DOB = LocalDate.of(  (Integer) year.getSelectedItem(),  (Integer) month.getSelectedItem(),  (Integer) day.getSelectedItem() );
+
                     methods.editPatient(p.getId(), "dateofbirth", "'"+DOB+"'");
                     //Todo initial diagnosis multiple words!
                     methods.editPatient(p.getId(), "initialdiagnosis", "'"+diaTextField.getText()+"'");
 
                     //change sex
                     methods.editPatient(p.getId(), "sex", "'"+pSex.getSelectedItem()+"'");
-                    this.sex = (String)pSex.getSelectedItem();
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -493,8 +448,7 @@ public class BedButton extends JButton{
                 else{ this.setETD(LocalDateTime.now().plusMinutes(Minutes).plusHours(Hours)); }
             }
             try {
-                System.out.println(ETD);
-                methods.editPatientETON(p.getId(), ETD);
+                methods.editPatient(p.getId(), "estimatedatetimeofnext", "'"+ETD+"'");
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (SQLException throwables) {
@@ -525,5 +479,22 @@ public class BedButton extends JButton{
         WarningPanel.add(WarningLabel);
 
         WarningFrame.add(WarningPanel);
+    }
+
+    public String getBedButtonStatus(){
+        return bed.getStatus();
+    }
+
+    public LocalDateTime getBedButtonETD(){
+        LocalDateTime etd = null;
+        try {
+            Patient patient = methods.getPatient(bed.getBedId());
+            etd = patient.getEstimatedTimeOfNext();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return etd;
     }
 }

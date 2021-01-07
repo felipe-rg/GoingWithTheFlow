@@ -2,17 +2,20 @@ package Methods;
 import Client.*;
 
 import java.io.IOException;
+import java.sql.Array;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
 
 
-public class ControlCentre implements statusable{
+public class ControlCentre {
     Client client;
     private int redPatients;
     private int orangePatients;
@@ -27,16 +30,7 @@ public class ControlCentre implements statusable{
 
     public ControlCentre() throws IOException, SQLException {
         client = new Client();
-        //refresh();
-        redPatients = 3;
-        orangePatients = 4;
-        greenPatients = 2;
-        amcCapacityPerc = 80;
-        freeBeds = 2;
-        transferPatients = 9;
-        dischargePatients = 2;
-        longstayCapacityPerc = 90;
-        longstayFreeBeds = 10;
+        refresh();
     }
 
     public int getRedPatients(){return redPatients;}
@@ -48,6 +42,7 @@ public class ControlCentre implements statusable{
     public int getFreeBeds(){return freeBeds;}
     public int getLongstayFreeBeds(){return longstayFreeBeds;}
     public float getLongstayCapacityPerc(){return longstayCapacityPerc;}
+    public Client getClient(){return client;}
 
     public void refresh() throws IOException, SQLException {
         incomingNumbers();
@@ -62,35 +57,62 @@ public class ControlCentre implements statusable{
         dischargePatients = 0;
         transferPatients = 0;
 
-        ArrayList<String> json = client.makeGetRequest("id", "patients", "currentLocation=2"); //amc id is 2
-        ArrayList<Patient> amcPatients = client.patientsFromJson(json); //All amc patients
+        ArrayList<String> json = client.makeGetRequest("*", "wards", "wardtype='AMU'");
+        ArrayList<Ward> amuWards = client.wardsFromJson(json); //All amc wards
 
-        json = client.makeGetRequest("id", "beds", "wardId=2");
-        ArrayList<Bed> amcBeds = client.bedsFromJson(json); //All amc beds
+        ArrayList<Patient> amcPatients = new ArrayList<Patient>(); //All amc patients
+        ArrayList<Bed> amcBeds = new ArrayList<Bed>();
+        for(Ward w:amuWards){
+            int wardid = w.getWardId();
 
-        amcCapacityPerc = amcPatients.size()*100/amcBeds.size();
-        freeBeds = amcBeds.size()-amcPatients.size();
-        //todo male and female free beds?
-        //beds with sideroom?
-
-        //todo nextdestination!=NULL?
-        json = client.makeGetRequest("id", "patients", "transferrequeststatus='C'");
-        ArrayList<Patient> leavingAMC = client.patientsFromJson(json);
-
-        //todo how are we signalling discharge?
-        json = client.makeGetRequest("id", "patients", "ttasignedoff=TRUE");
-        ArrayList<Patient> discharges = client.patientsFromJson(json);
-
-        for(int i=0; i<amcPatients.size(); i++){
-            for(int j=0; j<leavingAMC.size();i++) {
-                if (amcPatients.get(i).getId() == leavingAMC.get(j).getId()){
-                    transferPatients = transferPatients +1;
-                }
-                if (amcPatients.get(i).getId() == discharges.get(j).getId()){
-                    dischargePatients = dischargePatients +1;
-                }
+            json = client.makeGetRequest("*", "patients", "currentwardid="+wardid);
+            if(json.size()!=0) {
+                amcPatients.addAll(client.patientsFromJson(json));
+            }
+            json = client.makeGetRequest("*", "beds", "wardid="+wardid);
+            if(json.size()!=0) {
+                amcBeds.addAll(client.bedsFromJson(json));
             }
         }
+
+        amcCapacityPerc = amcPatients.size()*100/amcBeds.size();
+
+        json = client.makeGetRequest("*", "beds", "status='F'");
+
+        ArrayList<Bed> allFreeBeds = new ArrayList<Bed>();
+        if(json.size()!=0) {
+            allFreeBeds = client.bedsFromJson(json); //All free beds
+        }
+        ArrayList<Bed> amcFreeBeds = client.bedCrossReference(allFreeBeds, amcBeds);
+
+        freeBeds = amcFreeBeds.size();
+
+        json = client.makeGetRequest("*", "wards", "wardtype='discharge'");
+        ArrayList<Ward> dischargeWards = client.wardsFromJson(json); //All discharge areas
+
+        ArrayList<Patient> discharges = new ArrayList<Patient>();
+        for(Ward w:dischargeWards) {
+            json = client.makeGetRequest("*", "patients", "nextdestination="+w.getWardId());
+            if(json.size()!=0) {
+                discharges = client.patientsFromJson(json); //All amc patients
+            }
+        }
+
+        ArrayList<Patient> amcDischarges = client.crossReference(amcPatients, discharges);
+        dischargePatients = amcDischarges.size();
+
+        json = client.makeGetRequest("*", "wards", "wardtype='LS'");
+        ArrayList<Ward> lsWards = client.wardsFromJson(json); //All long stay wards
+
+        ArrayList<Patient> toLong= new ArrayList<Patient>();
+        for(Ward w:lsWards) {
+            json = client.makeGetRequest("*", "patients", "nextdestination="+w.getWardId());
+            if(json.size()!=0) {
+                toLong.addAll(client.patientsFromJson(json));
+            }
+        }
+
+        transferPatients = toLong.size();
     }
 
     //Updates numbers in longstay section
@@ -99,27 +121,27 @@ public class ControlCentre implements statusable{
         longstayFreeBeds = 0;
         int longStayCapacity = 0;
 
-        ArrayList<String> json = client.makeGetRequest("id", "patients", "currentLocation!=2");
-        ArrayList<Patient> notInAMC = client.patientsFromJson(json);
+        ArrayList<Patient> inLong = new ArrayList<Patient>();
+        ArrayList<Bed> longBed = new ArrayList<Bed>();
 
-        json = client.makeGetRequest("id", "patients", "currentLocation!=1");
-        ArrayList<Patient> notInAandE = client.patientsFromJson(json);
+        ArrayList<String> json = client.makeGetRequest("*", "wards", "wardtype='LS'");
+        ArrayList<Ward> lsWards = client.wardsFromJson(json); //All long stay wards
 
-        for(int i=0; i<notInAMC.size(); i++){
-            for(int j=0; j<notInAandE.size();i++) {
-                if (notInAandE.get(i).getId() == notInAandE.get(j).getId()){
-                    longStayCapacity = longStayCapacity +1;
-                }
-            }
+        for(Ward w:lsWards) {
+            json = client.makeGetRequest("*", "patients", "currentwardid="+w.getWardId());
+            inLong.addAll(client.patientsFromJson(json));
+            json = client.makeGetRequest("*", "beds", "wardid="+w.getWardId());
+            longBed.addAll(client.bedsFromJson(json));
         }
+        longStayCapacity = inLong.size();
 
-        json = client.makeGetRequest("id", "beds", "wardid!=2");
-        ArrayList<Bed> longstayBeds = client.bedsFromJson(json);
+        json = client.makeGetRequest("*", "beds", "status='F'");
+        ArrayList<Bed> allFreeBeds = client.bedsFromJson(json); //All free beds
 
-        longstayCapacityPerc = longStayCapacity*100/longstayBeds.size();
-        //todo male and female free beds?
-        //beds with sideroom?
-        longstayFreeBeds = longstayBeds.size() - longStayCapacity;
+        ArrayList<Bed> longFreeBeds = client.bedCrossReference(allFreeBeds, longBed);
+
+        longstayFreeBeds = longFreeBeds.size();
+        longstayCapacityPerc = longStayCapacity*100/longBed.size();
     }
 
     //Updates numbers in incoming section
@@ -127,21 +149,22 @@ public class ControlCentre implements statusable{
         greenPatients = 0;
         redPatients = 0;
         orangePatients = 0;
+        ArrayList<Patient> toAMU = new ArrayList<Patient>();
 
-        ArrayList<String> json = client.makeGetRequest("*", "patients", "currentlocation=1");
-        ArrayList<Patient> inAandE = client.patientsFromJson(json);
+        ArrayList<String> json = client.makeGetRequest("*", "wards", "wardtype='AMU'");
+        ArrayList<Ward> amuWards = client.wardsFromJson(json); //All amc wards
 
-        //todo do we need them to be accepted?
-        json = client.makeGetRequest("*", "patients", "acceptedbymedicine=true");
-        ArrayList<Patient> accepted = client.patientsFromJson(json);
+        for(Ward w:amuWards){
+            json = client.makeGetRequest("*", "patients", "nextdestination="+w.getWardId());
+            toAMU.addAll(client.patientsFromJson(json));
+        }
 
-        ArrayList<Patient> incoming = client.crossReference(inAandE, accepted);
 
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime red = now.minusHours(3);
         LocalDateTime orange = now.minusHours(2);
 
-        for(Patient p : incoming){
+        for(Patient p : toAMU){
             LocalDateTime patientArrival = p.getArrivalDateTime();
             if(patientArrival.isAfter(orange)){
                 greenPatients = greenPatients +1;
@@ -155,104 +178,16 @@ public class ControlCentre implements statusable{
         }
     }
 
-    //Returns list of people coming to AMC
-    //FIXME same as getIncomingList in generalWard?
-    public ArrayList<Patient> seeIncomingList() throws IOException, SQLException {
-        ArrayList<String> json = client.makeGetRequest("*", "patients", "currentLocation=1");
-        return client.patientsFromJson(json);
-    }
-
-    //Returns list of people being discharged from AMC
-    //FIXME same as getDischargeList in generalWard?
-    public ArrayList<Patient> seeDischargeList() throws IOException {
-        ArrayList<String> json = client.makeGetRequest("*", "patients", "currentLocation=2");
-        ArrayList<Patient> inAMC = client.patientsFromJson(json);
-        //Todo - signalling discharge?
-        json = client.makeGetRequest("*", "patients", "ttasignedoff=TRUE");
-        ArrayList<Patient> discharge= client.patientsFromJson(json);
-        return client.crossReference(inAMC, discharge);
-    }
-
-    //Returns list of patients set to be transferred from AMC
-    public ArrayList<Patient> seeTransferList() throws IOException {
-        ArrayList<String> json = client.makeGetRequest("*", "patients", "currentLocation=2");
-        ArrayList<Patient> inAMC = client.patientsFromJson(json);
-
-        json = client.makeGetRequest("*", "patients", "transferrequeststatus='C'");
-        ArrayList<Patient> transfer= client.patientsFromJson(json);
-
-        return client.crossReference(inAMC, transfer);
-    }
-
-    //Returns list of strings with info from getWardInfo
-    //Used in table for wards
-    //todo must be a better way of doing this
-    public ArrayList<ArrayList<String>> getAllWardInfo() throws IOException, SQLException {
-        ArrayList<ArrayList<String>> output = new ArrayList<ArrayList<String>>();
-
-        ArrayList<String> json = client.makeGetRequest("wards", "information_schema.tables", "table_schema='public'");
-        ArrayList<Ward> wards = client.wardsFromJson(json);
-
-        for(Ward w:wards){
-            output.add(getWardInfo(w.getWardId()));
-        }
-
-        return output;
-    }
-
-
-    //Returns list of strings with format described below
-    //Used in method above
-    @Override
-    public ArrayList<String> getWardInfo(int wardId) throws IOException, SQLException {
-        ArrayList<String> numbers = new ArrayList<String>();
-        //format = wardname, capacity, Male free, female free, either sex free, expected male discharge, expected female discharge
-
-        ArrayList<String> json = client.makeGetRequest("*", "wards", "wardid="+wardId);
-        ArrayList<Ward> wards = client.wardsFromJson(json);
-        //add wardName
-        numbers.add(wards.get(0).getWardName());
-
-        json = client.makeGetRequest("*", "patients", "wardid="+wardId);
-        ArrayList<Patient> patients = client.patientsFromJson(json);
-        json = client.makeGetRequest("*", "beds", "wardid="+wardId);
-        ArrayList<Bed> beds = client.bedsFromJson(json);
-
-        ArrayList<Bed> fullBeds = new ArrayList<Bed>();
-        ArrayList<Bed> emptyBeds = new ArrayList<Bed>();
-        ArrayList<Bed> emptyMaleBeds = new ArrayList<Bed>();
-        ArrayList<Bed> emptyFemaleBeds = new ArrayList<Bed>();
-        for(Bed b:beds){
-            if(b.getStatus()=="F"){
-                emptyBeds.add(b);
-                if(b.getForSex()=="M"){
-                    emptyMaleBeds.add(b);
-                }
-                else {
-                    emptyFemaleBeds.add(b);
-                }
+    public ArrayList<Ward> findAMUWards(){
+        try {
+            ArrayList<String> json = client.makeGetRequest("*", "wards", "wardtype='AMU'");
+            if(json.size()!=0){
+                return client.wardsFromJson(json);
             }
-            else {
-                fullBeds.add(b);
-            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-        //add percentage capacity
-        numbers.add((patients.size()*100)/beds.size()+"%");
-        //add male free
-        numbers.add(String.valueOf(emptyMaleBeds.size()));
-        //add female free
-        numbers.add(String.valueOf(emptyFemaleBeds.size()));
-        //add total free
-        numbers.add(String.valueOf(emptyBeds.size()));
-
-        //Todo expected discharges signalled how?
-        return numbers;
-    }
-
-    //todo why do we need this?
-    @Override
-    public ArrayList<Patient> getPatientInfo(int wardId) {
         return null;
     }
+
 }

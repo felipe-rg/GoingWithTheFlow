@@ -1,4 +1,6 @@
+import AMCWardPanels.TableFrames.MainPanel;
 import AMCWardPanels.Title;
+import CUTablePanels.LongStayTablePanel;
 import Methods.ControlCentre;
 
 import javax.swing.*;
@@ -11,7 +13,7 @@ import java.util.ArrayList;
 
 public class LongStay {
 
-    public LongStay(ArrayList<ArrayList<String>> info, ControlCentre methods) {
+    public LongStay(ControlCentre methods) {
     //Todo Input format is not nice - think of better way
 
 
@@ -36,27 +38,21 @@ public class LongStay {
             @Override
             public void actionPerformed(ActionEvent e) {    // when refresh button is selected
                 f.dispose();                                // current frame will close
-                try {
-                    LongStay page = new LongStay(methods.getAllWardInfo() , methods);    // class will be called again
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
+                //LongStay page = new LongStay(methods.getAllWardInfo() , methods);    // class will be called again
             }
         });
 
 
-        JPanel infoPanel = new JPanel();
+        MainPanel mainTablePanel = new MainPanel(false, " ", 2);
 
-        JLabel LSinfo = new JLabel("Longstay ward table goes here");
+        LongStayTablePanel longStayTablePanel = new LongStayTablePanel(methods);
 
+        mainTablePanel.add(longStayTablePanel, BorderLayout.CENTER);
 
-        infoPanel.add(LSinfo);
 
         mainPanel.setLayout(new BorderLayout());                                    // defines layout of MainPanel
         mainPanel.add(titlePanel, BorderLayout.NORTH);
-        mainPanel.add(infoPanel, BorderLayout.CENTER);
+        mainPanel.add(mainTablePanel, BorderLayout.CENTER);
 
         f.getContentPane().add(mainPanel);                                          // adds MainPanel to JFrame
         f.setVisible(true);

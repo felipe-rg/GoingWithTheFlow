@@ -5,6 +5,7 @@ import Methods.LongstayWard;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 public class UIController {
     //Declaring Panels
@@ -24,7 +25,11 @@ public class UIController {
         setupOne();
         bedStatus = new BedStatus(methods);
         topography = new Topography(bedStatus, methods);
-        title = new Title("AMC GUI", backButton, refreshButton, 420, 420);
+        try {
+            title = new Title(methods.getWardName(methods.getWardId())+"GUI", backButton, refreshButton, 420, 420);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         wardInfo = new WardInfo(topography, methods);
 
         setupTwo();

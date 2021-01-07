@@ -95,13 +95,7 @@ public class ControlUnit {
             @Override
             public void actionPerformed(ActionEvent e) {
                 f.dispose();
-                try {
-                    Incoming ipList = new Incoming(methods.seeIncomingList(), methods);           // opens incoming patient list (new JFrame)
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
+                Incoming ipList = new Incoming(methods);           // opens incoming patient list (new JFrame)
             }
         });
 
@@ -141,13 +135,7 @@ public class ControlUnit {
             @Override
             public void actionPerformed(ActionEvent e) {
                 f.dispose();
-                try {
-                    LongStay LSpage = new LongStay(methods.getAllWardInfo(), methods);           // opens long stay ward overview
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
+                LongStay LSpage = new LongStay(methods);           // opens long stay ward overview
             }
         });
 
@@ -196,7 +184,7 @@ public class ControlUnit {
             @Override
             public void actionPerformed(ActionEvent e) {
                 f.dispose();
-                AMCInfo AMCPage = new AMCInfo();                // opens AMC ward overview page (new JFrame)
+                AMCInfo AMCPage = new AMCInfo(methods);                // opens AMC ward overview page (new JFrame)
                 // todo - more sense if all on homescreen?
             }
         });
@@ -207,11 +195,7 @@ public class ControlUnit {
             @Override
             public void actionPerformed(ActionEvent e) {
                 f.dispose();
-                try {
-                    DisTransPage dtList = new DisTransPage(methods.seeTransferList(), methods.seeDischargeList(), methods);           // opens transfer/discharge lists
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                }
+                DisTransPage dtList = new DisTransPage(methods);           // opens transfer/discharge lists
             }
         });
 

@@ -1,8 +1,10 @@
-package AMCWardPanels.TableFrames;
+package AMCWardPanels.TableFrames.Incoming;
+
+import AMCWardPanels.TableFrames.MyTableModel;
 
 import java.util.Vector;
 
-public class InTableModel extends MyTableModel{
+public class InTableModel extends MyTableModel {
 
     public InTableModel(String[] columnName, Object[][] data) {
         super(columnName, data);
@@ -35,12 +37,6 @@ public class InTableModel extends MyTableModel{
         }
         else return false;
     }
-
-
-
-
-
-
         if(this.getValueAt(rowIndex, 7).getClass() == String.class){
             //If the checkbox "accepted by medicine" has been clicked, then we can click the button
             if (columnIndex == 7 && String.valueOf(this.getValueAt(rowIndex, 7)) != "C") {
@@ -48,8 +44,7 @@ public class InTableModel extends MyTableModel{
             }
             else return true;
         }
-
          */
-        //else{ return true;}
+    //else{ return true;}
 
 }

@@ -1,6 +1,8 @@
-package AMCWardPanels.TableFrames;
+package AMCWardPanels.TableFrames.Transfer;
 
+import AMCWardPanels.TableFrames.MainPanel;
 import Methods.AMCWard;
+import Methods.tableInfo.TransTableData;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,14 +11,14 @@ import java.awt.event.WindowEvent;
 
 public class TransTable {
 
-    public TransTable(AMCWardPanels.Topography top, AMCWardPanels.WardInfo wardinfo, AMCWard methods){
+    public TransTable(AMCWardPanels.Topography top, AMCWardPanels.WardInfo wardinfo, AMCWard methods, TransTableData transTableData){
 
 
         JFrame frame = new JFrame("Transferring Patients");
 
-        TransTablePanel transtablePanel = new TransTablePanel(methods);
+        TransTablePanel transtablePanel = new TransTablePanel(methods, transTableData);
 
-        MainPanel mainPanel = new MainPanel(false, "TRANSFERRING PATIENTS");
+        MainPanel mainPanel = new MainPanel(false, "TRANSFERRING PATIENTS", 1);
 
         mainPanel.add(transtablePanel, BorderLayout.CENTER);
 
@@ -25,9 +27,10 @@ public class TransTable {
         frame.setExtendedState(Frame.MAXIMIZED_BOTH);
         frame.setVisible(true);                                             // makes JFrame visible
         frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+        //When we close table, we refresh the homescreen
         frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent we) {
-                top.refresh();
+                top.refresh(methods);
                 wardinfo.refresh();
             }
         });
