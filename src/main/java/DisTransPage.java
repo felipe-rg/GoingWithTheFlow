@@ -48,7 +48,7 @@ public class DisTransPage {
         });
 
 
-        MainPanel mainTablePanel = new MainPanel(false, " ", 3);
+        MainPanel mainTablePanel = new MainPanel(false, 3);
 
 
 
