@@ -75,4 +75,5 @@ public class Patient implements Serializable {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/YYYY");
         return localDateTime.format(formatter);
     }
+    public void setSex(String sex){ this.sex = sex; }
 }

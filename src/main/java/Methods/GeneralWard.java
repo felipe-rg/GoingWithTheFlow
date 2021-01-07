@@ -71,8 +71,6 @@ public abstract class GeneralWard {
         client.makeDeleteRequest("patients", "id="+patientId);
     }
 
-
-
     // Returns a list of beds in the ward which have the correct characteristics for the chosen patient
     // Used when clicking select bed in incoming table
     //FIXME
