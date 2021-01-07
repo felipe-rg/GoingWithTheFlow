@@ -28,18 +28,19 @@ public class DischargeTableData extends dateFormat implements dataForTable{
 
     @Override
     public Object[][] getData() {
-        Object[][] data = new Object[dischargeNumber][9];
+        Object[][] data = new Object[dischargeNumber][10];
         for(int i=0; i<dischargeNumber; i++) {
             Patient p = incomingList.get(i);
             data[i][0] = p.getId();
-            data[i][1] = p.getPatientId();
-            data[i][2] = p.getSex();
-            data[i][3] = p.getInitialDiagnosis();
-            data[i][4] = p.getNeedsSideRoom();
-            data[i][5] = p.getTtaSignedOff();
-            data[i][6] = p.getSuitableForDischargeLounge();
-            data[i][7] = dateFormatter(p.getEstimatedTimeOfNext());
-            data[i][8] = "Delete Patient";
+            data[i][1] = p.getCurrentBedId();
+            data[i][2] = p.getPatientId();
+            data[i][3] = p.getSex();
+            data[i][4] = p.getInitialDiagnosis();
+            data[i][5] = p.getNeedsSideRoom();
+            data[i][6] = p.getTtaSignedOff();
+            data[i][7] = p.getSuitableForDischargeLounge();
+            data[i][8] = dateFormatter(p.getEstimatedTimeOfNext());
+            data[i][9] = "Delete Patient";
         }
         return data;
     }
