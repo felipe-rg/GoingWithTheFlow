@@ -35,13 +35,17 @@ public class UIController {
         setupTwo();
     }
 
-    public UIController(JButton backButton, JButton refreshButton, AMCWard methods){
-        this.method = methods;
+    public UIController(JButton backButton, JButton refreshButton, AMCWard method){
+        this.method = method;
         setupOne();
 
         bedStatus = new BedStatus(method);
         topography = new Topography(bedStatus, method);
-        title = new Title("AMC GUI", backButton, refreshButton, 420, 420);
+        try {
+            title = new Title(method.getWardName(method.getWardId())+"GUI", backButton, refreshButton, 420, 420);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         wardInfo = new WardInfo(topography, method);
 
         setupTwo();

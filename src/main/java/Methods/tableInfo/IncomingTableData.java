@@ -60,11 +60,25 @@ public class IncomingTableData extends dateFormat implements dataForTable{
 
     private ArrayList<Patient> getList(){
         ArrayList<String> json = null;
+        ArrayList<Patient> output = new ArrayList<Patient>();
         try {
-            json = client.makeGetRequest("*", "patients", "nextdestination="+wardId);
+            json = client.makeGetRequest("*", "wards", "wardid="+wardId);
+            ArrayList<Ward> ward = client.wardsFromJson(json);
+            if(ward.get(0).getWardType().equals("AMU")){
+                json = client.makeGetRequest("*", "wards", "wardtype='AMU'");
+                ArrayList<Ward> amuWard = client.wardsFromJson(json);
+                for(Ward w:amuWard) {
+                    json = client.makeGetRequest("*", "patients", "nextdestination=" + w.getWardId());
+                    output.addAll(client.patientsFromJson(json));
+                }
+            }
+            else {
+                json = client.makeGetRequest("*", "patients", "nextdestination=" + wardId);
+                output.addAll(client.patientsFromJson(json));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return client.patientsFromJson(json);
+        return output;
     }
 }

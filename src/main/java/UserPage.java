@@ -79,9 +79,11 @@ public class UserPage {
         }
         amuWards = client.wardsFromJson(json);
         amuPanel.setLayout(new GridLayout(amuWards.size()+1, 1));
+
         JLabel amuLabel = new JLabel("AMU" , SwingConstants.CENTER);
         amuLabel.setFont(new Font("Verdana", Font.PLAIN, 30));
         amuPanel.add(amuLabel);
+
         for(Ward w:amuWards){
             JButton amuWard = new JButton(w.getWardName());     // creates button to access amu ward
             amuWard.setFont(new Font("Verdana", Font.PLAIN, 20));
