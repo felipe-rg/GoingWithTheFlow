@@ -61,7 +61,6 @@ public class BedButton extends JButton{
     public LocalDateTime getETD(){return this.ETD;}
     public void setETD(LocalDateTime time){this.ETD = time;}
 
-
     public void makeFull(){
         //TODO setBed
         this.status = "O";
@@ -134,16 +133,19 @@ public class BedButton extends JButton{
         infoFrame.setLocationRelativeTo(null);
 
         // labels with the bed information using methods from class Bed
-        JLabel bedIdLabel = new JLabel("Bed ID: "+this.getID(),SwingConstants.CENTER);
-        JLabel ageLabel = new JLabel("Date of Birth: "+p.getDateOfBirth(),SwingConstants.CENTER);
-        JLabel genderLabel = new JLabel("Gender: "+p.getSex(),SwingConstants.CENTER);
-        JLabel srLabel = new JLabel("Sideroom: "+this.getSR(), SwingConstants.CENTER);
-        JLabel diaLabel = new JLabel("Diagnosis: "+p.getInitialDiagnosis(), SwingConstants.CENTER);
+        JLabel bedIdLabel = new JLabel("<html><b>Bed ID: </b>"+this.getID()+"</html>",SwingConstants.CENTER);
+        bedIdLabel.setFont(bedIdLabel.getFont().deriveFont(15.0f));
+        JLabel patientIdLabel = new JLabel("<html><b>Patient ID: </b>"+p.getId()+"</html>", SwingConstants.CENTER);
+        patientIdLabel.setFont(patientIdLabel.getFont().deriveFont(15.0f));
+        JLabel ageLabel = new JLabel("<html><b>Date of Birth: </b>"+p.getDateOfBirth()+"</html>",SwingConstants.CENTER);
+        JLabel genderLabel = new JLabel("<html><b>Gender: </b>"+p.getSex()+"</html>",SwingConstants.CENTER);
+        JLabel srLabel = new JLabel("<html><b>Sideroom: </b>"+this.getSR()+"</html>", SwingConstants.CENTER);
+        JLabel diaLabel = new JLabel("<html><b>Diagnosis: </b>"+p.getInitialDiagnosis()+"</html>", SwingConstants.CENTER);
 
         // formating ETD time
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         String ETDTime = p.getEstimatedTimeOfNext().format(formatter);
-        JLabel ETDLabel = new JLabel("ETD: "+ETDTime, SwingConstants.CENTER);
+        JLabel ETDLabel = new JLabel("<html><b>ETD: </b>"+ETDTime+"</html>", SwingConstants.CENTER);
 
         //jbutton for editing bed
         JButton editButton = new JButton("Edit Patient Information");
@@ -169,30 +171,36 @@ public class BedButton extends JButton{
             infoFrame.dispose();
         });
 
-        JButton editAge = new JButton("Edit Age");
+        JButton editAge = new JButton("Edit");
+        Patient finalP1 = p;
         editAge.addActionListener(evt -> {
-            editAge();
+            editAge(finalP1);
+            infoFrame.dispose();
         });
 
-        JButton editGender = new JButton("Edit Gender");
+        JButton editGender = new JButton("Edit");
         editGender.addActionListener(evt -> {
-            editParameter("Gender", this.getID());
+            editParameter("Gender", finalP1);
             infoFrame.dispose();
         });
 
-        JButton editSR = new JButton("Edit Sideroom Need");
+        JButton editSR = new JButton("Edit");
         editSR.addActionListener(evt -> {
-            editParameter("Sideroom", this.getID());
+            editParameter("Sideroom", finalP1);
             infoFrame.dispose();
         });
 
-        JButton editDia = new JButton("Edit Diagnosis");
+        JButton editDia = new JButton("Edit");
         editDia.addActionListener(evt -> {
-            editParameter("Diagnosis", this.getID());
+            editParameter("Diagnosis", finalP1);
             infoFrame.dispose();
         });
 
-        JLabel editETD = new JLabel("<html>  To edit please use<br>'Make Transfer Request'</html>", SwingConstants.CENTER);
+        JButton editETD = new JButton("Edit");
+        editETD.addActionListener(evt -> {
+            editETD(finalP1);
+            infoFrame.dispose();
+        });
 
         // add the labels to the frame
         JPanel infoPanel = new JPanel();
@@ -200,58 +208,60 @@ public class BedButton extends JButton{
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
         c.weightx = 0.5;
-        c.gridwidth = 2;
+        c.gridwidth = 1;
         c.gridx = 0;
         c.gridy = 0;
         infoPanel.add(bedIdLabel, c);
+        c.gridx = 1;
+        infoPanel.add(patientIdLabel, c);
 
-        c.gridwidth = 1;
+        c.gridwidth = 2;
         c.gridx = 0;
         c.gridy = 1;
         infoPanel.add(ageLabel, c);
-        c.gridx = 1;
-        c.gridy = 1;
+        c.gridwidth = 1;
+        c.gridx = 2;
         infoPanel.add(editAge, c);
 
+        c.gridwidth = 2;
         c.gridx = 0;
         c.gridy = 2;
         infoPanel.add(genderLabel, c);
-        c.gridx = 1;
-        c.gridy = 2;
+        c.gridwidth = 1;
+        c.gridx = 2;
         infoPanel.add(editGender, c);
 
+        c.gridwidth = 2;
         c.gridx = 0;
         c.gridy = 3;
         infoPanel.add(srLabel, c);
-        c.gridx = 1;
-        c.gridy = 3;
+        c.gridwidth = 1;
+        c.gridx = 2;
         infoPanel.add(editSR, c);
 
+        c.gridwidth = 2;
         c.gridx = 0;
         c.gridy = 4;
         infoPanel.add(diaLabel, c);
-        c.gridx = 1;
-        c.gridy = 4;
+        c.gridwidth = 1;
+        c.gridx = 2;
         infoPanel.add(editDia, c);
 
+        c.gridwidth = 2;
         c.gridx = 0;
         c.gridy = 5;
         infoPanel.add(ETDLabel, c);
-        c.gridx = 1;
-        c.gridy = 5;
+        c.gridwidth = 2;
+        c.gridx = 2;
         infoPanel.add(editETD, c);
 
         c.fill = GridBagConstraints.HORIZONTAL;
         c.weightx = 0.0;
-        c.gridwidth = 2;
+        c.gridwidth = 3;
         c.gridx = 0;
         c.gridy = 6;
         infoPanel.add(selectWardButton, c);
 
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.weightx = 0.0;
-        c.gridwidth = 2;
-        c.gridx = 0;
         c.gridy = 7;
         infoPanel.add(deleteButton, c);
 
@@ -259,7 +269,90 @@ public class BedButton extends JButton{
         infoFrame.add(infoPanel);
     }
 
-    private void editAge() {
+    private void editETD(Patient p){
+        JFrame editFrame = new JFrame("Edit ETD");
+        editFrame.setSize(500, 200);
+        editFrame.setBackground(Color.WHITE);
+        editFrame.setLocationRelativeTo(null);
+        editFrame.setVisible(true);
+        editFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+
+        JLabel editLabel = new JLabel("Time from now:");
+        JTextField hours = new JTextField("",5);
+        JTextField minutes = new JTextField("",5);
+
+        JLabel one = new JLabel(":");
+
+        JButton confirmButton = new JButton("Confirm");
+        confirmButton.addActionListener(evt -> {
+
+            //check that minutes is <60 and
+            if (Integer.parseInt(minutes.getText()) > 59) { Warning("Minutes must be an integer less than 59"); }
+            //check that hours is between 00 and 23
+            if (Integer.parseInt(hours.getText()) > 23) { Warning("Hours must be an integer less than 24"); }
+
+            // if both hours and minutes have been inputted, then set the new time on the same day but the new time
+            if (!hours.getText().equals("ETD Hours") && !minutes.getText().equals("ETD Minutes")) {
+                int Minutes = Integer.parseInt(minutes.getText());
+                int Hours = Integer.parseInt(hours.getText());
+                this.setETD(LocalDateTime.now().plusMinutes(Minutes).plusHours(Hours));
+                editFrame.dispose(); //close popup
+            }
+            // if only hours are inputted, change to the new hour o'clock
+            if (!hours.getText().equals("ETD Hours") && minutes.getText().equals("ETD Minutes")) {
+                int Minutes = 0;
+                int Hours = Integer.parseInt(hours.getText());
+                this.setETD(LocalDateTime.now().plusMinutes(Minutes).plusHours(Hours));
+                editFrame.dispose(); //close popup
+            }
+            // if only minutes are inputted, change ETD to the new minutes in the current hour
+            if (hours.getText().equals("ETD Hours") && !minutes.getText().equals("ETD Minutes")) {
+                int Minutes = Integer.parseInt(minutes.getText());
+                int Hours = LocalDateTime.now().getHour();
+
+                // if the new ETD is in the past
+                if(Minutes < LocalDateTime.now().getMinute()) {
+                    this.Warning("Time is in the past");
+                }
+
+                else{ this.setETD(LocalDateTime.now().plusMinutes(Minutes).plusHours(Hours)); }
+            }
+            try {
+                System.out.println(ETD);
+                methods.editPatientETON(p.getId(), ETD);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+
+        });
+
+        JPanel editPanel = new JPanel();
+        editPanel.setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridwidth = 3;
+        c.gridy = 0;
+        editPanel.add(editLabel);
+        c.gridwidth = 1;
+        c.gridx = 0;
+        c.gridy = 1;
+        editPanel.add(hours, c);
+        c.gridx = 1;
+        c.gridy = 1;
+        editPanel.add(one, c);
+        c.gridx = 2;
+        c.gridy = 1;
+        editPanel.add(minutes, c);
+        c.gridwidth = 3;
+        c.gridy = 2;
+        editPanel.add(confirmButton, c);
+
+        editFrame.add(editPanel);
+    }
+
+    private void editAge(Patient p) {
         JFrame editFrame = new JFrame("Edit Age");
         editFrame.setSize(500, 200);
         editFrame.setLayout(new GridLayout(2,1));
@@ -306,7 +399,7 @@ public class BedButton extends JButton{
             try {
                 //Change date of birth
                 LocalDate DOB = LocalDate.of(  Integer.parseInt(year.getText()),  Integer.parseInt(month.getText()),  Integer.parseInt(day.getText()) );
-                methods.editPatient(this.getID(), "dateofbirth", "'"+DOB+"'");
+                methods.editPatient(p.getId(), "dateofbirth", "'"+DOB+"'");
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -324,8 +417,8 @@ public class BedButton extends JButton{
 
     }
 
-    private void editParameter( String p , Integer bedId){
-        JFrame editFrame = new JFrame("Edit "+p);
+    private void editParameter( String par , Patient p){
+        JFrame editFrame = new JFrame("Edit");
         editFrame.setSize(300,200);
         editFrame.setBackground(Color.WHITE);
         editFrame.setVisible(true);
@@ -338,16 +431,25 @@ public class BedButton extends JButton{
         JButton ConfirmButton = new JButton("Confirm");
         ConfirmButton.addActionListener(evt -> {
             editFrame.dispose();
-            if(p == "Gender"){
-                setSex(newp.getText());
+            if(par.equals("Gender")){
+                try {
+                    //change sex
+                    methods.editPatient(p.getId(), "sex", "'"+newp.getText()+"'");
+                    this.sex = newp.getText();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
             }
-            if(p == "Sideroom"){
+            if(par.equals("Sideroom")){
                 setSR(false);
             }
-            if(p == "Diagnosis") {
+            if(par.equals("Diagnosis")){
                 try {
 
-                    methods.editPatient(bedId, "initialdiagnosis", "'" + newp.getText() + "'");
+                    methods.editPatient(p.getId(), "initialdiagnosis", "'" + newp.getText() + "'");
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (SQLException throwables) {
@@ -399,7 +501,7 @@ public class BedButton extends JButton{
         }
         JButton setETDButton = new JButton("Select time from now");
         setETDButton.addActionListener(evt -> {
-            setETDFrame(p);
+            editETD(p);
         });
         infoFrame.add(setETDButton);
         JButton submitWard = new JButton("Submit");
@@ -421,40 +523,66 @@ public class BedButton extends JButton{
 
     public void printInfoEmpty(){
         JFrame infoFrame = new JFrame();
-
-        //edit info Frame
         infoFrame.setSize(300,300);
         infoFrame.setBackground(Color.WHITE);
         infoFrame.setVisible(true);
-        infoFrame.setLocation(300,300);
+        infoFrame.setLocationRelativeTo(null);
 
         // labels with the bed information using methods from class Bed
-        JLabel bedIdLabel = new JLabel("Bed ID: "+this.getID(),SwingConstants.CENTER);
-        JLabel srLabel = new JLabel("Sideroom: "+this.getSR(), SwingConstants.CENTER);
-        JLabel sexLabel = new JLabel("Gender: "+this.getSex(), SwingConstants.CENTER);
+        JLabel bedIdLabel = new JLabel("<html><b>Bed ID: </b>"+this.getID()+"</html>",SwingConstants.CENTER);
+        JLabel srLabel = new JLabel("<html><b>Sideroom: </b>"+this.getSR()+"</html>", SwingConstants.CENTER);
+        JLabel sexLabel = new JLabel("<html><b>Gender: </b>"+this.getSex()+"</html>", SwingConstants.CENTER);
 
-        //jbutton for editing bed
-        JButton editButton = new JButton("Edit Bed Info");
-        // button to edit information when it is clicked
-        editButton.addActionListener(evt -> {
-            inputNewBedInfo();
+        JButton editGender = new JButton("Edit");
+        editGender.addActionListener(evt -> {
+            this.editBed("Gender");
             infoFrame.dispose();
         });
 
-        JButton addPatient = new JButton("Add a Patient");
-        // button to edit information when it is clicked
-        editButton.addActionListener(evt -> {
-            //inputNewPatientInfo();
+        JButton editSR = new JButton("Edit");
+        editSR.addActionListener(evt -> {
+            this.editBed("Sideroom");
+
             infoFrame.dispose();
         });
 
-        // add the labels to the frame
-        infoFrame.setLayout(new GridLayout(4,1));
-        infoFrame.add(bedIdLabel);
-        infoFrame.add(srLabel);
-        infoFrame.add(sexLabel);
+        JLabel infoStat = new JLabel("Bed Status     " , SwingConstants.RIGHT);
+        String[] Stat = { "Open","Closed"};
+        final JComboBox<String> pStat = new JComboBox<String>(Stat);
 
-        infoFrame.add(editButton);
+        // add the labels to the panel, and then to the frame
+        JPanel infoPanel = new JPanel();
+        infoPanel.setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridwidth = 2;
+        c.gridx = 0;
+        c.gridy = 0;
+        infoPanel.add(bedIdLabel, c);
+        c.ipady = 1;
+        c.gridwidth = 1;
+        c.gridx = 0;
+        c.gridy = 1;
+        infoPanel.add(srLabel, c);
+        c.ipady = 1;
+        c.gridx = 1;
+        c.gridy = 1;
+        infoPanel.add(editSR, c);
+        c.ipady = 1;
+        c.gridx = 0;
+        c.gridy = 2;
+        infoPanel.add(sexLabel, c);
+        c.ipady = 1;
+        c.gridx = 1;
+        c.gridy = 2;
+        infoPanel.add(editGender, c);
+        c.gridwidth = 2;
+        c.gridx = 1;
+        c.gridy = 3;
+        infoPanel.add(infoStat, c);
+
+        infoFrame.add(infoPanel);
+
     }
 
     // prints text fields, gets info from user and updates gender and age
@@ -526,7 +654,6 @@ public class BedButton extends JButton{
         editorPanel.setVisible(true);
         editorFrame.add(editorPanel);
     }
-
 
     private void inputNewPatientInfo(Patient p){
         // new popup over which everything is put
@@ -635,13 +762,67 @@ public class BedButton extends JButton{
         editorFrame.add(editorPanel);
     }
 
+    private void editBed(String par){
+        JFrame editFrame = new JFrame("Edit");
+        editFrame.setSize(300,200);
+        editFrame.setBackground(Color.WHITE);
+        editFrame.setVisible(true);
+        editFrame.setLocationRelativeTo(null);
+        JPanel editPanel = new JPanel();
+        editPanel.setLayout(new GridBagLayout());
+
+        JTextField newp = new JTextField("New "+par);
+
+        JButton ConfirmButton = new JButton("Confirm");
+        ConfirmButton.addActionListener(evt -> {
+            if(par.equals("Gender")){
+                try {
+                    methods.editBed(BedId, "forsex", "'"+newp.getText()+"'");
+                    this.setSex(newp.getText());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+            if(par.equals("Sideroom")){
+                try {
+                    //set side room
+                    methods.editBed(BedId, "hassideroom", newp.getText());
+                    if(newp.getText().equals("true") || newp.getText().equals("True") || newp.getText().equals("T") || newp.getText().equals("Y") || newp.getText().equals("Yes") || newp.getText().equals("yes")){
+                        this.sideroom = true;
+                    } else {
+                        this.sideroom = false;
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+            editFrame.dispose();
+        });
+
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridwidth = 1;
+        c.gridx = 0;
+        c.gridy = 0;
+        editPanel.add(newp, c);
+        c.gridx = 1;
+        editPanel.add(ConfirmButton, c);
+
+        editFrame.add(editPanel);
+    }
+
+    /*
     public void setETDFrame(Patient p){
         // frame popup where the panel, textfields and confirm button are
         JFrame ETDFrame = new JFrame();
         ETDFrame.setSize(300,300);
         ETDFrame.setBackground(Color.WHITE);
         ETDFrame.setVisible(true);
-        ETDFrame.setLocation(300,300);
+        ETDFrame.setLocationRelativeTo(null);
         ETDFrame.setLayout(new GridLayout(2,1));
 
         // pannel where textfields and confirm button are
@@ -702,6 +883,8 @@ public class BedButton extends JButton{
         ETDFrame.add(confirmButton);
 
     }
+
+     */
 
     public void Warning(String Problem){
         JFrame WarningFrame = new JFrame();
