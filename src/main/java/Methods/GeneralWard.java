@@ -28,6 +28,10 @@ public abstract class GeneralWard implements colourable{
     private Bed bed;
     protected int[] bedStatus;
     protected int patientsInWard;
+    protected ArrayList<Ward> dcWards;
+    protected ArrayList<Ward> othWards;
+    protected ArrayList<Ward> lsWards;
+    protected ArrayList<Ward> amuWards;
     protected int[] amuWardIds;
     protected int[] lsWardIds;
     protected int[] dcWardIds;
@@ -55,33 +59,41 @@ public abstract class GeneralWard implements colourable{
         bedStatus[2] = 0;
 
         ArrayList json = client.makeGetRequest("*", "wards", "wardtype='AMU'");
-        ArrayList<Ward> amuWards = client.wardsFromJson(json);
+        amuWards = client.wardsFromJson(json);
         amuWardIds = new int[amuWards.size()];
         for(int i=0; i<amuWards.size(); i++){
             amuWardIds[i] = amuWards.get(i).getWardId();
         }
 
         json = client.makeGetRequest("*", "wards", "wardtype='LS'");
-        ArrayList<Ward> lsWards = client.wardsFromJson(json);
+        lsWards = client.wardsFromJson(json);
         lsWardIds = new int[lsWards.size()];
         for(int i=0; i<lsWards.size(); i++){
             lsWardIds[i] = lsWards.get(i).getWardId();
         }
 
         json = client.makeGetRequest("*", "wards", "wardtype='discharge'");
-        ArrayList<Ward> dcWards = client.wardsFromJson(json);
+        dcWards = client.wardsFromJson(json);
         dcWardIds = new int[dcWards.size()];
         for(int i=0; i<dcWards.size(); i++){
             dcWardIds[i] = dcWards.get(i).getWardId();
         }
 
         json = client.makeGetRequest("*", "wards", "wardtype='other'");
-        ArrayList<Ward> othWards = client.wardsFromJson(json);
+        othWards = client.wardsFromJson(json);
         othWardIds = new int[othWards.size()];
         for(int i=0; i<othWards.size(); i++){
             othWardIds[i] = othWards.get(i).getWardId();
         }
 
+    }
+
+    public ArrayList<Ward> getAllTransWards(){
+        ArrayList<Ward> output = new ArrayList<Ward>();
+        output.addAll(lsWards);
+        output.addAll(dcWards);
+        output.addAll(othWards);
+        return output;
     }
 
     public int getWardId(){return wardId;}

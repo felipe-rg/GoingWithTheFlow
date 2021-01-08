@@ -495,20 +495,8 @@ public class BedButton extends JButton{
         infoFrame.setVisible(true);
         infoFrame.setLocationRelativeTo(null);
 
-        ArrayList<Ward> wards = new ArrayList<Ward>();
-        //FIXME get all wards more efficiently
+        ArrayList<Ward> wards = methods.getAllTransWards();
 
-        for(int i=3; i<8; i++) {
-            try {
-                ArrayList<String> json = client.makeGetRequest("*", "wards", "wardid="+i);
-                if(json.size()!=0){
-                    Ward ward = client.wardsFromJson(json).get(0);
-                    wards.add(ward);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
         infoFrame.setLayout(new GridLayout(wards.size()+2,1));
         ButtonGroup longstayWards = new ButtonGroup();
         for(Ward w:wards){
@@ -527,12 +515,26 @@ public class BedButton extends JButton{
         infoFrame.add(submitWard);
         submitWard.addActionListener(evt -> {
             String selected = longstayWards.getSelection().getActionCommand();
+            String wardType = new String();
+            for(Ward w:wards){
+                if(w.getWardName().equals(selected)){
+                    wardType = w.getWardType();
+                }
+            }
+            if(wardType.equals("LS")){
+                methods.changeTransNumber(1);
+            }
+            if(wardType.equals("discharge")){
+                methods.changeDischargeNumber(1);
+            }
+            if(wardType.equals("other")){
+                methods.changeOtherNumber(1);
+            }
             try {
                 ArrayList<String> json = client.makeGetRequest("*", "wards", "wardname='"+selected+"'");
                 Ward ward = client.wardsFromJson(json).get(0);
                 client.makePutRequest("patients", "nextdestination="+ward.getWardId(), "id="+p.getId());
                 client.makePutRequest("patients", "transferrequeststatus='P'", "id="+p.getId());
-                methods.changeTransNumber(1); //FIXME
             } catch (IOException e) {
                 e.printStackTrace();
             }
