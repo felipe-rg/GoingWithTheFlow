@@ -53,6 +53,8 @@ public class InTablePanel extends JPanel implements TableModelListener {
     //Constructor
     public InTablePanel(GeneralWard methods) {
         this.methods = methods;
+
+        //
         IncomingTableData incomingTableData = new IncomingTableData(methods.getClient(), methods.getWardId());
         dbData = incomingTableData.getData();
         try {

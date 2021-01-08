@@ -27,6 +27,7 @@ public class InTable {
         JButton backButton = new JButton("Back");
         JButton refreshButton = new JButton("Refresh Page");
 
+        //Refresh button action (reopen frame)
         refreshButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -35,6 +36,7 @@ public class InTable {
             }
         });
 
+        //Backbution action (close frame)
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -56,6 +58,9 @@ public class InTable {
 
         //Adding mainPanel to frame
         frame.add(mainPanel);
+
+
+        //Standard frame editing
         frame.setExtendedState(Frame.MAXIMIZED_BOTH);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);

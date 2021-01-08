@@ -37,14 +37,18 @@ public class OthTablePanel extends JPanel implements TableModelListener {
             "Delete Button"
     };
 
+
     private Object[][] dbData;
+
+    private GeneralWard methods;
 
     public OthTablePanel(GeneralWard methods){
         OtherTableData otherTableData = new OtherTableData(methods.getClient(), methods.getWardId());
+        this.methods = methods;
         dbData = otherTableData.getData();
 
-        //Instantiating table with appropriate data and tablemodel
 
+        //Instantiating table with appropriate data and tablemodel
         tableModel = new OthTableModel(columnName, dbData);        //Instance of OthtableModel
         table = new JTable(tableModel);         //Creating a table of model tablemodel (instance of MyTableModel)
         scrollPane = new JScrollPane(table);    //Creating scrollpane where table is located (for viewing purposes)
@@ -53,6 +57,7 @@ public class OthTablePanel extends JPanel implements TableModelListener {
         //Editing table
         setupTable(table);
 
+        //Delete action
         Action deletePopUp = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -60,20 +65,34 @@ public class OthTablePanel extends JPanel implements TableModelListener {
             }
         };
 
-
+        //Making last column a buttoncolumn (to delete patient)
         ButtonColumn deletePatient = new ButtonColumn(table, deletePopUp, 8);
 
-
+        //Setting layout and adding scrollpan with table
         this.setLayout(new GridLayout());
         this.add(scrollPane);
     }
 
+    //Function that
+    private void editPatient(int patientId, String column, boolean value){
+        try {
+            methods.editPatient(patientId, column, String.valueOf(value));
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
     @Override
+    //Function prints
     public void tableChanged(TableModelEvent e) {
         //Row and column being edited
         int row = e.getFirstRow();
         int column = e.getColumn();
         tableModel = (OthTableModel)e.getSource();   //Tablemodel used
+
+        int patientId = tableModel.getPatientID(table.getSelectedRow());
 
         //Name of the column and data introduced
         String columnName = tableModel.getColumnName(column);
@@ -84,6 +103,11 @@ public class OthTablePanel extends JPanel implements TableModelListener {
         //Printing out what has been edited
         System.out.println("Patient bed: " + bedNum + "     Edited '" + columnName+ "': " +data);
 
+
+        //Editing the sideroom database value
+        if(columnName == "Side Room"){
+            editPatient(patientId, "needssideroom", (boolean)data);
+        }
     }
 
     public void setupTable(JTable table) {

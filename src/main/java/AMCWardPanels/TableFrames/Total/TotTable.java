@@ -29,7 +29,7 @@ public class TotTable {
         JButton backButton = new JButton("Back");
         JButton refreshButton = new JButton("Refresh Page");
 
-        //Actions of the buttons
+        //Refresh button action (reopen frame)
         refreshButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -38,6 +38,7 @@ public class TotTable {
             }
         });
 
+        //Back button action (close frame)
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -59,7 +60,6 @@ public class TotTable {
 
         //Adding mainPanel to frame
         frame.add(mainPanel);
-
 
 
         //Standard Frame editing

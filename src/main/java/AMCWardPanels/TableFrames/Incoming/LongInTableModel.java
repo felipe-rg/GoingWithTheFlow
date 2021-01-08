@@ -6,17 +6,16 @@ import java.util.Vector;
 
 public class LongInTableModel extends MyTableModel {
 
+    //Constructors super()
     public LongInTableModel(String[] columnName, Object[][] data) {
         super(columnName, data);
     }
-
     public LongInTableModel(Vector data, Vector columnNames) {
         super(data, columnNames);
     }
 
     //Overriding the parent's isCellEditable method
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-
 
         //We make delete button, side room and request status editable
         if (columnIndex == 8 || columnIndex == 4 || columnIndex ==6){return true;}

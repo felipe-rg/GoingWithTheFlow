@@ -6,10 +6,10 @@ import java.util.Vector;
 
 public class InTableModel extends MyTableModel {
 
+    //Constructors super()
     public InTableModel(String[] columnName, Object[][] data) {
         super(columnName, data);
     }
-
     public InTableModel(Vector data, Vector columnNames) {
         super(data, columnNames);
     }

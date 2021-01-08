@@ -6,10 +6,10 @@ import java.util.Vector;
 
 public class TransTableModel extends MyTableModel {
 
+    //Constructors super()
     public TransTableModel(String[] columnName, Object[][] data) {
         super(columnName, data);
     }
-
     public TransTableModel(Vector data, Vector columnNames) {
         super(data, columnNames);
     }

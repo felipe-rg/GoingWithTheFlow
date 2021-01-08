@@ -6,10 +6,10 @@ import java.util.Vector;
 
 public class TotTableModel extends MyTableModel {
 
+    //Constructors super()
     public TotTableModel(String[] columnName, Object[][] data) {
         super(columnName, data);
     }
-
     public TotTableModel(Vector data, Vector columnNames) {
         super(data, columnNames);
     }
