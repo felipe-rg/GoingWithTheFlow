@@ -9,6 +9,7 @@ import Methods.GeneralWard;
 import Methods.tableInfo.IncomingInfoData;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -58,13 +59,18 @@ public class IncomingTablePanel extends JPanel{
         this.setLayout(new GridLayout());
         add(scrollPane);
 
+        // centres all elements in table except for traffic light
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+        table.setDefaultRenderer(String.class, centerRenderer);
+
     }
 
     //Sets rowheight and edits the tableheader
     public void setupTable (JTable...tables){
         //Editing table
         for (JTable t : tables) {
-            t.setRowHeight(35);                                     //Setting rowheight
+            t.setRowHeight(35);                                     //Setting row height
             t.getTableHeader().setDefaultRenderer(new MultiLineTableHeaderRenderer());
         }
     }

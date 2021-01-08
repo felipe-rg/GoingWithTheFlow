@@ -22,8 +22,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        Log log = new Log();
-        test logTest = new test();
+
         UserPage user = new UserPage();
 
         /*Client c = new Client();
@@ -38,6 +37,9 @@ public class Main {
             patients.add(p);
         }
         catch (Exception e){ }
+
+         */
     }
 }
+
 

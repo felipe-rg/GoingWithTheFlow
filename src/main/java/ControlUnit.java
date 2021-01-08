@@ -69,20 +69,22 @@ public class ControlUnit {
 
         // incoming from A&E info
         JLabel text1 = new JLabel("Number of Patients coming from A&E:");
-        text1.setFont (text1.getFont ().deriveFont (14.0f));
-        //labelPadding(text1);
+        text1.setFont(text1.getFont ().deriveFont (14.0f));
 
-        JLabel total = new JLabel(String.valueOf(methods.getRedPatients()+methods.getGreenPatients()+methods.getOrangePatients()) , SwingConstants.CENTER);
-        text1.setFont (text1.getFont ().deriveFont (14.0f));
+        JLabel total = new JLabel("Total = " + String.valueOf(methods.getRedPatients()+methods.getGreenPatients()+methods.getOrangePatients()) , SwingConstants.CENTER);
+        total.setFont (text1.getFont ().deriveFont (16.0f));
         labelPadding(text1);
 
-        JButton r = new JButton(String.valueOf(methods.getRedPatients()));           // incoming patients with traffic light to represent time of arrival
+        JButton r = new JButton("Arrived more than 3 hours ago:   " + String.valueOf(methods.getRedPatients()));           // incoming patients with traffic light to represent time of arrival
+        r.setFont(text1.getFont ().deriveFont (16.0f));
         r.setBackground(Color.RED);
         r.setHorizontalAlignment(SwingConstants.CENTER);
-        JButton y = new JButton(String.valueOf(methods.getOrangePatients()));
+        JButton y = new JButton("Arrived 2-3 hours ago:   " + String.valueOf(methods.getOrangePatients()));
+        y.setFont(text1.getFont ().deriveFont (16.0f));
         y.setBackground(Color.YELLOW);
         y.setHorizontalAlignment(SwingConstants.CENTER);
-        JButton g = new JButton(String.valueOf(methods.getGreenPatients()));
+        JButton g = new JButton("Arrived less than 2 hours ago:   " + String.valueOf(methods.getGreenPatients()));
+        g.setFont(text1.getFont ().deriveFont (16.0f));
         g.setBackground(Color.GREEN);
         g.setHorizontalAlignment(SwingConstants.CENTER);
 

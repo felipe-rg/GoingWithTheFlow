@@ -43,7 +43,7 @@ public class DisTransPage {
             @Override
             public void actionPerformed(ActionEvent e) {    // when refresh button is selected
                 f.dispose();                                // current frame will close
-                //DisTransPage page = new DisTransPage(methods.seeTransferList(), methods.seeDischargeList(), methods);    // class will be called again
+                DisTransPage page = new DisTransPage(methods);    // class will be called again
             }
         });
 

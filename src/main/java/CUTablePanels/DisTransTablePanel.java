@@ -9,6 +9,7 @@ import Methods.tableInfo.DischargeInfoData;
 import Methods.tableInfo.TransInfoData;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -72,9 +73,14 @@ public class DisTransTablePanel extends JPanel {
         transTable = new JTable(transTableModel);
         transSp = new JScrollPane(transTable);
 
+        // centres all elements in table except col headings
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+        transTable.setDefaultRenderer(String.class, centerRenderer);
+        disTable.setDefaultRenderer(String.class, centerRenderer);
+
         //Editing the tables so they look good
         setupTable(disTable, transTable);
-
 
 
         GridLayout gridLayout = new GridLayout(2,1);

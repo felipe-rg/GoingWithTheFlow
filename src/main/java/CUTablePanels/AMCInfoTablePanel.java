@@ -7,6 +7,7 @@ import Methods.ControlCentre;
 import Methods.tableInfo.AMCInfoData;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -67,6 +68,11 @@ public class AMCInfoTablePanel extends JPanel {
             JScrollPane scroll = new JScrollPane(table);
             setupTable(table);
             this.addSp(scroll);
+
+            // centres all elements in table except col headings
+            DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+            centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+            table.setDefaultRenderer(String.class, centerRenderer);
         }
     }
 

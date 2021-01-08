@@ -21,7 +21,7 @@ public class AMCInfo {
 
         JButton backButton = new JButton("Go Back");
         JButton refreshButton = new JButton("Refresh Page");
-        Title titlePanel = new Title("AMC Status" , backButton, refreshButton, 420, 420);
+        Title titlePanel = new Title("AMC Ward Status" , backButton, refreshButton, 420, 420);
         titlePanel.setBorder(BorderFactory.createMatteBorder(0, 0, 3, 0, Color.BLACK));
 
         backButton.addActionListener(new ActionListener() {
