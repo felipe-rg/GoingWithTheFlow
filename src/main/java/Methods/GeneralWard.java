@@ -19,23 +19,24 @@ import java.util.ArrayList;
 //Holds most methods used for communication to the database
 //Instantiated when a ward is chosen - implemented as AMC or longstay
 
-public abstract class GeneralWard {
+public abstract class GeneralWard implements colourable{
     protected Client client;
-    public int wardId;
+    protected int wardId;
     private String wardName;
     private Patient patient;
     private Bed bed;
-    private int[] bedStatus;
-    private int patientsInWard;
-    private int[] amuWardIds;
-    private int[] lsWardIds;
-    private int[] dcWardIds;
-    private int[] othWardIds;
-    private int dischargeNumber;
-    private int othNumber;
-    private int inNumber;
-    //TODO in AMCward?
-    private int transNumber;
+    protected int[] bedStatus;
+    protected int patientsInWard;
+    protected int[] amuWardIds;
+    protected int[] lsWardIds;
+    protected int[] dcWardIds;
+    protected int[] othWardIds;
+    protected int dischargeNumber;
+    protected int othNumber;
+    protected int inNumber;
+
+    //TODO remove from genward
+    protected int transNumber;
 
     BedStatus bedStat;
     Topography topography;
@@ -80,24 +81,6 @@ public abstract class GeneralWard {
             othWardIds[i] = othWards.get(i).getWardId();
         }
 
-        json = client.makeGetRequest("*", "wards", "wardid="+wardId);
-        ArrayList<Ward> thiswards = client.wardsFromJson(json);
-        Ward thisWard = thiswards.get(0);
-
-        if(thisWard.getWardType().equals("AMU")){
-            json = client.makeGetRequest("*", "patients", "nextdestination=2");
-            if(json.size()!=0){
-                ArrayList<Patient> incoming = client.patientsFromJson(json);
-                inNumber = incoming.size();
-            }
-        } else {
-            json = client.makeGetRequest("*", "patients", "nextdestination=" + wardId);
-            if (json.size() != 0) {
-                ArrayList<Patient> incoming = client.patientsFromJson(json);
-                inNumber = incoming.size();
-            }
-        }
-
     }
 
     public int getWardId(){return wardId;}
@@ -130,66 +113,6 @@ public abstract class GeneralWard {
         return output;
     }
 
-    //Removes a patient from the database
-    //Ensures that if they were in a bed then the bed status is made free
-    public void deletePatient(int patientId) throws IOException {
-        ArrayList<String> json = client.makeGetRequest("*", "patients", "id="+patientId);
-        ArrayList<Patient> patients = client.patientsFromJson(json);
-        int bedid = patients.get(0).getCurrentBedId();
-
-        if(bedid!=0){
-            client.makePutRequest("beds", "status='F'", "bedid="+bedid);
-            if(patients.get(0).getCurrentWardId()==wardId) {
-                changePatientsInWard(-1);
-
-                LocalDateTime arrival= patients.get(0).getArrivalDateTime();
-                LocalDateTime leaving= patients.get(0).getEstimatedTimeOfNext();
-
-                if(arrival.isEqual(leaving)){
-                    bedStatus[2] = bedStatus[2] -1;
-                    bedStat.setRedBedsNum(bedStatus[2]);
-                    bedStatus[0] = bedStatus[0] +1;
-                    bedStat.setGreenBedsNum(bedStatus[0]);
-                }
-                else {
-                    bedStatus[1] = bedStatus[1] -1;
-                    bedStat.setAmbarBedsNum(bedStatus[1]);
-                    bedStatus[0] = bedStatus[0] +1;
-                    bedStat.setGreenBedsNum(bedStatus[0]);
-                }
-
-                int dest = patients.get(0).getNextDestination();
-                //if they are in a bed, and in the ward, they could be on another list
-                for(int i:dcWardIds){
-                    if(dest==i){
-                        changeDischargeNumber(-1);
-                        wardInfo.setDisText();
-                    }
-                }
-                for(int i:lsWardIds){
-                    if(dest==i){
-                        changeTransNumber(-1);
-                        wardInfo.setTransText();
-                    }
-                }
-                for(int i:othWardIds){
-                    if(dest==i){
-                        changeOtherNumber(-1);
-                        wardInfo.setOthText();
-                    }
-                }
-            } else {
-                //If they are in a bed, not in the ward, being deleted, then they are on incoming list
-                changeIncomingNumber(-1);
-                wardInfo.setInText();
-            }
-        }else {
-            //Not in a bed, must be on incoming list
-            changeIncomingNumber(-1);
-            wardInfo.setInText();
-        }
-        client.makeDeleteRequest("patients", "id="+patientId);
-    }
 
     // Returns a list of beds in the ward which have the correct characteristics for the chosen patient
     // Used when clicking select bed in incoming table
@@ -217,6 +140,7 @@ public abstract class GeneralWard {
         if(pats.size()!=0){
             arrival = pats.get(0).getArrivalDateTime();
         }
+        client.makePutRequest("beds", "status='F'", "bedid="+pats.get(0).getCurrentBedId());
         //Sets time of next to time of arrival which means the bed colour is red
         client.makePutRequest("patients", "estimateddatetimeofnext='"+arrival+"'", "id="+patientId);
 
@@ -231,10 +155,8 @@ public abstract class GeneralWard {
 
         changePatientsInWard(1);
         changeIncomingNumber(-1);
-        bedStatus[2] = bedStatus[2] +1;
-        bedStat.setRedBedsNum(bedStatus[2]);
-        bedStatus[0] = bedStatus[0] -1;
-        bedStat.setGreenBedsNum(bedStatus[0]);
+        changeRedBeds(1);
+        changeGreenBeds(-1);
 
     }
 
@@ -257,23 +179,19 @@ public abstract class GeneralWard {
         LocalDateTime leaving= patients.get(0).getEstimatedTimeOfNext();
 
         if(arrival.isEqual(leaving)){
-            bedStatus[2] = bedStatus[2] -1;
-            bedStat.setRedBedsNum(bedStatus[2]);
+            changeRedBeds(-1);
 
-            bedStatus[0] = bedStatus[0] +1;
-            bedStat.setGreenBedsNum(bedStatus[0]);
+            changeGreenBeds(1);
         }
         else {
-            bedStatus[1] = bedStatus[1] -1;
-            bedStat.setAmbarBedsNum(bedStatus[1]);
-            bedStatus[0] = bedStatus[0] +1;
-            bedStat.setGreenBedsNum(bedStatus[0]);
+            changeOrangeBeds(1);
+            changeGreenBeds(1);
         }
 
         changeIncomingNumber(1);
-        wardInfo.setInText();
+
         changePatientsInWard(-1);
-        wardInfo.setTotText();
+
 
     }
 
@@ -325,71 +243,6 @@ public abstract class GeneralWard {
         return restOfGetBed(json);
     }
 
-    //If bed is free, bed needs to be green
-    //If bed is closed, bed needs to be black
-    //If patient is leaving in more than four hours - or no leaving time is set
-    //(arrival=leaving) then bed needs to be red
-    //If patient is leaving in less than 3 hours, bed needs to be orange
-    //if patient is leaving in the past - tehy should have left already -
-    //bed needs to be blue
-    public String getBedColour(int BedID) throws IOException {
-        ArrayList<String> json = client.makeGetRequest("*", "beds", "bedid="+BedID);
-        ArrayList<Bed> beds = client.bedsFromJson(json);
-        if(beds.size()==0){
-            return "#2ECC71";
-        }
-        Bed newBed = beds.get(0);
-        if(newBed.getStatus().equals("F")){
-            bedStatus[0] = bedStatus[0] +1;
-            return "#2ECC71";
-        }
-        if(newBed.getStatus().equals("C")){
-            bedStatus[2] = bedStatus[2] +1;
-            return "#000000";
-        }
-        else {
-            json = client.makeGetRequest("*", "patients", "currentbedid="+newBed.getBedId());
-            ArrayList<Patient> patients = client.patientsFromJson(json);
-            if(patients.size()==0){
-                return "#2ECC71";
-            }
-
-            patientsInWard = patientsInWard + 1;
-            int dest = patients.get(0).getNextDestination();
-            for(int i:dcWardIds){
-                if(dest==i){
-                    changeDischargeNumber(1);
-                }
-            }
-            for(int i:lsWardIds){
-                if(dest==i){
-                    changeTransNumber(1);
-                }
-            }
-            for(int i:othWardIds){
-                if(dest==i){
-                    changeOtherNumber(1);
-                }
-            }
-
-            LocalDateTime arrival = patients.get(0).getArrivalDateTime();
-            LocalDateTime leaving = patients.get(0).getEstimatedTimeOfNext();
-            LocalDateTime now = LocalDateTime.now();
-            if(arrival.isEqual(leaving)){
-                bedStatus[2] = bedStatus[2] +1;
-                return "#E74C3C";
-            }
-            else if(leaving.isBefore(now)){
-                bedStatus[2] = bedStatus[2] +1;
-                return "#1531e8";
-            }
-            else{
-                bedStatus[1] = bedStatus[1] +1;
-                return "#F89820";
-            }
-        }
-    }
-
     //Outputs an array of three integers which holds the number of
     // green, orange, or red beds
     public int[] getBedStatus() throws IOException {
@@ -433,25 +286,22 @@ public abstract class GeneralWard {
     public int getInNumber(){
         return inNumber;
     };
-    //TODO in AMCward?
-    public int getTransNumber(){
-        return transNumber;
-    };
 
     public void changeDischargeNumber(int i){
         dischargeNumber = dischargeNumber+i;
+        wardInfo.setDisText();
     }
     public void changeIncomingNumber(int i){
         inNumber = inNumber+i;
+        wardInfo.setInText();
     }
     public void changeOtherNumber(int i){
         othNumber = othNumber+i;
+        wardInfo.setOthText();
     }
     public void changePatientsInWard(int i){
         patientsInWard = patientsInWard+i;
-    }
-    public void changeTransNumber(int i){
-        transNumber = transNumber+i;
+        wardInfo.setTotText();
     }
 
     public void setBedStat(BedStatus stat){
@@ -476,6 +326,17 @@ public abstract class GeneralWard {
 
     public WardInfo getWardInfo(){
         return wardInfo;
+    }
+
+    //TODO remove from gen ward
+
+    public int getTransNumber(){
+        return transNumber;
+    };
+
+    public void changeTransNumber(int i){
+        transNumber = transNumber+i;
+        wardInfo.setTransText();
     }
 
 }
