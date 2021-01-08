@@ -43,7 +43,7 @@ public abstract class GeneralWard implements colourable{
         this.wardId = wardId;
         client = new Client();
         wardName = getWardName(wardId);
-        bedStatus = new int[3];
+        bedStatus = new int[5];
 
         ArrayList<String> json = client.makeGetRequest("*", "wards", "wardtype='AMU'");
         amuWards = client.wardsFromJson(json);
@@ -170,9 +170,9 @@ public abstract class GeneralWard implements colourable{
             changeGreenBeds(1);
             return "#2ECC71"; //Green
         }
-        //If the status is closed then the bed is black - the bedstatus tracks closed as red
+        //If the status is closed then the bed is black
         if(newBed.getStatus().equals("C")){
-            changeRedBeds(1);
+            changeBlackBeds(1);
             return "#000000"; //black
         }
         else {
@@ -200,9 +200,9 @@ public abstract class GeneralWard implements colourable{
                 changeRedBeds(1);
                 return "#E74C3C"; //Red
             }
-            //if leaving is in the past then the bed is blue - tracked as red in bedStatus
+            //if leaving is in the past then the bed is blue
             else if(leaving.isBefore(now)){
-                changeRedBeds(1);
+                changeBlueBeds(1);
                 return "#1531e8";//Blue
             }
             //If the arrival is different from leaving and is in the future then the bed is orange
@@ -288,7 +288,7 @@ public abstract class GeneralWard implements colourable{
             changeRedBeds(-1);
         }
         else if(leaving.isBefore(LocalDateTime.now())){
-            changeRedBeds(-1);
+            changeBlueBeds(-1);
         }
         else {
             changeOrangeBeds(-1);
@@ -393,6 +393,16 @@ public abstract class GeneralWard implements colourable{
     public void changeRedBeds(int i){
         bedStatus[2] = bedStatus[2] + i;
         bedStat.setRedBedsNum(bedStatus[2]);
+    }
+
+    public void changeBlueBeds(int i){
+        bedStatus[3] = bedStatus[3] + i;
+        bedStat.setBlueBedsNum(bedStatus[3]);
+    }
+
+    public void changeBlackBeds(int i){
+        bedStatus[4] = bedStatus[4] + i;
+        bedStat.setBlackBedsNum(bedStatus[4]);
     }
 
     abstract void updateDestinationNumber(int dest, int number);

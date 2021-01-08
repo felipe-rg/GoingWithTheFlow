@@ -9,26 +9,38 @@ public class BedStatus extends JPanel{
     JLabel greenBeds;
     JLabel ambarBeds;
     JLabel redBeds;
+    JLabel blueBeds;
+    JLabel blackBeds;
 
     public BedStatus(GeneralWard methods){
         this.setPreferredSize(new Dimension(300,100));
 
-        greenBeds = new JLabel("3");
+        greenBeds = new JLabel("0");
         greenBeds.setBackground(Color.decode("#2ECC71"));
 
-        ambarBeds = new JLabel("3");
+        ambarBeds = new JLabel("0");
         ambarBeds.setBackground(Color.decode("#F39C12"));
 
-        redBeds = new JLabel("3");
+        redBeds = new JLabel("0");
         redBeds.setBackground(Color.decode("#E74C3C"));
 
-        //
-        setLabel(greenBeds, ambarBeds, redBeds);
+        blueBeds = new JLabel("0");
+        blueBeds.setBackground(Color.decode("#1531e8"));
 
-        this.setLayout(new GridLayout(1,3));
+        blackBeds = new JLabel("0");
+        blackBeds.setBackground(Color.decode("#000000"));
+
+
+        //
+        setLabel(greenBeds, ambarBeds, redBeds, blackBeds, blueBeds);
+        blackBeds.setForeground(Color.white);
+
+        this.setLayout(new GridLayout(1,5));
         add(greenBeds);
         add(ambarBeds);
         add(redBeds);
+        add(blueBeds);
+        add(blackBeds);
 
     }
 
@@ -51,5 +63,9 @@ public class BedStatus extends JPanel{
     }
 
     public void setRedBedsNum(Integer numberIn){ redBeds.setText(numberIn.toString()); }
+
+    public void setBlackBedsNum(Integer numberIn){ blackBeds.setText(numberIn.toString()); }
+
+    public void setBlueBedsNum(Integer numberIn){ blueBeds.setText(numberIn.toString()); }
 
 }

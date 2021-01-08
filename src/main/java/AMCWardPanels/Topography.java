@@ -98,10 +98,10 @@ public class Topography extends JPanel{
         bedstatus.setRedBedsNum(RCount);
     }
 
-    public void refresh(GeneralWard methods){
+    /*public void refresh(GeneralWard methods){
         CountBeds(methods);
         updateBedStatus(bedstatus);
-    }
+    }*/
 
     public void makeBedButtonRed(int bedId){
         BedButton bedButton = null;

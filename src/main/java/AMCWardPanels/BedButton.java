@@ -50,7 +50,7 @@ public class BedButton extends JButton{
     public void setETD(LocalDateTime time){this.ETD = time;}
     //Refreshes the numbers in topography when things are changed
     public void refreshTopography(){
-        top.refresh(methods);
+        //top.refresh(methods);
     }
 
     public String getBedButtonStatus(){
@@ -73,7 +73,7 @@ public class BedButton extends JButton{
         try {
             methods.editBed(bed.getBedId(), "status", "'C'");
             methods.changeGreenBeds(-1);
-            methods.changeRedBeds(1);
+            methods.changeBlackBeds(1);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -85,7 +85,7 @@ public class BedButton extends JButton{
         try {
             methods.editBed(bed.getBedId(), "status", "'F'");
             methods.changeGreenBeds(1);
-            methods.changeRedBeds(-1);
+            methods.changeBlackBeds(-1);
         } catch (IOException e) {
             e.printStackTrace();
         }

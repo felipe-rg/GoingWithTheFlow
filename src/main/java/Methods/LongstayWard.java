@@ -19,7 +19,6 @@ public class LongstayWard extends GeneralWard{
             incoming = client.patientsFromJson(json);
         }
         inNumber = incoming.size();
-        System.out.println(inNumber);
     }
 
     //Removes a patient from the database
