@@ -15,14 +15,14 @@ import java.awt.event.WindowEvent;
 
 public class OthTable {
 
-    public OthTable(AMCWardPanels.Topography top, AMCWardPanels.WardInfo wardinfo, GeneralWard methods, OtherTableData otherTableData){
+    public OthTable(AMCWardPanels.Topography top, AMCWardPanels.WardInfo wardinfo, GeneralWard methods){
 
         //Create frame and mainPanel containing everything
         JFrame frame = new JFrame("Others");
         JPanel mainPanel = new JPanel(new BorderLayout());
 
         //Creating panel containing the table
-        OthTablePanel othTablePanel = new OthTablePanel(methods, otherTableData);
+        OthTablePanel othTablePanel = new OthTablePanel(methods);
 
         //Buttons that will be displayed in the title panel at the top
         JButton backButton = new JButton("Back");
@@ -32,7 +32,7 @@ public class OthTable {
             @Override
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
-                new OthTable(top, wardinfo, methods, otherTableData);
+                new OthTable(top, wardinfo, methods);
             }
         });
 
@@ -65,12 +65,5 @@ public class OthTable {
         frame.setVisible(true);
         frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 
-        //When we close table, we refresh the homescreen
-        frame.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent we) {
-                top.refresh(methods);
-                wardinfo.refresh();
-            }
-        });
     }
 }

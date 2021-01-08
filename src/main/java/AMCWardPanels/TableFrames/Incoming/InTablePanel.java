@@ -4,6 +4,7 @@ import AMCWardPanels.TableFrames.*;
 import AMCWardPanels.WardInfo;
 import Client.*;
 import Methods.GeneralWard;
+import Methods.tableInfo.IncomingInfoData;
 import Methods.tableInfo.IncomingTableData;
 
 import javax.swing.*;
@@ -45,26 +46,18 @@ public class InTablePanel extends JPanel implements TableModelListener {
             "Bed",
             "Delete Button"};
 
-    //2D object containing all data that will be inputed into table
     private Object[][] dbData;
 
-    //Methods we will call
     private GeneralWard methods;
 
     //Constructor
-    public InTablePanel(GeneralWard methods, IncomingTableData incomingTableData, WardInfo wardInfo) {
+    public InTablePanel(GeneralWard methods) {
         this.methods = methods;
-        //Filling our data
+        IncomingTableData incomingTableData = new IncomingTableData(methods.getClient(), methods.getWardId());
         dbData = incomingTableData.getData();
-
-        /*
-            Depending on from which GUI we call the InTablePanel we will use a tablemodel or another
-            in AMC Ward GUI we use InTableModel and in Longstay Ward GUI we use LongInTableModel.
-            Both of these models extend from MyTableModel
-         */
         try {
             if (methods.getWardType(methods.wardId).equals("AMU")){
-                tableModel = new InTableModel(amcColumnName, dbData);
+                tableModel = new InTableModel(amcColumnName, dbData);        //Instance of IntableModel extending from MyTableModel
             }
             else {
                 tableModel = new LongInTableModel(lsColumnName, dbData);
@@ -77,6 +70,7 @@ public class InTablePanel extends JPanel implements TableModelListener {
         //Instantiating table with appropriate data and tablemodel
         table = new JTable(tableModel);         //Creating a table of model tablemodel
         scrollPane = new JScrollPane(table);    //Creating scrollpane where table is located (for viewing purposes)
+
 
 
         //Editing table
@@ -103,12 +97,12 @@ public class InTablePanel extends JPanel implements TableModelListener {
         };
 
 
-        //Creating button column instancess and assigning them to column 7 and 8 (select bed and delete)
+        //Creating button column instancess and assigning them to column 7 and 8
         ButtonColumn selectBed = new ButtonColumn(table, selectBedAction, 7);
         ButtonColumn deletePatient = new ButtonColumn(table, deletePopUp, 8);
 
         //Making the renderer of the Arrival at A&E column our custom TimeRenderer (in charge of changing
-        //the background color
+        //The background color
         table.getColumnModel().getColumn(5).setCellRenderer(new TimeRenderer());
 
 
@@ -136,37 +130,47 @@ public class InTablePanel extends JPanel implements TableModelListener {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //edit info Frame
-        infoFrame.setSize(300,300);
-        infoFrame.setBackground(Color.WHITE);
-        infoFrame.setVisible(true);
-        infoFrame.setLocation(300,300);
 
-        infoFrame.setLayout(new GridLayout(acceptableBeds.size()+1,2));
-        ButtonGroup beds = new ButtonGroup();
-        for(Bed w:acceptableBeds){
-            JRadioButton lsWard = new JRadioButton(String.valueOf(w.getBedId()));
-            lsWard.setActionCommand(String.valueOf(w.getBedId()));
-            lsWard.setFont(new Font("Verdana", Font.PLAIN, 20));
-            beds.add(lsWard);
-            infoFrame.add(lsWard);
+
+        if(acceptableBeds.size()!=0){
+            infoFrame.setSize(300,300);
+            infoFrame.setBackground(Color.WHITE);
+            infoFrame.setVisible(true);
+            infoFrame.setLocation(300,300);
+            infoFrame.setLayout(new GridLayout(acceptableBeds.size() + 1, 2));
+            ButtonGroup beds = new ButtonGroup();
+            for (Bed w : acceptableBeds) {
+                JRadioButton lsWard = new JRadioButton(String.valueOf(w.getBedId()));
+                lsWard.setActionCommand(String.valueOf(w.getBedId()));
+                lsWard.setFont(new Font("Verdana", Font.PLAIN, 20));
+                beds.add(lsWard);
+                infoFrame.add(lsWard);
+            }
+            JButton submitWard = new JButton("Submit");
+            infoFrame.add(submitWard);
+            submitWard.addActionListener(evt -> {
+                String selected = beds.getSelection().getActionCommand();
+                try {
+                    Bed bed = methods.getBed(selected);
+                    methods.setBed(patientId, bed.getBedId());
+                    //update specific bed
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+                tableModel.removeRow(table.getSelectedRow());
+                infoFrame.dispose();
+            });
+        } else {
+            infoFrame.setSize(300,100);
+            infoFrame.setBackground(Color.WHITE);
+            infoFrame.setVisible(true);
+            infoFrame.setLocation(300,300);
+            JLabel noBeds = new JLabel("Currently No Acceptable Free Beds");
+            noBeds.setHorizontalAlignment(JLabel.CENTER);
+            infoFrame.add(noBeds);
         }
-        JButton submitWard = new JButton("Submit");
-        infoFrame.add(submitWard);
-        submitWard.addActionListener(evt -> {
-            String selected = beds.getSelection().getActionCommand();
-            try {
-                ArrayList<String> json = client.makeGetRequest("*", "beds", "bedid='"+selected+"'");
-                Bed bed = client.bedsFromJson(json).get(0);
-                methods.setBed(patientId, bed.getBedId());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-            infoFrame.dispose();
-        });
 
     }
 
@@ -184,13 +188,11 @@ public class InTablePanel extends JPanel implements TableModelListener {
         String columnName = tableModel.getColumnName(column);
         Object data = tableModel.getValueAt(row, column);
 
-        //Geting the patient ID from the selected row in the table
         int patientId = tableModel.getPatientID(table.getSelectedRow());
 
         //Printing out what has been edited
         System.out.println("Patient bed: " + patientId + "     Edited '" + columnName+ "': " +data);
 
-        //Editing patient
         if(columnName == "Accepted by Medicine"){
             editPatient(patientId, "acceptedbymedicine", String.valueOf(data));
         }
@@ -213,7 +215,13 @@ public class InTablePanel extends JPanel implements TableModelListener {
         tableModel.isCellEditable(row, column);
     }
 
-    //Editing table
+    //Transforming a LocalDateTime object into a string displaying hours and minutes in the form "HH:mm"
+    public String dateFormatter(LocalDateTime localDateTime){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        return localDateTime.format(formatter);
+    }
+
+
     public void setupTable(JTable table) {
         //Setting rowheight
         table.setRowHeight(35);

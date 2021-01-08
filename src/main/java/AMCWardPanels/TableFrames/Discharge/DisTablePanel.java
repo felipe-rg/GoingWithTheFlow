@@ -36,21 +36,18 @@ public class DisTablePanel extends JPanel implements TableModelListener {
             "Delete Button"};
 
 
-    //2D object containing all data that will be inputed into table
+
     private Object[][] dbData;
 
-    //Methods we will call
     private GeneralWard methods;
 
-    //Constructor
-    public DisTablePanel(GeneralWard methods, DischargeTableData dischargeTableData){
+    public DisTablePanel(GeneralWard methods){
+        DischargeTableData dischargeTableData = new DischargeTableData(methods.getClient(), methods.getWardId());
+
         this.methods = methods;
-
-        //Filling our data object
         dbData =dischargeTableData.getData();
-
-
         //Instantiating table with appropriate data and tablemodel
+
         tableModel = new DisTableModel(columnName, dbData);        //Instance of MytableModel
         table = new JTable(tableModel);         //Creating a table of model tablemodel (instance of MyTableModel)
         scrollPane = new JScrollPane(table);    //Creating scrollpane where table is located (for viewing purposes)
@@ -65,7 +62,6 @@ public class DisTablePanel extends JPanel implements TableModelListener {
                 new DeletePopUp(table, tableModel, methods);
             }
         };
-
         //Assigning the column that will have the delete buttons
         ButtonColumn deletePatient = new ButtonColumn(table, deletePopUp, 9);
 
@@ -98,8 +94,6 @@ public class DisTablePanel extends JPanel implements TableModelListener {
 
         //Printing out what has been edited
         System.out.println("Patient bed: " + patientId + "     Edited '" + columnName+ "': " +data);
-
-        //Editing the database
         if(columnName == "TTA Done?"){
             editPatient(patientId, "ttasignedoff", (boolean)data);
         }
@@ -112,7 +106,11 @@ public class DisTablePanel extends JPanel implements TableModelListener {
 
     }
 
-    //Function editing table
+    private Object dateFormatter(LocalDateTime localDateTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        return localDateTime.format(formatter);
+    }
+
     public void setupTable(JTable table){
         table.setRowHeight(35);                                     //Setting rowheight
         table.getTableHeader().setDefaultRenderer(new MultiLineTableHeaderRenderer());  //Setting header renderer

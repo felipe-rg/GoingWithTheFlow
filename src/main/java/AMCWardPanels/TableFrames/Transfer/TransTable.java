@@ -14,14 +14,14 @@ import java.awt.event.WindowEvent;
 
 public class TransTable {
 
-    public TransTable(AMCWardPanels.Topography top, AMCWardPanels.WardInfo wardinfo, AMCWard methods, TransTableData transTableData){
+    public TransTable(AMCWardPanels.Topography top, AMCWardPanels.WardInfo wardinfo, AMCWard methods){
 
         //Frame containing everything
         JFrame frame = new JFrame("Transferring Patients");
         JPanel mainPanel = new JPanel(new BorderLayout());
 
         //Panel containing the table
-        TransTablePanel transtablePanel = new TransTablePanel(methods, transTableData);
+        TransTablePanel transtablePanel = new TransTablePanel(methods);
 
 
         //Buttons that will be displayed in the title panel at the top
@@ -32,7 +32,7 @@ public class TransTable {
             @Override
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
-                new TransTable(top, wardinfo, methods,transTableData);
+                new TransTable(top, wardinfo, methods);
             }
         });
 
@@ -62,12 +62,5 @@ public class TransTable {
         frame.setVisible(true);                                             // makes JFrame visible
         frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 
-        //When we close table, we refresh the homescreen
-        frame.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent we) {
-                top.refresh(methods);
-                wardinfo.refresh();
-            }
-        });
     }
 }

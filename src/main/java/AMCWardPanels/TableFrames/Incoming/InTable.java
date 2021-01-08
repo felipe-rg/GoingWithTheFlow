@@ -15,13 +15,13 @@ import java.awt.event.WindowEvent;
 
 public class InTable {
 
-    public InTable(AMCWardPanels.Topography top, AMCWardPanels.WardInfo wardinfo, GeneralWard methods, IncomingTableData incomingTableData){
+    public InTable(AMCWardPanels.Topography top, AMCWardPanels.WardInfo wardinfo, GeneralWard methods){
         //We create a new frame
         JFrame frame = new JFrame("Incoming Patients");
         JPanel mainPanel = new JPanel(new BorderLayout());
 
         //Creating panel containing the table
-        InTablePanel inTablePanel = new InTablePanel(methods, incomingTableData, wardinfo);
+        InTablePanel inTablePanel = new InTablePanel(methods);
 
         //Buttons that will be displayed in the title panel at the top
         JButton backButton = new JButton("Back");
@@ -31,7 +31,7 @@ public class InTable {
             @Override
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
-                new InTable(top, wardinfo, methods, incomingTableData);
+                new InTable(top, wardinfo, methods);
             }
         });
 
@@ -60,12 +60,5 @@ public class InTable {
         frame.setVisible(true);
         frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 
-        //When we close table, we refresh the homescreen
-        frame.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent we) {
-                top.refresh(methods);
-                wardinfo.refresh();
-            }
-        });
     }
 }

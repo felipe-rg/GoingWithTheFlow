@@ -40,8 +40,6 @@ public class TotalTableData extends dateFormat implements dataForTable{
             data[i][4] = p.getInitialDiagnosis();
             data[i][5] = p.getNeedsSideRoom();
             data[i][6] = durationFormatter(Duration.between(p.getArrivalDateTime(), LocalDateTime.now()));
-
-
             if(p.getNextDestination()==0){
                 data[i][7] = "";
             }
@@ -69,5 +67,8 @@ public class TotalTableData extends dateFormat implements dataForTable{
             e.printStackTrace();
         }
         return client.patientsFromJson(json);
+    }
+    public void refresh(){
+        getList();
     }
 }

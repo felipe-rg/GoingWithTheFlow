@@ -25,7 +25,11 @@ public class PatientForm {
             @Override
             public void actionPerformed(ActionEvent e) {
                 f.dispose();
-                UserPage user = new UserPage();
+                try {
+                    UserPage user = new UserPage();
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
             }
         });
 

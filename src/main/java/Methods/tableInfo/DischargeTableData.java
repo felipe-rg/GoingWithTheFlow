@@ -67,4 +67,7 @@ public class DischargeTableData extends dateFormat implements dataForTable{
         }
         return output;
     }
+    public void refresh(){
+        getList();
+    }
 }

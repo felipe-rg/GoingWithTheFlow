@@ -34,7 +34,11 @@ public class TotTablePanel extends JPanel implements TableModelListener {
             "Delete Button"};
 
     private Object[][] dbData;
-    public TotTablePanel(GeneralWard methods, TotalTableData totalTableData){
+    private GeneralWard methods;
+    public TotTablePanel(GeneralWard methods){
+        TotalTableData totalTableData = new TotalTableData(methods.getClient(),methods.getWardId());
+
+        this.methods = methods;
         dbData = totalTableData.getData();
 
         //Instantiating table with appropriate data and tablemodel
@@ -78,6 +82,21 @@ public class TotTablePanel extends JPanel implements TableModelListener {
 
         //Printing out what has been edited
         System.out.println("Patient bed: " + bedNum + "     Edited '" + columnName+ "': " +data);
+        int patientId = tableModel.getPatientID(table.getSelectedRow());
+
+        if(columnName == "Side Room"){
+            editPatient(patientId, "needssideroom", (boolean)data);
+        }
+    }
+
+    private void editPatient(int patientId, String column, boolean value){
+        try {
+            methods.editPatient(patientId, column, String.valueOf(value));
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
 

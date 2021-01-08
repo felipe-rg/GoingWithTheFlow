@@ -24,13 +24,16 @@ public class UIController {
         this.methods = methods;
         setupOne();
         bedStatus = new BedStatus(methods);
+        methods.setBedStat(bedStatus);
         topography = new Topography(bedStatus, methods);
+        methods.setTopography(topography);
         try {
             title = new Title(methods.getWardName(methods.getWardId()), backButton, refreshButton, 420, 420);
         } catch (IOException e) {
             e.printStackTrace();
         }
         wardInfo = new WardInfo(topography, methods);
+        methods.setWardInfo(wardInfo);
 
         setupTwo();
     }
@@ -40,13 +43,16 @@ public class UIController {
         setupOne();
 
         bedStatus = new BedStatus(method);
+        method.setBedStat(bedStatus);
         topography = new Topography(bedStatus, method);
+        method.setTopography(topography);
         try {
             title = new Title(method.getWardName(method.getWardId()), backButton, refreshButton, 420, 420);
         } catch (IOException e) {
             e.printStackTrace();
         }
         wardInfo = new WardInfo(topography, method);
+        method.setWardInfo(wardInfo);
 
         setupTwo();
 

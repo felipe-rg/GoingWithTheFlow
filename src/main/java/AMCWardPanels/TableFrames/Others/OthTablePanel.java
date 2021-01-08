@@ -39,7 +39,8 @@ public class OthTablePanel extends JPanel implements TableModelListener {
 
     private Object[][] dbData;
 
-    public OthTablePanel(GeneralWard methods, OtherTableData otherTableData){
+    public OthTablePanel(GeneralWard methods){
+        OtherTableData otherTableData = new OtherTableData(methods.getClient(), methods.getWardId());
         dbData = otherTableData.getData();
 
         //Instantiating table with appropriate data and tablemodel
