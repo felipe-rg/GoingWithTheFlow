@@ -43,7 +43,7 @@ public class LongStay {
         });
 
 
-        MainPanel mainTablePanel = new MainPanel(false, " ", 2);
+        MainPanel mainTablePanel = new MainPanel(false,  2);
 
         LongStayTablePanel longStayTablePanel = new LongStayTablePanel(methods);
 

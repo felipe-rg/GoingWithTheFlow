@@ -42,12 +42,18 @@ public class DischargeInfoData extends dateFormat implements dataForTable{
 
     private ArrayList<Patient> getList(){
         ArrayList<String> json = null;
+        ArrayList<Patient> output = new ArrayList<Patient>();
         try {
-            json = client.makeGetRequest("*", "patients", "nextdestination=6");
-            return client.patientsFromJson(json);
+            json = client.makeGetRequest("*", "wards", "wardtype='discharge'");
+            ArrayList<Ward> dischargeWards = client.wardsFromJson(json);
+
+            for(Ward w: dischargeWards){
+                json = client.makeGetRequest("*", "patients", "nextdestination="+w.getWardId());
+                output.addAll(client.patientsFromJson(json));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        return output;
     }
 }

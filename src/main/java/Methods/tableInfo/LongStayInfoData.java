@@ -37,9 +37,14 @@ public class LongStayInfoData extends CCWardData implements dataForTable{
     private ArrayList<ArrayList<String>> getList(){
         ArrayList<ArrayList<String>> output = new ArrayList<>();
         //For each of the wards, create array of strings with all info necessary; add them into output and return output
+        ArrayList<String> json = null;
         try {
-            for(int i=3; i<6; i++){
-                ArrayList<String> wardInfo = getWardInfo(i, client);
+            json = client.makeGetRequest("*", "wards", "wardtype='LS'");
+            ArrayList<Ward> lsWards = client.wardsFromJson(json);
+
+            //Get all patients transferring to long stay wards
+            for(Ward w:lsWards){
+                ArrayList<String> wardInfo = getWardInfo(w.getWardId(), client);
                 output.add(wardInfo);
             }
         } catch (IOException e) {

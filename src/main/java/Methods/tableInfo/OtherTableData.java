@@ -31,11 +31,12 @@ public class OtherTableData  extends dateFormat implements dataForTable{
         for(int i=0; i<otherList.size(); i++) {
             Patient p = otherList.get(i);
             data[i][0] = p.getId();
-            data[i][1] = p.getPatientId();
-            data[i][2] = p.getSex();
-            data[i][3] = p.getInitialDiagnosis();
-            data[i][4] = p.getNeedsSideRoom();
-            data[i][5] = dateFormatter(p.getEstimatedTimeOfNext());
+            data[i][1] = p.getCurrentBedId();
+            data[i][2] = p.getPatientId();
+            data[i][3] = p.getSex();
+            data[i][4] = p.getInitialDiagnosis();
+            data[i][5] = p.getNeedsSideRoom();
+            data[i][6] = dateFormatter(p.getEstimatedTimeOfNext());
 
             ArrayList<String> json = null;
             try {
@@ -46,7 +47,7 @@ public class OtherTableData  extends dateFormat implements dataForTable{
             ArrayList<Ward> wards = client.wardsFromJson(json);
 
             if(wards.size()!=0){
-                data[i][6] = wards.get(0).getWardName();
+                data[i][7] = wards.get(0).getWardName();
             }
             data[i][8] = "Delete Patient";
         }
@@ -58,21 +59,22 @@ public class OtherTableData  extends dateFormat implements dataForTable{
         try {
             ArrayList<String> json = client.makeGetRequest("*", "patients", "currentwardid="+wardId);
             ArrayList<Patient> patients = client.patientsFromJson(json);
+            ArrayList<Patient> othPatients = new ArrayList<Patient>();
 
-            json = client.makeGetRequest("*", "patients", "deceased=true");
-            ArrayList<Patient> deceased = client.patientsFromJson(json);
+            json = client.makeGetRequest("*", "wards", "wardtype='other'");
+            ArrayList<Ward> othDestinations = client.wardsFromJson(json);
 
-            output = client.crossReference(patients, deceased);
-
-            json = client.makeGetRequest("*", "patients", "nextdestination=7");
-            ArrayList<Patient> toICU = client.patientsFromJson(json);
-
-
-            output.addAll(client.crossReference(toICU, patients));
-
+            for(Ward w: othDestinations){
+                json = client.makeGetRequest("*", "patients", "nextdestination="+w.getWardId());
+                othPatients.addAll(client.patientsFromJson(json));
+            }
+            output.addAll(client.crossReference(othPatients, patients));
         } catch (IOException e) {
             e.printStackTrace();
         }
         return output;
+    }
+    public void refresh(){
+        getList();
     }
 }

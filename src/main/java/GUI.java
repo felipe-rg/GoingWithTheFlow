@@ -22,29 +22,8 @@ public class GUI {
     public GUI(Ward ward) {
         Client c = new Client();
         this.wardId = ward.getWardId();
-        //Todo once we have the wardType we can remove below
         ArrayList<String> json = null;
-        try {
-            json = c.makeGetRequest("*", "wards", "wardtype='AMU'");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        ArrayList<Ward> amuWards = c.wardsFromJson(json);
-        ArrayList<Integer> amuIds = new ArrayList<Integer>();
-        for(Ward w:amuWards){
-            amuIds.add(w.getWardId());
-        }
 
-        try {
-            if(amuIds.contains(ward.getWardId())){
-                method = new AMCWard(wardId);
-            }
-            else { methods = new LongstayWard(wardId);}
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
         JFrame frame = new JFrame();
         frame.setSize(1200, 800);
         frame.setTitle("Longstay GUI");
@@ -57,7 +36,11 @@ public class GUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
-                UserPage user = new UserPage();
+                try {
+                    UserPage user = new UserPage();
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
             }
         });
 
@@ -73,17 +56,27 @@ public class GUI {
 
         //Creating UIController than generates all panels
         UIController UIc = null;
-        //Todo once we have the wardTyoe we can use this loop and remove below
-        /*if(ward.getWardType.equals("AMU")) {
-            UIc = new UIController(backButton, refreshButton, method);
+        if(ward.getWardType().equals("AMU")) {
+            try {
+                method = new AMCWard(wardId);
+                UIc = new UIController(backButton, refreshButton, method);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+        else {
+            try {
+                methods = new LongstayWard(wardId);
+                UIc = new UIController(backButton, refreshButton, methods);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
         }
 
-         */
-
-        if(amuIds.contains(ward.getWardId())){
-            UIc = new UIController(backButton, refreshButton, method);
-        }
-        else { UIc = new UIController(backButton, refreshButton, methods);}
         frame.add(UIc.getMainPanel());
 
         frame.setVisible(true);

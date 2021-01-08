@@ -38,13 +38,13 @@ public class Topography extends JPanel{
             if(count == 1 || count == 5){
                 x=200;
             }
-            if(count == 2 || count == 6){
+            else if(count == 2 || count == 6){
                 x=400;
             }
-            if(count == 3 || count == 7){
+            else if(count == 3 || count == 7){
                 x=600;
             }
-            if(count == 4 || count == 8){
+            else if(count == 4 || count == 8){
                 x=800;
             }
             if(count < 5){
@@ -63,8 +63,8 @@ public class Topography extends JPanel{
         for (BedButton b : beds){
             b.addActionListener(evt -> {
                 if(b.getBedButtonStatus().equals("O")){ b.printInfoFull(); }
-                if(b.getBedButtonStatus().equals("F") || b.getBedButtonStatus().equals("C")){ b.printInfoEmpty(); }
-
+                if(b.getBedButtonStatus().equals("F")){ b.printInfoEmpty(); }
+                if(b.getBedButtonStatus().equals("C")) { b.printInfoClosed(); }
                 // every time something is done to the beds, check whether the bedstatus must change and update it
                 CountBeds(methods);
                 updateBedStatus(bedstatus);

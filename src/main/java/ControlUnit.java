@@ -44,7 +44,11 @@ public class ControlUnit {
             @Override
             public void actionPerformed(ActionEvent e) {
                 f.dispose();                                            // closes control page
-                UserPage user = new UserPage();                         // creates user page (new JFrame)
+                try {
+                    UserPage user = new UserPage();                         // creates user page (new JFrame)
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
             }
         });
 

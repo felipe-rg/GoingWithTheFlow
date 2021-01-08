@@ -15,9 +15,7 @@ public class OthTableModel extends MyTableModel {
 
     //Overriding the parent's isCellEditable method
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-        if (columnIndex == 5 || columnIndex==7 || columnIndex==8){
-            return true;
-        }
+        if (columnIndex == 8 || columnIndex == 5){return true;}
         else return false;
     }
 }

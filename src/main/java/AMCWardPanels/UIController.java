@@ -24,25 +24,35 @@ public class UIController {
         this.methods = methods;
         setupOne();
         bedStatus = new BedStatus(methods);
+        methods.setBedStat(bedStatus);
         topography = new Topography(bedStatus, methods);
+        methods.setTopography(topography);
         try {
-            title = new Title(methods.getWardName(methods.getWardId())+"GUI", backButton, refreshButton, 420, 420);
+            title = new Title(methods.getWardName(methods.getWardId()), backButton, refreshButton, 420, 420);
         } catch (IOException e) {
             e.printStackTrace();
         }
         wardInfo = new WardInfo(topography, methods);
+        methods.setWardInfo(wardInfo);
 
         setupTwo();
     }
 
-    public UIController(JButton backButton, JButton refreshButton, AMCWard methods){
-        this.method = methods;
+    public UIController(JButton backButton, JButton refreshButton, AMCWard method){
+        this.method = method;
         setupOne();
 
         bedStatus = new BedStatus(method);
+        method.setBedStat(bedStatus);
         topography = new Topography(bedStatus, method);
-        title = new Title("AMC GUI", backButton, refreshButton, 420, 420);
+        method.setTopography(topography);
+        try {
+            title = new Title(method.getWardName(method.getWardId()), backButton, refreshButton, 420, 420);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         wardInfo = new WardInfo(topography, method);
+        method.setWardInfo(wardInfo);
 
         setupTwo();
 

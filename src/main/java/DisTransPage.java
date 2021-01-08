@@ -48,10 +48,9 @@ public class DisTransPage {
         });
 
 
-        MainPanel mainTablePanel = new MainPanel(false, " ", 3);
+        MainPanel mainTablePanel = new MainPanel(false, 3);
 
-        //JLabel TransferList = new JLabel("Transfer Patient List goes here");
-        //JLabel DischargeList = new JLabel("Discharge Patient List goes here");
+
 
         disTransTablePanel = new DisTransTablePanel(methods);
 

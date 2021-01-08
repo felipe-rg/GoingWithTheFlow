@@ -34,7 +34,18 @@ public class TransInfoData extends dateFormat implements dataForTable{
             data[i][3] = p.getSex();
             data[i][4] = p.getNeedsSideRoom();
             data[i][5] = p.getInitialDiagnosis();
-            data[i][6] = p.getNextDestination();
+
+            ArrayList<String> json = null;
+            try {
+                json = client.makeGetRequest("*", "wards", "wardid="+p.getNextDestination());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if(json.size()!=0){
+                String wardName = client.wardsFromJson(json).get(0).getWardName();
+                data[i][6] = wardName;
+            }
+
             data[i][7] = dateFormatter(p.getEstimatedTimeOfNext());
         }
         return data;
@@ -44,9 +55,12 @@ public class TransInfoData extends dateFormat implements dataForTable{
         ArrayList<Patient> output = new ArrayList<Patient>();
         ArrayList<String> json = null;
         try {
+            json = client.makeGetRequest("*", "wards", "wardtype='LS'");
+            ArrayList<Ward> lsWards = client.wardsFromJson(json);
+
             //Get all patients transferring to long stay wards
-            for(int i=3; i<6; i++){
-                json = client.makeGetRequest("*", "patients", "nextdestination="+i);
+            for(Ward w:lsWards){
+                json = client.makeGetRequest("*", "patients", "nextdestination="+w.getWardId());
                 output.addAll(client.patientsFromJson(json));
             }
 
