@@ -224,7 +224,7 @@ public class BedButton extends JButton{
         });
 
         // delete patient, making the bed empty
-        JButton deleteButton = new JButton("Delete Patient");
+        JButton deleteButton = new JButton("Remove Patient");
         deleteButton.addActionListener(evt -> {
             makeEmpty(finalP);
             infoFrame.dispose();
@@ -515,32 +515,9 @@ public class BedButton extends JButton{
         infoFrame.add(submitWard);
         submitWard.addActionListener(evt -> {
             String selected = longstayWards.getSelection().getActionCommand();
-            String wardType = new String();
-            for(Ward w:wards){
-                if(w.getWardName().equals(selected)){
-                    wardType = w.getWardType();
-                }
-            }
-            if(wardType.equals("LS")){
-                methods.changeTransNumber(1);
-            }
-            if(wardType.equals("discharge")){
-                methods.changeDischargeNumber(1);
-            }
-            if(wardType.equals("other")){
-                methods.changeOtherNumber(1);
-            }
-            try {
-                ArrayList<String> json = client.makeGetRequest("*", "wards", "wardname='"+selected+"'");
-                Ward ward = client.wardsFromJson(json).get(0);
-                client.makePutRequest("patients", "nextdestination="+ward.getWardId(), "id="+p.getId());
-                client.makePutRequest("patients", "transferrequeststatus='P'", "id="+p.getId());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            methods.transferPatient(p.getId(), selected);
             infoFrame.dispose();
         });
-
     }
 
     // prints text fields, gets info from user and updates gender and age
