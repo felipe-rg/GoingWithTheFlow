@@ -55,16 +55,8 @@ public class Client extends fromJson{
 
             BufferedReader bufferedReader = new BufferedReader(new
                     InputStreamReader(conn.getInputStream(), "utf-8"));
-            String inputLine;
-
-            // Read the body of the response
-            while ((inputLine = bufferedReader.readLine()) != null) {
-                System.out.println(inputLine);
-            }
             bufferedReader.close();
         }
-        BufferedReader bufferedReader = new BufferedReader(new
-                InputStreamReader(conn.getInputStream(), "utf-8"));
     }
 
     public void makePutRequest(String table,String change,String condition) throws IOException {

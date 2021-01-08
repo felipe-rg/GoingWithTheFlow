@@ -36,7 +36,11 @@ public class GUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
-                UserPage user = new UserPage();
+                try {
+                    UserPage user = new UserPage();
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
             }
         });
 
