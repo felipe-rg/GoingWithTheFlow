@@ -1,7 +1,12 @@
-package AMCWardPanels.TableFrames;
+package AMCWardPanels.TableFrames.Others;
 
+import AMCWardPanels.TableFrames.ButtonColumn;
+import AMCWardPanels.TableFrames.DeletePopUp;
+import AMCWardPanels.TableFrames.MultiLineTableHeaderRenderer;
 import Methods.GeneralWard;
+import Methods.tableInfo.OtherTableData;
 
+import javax.print.attribute.standard.MediaSize;
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -12,42 +17,41 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class TotTablePanel extends JPanel implements TableModelListener {
+public class OthTablePanel extends JPanel implements TableModelListener {
+
     //Table and scrollpane where table sits
     private JTable table;
     private JScrollPane scrollPane;
-    private TotTableModel tableModel;
+    private OthTableModel tableModel;
+
 
     //Columnames in our table
     private String[] columnName = {"Index",
+            "Bed ID",
             "Patient ID",
             "Sex",
             "Initial Diagnosis",
             "Side Room",
-            "Time of stay (h)",        //This one can be obtained from current time and arrival time (not too difficult)
-            "Next Destination",
-            "Delete Button"};
+            "ETT",
+            "Destination",
+            "Delete Button"
+    };
 
     private Object[][] dbData;
-    public TotTablePanel(GeneralWard methods){
 
-        try {
-            dbData = methods.getPatientData();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+    public OthTablePanel(GeneralWard methods, OtherTableData otherTableData){
+        dbData = otherTableData.getData();
+
         //Instantiating table with appropriate data and tablemodel
 
-        tableModel = new TotTableModel(columnName, dbData);        //Instance of MytableModel
+        tableModel = new OthTableModel(columnName, dbData);        //Instance of OthtableModel
         table = new JTable(tableModel);         //Creating a table of model tablemodel (instance of MyTableModel)
         scrollPane = new JScrollPane(table);    //Creating scrollpane where table is located (for viewing purposes)
+
 
         //Editing table
         setupTable(table);
 
-        //Action happening when we press delete button
         Action deletePopUp = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -55,21 +59,20 @@ public class TotTablePanel extends JPanel implements TableModelListener {
             }
         };
 
-        //
+
         ButtonColumn deletePatient = new ButtonColumn(table, deletePopUp, 8);
+
 
         this.setLayout(new GridLayout());
         this.add(scrollPane);
     }
 
-
     @Override
     public void tableChanged(TableModelEvent e) {
-
         //Row and column being edited
         int row = e.getFirstRow();
         int column = e.getColumn();
-        tableModel = (TotTableModel)e.getSource();   //Tablemodel used
+        tableModel = (OthTableModel)e.getSource();   //Tablemodel used
 
         //Name of the column and data introduced
         String columnName = tableModel.getColumnName(column);
@@ -79,11 +82,7 @@ public class TotTablePanel extends JPanel implements TableModelListener {
 
         //Printing out what has been edited
         System.out.println("Patient bed: " + bedNum + "     Edited '" + columnName+ "': " +data);
-    }
 
-    private Object dateFormatter(LocalDateTime localDateTime) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-        return localDateTime.format(formatter);
     }
 
     public void setupTable(JTable table) {

@@ -1,8 +1,10 @@
-package AMCWardPanels.TableFrames;
+package AMCWardPanels.TableFrames.Others;
+
+import AMCWardPanels.TableFrames.MyTableModel;
 
 import java.util.Vector;
 
-public class OthTableModel extends MyTableModel{
+public class OthTableModel extends MyTableModel {
     public OthTableModel(String[] columnName, Object[][] data) {
         super(columnName, data);
     }
@@ -13,9 +15,6 @@ public class OthTableModel extends MyTableModel{
 
     //Overriding the parent's isCellEditable method
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-        if (columnIndex == 5 || columnIndex==7 || columnIndex==8){
-            return true;
-        }
-        else return false;
+        return false;
     }
 }

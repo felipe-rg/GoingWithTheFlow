@@ -1,10 +1,13 @@
-/*
-package CUTableFrames;
-import AMCWardPanels.TableFrames.*;
+package AMCWardPanels.TableFrames.Incoming;
 
+import AMCWardPanels.TableFrames.ButtonColumn;
+import AMCWardPanels.TableFrames.DeletePopUp;
+import AMCWardPanels.TableFrames.MultiLineTableHeaderRenderer;
+import AMCWardPanels.TableFrames.TimeRenderer;
+import AMCWardPanels.WardInfo;
 import Client.*;
-import Methods.ControlCentre;
 import Methods.GeneralWard;
+import Methods.tableInfo.IncomingTableData;
 
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
@@ -18,7 +21,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 
-public class CUInTablePanel extends JPanel implements TableModelListener {
+public class InTablePanel extends JPanel implements TableModelListener {
     //Table and scrollpane where table sits
     private JTable table;
     private JScrollPane scrollPane;
@@ -47,32 +50,23 @@ public class CUInTablePanel extends JPanel implements TableModelListener {
 
     private Object[][] dbData;
 
-    private ControlCentre methods;
+    private GeneralWard methods;
 
     //Constructor
-    public CUInTablePanel(ControlCentre methods) {
-
+    public InTablePanel(GeneralWard methods, IncomingTableData incomingTableData, WardInfo wardInfo) {
         this.methods = methods;
+        dbData = incomingTableData.getData();
+        try {
+            if (methods.getWardType(methods.wardId).equals("AMU")){
+                tableModel = new InTableModel(amcColumnName, dbData);        //Instance of IntableModel extending from MyTableModel
+            }
+            else {
+                tableModel = new InTableModel(lsColumnName, dbData);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-            try {
-                dbData = this.methods.getIncomingData();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-            tableModel = new InTableModel(amcColumnName, dbData);        //Instance of IntableModel extending from MyTableModel
-        }
-        else {
-            try {
-                dbData = this.methods.getLSIncomingData();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-            tableModel = new InTableModel(lsColumnName, dbData);
-        }
 
         //Instantiating table with appropriate data and tablemodel
 
@@ -206,11 +200,9 @@ public class CUInTablePanel extends JPanel implements TableModelListener {
             has been accepted by medicine or not. If they have been accepted by medicine, then the button
             can be clicked, if not then it does not work.
          */
-/*
         tableModel.isCellEditable(row, column);
     }
- */
-    /*
+
     //Transforming a LocalDateTime object into a string displaying hours and minutes in the form "HH:mm"
     public String dateFormatter(LocalDateTime localDateTime){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
@@ -228,4 +220,6 @@ public class CUInTablePanel extends JPanel implements TableModelListener {
         table.getModel().addTableModelListener(this);
     }
 }
-*/
+
+
+

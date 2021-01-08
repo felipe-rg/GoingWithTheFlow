@@ -1,9 +1,9 @@
+import AMCWardPanels.TableFrames.MainPanel;
+import CUTablePanels.IncomingTablePanel;
 import Client.Patient;
 import AMCWardPanels.TableFrames.ColorCodePanel;
-import AMCWardPanels.TableFrames.InTablePanel;
 import AMCWardPanels.Title;
 import Methods.ControlCentre;
-import Methods.GeneralWard;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,7 +17,7 @@ public class Incoming {
 
     //private GeneralWard methods;
 
-    public Incoming(ArrayList<Patient> incomingPatients, ControlCentre methods) {
+    public Incoming(ControlCentre methods) {
 
         JFrame f = new JFrame();                   //creates JFrame
         JPanel mainPanel = new JPanel();           // creates MainPanel
@@ -39,39 +39,23 @@ public class Incoming {
             @Override
             public void actionPerformed(ActionEvent e) {    // when refresh button is selected
                 f.dispose();                                // current frame will close
-                try {
-                    Incoming page = new Incoming(methods.seeIncomingList() , methods);    // class will be called again
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
+                Incoming page = new Incoming(methods);    // class will be called again
             }
         });
 
-        JPanel infoPanel = new JPanel();                        // creates info panel
+        //
 
-        //JPanel inTablePanel = new InTablePanel(methods);
+        //TablePanel containing the incoming table scrollpane
+        JPanel incomingTablePanel = new IncomingTablePanel(methods);
 
-        //JLabel AMU1info = new JLabel("A&E Patient table goes here");
-        JPanel leftPanel = new JPanel();
-        JPanel rightPanel = new JPanel();
-        JPanel colorCodePanel = new ColorCodePanel();
-
-        leftPanel.setPreferredSize(new Dimension(100,100));
-        rightPanel.setPreferredSize(new Dimension(100,100));
-        colorCodePanel.setPreferredSize(new Dimension(100,100));
-
-        infoPanel.setLayout(new BorderLayout());
-        infoPanel.add(leftPanel, BorderLayout.WEST);
-        infoPanel.add(rightPanel, BorderLayout.EAST);
-        infoPanel.add(colorCodePanel, BorderLayout.SOUTH);
-        //infoPanel.add(inTablePanel, BorderLayout.CENTER);
+        //MainPanel that contains panels on the sides to make table be at the centre
+        MainPanel mainTablePanel = new MainPanel(true, " ", 2);
+        mainTablePanel.add(incomingTablePanel, BorderLayout.CENTER);
 
 
         mainPanel.setLayout(new BorderLayout());
         mainPanel.add(titlePanel, BorderLayout.NORTH);
-        mainPanel.add(infoPanel, BorderLayout.CENTER);
+        mainPanel.add(mainTablePanel, BorderLayout.CENTER);
 
         f.getContentPane().add(mainPanel);
         f.setVisible(true);

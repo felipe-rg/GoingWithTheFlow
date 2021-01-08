@@ -3,7 +3,6 @@ package AMCWardPanels;
 import Client.*;
 import Methods.GeneralWard;
 
-import javax.security.auth.callback.ConfirmationCallback;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
@@ -15,109 +14,82 @@ import java.util.ArrayList;
 import javax.swing.JRadioButton;
 
 public class BedButton extends JButton{
-    private int BedId;   // kept as string in case e decide to name them with characters too
-    private String status;    // free (f), if it is occupied (o) or closed (c)
-    private String sex;    // when empty, gender = x
-    private Boolean sideroom;
+    private Bed bed;
     private GeneralWard methods;
     private LocalDateTime ETD;
     Topography top;
-    //constructor; when instantiating a bed its location must be specified with x and y.
-    public BedButton(Topography top, GeneralWard methods, int BedId, String status, String sex, Boolean sideroom, Integer x, Integer y) {
-        this.BedId = BedId;
-        this.status = status; //f = free, o = occupied, c = closed
-        this.sideroom = sideroom;
-        this.sex = sex;
-        this.methods = methods;
 
+    //constructor; when instantiating a bed its location must be specified with x and y.
+    public BedButton(Topography top, GeneralWard methods, Bed bed, Integer x, Integer y) {
+        this.bed = bed;
+        this.methods = methods;
         this.top = top;
 
-        this.setText(String.valueOf(BedId));
+        //Makes bed pretty
+        this.setText(String.valueOf(bed.getBedId()));
         this.setFont(new Font("Verdana", Font.PLAIN, 30));
         this.setBounds(x, y, 70, 140);
         this.setOpaque(true);
-        if(status.equals("O")){
-            this.setBackground(Color.decode("#E74C3C"));
-            try {
-                Patient p = methods.getPatient(BedId);
-                this.ETD = p.getEstimatedTimeOfNext();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
+
+        String colour = null;
+        try {
+            colour = methods.getBedColour(bed.getBedId());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        if(status.equals("F")){this.setBackground(Color.decode("#2ECC71")); }
-        if(status.equals("C")){this.setBackground(Color.BLACK); }
+        this.setBackground(Color.decode(colour));
+
     }
 
     // functions that return bed information
-    public int getID(){
-        return this.BedId;
-    }
-    public String getStatus(){ return this.status; }
-    public Boolean getSR(){ return this.sideroom; }
-    public String getSex(){ return this.sex; }
     public LocalDateTime getETD(){return this.ETD;}
-
-    public void makeFull(){
-        //TODO setBed
-        this.status = "O";
-        this.setBackground(Color.decode("#E74C3C"));
-        this.repaint();
-        refreshTopography();
+    public void setETD(LocalDateTime time){this.ETD = time;}
+    //Refreshes the numbers in topography when things are changed
+    public void refreshTopography(){
+        top.refresh(methods);
     }
+
+    public String getBedButtonStatus(){
+        return bed.getStatus();
+    }
+
+    //Used when patients are moved into/from a bed, or a bed must be closed
     public void makeEmpty(Patient p){
         try {
-            methods.removePatient(p.getId(), BedId);
+            methods.removePatient(p.getId(), bed.getBedId());
         } catch (IOException e) {
             e.printStackTrace();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        this.setStatus("F");
         this.setBackground(Color.decode("#2ECC71"));
         refreshTopography();
     }
     public void makeClosed(){
         try {
-            methods.editBed(BedId, "status", "'C'");
+            methods.editBed(bed.getBedId(), "status", "'C'");
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
         }
-        this.setStatus("C");
+        bed.setStatus("C");
         this.setBackground(Color.BLACK);
         refreshTopography();
     }
     public void makeOpen(){
         try {
-            methods.editBed(BedId, "status", "'F'");
+            methods.editBed(bed.getBedId(), "status", "'F'");
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
         }
-        this.setStatus("F");
+        bed.setStatus("F");
         this.setBackground(Color.decode("#2ECC71"));
         refreshTopography();
     }
 
-    public void refreshTopography(){
-        top.refresh();
-    }
-
-    public void setETD(LocalDateTime time){this.ETD = time;}
-    public void setSex(String sex){this.sex = sex;}
-    public void setSR(Boolean sr){ this.sideroom = sr; }
-    public void setStatus(String status){ this.status = status; }
-
-    // creates a frame with a panel inside, then 3 labels with the patient information and an 'edit' button. Once clicked, the edit button calls the 'inputNewInfo' function
     public void printInfoFull(){
         Patient p = new Patient();
         try {
-            p = methods.getPatient(BedId);
+            p = methods.getPatient(bed.getBedId());
         } catch (IOException e) {
             e.printStackTrace();
         } catch (SQLException throwables) {
@@ -132,19 +104,29 @@ public class BedButton extends JButton{
         infoFrame.setLocationRelativeTo(null);
 
         // labels with the bed information using methods from class Bed
-        JLabel bedIdLabel = new JLabel("<html><b>Bed ID: </b>"+this.getID()+"</html>",SwingConstants.CENTER);
+        JLabel bedIdLabel = new JLabel("<html><b>Bed ID: </b>"+bed.getBedId()+"</html>",SwingConstants.CENTER);
         bedIdLabel.setFont(bedIdLabel.getFont().deriveFont(15.0f));
         JLabel patientIdLabel = new JLabel("<html><b>Patient ID: </b>"+p.getId()+"</html>", SwingConstants.CENTER);
         patientIdLabel.setFont(patientIdLabel.getFont().deriveFont(15.0f));
         JLabel ageLabel = new JLabel("<html><b>Date of Birth: </b>"+p.getDateOfBirth()+"</html>",SwingConstants.CENTER);
         JLabel genderLabel = new JLabel("<html><b>Gender: </b>"+p.getSex()+"</html>",SwingConstants.CENTER);
-        JLabel srLabel = new JLabel("<html><b>Sideroom: </b>"+this.getSR()+"</html>", SwingConstants.CENTER);
+        JLabel srLabel = new JLabel("<html><b>Sideroom: </b>"+bed.getHasSideRoom()+"</html>", SwingConstants.CENTER);
         JLabel diaLabel = new JLabel("<html><b>Diagnosis: </b>"+p.getInitialDiagnosis()+"</html>", SwingConstants.CENTER);
-
-        // formating ETD time
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-        String ETDTime = p.getEstimatedTimeOfNext().format(formatter);
-        JLabel ETDLabel = new JLabel("<html><b>ETD: </b>"+ETDTime+"</html>", SwingConstants.CENTER);
+        JLabel nextDestLabel = null;
+        try {
+            nextDestLabel = new JLabel("<html><b>Next Destination:   </b>"+methods.getWardName(p.getNextDestination())+"</html>", SwingConstants.CENTER);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        JLabel ETDLabel = new JLabel();
+        if(p.getEstimatedTimeOfNext().isEqual(p.getArrivalDateTime())){
+            ETDLabel = new JLabel("<html><b>ETD:</b> N/A</html>", SwingConstants.CENTER);
+        }
+        else {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+            String ETDTime = p.getEstimatedTimeOfNext().format(formatter);
+            ETDLabel = new JLabel("<html><b>ETD: </b></html>"+ETDTime, SwingConstants.CENTER);
+        }
 
         //jbutton for editing bed
         JButton editButton = new JButton("Edit Patient Information");
@@ -157,14 +139,12 @@ public class BedButton extends JButton{
 
         // delete patient, making the bed empty
         JButton deleteButton = new JButton("Delete Patient");
-        deleteButton.setBounds(400, 520, 100, 20);
         deleteButton.addActionListener(evt -> {
             makeEmpty(finalP);
             infoFrame.dispose();
         });
 
         JButton selectWardButton = new JButton("Make Transfer Request");
-        selectWardButton.setBounds(400, 500, 100, 20);
         selectWardButton.addActionListener(evt -> {
             selectWard(finalP);
             infoFrame.dispose();
@@ -173,31 +153,37 @@ public class BedButton extends JButton{
         JButton editAge = new JButton("Edit");
         Patient finalP1 = p;
         editAge.addActionListener(evt -> {
-            editAge(finalP1);
+            editAge(finalP);
             infoFrame.dispose();
         });
 
         JButton editGender = new JButton("Edit");
         editGender.addActionListener(evt -> {
-            editParameter("Gender", finalP1);
+            editParameter("Gender", finalP);
             infoFrame.dispose();
         });
 
         JButton editSR = new JButton("Edit");
         editSR.addActionListener(evt -> {
-            editParameter("Sideroom", finalP1);
+            editParameter("Sideroom", finalP);
             infoFrame.dispose();
         });
 
         JButton editDia = new JButton("Edit");
         editDia.addActionListener(evt -> {
-            editParameter("Diagnosis", finalP1);
+            editParameter("Diagnosis", finalP);
             infoFrame.dispose();
         });
 
         JButton editETD = new JButton("Edit");
         editETD.addActionListener(evt -> {
-            editETD(finalP1);
+            editETD(finalP);
+            infoFrame.dispose();
+        });
+
+        JButton changeNextDest = new JButton("Edit");
+        changeNextDest.addActionListener(evt -> {
+            selectWard(finalP);
             infoFrame.dispose();
         });
 
@@ -250,26 +236,32 @@ public class BedButton extends JButton{
         c.gridx = 0;
         c.gridy = 5;
         infoPanel.add(ETDLabel, c);
-        c.gridwidth = 2;
+        c.gridwidth = 1;
         c.gridx = 2;
         infoPanel.add(editETD, c);
+
+        c.gridwidth = 2;
+        c.gridx = 0;
+        c.gridy = 6;
+        infoPanel.add(nextDestLabel, c);
+        c.gridwidth = 1;
+        c.gridx = 2;
+        infoPanel.add(changeNextDest, c);
 
         c.fill = GridBagConstraints.HORIZONTAL;
         c.weightx = 0.0;
         c.gridwidth = 3;
         c.gridx = 0;
-        c.gridy = 6;
+        c.gridy = 7;
         infoPanel.add(selectWardButton, c);
 
-        c.gridy = 7;
+        c.gridy = 8;
         infoPanel.add(deleteButton, c);
-
 
         infoFrame.add(infoPanel);
     }
 
-    private void selectWard(Patient p){
-        Client client = new Client();
+    public void printInfoEmpty(){
         JFrame infoFrame = new JFrame();
 
         //edit info Frame
@@ -278,61 +270,10 @@ public class BedButton extends JButton{
         infoFrame.setVisible(true);
         infoFrame.setLocationRelativeTo(null);
 
-        ArrayList<Ward> wards = new ArrayList<Ward>();
-        //FIXME get all wards more efficiently
-        for(int i=3; i<8; i++) {
-            try {
-                ArrayList<String> json = client.makeGetRequest("*", "wards", "wardid="+i);
-                if(json.size()!=0){
-                    Ward ward = client.wardsFromJson(json).get(0);
-                    wards.add(ward);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        infoFrame.setLayout(new GridLayout(wards.size()+2,1));
-        ButtonGroup longstayWards = new ButtonGroup();
-        for(Ward w:wards){
-            JRadioButton lsWard = new JRadioButton(w.getWardName());
-            lsWard.setActionCommand(w.getWardName());
-            lsWard.setFont(new Font("Verdana", Font.PLAIN, 20));
-            longstayWards.add(lsWard);
-            infoFrame.add(lsWard);
-        }
-        JButton setETDButton = new JButton("Select time from now");
-        setETDButton.addActionListener(evt -> {
-            editETD(p);
-        });
-        infoFrame.add(setETDButton);
-        JButton submitWard = new JButton("Submit");
-        infoFrame.add(submitWard);
-        submitWard.addActionListener(evt -> {
-            String selected = longstayWards.getSelection().getActionCommand();
-            try {
-                ArrayList<String> json = client.makeGetRequest("*", "wards", "wardname='"+selected+"'");
-                Ward ward = client.wardsFromJson(json).get(0);
-                client.makePutRequest("patients", "nextdestination="+ward.getWardId(), "id="+p.getId());
-                client.makePutRequest("patients", "transferrequeststatus='P'", "id="+p.getId());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            infoFrame.dispose();
-        });
-
-    }
-
-    public void printInfoEmpty(){
-        JFrame infoFrame = new JFrame();
-        infoFrame.setSize(300,300);
-        infoFrame.setBackground(Color.WHITE);
-        infoFrame.setVisible(true);
-        infoFrame.setLocationRelativeTo(null);
-
         // labels with the bed information using methods from class Bed
-        JLabel bedIdLabel = new JLabel("<html><b>Bed ID: </b>"+this.getID()+"</html>",SwingConstants.CENTER);
-        JLabel srLabel = new JLabel("<html><b>Sideroom: </b>"+this.getSR()+"</html>", SwingConstants.CENTER);
-        JLabel sexLabel = new JLabel("<html><b>Gender: </b>"+this.getSex()+"</html>", SwingConstants.CENTER);
+        JLabel bedIdLabel = new JLabel("<html><b>Bed ID: </b>"+bed.getBedId()+"</html>",SwingConstants.CENTER);
+        JLabel srLabel = new JLabel("<html><b>Sideroom: </b>"+bed.getHasSideRoom()+"</html>", SwingConstants.CENTER);
+        JLabel sexLabel = new JLabel("<html><b>Gender: </b>"+bed.getForSex()+"</html>", SwingConstants.CENTER);
 
         JButton editGender = new JButton("Edit");
         editGender.addActionListener(evt -> {
@@ -396,9 +337,9 @@ public class BedButton extends JButton{
         infoFrame.setLocationRelativeTo(null);
 
         // labels with the bed information using methods from class Bed
-        JLabel bedIdLabel = new JLabel("<html><b>Bed ID: </b>"+this.getID()+"</html>",SwingConstants.CENTER);
-        JLabel srLabel = new JLabel("<html><b>Sideroom: </b>"+this.getSR()+"</html>", SwingConstants.CENTER);
-        JLabel sexLabel = new JLabel("<html><b>Gender: </b>"+this.getSex()+"</html>", SwingConstants.CENTER);
+        JLabel bedIdLabel = new JLabel("<html><b>Bed ID: </b>"+bed.getBedId()+"</html>",SwingConstants.CENTER);
+        JLabel srLabel = new JLabel("<html><b>Sideroom: </b>"+bed.getHasSideRoom()+"</html>", SwingConstants.CENTER);
+        JLabel sexLabel = new JLabel("<html><b>Gender: </b>"+bed.getForSex()+"</html>", SwingConstants.CENTER);
 
         JButton editGender = new JButton("Edit");
         editGender.addActionListener(evt -> {
@@ -451,8 +392,329 @@ public class BedButton extends JButton{
         infoPanel.add(openButton, c);
 
         infoFrame.add(infoPanel);
+    }
 
 
+    private void selectWard(Patient p){
+        Client client = new Client();
+        JFrame infoFrame = new JFrame();
+
+        //edit info Frame
+        infoFrame.setSize(300,300);
+        infoFrame.setBackground(Color.WHITE);
+        infoFrame.setVisible(true);
+        infoFrame.setLocationRelativeTo(null);
+
+        ArrayList<Ward> wards = new ArrayList<Ward>();
+        //FIXME get all wards more efficiently
+        for(int i=3; i<8; i++) {
+            try {
+                ArrayList<String> json = client.makeGetRequest("*", "wards", "wardid="+i);
+                if(json.size()!=0){
+                    Ward ward = client.wardsFromJson(json).get(0);
+                    wards.add(ward);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        infoFrame.setLayout(new GridLayout(wards.size()+2,1));
+        ButtonGroup longstayWards = new ButtonGroup();
+        for(Ward w:wards){
+            JRadioButton lsWard = new JRadioButton(w.getWardName());
+            lsWard.setActionCommand(w.getWardName());
+            lsWard.setFont(new Font("Verdana", Font.PLAIN, 20));
+            longstayWards.add(lsWard);
+            infoFrame.add(lsWard);
+        }
+        JButton setETDButton = new JButton("Select time from now");
+        setETDButton.addActionListener(evt -> {
+            setETDFrame(p);
+        });
+        infoFrame.add(setETDButton);
+        JButton submitWard = new JButton("Submit");
+        infoFrame.add(submitWard);
+        submitWard.addActionListener(evt -> {
+            String selected = longstayWards.getSelection().getActionCommand();
+            try {
+                ArrayList<String> json = client.makeGetRequest("*", "wards", "wardname='"+selected+"'");
+                Ward ward = client.wardsFromJson(json).get(0);
+                client.makePutRequest("patients", "nextdestination="+ward.getWardId(), "id="+p.getId());
+                client.makePutRequest("patients", "transferrequeststatus='P'", "id="+p.getId());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            infoFrame.dispose();
+        });
+
+    }
+
+    // prints text fields, gets info from user and updates gender and age
+    public void inputNewBedInfo() {
+        // new popup over which everything is put
+        JFrame editorFrame = new JFrame();
+        editorFrame.setSize(300, 300);
+        editorFrame.setBackground(Color.WHITE);
+        editorFrame.setVisible(true);
+        editorFrame.setLocation(300, 300);
+        editorFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+
+        // panel on editorFrame
+        JPanel editorPanel = new JPanel();
+        editorPanel.setLayout(new GridLayout(5, 1));
+        editorPanel.setBackground(Color.WHITE);
+
+        // add input fields to editorPanel
+        JLabel infoSex = new JLabel("Gender:     " , SwingConstants.RIGHT);
+        String[] sex = { "Uni","Male","Female"};
+        final JComboBox<String> pSex = new JComboBox<String>(sex);
+
+        JLabel infoSR = new JLabel("Has a side room?     " , SwingConstants.RIGHT);
+        String[] SR = {"false", "true"};
+        final JComboBox<String> pSR = new JComboBox<String>(SR);
+
+        JLabel infoStat = new JLabel("Bed Status     " , SwingConstants.RIGHT);
+        String[] Stat = { "Open","Closed"};
+        final JComboBox<String> pStat = new JComboBox<String>(Stat);
+
+
+        // confirm button on editorPanel. when clicked, this button must (1) assign new values to all fields, (2) change color from green to red if bed was empty
+        JButton confirmButton = new JButton("Confirm Edits");
+        confirmButton.addActionListener(evt -> {
+
+            try {
+                //set side room
+                methods.editBed(bed.getBedId(), "hassideroom", (String)pSR.getSelectedItem());
+
+                //set Sex
+                methods.editBed(bed.getBedId(), "forsex", "'"+pSex.getSelectedItem()+"'");
+
+                String status = null;
+                if(pStat.getSelectedItem()=="Open"){
+                    status = "'F'";
+                    this.setBackground(Color.decode("#2ECC71"));
+                } else {
+                    status = "'C'";
+                    this.setBackground(Color.BLACK);
+                }
+
+                methods.editBed(bed.getBedId(), "status", status);
+                refreshTopography();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+            // get rid of editor popup after confirming edits
+            editorFrame.dispose();
+        });
+        editorPanel.add(infoSex);
+        editorPanel.add(pSex);
+        editorPanel.add(infoSR);
+        editorPanel.add(pSR);
+        editorPanel.add(infoStat);
+        editorPanel.add(pStat);
+        editorPanel.add(confirmButton);
+        editorPanel.setVisible(true);
+        editorFrame.add(editorPanel);
+    }
+
+    private void inputNewPatientInfo(Patient p){
+            // new popup over which everything is put
+            JFrame editorFrame = new JFrame();
+            editorFrame.setSize(700,600);
+            editorFrame.setBackground(Color.WHITE);
+            editorFrame.setVisible(true);
+            editorFrame.setLocationRelativeTo(null);
+            editorFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+
+            // panel on editorFrame
+            JPanel editorPanel = new JPanel();
+            editorPanel.setLayout(new GridLayout(5,1));
+            editorPanel.setBackground(Color.WHITE);
+
+        JLabel infoDOB = new JLabel("Date of Birth     " , SwingConstants.RIGHT);
+        JPanel panelDOB = new JPanel();
+        panelDOB.setLayout(new GridLayout(2,3));
+
+        JLabel dayLabel = new JLabel("Day");
+        JLabel monthLabel = new JLabel("Month");
+        JLabel yearLabel = new JLabel("Year");
+        panelDOB.add(dayLabel);
+        panelDOB.add(monthLabel);
+        panelDOB.add(yearLabel);
+
+        Integer[] days = new Integer[31];
+        int inc=1;
+        for(int i=0;i<31;i++){
+            days[i]= inc;
+            inc++;
+        }
+        JComboBox<Integer> day = new JComboBox<>(days);
+        panelDOB.add(day);
+
+        Integer[] months = new Integer[12];
+        inc=1;
+        for(int i=0;i<12;i++){
+            months[i]= inc;
+            inc++;
+        }
+        JComboBox<Integer> month = new JComboBox<>(months);
+        panelDOB.add(month);
+
+        int currentYear = 2021;
+        Integer[] years = new Integer[currentYear];
+        inc=currentYear;
+        for(int i=0;i<currentYear;i++){
+            years[i]= inc;
+            inc--;
+        }
+        JComboBox<Integer> year = new JComboBox<>(years);
+        panelDOB.add(year);
+
+        // add input fields to editorPanel
+        JLabel infoSex = new JLabel("Gender:     " , SwingConstants.RIGHT);
+        String[] sex = {"Male","Female"};
+        final JComboBox<String> pSex = new JComboBox<String>(sex);
+
+        JLabel infoDia = new JLabel("Diagnosis:     " , SwingConstants.RIGHT);
+        JTextField diaTextField = new JTextField(p.getInitialDiagnosis());
+
+        // confirm button on editorPanel. when clicked, this button must (1) assign new values to all fields, (2) change color from green to red if bed was empty
+        JLabel infoConf = new JLabel("Confirm:     " , SwingConstants.RIGHT);
+        JButton confirmButton = new JButton("Submit");
+        confirmButton.addActionListener(evt -> {
+
+            // asign new values for gender, age and diagnosis
+            try {
+                //Change date of birth
+                LocalDate DOB = LocalDate.of(  (Integer) year.getSelectedItem(),  (Integer) month.getSelectedItem(),  (Integer) day.getSelectedItem() );
+
+                methods.editPatient(p.getId(), "dateofbirth", "'"+DOB+"'");
+                //Todo initial diagnosis multiple words!
+                methods.editPatient(p.getId(), "initialdiagnosis", "'"+diaTextField.getText()+"'");
+
+                //change sex
+                methods.editPatient(p.getId(), "sex", "'"+pSex.getSelectedItem()+"'");
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+
+            // get rid of editor popup after confirming edits
+            editorFrame.dispose();
+        });
+
+        editorPanel.add(infoSex);
+        editorPanel.add(pSex);
+        editorPanel.add(infoDOB);
+        editorPanel.add(panelDOB);
+        editorPanel.add(infoDia);
+        editorPanel.add(diaTextField);
+        editorPanel.add(infoConf);
+        editorPanel.add(confirmButton);
+        editorPanel.setVisible(true);
+        editorFrame.add(editorPanel);
+    }
+
+    public void setETDFrame(Patient p){
+        // frame popup where the panel, textfields and confirm button are
+        JFrame ETDFrame = new JFrame();
+        ETDFrame.setSize(300,300);
+        ETDFrame.setBackground(Color.WHITE);
+        ETDFrame.setVisible(true);
+        ETDFrame.setLocation(300,300);
+        ETDFrame.setLayout(new GridLayout(2,1));
+
+        // pannel where textfields and confirm button are
+        JPanel ETDPanel = new JPanel();
+        ETDPanel.setBackground(Color.WHITE);
+        ETDPanel.setLayout(new GridLayout(2,2));
+
+        JTextField InputHrs = new JTextField("ETD Hours");
+        JTextField InputMins = new JTextField("ETD Minutes");
+        JButton confirmButton = new JButton("Confirm");
+        confirmButton.addActionListener(evt -> {
+
+            //check that minutes is <60 and
+            if (Integer.parseInt(InputMins.getText()) > 59) { Warning("Minutes must be an integer less than 59"); }
+            //check that hours is between 00 and 23
+            if (Integer.parseInt(InputHrs.getText()) > 23) { Warning("Hours must be an integer less than 24"); }
+
+            // if both hours and minutes have been inputted, then set the new time on the same day but the new time
+            if (!InputHrs.getText().equals("ETD Hours") && !InputMins.getText().equals("ETD Minutes")) {
+                int Minutes = Integer.parseInt(InputMins.getText());
+                int Hours = Integer.parseInt(InputHrs.getText());
+                this.setETD(LocalDateTime.now().plusMinutes(Minutes).plusHours(Hours));
+                ETDFrame.dispose(); //close popup
+            }
+            // if only hours are inputted, change to the new hour o'clock
+            if (!InputHrs.getText().equals("ETD Hours") && InputMins.getText().equals("ETD Minutes")) {
+                int Minutes = 0;
+                int Hours = Integer.parseInt(InputHrs.getText());
+                this.setETD(LocalDateTime.now().plusMinutes(Minutes).plusHours(Hours));
+                ETDFrame.dispose(); //close popup
+            }
+            // if only minutes are inputted, change ETD to the new minutes in the current hour
+            if (InputHrs.getText().equals("ETD Hours") && !InputMins.getText().equals("ETD Minutes")) {
+                int Minutes = Integer.parseInt(InputMins.getText());
+                int Hours = LocalDateTime.now().getHour();
+
+                // if the new ETD is in the past
+                if(Minutes < LocalDateTime.now().getMinute()) {
+                    this.Warning("Time is in the past");
+                }
+
+                else{ this.setETD(LocalDateTime.now().plusMinutes(Minutes).plusHours(Hours)); }
+            }
+            try {
+                methods.editPatient(p.getId(), "estimatedatetimeofnext", "'"+ETD+"'");
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+
+        });
+
+        ETDPanel.add(InputHrs);
+        ETDPanel.add(InputMins);
+        ETDFrame.add(ETDPanel);
+        ETDFrame.add(confirmButton);
+
+    }
+
+    public void Warning(String Problem){
+        JFrame WarningFrame = new JFrame();
+        WarningFrame.setSize(300,75);
+        WarningFrame.setBackground(Color.WHITE);
+        WarningFrame.setVisible(true);
+        WarningFrame.setLocationRelativeTo(null);
+
+        JLabel ReasonLabel = new JLabel("Error: "+Problem, SwingConstants.CENTER);
+        JLabel WarningLabel = new JLabel("Please try again", SwingConstants.CENTER);
+
+        JPanel WarningPanel = new JPanel();
+        WarningPanel.add(ReasonLabel);
+        WarningPanel.add(WarningLabel);
+
+        WarningFrame.add(WarningPanel);
+    }
+
+    public LocalDateTime getBedButtonETD(){
+        LocalDateTime etd = null;
+        try {
+            Patient patient = methods.getPatient(bed.getBedId());
+            etd = patient.getEstimatedTimeOfNext();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return etd;
     }
 
     // functions that make edits when the bed is full and a single parameter must be changed
@@ -504,6 +766,7 @@ public class BedButton extends JButton{
 
                 else{ this.setETD(LocalDateTime.now().plusMinutes(Minutes).plusHours(Hours)); }
             }
+            /*
             try {
                 System.out.println(ETD);
                 methods.editPatientETON(p.getId(), ETD);
@@ -512,6 +775,7 @@ public class BedButton extends JButton{
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
+             */
 
         });
 
@@ -602,8 +866,10 @@ public class BedButton extends JButton{
 
 
     }
+
     // this one is used for sideroom, sex and diagnosis. which is it is chosen with 'par'
     private void editParameter( String par , Patient p){
+        // initialising editFrame (the popup) and editPanel, which is on editFrame and contains a JTextField and a JButton
         JFrame editFrame = new JFrame("Edit");
         editFrame.setSize(300,200);
         editFrame.setBackground(Color.WHITE);
@@ -612,8 +878,13 @@ public class BedButton extends JButton{
         JPanel editPanel = new JPanel();
         editPanel.setLayout(new GridBagLayout());
 
-        JTextField newp = new JTextField("New "+p);
+        JTextField newp = new JTextField();
+        // initialise text field with the previous values of the parameter
+        if(par.equals("Gender")){ newp.setText(p.getSex()); }
+        if(par.equals("Sideroom")){ newp.setText(Boolean.toString(p.getNeedsSideRoom())); }
+        if(par.equals("Diagnosis")){ newp.setText(p.getInitialDiagnosis()); }
 
+        // when the confirm button is clicked, the information is changed in the database
         JButton ConfirmButton = new JButton("Confirm");
         ConfirmButton.addActionListener(evt -> {
             editFrame.dispose();
@@ -621,7 +892,7 @@ public class BedButton extends JButton{
                 try {
                     //change sex
                     methods.editPatient(p.getId(), "sex", "'"+newp.getText()+"'");
-                    this.sex = newp.getText();
+                    p.setSex(newp.getText());
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -630,7 +901,17 @@ public class BedButton extends JButton{
                 }
             }
             if(par.equals("Sideroom")){
-                setSR(false);
+                try {
+                    //set side room
+                    methods.editBed(bed.getBedId(), "hassideroom", newp.getText());
+                    if (newp.getText().equals("true") || newp.getText().equals("True") || newp.getText().equals("T") || newp.getText().equals("Y") || newp.getText().equals("Yes") || newp.getText().equals("yes")) {
+                        bed.setSR(true);
+                    } else {
+                        bed.setSR(false);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
             if(par.equals("Diagnosis")){
                 try {
@@ -653,181 +934,7 @@ public class BedButton extends JButton{
 
     }
 
-    // prints text fields, gets info from user and updates gender and age
-    public void inputNewBedInfo() {
-        // new popup over which everything is put
-        JFrame editorFrame = new JFrame();
-        editorFrame.setSize(300, 300);
-        editorFrame.setBackground(Color.WHITE);
-        editorFrame.setVisible(true);
-        editorFrame.setLocation(300, 300);
-        editorFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-
-        // panel on editorFrame
-        JPanel editorPanel = new JPanel();
-        editorPanel.setLayout(new GridLayout(5, 1));
-        editorPanel.setBackground(Color.WHITE);
-
-        // add input fields to editorPanel
-        JLabel infoSex = new JLabel("Gender:     " , SwingConstants.RIGHT);
-        String[] sex = { "Uni","Male","Female"};
-        final JComboBox<String> pSex = new JComboBox<String>(sex);
-
-        JLabel infoSR = new JLabel("Has a side room?     " , SwingConstants.RIGHT);
-        String[] SR = {"false", "true"};
-        final JComboBox<String> pSR = new JComboBox<String>(SR);
-
-        JLabel infoStat = new JLabel("Bed Status     " , SwingConstants.RIGHT);
-        String[] Stat = { "Open","Closed"};
-        final JComboBox<String> pStat = new JComboBox<String>(Stat);
-
-        // confirm button on editorPanel. when clicked, this button must (1) assign new values to all fields, (2) change color from green to red if bed was empty
-        JButton confirmButton = new JButton("Confirm Edits");
-        confirmButton.addActionListener(evt -> {
-
-            try {
-                //set side room
-                methods.editBed(BedId, "hassideroom", (String)pSR.getSelectedItem());
-                if(pSR.getSelectedItem() == "true"){
-                    this.sideroom = true;
-                } else {
-                    this.sideroom = false;
-                }
-                //set Sex
-                methods.editBed(BedId, "forsex", "'"+pSex.getSelectedItem()+"'");
-                this.sex = (String)pSex.getSelectedItem();
-
-                if((String)pStat.getSelectedItem() == "Open"){
-                    makeOpen();
-                } else { makeClosed();}
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-
-
-            // get rid of editor popup after confirming edits
-            editorFrame.dispose();
-        });
-        editorPanel.add(infoSex);
-        editorPanel.add(pSex);
-        editorPanel.add(infoSR);
-        editorPanel.add(pSR);
-        editorPanel.add(infoStat);
-        editorPanel.add(pStat);
-        editorPanel.add(confirmButton);
-        editorPanel.setVisible(true);
-        editorFrame.add(editorPanel);
-    }
-
-    private void inputNewPatientInfo(Patient p){
-        // new popup over which everything is put
-        JFrame editorFrame = new JFrame();
-        editorFrame.setSize(700,600);
-        editorFrame.setBackground(Color.WHITE);
-        editorFrame.setVisible(true);
-        editorFrame.setLocationRelativeTo(null);
-        editorFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-
-        // panel on editorFrame
-        JPanel editorPanel = new JPanel();
-        editorPanel.setLayout(new GridLayout(5,1));
-        editorPanel.setBackground(Color.WHITE);
-
-        JLabel infoDOB = new JLabel("Date of Birth     " , SwingConstants.RIGHT);
-        JPanel panelDOB = new JPanel();
-        panelDOB.setLayout(new GridLayout(2,3));
-
-        JLabel dayLabel = new JLabel("Day");
-        JLabel monthLabel = new JLabel("Month");
-        JLabel yearLabel = new JLabel("Year");
-        panelDOB.add(dayLabel);
-        panelDOB.add(monthLabel);
-        panelDOB.add(yearLabel);
-
-        Integer[] days = new Integer[31];
-        int inc=1;
-        for(int i=0;i<31;i++){
-            days[i]= inc;
-            inc++;
-        }
-        JComboBox<Integer> day = new JComboBox<>(days);
-        panelDOB.add(day);
-
-        Integer[] months = new Integer[12];
-        inc=1;
-        for(int i=0;i<12;i++){
-            months[i]= inc;
-            inc++;
-        }
-        JComboBox<Integer> month = new JComboBox<>(months);
-        panelDOB.add(month);
-
-        int currentYear = 2021;
-        Integer[] years = new Integer[currentYear];
-        inc=currentYear;
-        for(int i=0;i<currentYear;i++){
-            years[i]= inc;
-            inc--;
-        }
-        JComboBox<Integer> year = new JComboBox<>(years);
-        panelDOB.add(year);
-
-        // add input fields to editorPanel
-        JLabel infoSex = new JLabel("Gender:     " , SwingConstants.RIGHT);
-        String[] sex = {"Male","Female"};
-        final JComboBox<String> pSex = new JComboBox<String>(sex);
-
-        JLabel infoDia = new JLabel("Diagnosis:     " , SwingConstants.RIGHT);
-        JTextField diaTextField = new JTextField("PleaseTypeOneWordOnly");
-
-
-        // confirm button on editorPanel. when clicked, this button must (1) assign new values to all fields, (2) change color from green to red if bed was empty
-        JLabel infoConf = new JLabel("Confirm:     " , SwingConstants.RIGHT);
-        JButton confirmButton = new JButton("Submit");
-        confirmButton.addActionListener(evt -> {
-
-            editorFrame.dispose();
-            // change bed color if bed goes from empty to full
-            if (this.getStatus().equals("F")) {
-                this.makeFull();
-            }
-
-            // asign new values for gender, age and diagnosis
-            try {
-                //Change date of birth
-                LocalDate DOB = LocalDate.of(  (Integer) year.getSelectedItem(),  (Integer) month.getSelectedItem(),  (Integer) day.getSelectedItem() );
-                methods.editPatient(p.getId(), "dateofbirth", "'"+DOB+"'");
-                //Todo initial diagnosis multiple words!
-                methods.editPatient(p.getId(), "initialdiagnosis", "'"+diaTextField.getText()+"'");
-                //change sex
-                methods.editPatient(p.getId(), "sex", "'"+pSex.getSelectedItem()+"'");
-                this.setSex((String)pSex.getSelectedItem());
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-
-            // get rid of editor popup after confirming edits
-            editorFrame.dispose();
-        });
-
-        editorPanel.add(infoSex);
-        editorPanel.add(pSex);
-        editorPanel.add(infoDOB);
-        editorPanel.add(panelDOB);
-        editorPanel.add(infoDia);
-        editorPanel.add(diaTextField);
-        editorPanel.add(infoConf);
-        editorPanel.add(confirmButton);
-        editorPanel.setVisible(true);
-        editorFrame.add(editorPanel);
-    }
-
+    // this function is used to change the parameters of empty beds: gender or sideroom.
     private void editBed(String par){
         JFrame editFrame = new JFrame("Edit");
         editFrame.setSize(300,200);
@@ -843,27 +950,23 @@ public class BedButton extends JButton{
         ConfirmButton.addActionListener(evt -> {
             if(par.equals("Gender")){
                 try {
-                    methods.editBed(BedId, "forsex", "'"+newp.getText()+"'");
-                    this.setSex(newp.getText());
+                    methods.editBed(bed.getBedId(), "forsex", "'"+newp.getText()+"'");
+                    bed.setSex(newp.getText());
                 } catch (IOException e) {
                     e.printStackTrace();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
                 }
             }
-            if(par.equals("Sideroom")){
+            if(par.equals("Sideroom")) {
                 try {
                     //set side room
-                    methods.editBed(BedId, "hassideroom", newp.getText());
-                    if(newp.getText().equals("true") || newp.getText().equals("True") || newp.getText().equals("T") || newp.getText().equals("Y") || newp.getText().equals("Yes") || newp.getText().equals("yes")){
-                        this.sideroom = true;
+                    methods.editBed(bed.getBedId(), "hassideroom", newp.getText());
+                    if(newp.getText().equals("true") || newp.getText().equals("True") || newp.getText().equals("T") || newp.getText().equals("Y") || newp.getText().equals("Yes") || newp.getText().equals("yes")) {
+                        bed.setSR(true);
                     } else {
-                        this.sideroom = false;
+                        bed.setSR(false);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
                 }
             }
             editFrame.dispose();
@@ -881,91 +984,6 @@ public class BedButton extends JButton{
         editFrame.add(editPanel);
     }
 
-    /*
-    public void setETDFrame(Patient p){
-        // frame popup where the panel, textfields and confirm button are
-        JFrame ETDFrame = new JFrame();
-        ETDFrame.setSize(300,300);
-        ETDFrame.setBackground(Color.WHITE);
-        ETDFrame.setVisible(true);
-        ETDFrame.setLocationRelativeTo(null);
-        ETDFrame.setLayout(new GridLayout(2,1));
 
-        // pannel where textfields and confirm button are
-        JPanel ETDPanel = new JPanel();
-        ETDPanel.setBackground(Color.WHITE);
-        ETDPanel.setLayout(new GridLayout(2,2));
 
-        JTextField InputHrs = new JTextField("ETD Hours");
-        JTextField InputMins = new JTextField("ETD Minutes");
-        JButton confirmButton = new JButton("Confirm");
-        confirmButton.addActionListener(evt -> {
-
-            //check that minutes is <60 and
-            if (Integer.parseInt(InputMins.getText()) > 59) { Warning("Minutes must be an integer less than 59"); }
-            //check that hours is between 00 and 23
-            if (Integer.parseInt(InputHrs.getText()) > 23) { Warning("Hours must be an integer less than 24"); }
-
-            // if both hours and minutes have been inputted, then set the new time on the same day but the new time
-            if (!InputHrs.getText().equals("ETD Hours") && !InputMins.getText().equals("ETD Minutes")) {
-                int Minutes = Integer.parseInt(InputMins.getText());
-                int Hours = Integer.parseInt(InputHrs.getText());
-                this.setETD(LocalDateTime.now().plusMinutes(Minutes).plusHours(Hours));
-                ETDFrame.dispose(); //close popup
-            }
-            // if only hours are inputted, change to the new hour o'clock
-            if (!InputHrs.getText().equals("ETD Hours") && InputMins.getText().equals("ETD Minutes")) {
-                int Minutes = 0;
-                int Hours = Integer.parseInt(InputHrs.getText());
-                this.setETD(LocalDateTime.now().plusMinutes(Minutes).plusHours(Hours));
-                ETDFrame.dispose(); //close popup
-            }
-            // if only minutes are inputted, change ETD to the new minutes in the current hour
-            if (InputHrs.getText().equals("ETD Hours") && !InputMins.getText().equals("ETD Minutes")) {
-                int Minutes = Integer.parseInt(InputMins.getText());
-                int Hours = LocalDateTime.now().getHour();
-
-                // if the new ETD is in the past
-                if(Minutes < LocalDateTime.now().getMinute()) {
-                    this.Warning("Time is in the past");
-                }
-
-                else{ this.setETD(LocalDateTime.now().plusMinutes(Minutes).plusHours(Hours)); }
-            }
-            try {
-                System.out.println(ETD);
-                methods.editPatientETON(p.getId(), ETD);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-
-        });
-
-        ETDPanel.add(InputHrs);
-        ETDPanel.add(InputMins);
-        ETDFrame.add(ETDPanel);
-        ETDFrame.add(confirmButton);
-
-    }
-
-     */
-
-    public void Warning(String Problem){
-        JFrame WarningFrame = new JFrame();
-        WarningFrame.setSize(300,75);
-        WarningFrame.setBackground(Color.WHITE);
-        WarningFrame.setVisible(true);
-        WarningFrame.setLocationRelativeTo(null);
-
-        JLabel ReasonLabel = new JLabel("Error: "+Problem, SwingConstants.CENTER);
-        JLabel WarningLabel = new JLabel("Please try again", SwingConstants.CENTER);
-
-        JPanel WarningPanel = new JPanel();
-        WarningPanel.add(ReasonLabel);
-        WarningPanel.add(WarningLabel);
-
-        WarningFrame.add(WarningPanel);
-    }
 }

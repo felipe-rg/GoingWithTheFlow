@@ -4,7 +4,7 @@ import javax.swing.table.AbstractTableModel;
 import java.util.Vector;
 
 //Our own table model
-class MyTableModel extends AbstractTableModel {
+public class MyTableModel extends AbstractTableModel {
 
     //Our data
     protected Vector dataVector;        //Vector containing the actual data

@@ -95,13 +95,7 @@ public class ControlUnit {
             @Override
             public void actionPerformed(ActionEvent e) {
                 f.dispose();
-                try {
-                    Incoming ipList = new Incoming(methods.seeIncomingList(), methods);           // opens incoming patient list (new JFrame)
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
+                Incoming ipList = new Incoming(methods);           // opens incoming patient list (new JFrame)
             }
         });
 
@@ -124,7 +118,7 @@ public class ControlUnit {
         titleLS.setFont (titleLS.getFont ().deriveFont (24.0f));
         labelPadding(titleLS);
 
-        JLabel lcap = new JLabel("Longstay Ward Capacity: "+methods.getLongstayCapacityPerc()+"%");                       // add info
+        JLabel lcap = new JLabel("Long Stay Ward Capacity: "+methods.getLongstayCapacityPerc()+"%");                       // add info
         lcap.setFont (lcap.getFont ().deriveFont (14.0f));
         labelPadding(lcap);
 
@@ -135,19 +129,13 @@ public class ControlUnit {
         JLabel blank2 = new JLabel("   ");
         labelPadding(blank2);
 
-        JButton viewLS = new JButton("Click here to see Longstay Ward Information");
+        JButton viewLS = new JButton("Click here to see Long Stay Ward Information");
         viewLS.setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 10));
         viewLS.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 f.dispose();
-                try {
-                    LongStay LSpage = new LongStay(methods.getAllWardInfo(), methods);           // opens long stay ward overview
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
+                LongStay LSpage = new LongStay(methods);           // opens long stay ward overview
             }
         });
 
@@ -196,7 +184,7 @@ public class ControlUnit {
             @Override
             public void actionPerformed(ActionEvent e) {
                 f.dispose();
-                AMCInfo AMCPage = new AMCInfo();                // opens AMC ward overview page (new JFrame)
+                AMCInfo AMCPage = new AMCInfo(methods);                // opens AMC ward overview page (new JFrame)
                 // todo - more sense if all on homescreen?
             }
         });
@@ -207,11 +195,7 @@ public class ControlUnit {
             @Override
             public void actionPerformed(ActionEvent e) {
                 f.dispose();
-                try {
-                    DisTransPage dtList = new DisTransPage(methods.seeTransferList(), methods.seeDischargeList(), methods);           // opens transfer/discharge lists
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                }
+                DisTransPage dtList = new DisTransPage(methods);           // opens transfer/discharge lists
             }
         });
 
