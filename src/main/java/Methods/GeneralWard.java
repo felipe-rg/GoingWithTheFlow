@@ -251,15 +251,21 @@ public abstract class GeneralWard implements colourable{
 
     public void changeGreenBeds(int i){
         bedStatus[0] = bedStatus[0] + i;
-        bedStat.setGreenBedsNum(bedStatus[0]);
+        if(bedStat != null) {
+            bedStat.setGreenBedsNum(bedStatus[0]);
+        }
     }
     public void changeOrangeBeds(int i){
         bedStatus[1] = bedStatus[1] + i;
-        bedStat.setAmbarBedsNum(bedStatus[1]);
+        if(bedStat != null) {
+            bedStat.setAmbarBedsNum(bedStatus[1]);
+        }
     }
     public void changeRedBeds(int i){
         bedStatus[2] = bedStatus[2] + i;
-        bedStat.setRedBedsNum(bedStatus[2]);
+        if(bedStat != null) {
+            bedStat.setRedBedsNum(bedStatus[2]);
+        }
     }
 
     public int getPatientsInWard(){
@@ -289,19 +295,27 @@ public abstract class GeneralWard implements colourable{
 
     public void changeDischargeNumber(int i){
         dischargeNumber = dischargeNumber+i;
-        wardInfo.setDisText();
+        if(wardInfo != null) {
+            wardInfo.setDisText();
+        }
     }
     public void changeIncomingNumber(int i){
         inNumber = inNumber+i;
-        wardInfo.setInText();
+        if(wardInfo != null) {
+            wardInfo.setInText();
+        }
     }
     public void changeOtherNumber(int i){
         othNumber = othNumber+i;
-        wardInfo.setOthText();
+        if(wardInfo != null) {
+            wardInfo.setOthText();
+        }
     }
     public void changePatientsInWard(int i){
         patientsInWard = patientsInWard+i;
-        wardInfo.setTotText();
+        if(wardInfo != null) {
+            wardInfo.setTotText();
+        }
     }
 
     public void setBedStat(BedStatus stat){
@@ -336,7 +350,9 @@ public abstract class GeneralWard implements colourable{
 
     public void changeTransNumber(int i){
         transNumber = transNumber+i;
-        wardInfo.setTransText();
+        if(wardInfo != null) {
+            wardInfo.setTransText();
+        }
     }
 
 }

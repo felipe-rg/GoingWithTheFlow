@@ -11,11 +11,14 @@ public class AMCWard extends GeneralWard{
 
     public AMCWard(int wardId) throws IOException, SQLException {
         super(wardId);
-        ArrayList json = client.makeGetRequest("*", "patients", "nextdestination=2");
-        if(json.size()!=0){
-            ArrayList<Patient> incoming = client.patientsFromJson(json);
-            inNumber = incoming.size();
+        ArrayList<Patient> incoming = new ArrayList<Patient>();
+        for(int i=0; i<amuWardIds.length; i++) {
+            ArrayList json = client.makeGetRequest("*", "patients", "nextdestination="+amuWardIds[i]);
+            if (json.size() != 0) {
+                incoming.addAll(client.patientsFromJson(json));
+            }
         }
+        inNumber = incoming.size();
     }
 
     public int getTransNumber(){

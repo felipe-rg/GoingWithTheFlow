@@ -526,8 +526,7 @@ public class BedButton extends JButton{
                 Ward ward = client.wardsFromJson(json).get(0);
                 client.makePutRequest("patients", "nextdestination="+ward.getWardId(), "id="+p.getId());
                 client.makePutRequest("patients", "transferrequeststatus='P'", "id="+p.getId());
-                methods.changeTransNumber(1);
-                methods.getWardInfo().setTransText();
+                methods.changeTransNumber(1); //FIXME
             } catch (IOException e) {
                 e.printStackTrace();
             }
