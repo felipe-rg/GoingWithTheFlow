@@ -146,6 +146,7 @@ public class AMCWard extends GeneralWard{
                 changeIncomingNumber(-1);
                 wardInfo.setInText();
             }
+            topography.makeBedButtonGreen(bedid);
         }else {
             //Not in a bed, must be on incoming list
             changeIncomingNumber(-1);

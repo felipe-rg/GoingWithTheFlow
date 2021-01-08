@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class LongstayWard extends GeneralWard{
+    protected int inNumber;
     public LongstayWard(int wardId) throws IOException, SQLException {
         super(wardId);
         ArrayList<String> json = client.makeGetRequest("*", "patients", "nextdestination=" + wardId);
@@ -125,6 +126,7 @@ public class LongstayWard extends GeneralWard{
                 changeIncomingNumber(-1);
                 wardInfo.setInText();
             }
+            topography.makeBedButtonGreen(bedid);
         }else {
             //Not in a bed, must be on incoming list
             changeIncomingNumber(-1);
@@ -132,5 +134,6 @@ public class LongstayWard extends GeneralWard{
         }
         client.makeDeleteRequest("patients", "id="+patientId);
     }
+
 
 }

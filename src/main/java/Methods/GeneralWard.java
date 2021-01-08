@@ -1,5 +1,6 @@
 package Methods;
 
+import AMCWardPanels.BedButton;
 import AMCWardPanels.BedStatus;
 import AMCWardPanels.Topography;
 import AMCWardPanels.WardInfo;
@@ -153,6 +154,8 @@ public abstract class GeneralWard implements colourable{
         //Changes bed status to occupied
         client.makePutRequest("beds", "status='O'", "bedid="+bedId);
 
+        topography.makeBedButtonRed(bedId);
+
         changePatientsInWard(1);
         changeIncomingNumber(-1);
         changeRedBeds(1);
@@ -180,17 +183,20 @@ public abstract class GeneralWard implements colourable{
 
         if(arrival.isEqual(leaving)){
             changeRedBeds(-1);
-
-            changeGreenBeds(1);
+        }
+        else if(leaving.isBefore(LocalDateTime.now())){
+            changeRedBeds(-1);
         }
         else {
-            changeOrangeBeds(1);
-            changeGreenBeds(1);
+            changeOrangeBeds(-1);
         }
+        changeGreenBeds(1);
 
         changeIncomingNumber(1);
 
         changePatientsInWard(-1);
+
+        topography.makeBedButtonGreen(bedId);
 
 
     }

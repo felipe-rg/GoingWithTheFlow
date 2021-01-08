@@ -41,6 +41,10 @@ public class BedButton extends JButton{
 
     }
 
+    public int getBedButtonBedId(){
+        return bed.getBedId();
+    }
+
     // functions that return bed information
     public LocalDateTime getETD(){return this.ETD;}
     public void setETD(LocalDateTime time){this.ETD = time;}
@@ -80,6 +84,8 @@ public class BedButton extends JButton{
     public void makeOpen(){
         try {
             methods.editBed(bed.getBedId(), "status", "'F'");
+            methods.changeGreenBeds(1);
+            methods.changeRedBeds(-1);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -1146,4 +1152,5 @@ public class BedButton extends JButton{
 
         editFrame.add(editPanel);
     }
+
 }
