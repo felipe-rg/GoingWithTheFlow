@@ -184,11 +184,13 @@ public class InTablePanel extends JPanel implements TableModelListener {
         String columnName = tableModel.getColumnName(column);
         Object data = tableModel.getValueAt(row, column);
 
+        //Geting the patient ID from the selected row in the table
         int patientId = tableModel.getPatientID(table.getSelectedRow());
 
         //Printing out what has been edited
         System.out.println("Patient bed: " + patientId + "     Edited '" + columnName+ "': " +data);
 
+        //Editing patient
         if(columnName == "Accepted by Medicine"){
             editPatient(patientId, "acceptedbymedicine", String.valueOf(data));
         }

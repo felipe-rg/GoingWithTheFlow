@@ -26,13 +26,13 @@ public class Title extends JPanel{
         JLabel titleLabel = new JLabel(title);
         titleLabel.setFont(new Font("Verdana", Font.PLAIN, 50));
 
-        //Adding title label
-        c.insets = new Insets(0,titleInsets,0,0);
-        add(titleLabel , c);
-
         // Adding a refresh button
         c.insets = new Insets(0, 30,0,0);
         add(refresh , c);
+
+        //Adding title label
+        c.insets = new Insets(0,titleInsets,0,0);
+        add(titleLabel , c);
 
         //Adding Back Button
         c.insets = new Insets(0,backInsets,0,0);
