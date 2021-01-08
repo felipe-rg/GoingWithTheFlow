@@ -4,14 +4,22 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 public class UserPage {
 
     static GraphicsConfiguration gc;
+    private static final Logger log= Logger.getLogger(UserPage.class.getName());
 
-    public UserPage() {
+    public UserPage() throws IOException {
+        LogManager.getLogManager().readConfiguration(new FileInputStream("logging.properties"));
+
+
         Client client = new Client();
         ArrayList<Ward> amuWards = new ArrayList<Ward>();
         ArrayList<Ward> lsWards = new ArrayList<Ward>();
@@ -137,6 +145,7 @@ public class UserPage {
         frame.setExtendedState(Frame.MAXIMIZED_BOTH);                           // frame will occupy the whole screen
         frame.setVisible(true);                                                 // makes JFrame visible
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);          // This closes the program when the frame is closed
+        log.info("UserPage Started");
     }
 
     // padding method improves visual layout
