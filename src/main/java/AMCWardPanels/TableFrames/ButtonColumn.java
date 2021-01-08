@@ -13,9 +13,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 /*
-    This class will be a renderer and an editor, we will assign in tablePanel the column of our table that we want to
-    be ButtonColumn (in our case column 7 and column 8).
+    This class will be a renderer and an editor, we will assign in the tablePanel class the column of our table that we want to
+    be ButtonColumn.
 
+    I have based myself in a code written by Rob Camick in 2009
+    (https://tips4java.wordpress.com/2009/07/12/table-button-column/)
  */
 
 
@@ -36,9 +38,12 @@ public class ButtonColumn extends AbstractCellEditor implements TableCellRendere
         2. The action to be performed when the button is clicked
         3. The number of the column of the table that will be a columnbutton
      */
+
     public ButtonColumn(JTable table, Action action, int column) {
         this.table = table;
         this.action = action;
+
+        //Creating buttons
         renderButton = new JButton();
         editButton = new JButton();
         editButton.addActionListener( this );
@@ -51,6 +56,7 @@ public class ButtonColumn extends AbstractCellEditor implements TableCellRendere
         table.addMouseListener( this );
     }
 
+    //Setting border of button
     public void setFocusBorder(Border focusBorder)
     {
         this.focusBorder = focusBorder;
@@ -114,6 +120,7 @@ public class ButtonColumn extends AbstractCellEditor implements TableCellRendere
         return editButton;
     }
 
+    //Returning editorValue
     @Override
     public Object getCellEditorValue() {
         return editorValue;

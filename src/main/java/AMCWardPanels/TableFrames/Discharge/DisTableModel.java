@@ -5,10 +5,11 @@ import AMCWardPanels.TableFrames.MyTableModel;
 import java.util.Vector;
 
 public class DisTableModel extends MyTableModel {
+
+    //Constructors super()
     public DisTableModel(String[] columnName, Object[][] data) {
         super(columnName, data);
     }
-
     public DisTableModel(Vector data, Vector columnNames) {
         super(data, columnNames);
     }

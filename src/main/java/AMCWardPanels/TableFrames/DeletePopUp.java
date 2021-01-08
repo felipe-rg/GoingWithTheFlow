@@ -8,10 +8,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
+/*
+        This class will be called when the delete button is pressed. A new frame appears asking you if
+        you really want to delete. If you click no then this frame dissapears and if you click yes,
+        frame dissapears and patient is deleted from table and from database
+
+ */
 
 public class DeletePopUp {
 
+    //Construnctor
     public DeletePopUp(JTable table, MyTableModel tableModel, GeneralWard methods){
+
         //We create new frame
         JFrame deleteRowConfirmation = new JFrame("Delete Confirmation");
         deleteRowConfirmation.setSize(400,300);
@@ -32,16 +40,19 @@ public class DeletePopUp {
                 deleteRowConfirmation.dispose();
             }
         });
+
         //Action to happen when 'yes' button is clicked
         yesButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int patientID = tableModel.getPatientID(table.getSelectedRow());
+                //Removing patient from database
                 try {
                     methods.deletePatient(patientID);
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 }
+                //Removing row from table
                 tableModel.removeRow(table.getSelectedRow());
                 deleteRowConfirmation.dispose();
             }
@@ -57,7 +68,4 @@ public class DeletePopUp {
         deleteRowConfirmation.setVisible(true);
         deleteRowConfirmation.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
     }
-
-
-
 }

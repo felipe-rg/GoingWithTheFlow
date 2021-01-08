@@ -28,6 +28,7 @@ public class TransTable {
         JButton backButton = new JButton("Back");
         JButton refreshButton = new JButton("Refresh Page");
 
+        //Refresh button action (reopen frame)
         refreshButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -36,6 +37,7 @@ public class TransTable {
             }
         });
 
+        //Back button action (close frame)
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -57,7 +59,11 @@ public class TransTable {
         mainTablePanel.add(transtablePanel, BorderLayout.CENTER);
         mainPanel.add(mainTablePanel, BorderLayout.CENTER);
 
+        //Adding mainPanel to frame
         frame.add(mainPanel);
+
+
+        //Standard frame editing
         frame.setExtendedState(Frame.MAXIMIZED_BOTH);
         frame.setVisible(true);                                             // makes JFrame visible
         frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);

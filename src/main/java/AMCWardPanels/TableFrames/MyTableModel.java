@@ -3,7 +3,18 @@ package AMCWardPanels.TableFrames;
 import javax.swing.table.AbstractTableModel;
 import java.util.Vector;
 
-//Our own table model
+/*
+       This is a class that defines the general model of our tables. In general it is similar to
+       defaultTableModel but with some differences, like the values inputed, the way some types are
+       viewed and the editing.
+
+       One method called isCellEditable(int row, int column) will be overwritten in each of the
+       tableModels that we use in each table in the GUI extending from this one
+
+ */
+
+
+
 public class MyTableModel extends AbstractTableModel {
 
     //Our data

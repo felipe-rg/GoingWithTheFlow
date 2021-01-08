@@ -5,10 +5,11 @@ import AMCWardPanels.TableFrames.MyTableModel;
 import java.util.Vector;
 
 public class OthTableModel extends MyTableModel {
+
+    //Constructors super()
     public OthTableModel(String[] columnName, Object[][] data) {
         super(columnName, data);
     }
-
     public OthTableModel(Vector data, Vector columnNames) {
         super(data, columnNames);
     }

@@ -28,6 +28,7 @@ public class DisTable {
         JButton backButton = new JButton("Back");
         JButton refreshButton = new JButton("Refresh Page");
 
+        //Refresh button action (reopen frame)
         refreshButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -36,6 +37,7 @@ public class DisTable {
             }
         });
 
+        //Backbutton action (close frame)
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -57,7 +59,6 @@ public class DisTable {
 
         //Adding mainPanel to frame
         frame.add(mainPanel);
-
 
 
         //Standard Frame editing
