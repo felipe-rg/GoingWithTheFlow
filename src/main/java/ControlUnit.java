@@ -118,7 +118,7 @@ public class ControlUnit {
         titleLS.setFont (titleLS.getFont ().deriveFont (24.0f));
         labelPadding(titleLS);
 
-        JLabel lcap = new JLabel("Longstay Ward Capacity: "+methods.getLongstayCapacityPerc()+"%");                       // add info
+        JLabel lcap = new JLabel("Long Stay Ward Capacity: "+methods.getLongstayCapacityPerc()+"%");                       // add info
         lcap.setFont (lcap.getFont ().deriveFont (14.0f));
         labelPadding(lcap);
 
@@ -129,7 +129,7 @@ public class ControlUnit {
         JLabel blank2 = new JLabel("   ");
         labelPadding(blank2);
 
-        JButton viewLS = new JButton("Click here to see Longstay Ward Information");
+        JButton viewLS = new JButton("Click here to see Long Stay Ward Information");
         viewLS.setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 10));
         viewLS.addActionListener(new ActionListener() {
             @Override

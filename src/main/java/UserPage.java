@@ -23,9 +23,10 @@ public class UserPage {
 
         JPanel mainPanel = new JPanel();                                                // creates mainPanel for JFrame
 
-        JPanel titlePanel = new JPanel();                                               // creates panel for title
-        JLabel titleLabel = new JLabel("Welcome to the AMC Bed Manager");          // adds Title text
-        titleLabel.setFont(new Font("Verdana", Font.PLAIN, 80));             // sets text size
+        JPanel titlePanel = new JPanel();// creates panel for title
+        titlePanel.setBounds(0,0,2000,500);
+        JLabel titleLabel = new JLabel("<html><div style='text-align:center'>Welcome to the<br>AMC Bed Manager</html>", SwingConstants.CENTER);          // adds Title text
+        titleLabel.setFont(new Font("Verdana", Font.PLAIN, 75));             // sets text size
         titlePanel.add(titleLabel);                                                    // adds title to panel
 
         JPanel userPanel = new JPanel();                                               // creates panel to select user
@@ -37,10 +38,9 @@ public class UserPage {
         JPanel lsPanel = new JPanel();
         JPanel othPanel = new JPanel();
 
-
         JLabel userLabel = new JLabel("Please select a user:" , SwingConstants.CENTER);
         userLabel.setFont(new Font("Verdana", Font.PLAIN, 30));
-        c.gridx = 0;
+        c.gridx = 1;
         c.gridy = 0;
         c.gridwidth = 3;
         userPanel.add(userLabel, c);
@@ -128,9 +128,19 @@ public class UserPage {
         c.gridx = 3;
         userPanel.add(lsPanel, c);
 
-        mainPanel.setLayout(new BorderLayout());
-        mainPanel.add(titlePanel , BorderLayout.NORTH);                         // adds title to the top of panel
-        mainPanel.add(userPanel , BorderLayout.CENTER);                         // adds user panel below
+        // adding title and user option buttons to main Panel
+        mainPanel.setLayout(new GridBagLayout());
+        GridBagConstraints c2 = new GridBagConstraints();
+        c2.gridheight = 3;
+        c2.gridwidth = 7;
+        c2.gridx = 0;
+        c2.gridy = 0;
+        mainPanel.add(titlePanel, c2); // adds title to the top of panel
+        c2.gridheight = 2;
+        c2.gridwidth = 4;
+        c2.gridx = 3;
+        c2.gridy = 5;
+        mainPanel.add(userPanel , c2);                         // adds user panel below
 
         frame.getContentPane().add(mainPanel);                                  // adds MainPanel to frame
 

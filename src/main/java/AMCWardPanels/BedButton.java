@@ -86,84 +86,6 @@ public class BedButton extends JButton{
         refreshTopography();
     }
 
-    // creates a frame with a panel inside, then 3 labels with the patient information and an 'edit' button. Once clicked, the edit button calls the 'inputNewInfo' function
-    /*
-    public void printInfoFull(){
-        Patient p = new Patient();
-        try {
-            p = methods.getPatient(bed.getBedId());
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        JFrame infoFrame = new JFrame();
-
-        //edit info Frame
-        infoFrame.setSize(300,300);
-        infoFrame.setBackground(Color.WHITE);
-        infoFrame.setVisible(true);
-        infoFrame.setLocation(300,300);
-
-        // labels with the bed information using methods from class Bed
-        JLabel bedIdLabel = new JLabel("Bed ID: "+bed.getBedId(),SwingConstants.CENTER);
-        JLabel ageLabel = new JLabel("Date of Birth: "+p.getDateOfBirth(),SwingConstants.CENTER);
-        JLabel genderLabel = new JLabel("Gender: "+p.getSex(),SwingConstants.CENTER);
-        JLabel srLabel = new JLabel("Sideroom: "+bed.getHasSideRoom(), SwingConstants.CENTER);
-        JLabel diaLabel = new JLabel("Diagnosis: "+p.getInitialDiagnosis(), SwingConstants.CENTER);
-        JLabel nextDestLabel = null;
-        try {
-            nextDestLabel = new JLabel("Next Destination:   "+methods.getWardName(p.getNextDestination()), SwingConstants.CENTER);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        JLabel ETDLabel = new JLabel();
-        if(p.getEstimatedTimeOfNext().isEqual(p.getArrivalDateTime())){
-            ETDLabel = new JLabel("ETD: N/A", SwingConstants.CENTER);
-        }
-        else {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-            String ETDTime = p.getEstimatedTimeOfNext().format(formatter);
-            ETDLabel = new JLabel("ETD: "+ETDTime, SwingConstants.CENTER);
-        }
-
-        //jbutton for editing bed
-        JButton editButton = new JButton("Edit Patient Information");
-        // button to edit information when it is clicked
-        Patient finalP = p;
-        editButton.addActionListener(evt -> {
-            inputNewPatientInfo(finalP);
-            infoFrame.dispose();
-        });
-
-        // delete patient, making the bed empty
-        JButton deleteButton = new JButton("Delete Patient");
-        deleteButton.addActionListener(evt -> {
-            makeEmpty(finalP);
-            infoFrame.dispose();
-        });
-
-        JButton selectWardButton = new JButton("Make Transfer Request");
-        selectWardButton.addActionListener(evt -> {
-            selectWard(finalP);
-            infoFrame.dispose();
-        });
-
-        // add the labels to the frame
-        infoFrame.setLayout(new GridLayout(10,1));
-        infoFrame.add(bedIdLabel);
-        infoFrame.add(ageLabel);
-        infoFrame.add(genderLabel);
-        infoFrame.add(srLabel);
-        infoFrame.add(diaLabel);
-        infoFrame.add(nextDestLabel);
-        infoFrame.add(ETDLabel);
-        infoFrame.add(selectWardButton);
-        infoFrame.add(editButton);
-        infoFrame.add(deleteButton);
-    }
-     */
-
     public void printInfoFull(){
         Patient p = new Patient();
         try {
@@ -192,18 +114,18 @@ public class BedButton extends JButton{
         JLabel diaLabel = new JLabel("<html><b>Diagnosis: </b>"+p.getInitialDiagnosis()+"</html>", SwingConstants.CENTER);
         JLabel nextDestLabel = null;
         try {
-            nextDestLabel = new JLabel("Next Destination:   "+methods.getWardName(p.getNextDestination()), SwingConstants.CENTER);
+            nextDestLabel = new JLabel("<html><b>Next Destination:   </b>"+methods.getWardName(p.getNextDestination())+"</html>", SwingConstants.CENTER);
         } catch (IOException e) {
             e.printStackTrace();
         }
         JLabel ETDLabel = new JLabel();
         if(p.getEstimatedTimeOfNext().isEqual(p.getArrivalDateTime())){
-            ETDLabel = new JLabel("ETD: N/A", SwingConstants.CENTER);
+            ETDLabel = new JLabel("<html><b>ETD:</b> N/A</html>", SwingConstants.CENTER);
         }
         else {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
             String ETDTime = p.getEstimatedTimeOfNext().format(formatter);
-            ETDLabel = new JLabel("ETD: "+ETDTime, SwingConstants.CENTER);
+            ETDLabel = new JLabel("<html><b>ETD: </b></html>"+ETDTime, SwingConstants.CENTER);
         }
 
         //jbutton for editing bed
@@ -231,49 +153,39 @@ public class BedButton extends JButton{
         JButton editAge = new JButton("Edit");
         Patient finalP1 = p;
         editAge.addActionListener(evt -> {
-            editAge(finalP1);
+            editAge(finalP);
             infoFrame.dispose();
         });
 
         JButton editGender = new JButton("Edit");
         editGender.addActionListener(evt -> {
-            editParameter("Gender", finalP1);
+            editParameter("Gender", finalP);
             infoFrame.dispose();
         });
 
         JButton editSR = new JButton("Edit");
         editSR.addActionListener(evt -> {
-            editParameter("Sideroom", finalP1);
+            editParameter("Sideroom", finalP);
             infoFrame.dispose();
         });
 
         JButton editDia = new JButton("Edit");
         editDia.addActionListener(evt -> {
-            editParameter("Diagnosis", finalP1);
+            editParameter("Diagnosis", finalP);
             infoFrame.dispose();
         });
 
         JButton editETD = new JButton("Edit");
         editETD.addActionListener(evt -> {
-            editETD(finalP1);
+            editETD(finalP);
             infoFrame.dispose();
         });
 
-
-        // add the labels to the frame
-        /*
-        infoFrame.setLayout(new GridLayout(10,1));
-        infoFrame.add(bedIdLabel);
-        infoFrame.add(ageLabel);
-        infoFrame.add(genderLabel);
-        infoFrame.add(srLabel);
-        infoFrame.add(diaLabel);
-        infoFrame.add(nextDestLabel);
-        infoFrame.add(ETDLabel);
-        infoFrame.add(selectWardButton);
-        infoFrame.add(editButton);
-        infoFrame.add(deleteButton);
-         */
+        JButton changeNextDest = new JButton("Edit");
+        changeNextDest.addActionListener(evt -> {
+            selectWard(finalP);
+            infoFrame.dispose();
+        });
 
         // add the labels to the frame
         JPanel infoPanel = new JPanel();
@@ -324,23 +236,29 @@ public class BedButton extends JButton{
         c.gridx = 0;
         c.gridy = 5;
         infoPanel.add(ETDLabel, c);
-        c.gridwidth = 2;
+        c.gridwidth = 1;
         c.gridx = 2;
         infoPanel.add(editETD, c);
+
+        c.gridwidth = 2;
+        c.gridx = 0;
+        c.gridy = 6;
+        infoPanel.add(nextDestLabel, c);
+        c.gridwidth = 1;
+        c.gridx = 2;
+        infoPanel.add(changeNextDest, c);
 
         c.fill = GridBagConstraints.HORIZONTAL;
         c.weightx = 0.0;
         c.gridwidth = 3;
         c.gridx = 0;
-        c.gridy = 6;
+        c.gridy = 7;
         infoPanel.add(selectWardButton, c);
 
-        c.gridy = 7;
+        c.gridy = 8;
         infoPanel.add(deleteButton, c);
 
-
         infoFrame.add(infoPanel);
-
     }
 
     public void printInfoEmpty(){
@@ -661,36 +579,34 @@ public class BedButton extends JButton{
         final JComboBox<String> pSex = new JComboBox<String>(sex);
 
         JLabel infoDia = new JLabel("Diagnosis:     " , SwingConstants.RIGHT);
-            JTextField diaTextField = new JTextField(p.getInitialDiagnosis());
+        JTextField diaTextField = new JTextField(p.getInitialDiagnosis());
 
+        // confirm button on editorPanel. when clicked, this button must (1) assign new values to all fields, (2) change color from green to red if bed was empty
+        JLabel infoConf = new JLabel("Confirm:     " , SwingConstants.RIGHT);
+        JButton confirmButton = new JButton("Submit");
+        confirmButton.addActionListener(evt -> {
 
+            // asign new values for gender, age and diagnosis
+            try {
+                //Change date of birth
+                LocalDate DOB = LocalDate.of(  (Integer) year.getSelectedItem(),  (Integer) month.getSelectedItem(),  (Integer) day.getSelectedItem() );
 
-            // confirm button on editorPanel. when clicked, this button must (1) assign new values to all fields, (2) change color from green to red if bed was empty
-            JLabel infoConf = new JLabel("Confirm:     " , SwingConstants.RIGHT);
-            JButton confirmButton = new JButton("Submit");
-            confirmButton.addActionListener(evt -> {
+                methods.editPatient(p.getId(), "dateofbirth", "'"+DOB+"'");
+                //Todo initial diagnosis multiple words!
+                methods.editPatient(p.getId(), "initialdiagnosis", "'"+diaTextField.getText()+"'");
 
-                // asign new values for gender, age and diagnosis
-                try {
-                    //Change date of birth
-                    LocalDate DOB = LocalDate.of(  (Integer) year.getSelectedItem(),  (Integer) month.getSelectedItem(),  (Integer) day.getSelectedItem() );
+                //change sex
+                methods.editPatient(p.getId(), "sex", "'"+pSex.getSelectedItem()+"'");
 
-                    methods.editPatient(p.getId(), "dateofbirth", "'"+DOB+"'");
-                    //Todo initial diagnosis multiple words!
-                    methods.editPatient(p.getId(), "initialdiagnosis", "'"+diaTextField.getText()+"'");
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
 
-                    //change sex
-                    methods.editPatient(p.getId(), "sex", "'"+pSex.getSelectedItem()+"'");
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-
-                // get rid of editor popup after confirming edits
-                editorFrame.dispose();
-            });
+            // get rid of editor popup after confirming edits
+            editorFrame.dispose();
+        });
 
         editorPanel.add(infoSex);
         editorPanel.add(pSex);
@@ -953,6 +869,7 @@ public class BedButton extends JButton{
 
     // this one is used for sideroom, sex and diagnosis. which is it is chosen with 'par'
     private void editParameter( String par , Patient p){
+        // initialising editFrame (the popup) and editPanel, which is on editFrame and contains a JTextField and a JButton
         JFrame editFrame = new JFrame("Edit");
         editFrame.setSize(300,200);
         editFrame.setBackground(Color.WHITE);
@@ -961,8 +878,13 @@ public class BedButton extends JButton{
         JPanel editPanel = new JPanel();
         editPanel.setLayout(new GridBagLayout());
 
-        JTextField newp = new JTextField("New "+p);
+        JTextField newp = new JTextField();
+        // initialise text field with the previous values of the parameter
+        if(par.equals("Gender")){ newp.setText(p.getSex()); }
+        if(par.equals("Sideroom")){ newp.setText(Boolean.toString(p.getNeedsSideRoom())); }
+        if(par.equals("Diagnosis")){ newp.setText(p.getInitialDiagnosis()); }
 
+        // when the confirm button is clicked, the information is changed in the database
         JButton ConfirmButton = new JButton("Confirm");
         ConfirmButton.addActionListener(evt -> {
             editFrame.dispose();
@@ -979,7 +901,17 @@ public class BedButton extends JButton{
                 }
             }
             if(par.equals("Sideroom")){
-                bed.setSR(false);
+                try {
+                    //set side room
+                    methods.editBed(bed.getBedId(), "hassideroom", newp.getText());
+                    if (newp.getText().equals("true") || newp.getText().equals("True") || newp.getText().equals("T") || newp.getText().equals("Y") || newp.getText().equals("Yes") || newp.getText().equals("yes")) {
+                        bed.setSR(true);
+                    } else {
+                        bed.setSR(false);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
             if(par.equals("Diagnosis")){
                 try {
@@ -1022,15 +954,13 @@ public class BedButton extends JButton{
                     bed.setSex(newp.getText());
                 } catch (IOException e) {
                     e.printStackTrace();
-                //} catch (SQLException throwables) {
-                //    throwables.printStackTrace();
                 }
             }
             if(par.equals("Sideroom")) {
                 try {
                     //set side room
                     methods.editBed(bed.getBedId(), "hassideroom", newp.getText());
-                    if (newp.getText().equals("true") || newp.getText().equals("True") || newp.getText().equals("T") || newp.getText().equals("Y") || newp.getText().equals("Yes") || newp.getText().equals("yes")) {
+                    if(newp.getText().equals("true") || newp.getText().equals("True") || newp.getText().equals("T") || newp.getText().equals("Y") || newp.getText().equals("Yes") || newp.getText().equals("yes")) {
                         bed.setSR(true);
                     } else {
                         bed.setSR(false);
