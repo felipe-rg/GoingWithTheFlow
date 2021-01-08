@@ -10,13 +10,12 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class LongstayWard extends GeneralWard{
-    protected int inNumber;
     public LongstayWard(int wardId) throws IOException, SQLException {
         super(wardId);
         ArrayList<String> json = client.makeGetRequest("*", "patients", "nextdestination=" + wardId);
         ArrayList<Patient> incoming = new ArrayList<>();
         if (json.size() != 0) {
-            incoming = client.patientsFromJson(json);
+            incoming.addAll(client.patientsFromJson(json));
         }
         inNumber = incoming.size();
     }

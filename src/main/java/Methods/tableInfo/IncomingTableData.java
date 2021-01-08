@@ -67,6 +67,7 @@ public class IncomingTableData extends dateFormat implements dataForTable{
             json = client.makeGetRequest("*", "wards", "wardid="+wardId);
             ArrayList<Ward> ward = client.wardsFromJson(json);
             wardType = ward.get(0).getWardType();
+
             //if ward is AMU then we find all incoming to all amu wards
             if(wardType.equals("AMU")){
                 //get all amu wards
