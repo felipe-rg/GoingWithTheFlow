@@ -6,7 +6,7 @@ run BedButton methods when clicked. It also communicates with and updates BedSta
 each of the different kinds of beds
  */
 
-import Client.Bed;                             
+import Client.Bed;
 import Methods.GeneralWard;
 
 import javax.swing.*;
@@ -63,17 +63,19 @@ public class Topography extends JPanel{
             this.add(newBed);
         }
 
-        CountBeds(methods);
-        updateBedStatus(bedstatus);
 
         for (BedButton b : beds){
             b.addActionListener(evt -> {
-                if(b.getBedButtonStatus().equals("O")){ b.printInfoFull(); }
-                if(b.getBedButtonStatus().equals("F")){ b.printInfoEmpty(); }
-                if(b.getBedButtonStatus().equals("C")) { b.printInfoClosed(); }
+                if (b.getBedButtonStatus().equals("O")) {
+                    b.printInfoFull();
+                }
+                if (b.getBedButtonStatus().equals("F")) {
+                    b.printInfoEmpty();
+                }
+                if (b.getBedButtonStatus().equals("C")) {
+                    b.printInfoClosed();
+                }
                 // every time something is done to the beds, check whether the bedstatus must change and update it
-                CountBeds(methods);
-                updateBedStatus(bedstatus);
             });
         }
 
@@ -81,28 +83,6 @@ public class Topography extends JPanel{
         BedColorCodePanel bedColorCodePanel = new BedColorCodePanel();
         bedColorCodePanel.setBounds(0, 690, 1136, 50);
         this.add(bedColorCodePanel);
-
-    }
-
-
-    // counts how many beds there are of each type (to see type definitions, go to BedButton) in order to be able to
-    // update BedStatus accurately
-    public void CountBeds(GeneralWard methods) {
-        try {
-            int status[] = methods.getBedStatus();
-            GCount = status[0];
-            OCount = status[1];
-            RCount = status[2];
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    //updates bed status numbers using the
-    public void updateBedStatus(BedStatus bedstatus){
-        bedstatus.setAmbarBedsNum(OCount);
-        bedstatus.setGreenBedsNum(GCount);
-        bedstatus.setRedBedsNum(RCount);
     }
 
     // used to make a BedButton red (occupied without ETD)
