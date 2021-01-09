@@ -1,13 +1,18 @@
 package AMCWardPanels;
 
+/*
+This class is the "map" that can be found in the AMCs and Long Stay Wards. It contains an ArrayList of BedButtons, which
+run BedButton methods when clicked. It also communicates with and updates BedStatus so it count the right number of
+each of the different kinds of beds
+ */
+
 import Client.Bed;
 import Methods.GeneralWard;
-import com.sun.tools.javac.jvm.Gen;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Topography extends JPanel{
@@ -18,6 +23,7 @@ public class Topography extends JPanel{
     ArrayList<Bed> dbBeds;
     BedStatus bedstatus;
 
+    // constructor initializes all the beds in the ward with their corresponding patient information
     public Topography(BedStatus bedstatus, GeneralWard methods) {
 
         this.bedstatus = bedstatus;
@@ -57,17 +63,19 @@ public class Topography extends JPanel{
             this.add(newBed);
         }
 
-        CountBeds(methods);
-        updateBedStatus(bedstatus);
 
         for (BedButton b : beds){
             b.addActionListener(evt -> {
-                if(b.getBedButtonStatus().equals("O")){ b.printInfoFull(); }
-                if(b.getBedButtonStatus().equals("F")){ b.printInfoEmpty(); }
-                if(b.getBedButtonStatus().equals("C")) { b.printInfoClosed(); }
+                if (b.getBedButtonStatus().equals("O")) {
+                    b.printInfoFull();
+                }
+                if (b.getBedButtonStatus().equals("F")) {
+                    b.printInfoEmpty();
+                }
+                if (b.getBedButtonStatus().equals("C")) {
+                    b.printInfoClosed();
+                }
                 // every time something is done to the beds, check whether the bedstatus must change and update it
-                CountBeds(methods);
-                updateBedStatus(bedstatus);
             });
         }
 
@@ -75,31 +83,45 @@ public class Topography extends JPanel{
         BedColorCodePanel bedColorCodePanel = new BedColorCodePanel();
         bedColorCodePanel.setBounds(0, 690, 1136, 50);
         this.add(bedColorCodePanel);
-
     }
 
-    // counts how many red-green-orange beds there are
-    public void CountBeds(GeneralWard methods) {
-        try {
-            int status[] = methods.getBedStatus();
-            GCount = status[0];
-            OCount = status[1];
-            RCount = status[2];
-        } catch (IOException e) {
-            e.printStackTrace();
+    // used to make a BedButton red (occupied without ETD)
+    public void makeBedButtonRed(int bedId){
+        BedButton bedButton = null;
+        for(BedButton bed:beds){
+            if(bed.getBedButtonBedId()==bedId){
+                bedButton = bed;
+            }
         }
+        for( ActionListener al : bedButton.getActionListeners() ) {
+            bedButton.removeActionListener( al );
+        }
+        BedButton finalBedButton = bedButton;
+        finalBedButton.setBackground(Color.decode("#E74C3C"));
+        bedButton.addActionListener(evt ->{
+            finalBedButton.printInfoFull();
+        });
     }
 
-    //updates bed status numbers
-    public void updateBedStatus(BedStatus bedstatus){
-        bedstatus.setAmbarBedsNum(OCount);
-        bedstatus.setGreenBedsNum(GCount);
-        bedstatus.setRedBedsNum(RCount);
+    // used to make BedButton green (free)
+    public void makeBedButtonGreen(int bedId){
+        BedButton bedButton = null;
+        for(BedButton bed:beds){
+            if(bed.getBedButtonBedId()==bedId){
+                bedButton = bed;
+            }
+        }
+        for( ActionListener al : bedButton.getActionListeners() ) {
+            bedButton.removeActionListener( al );
+        }
+        BedButton finalBedButton = bedButton;
+        finalBedButton.setBackground(Color.decode("#2ECC71"));
+        bedButton.addActionListener(evt ->{
+            finalBedButton.printInfoEmpty();
+        });
     }
 
-    public void refresh(GeneralWard methods){
-        CountBeds(methods);
-        updateBedStatus(bedstatus);
-    }
+
+
 
 }

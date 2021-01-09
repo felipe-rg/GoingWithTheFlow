@@ -56,6 +56,7 @@ public class WardInfo extends JPanel{
         this.top = top;
         this.setLayout(new GridLayout(10,1));
         setup();
+
         transLabel = new JLabel("Transferring Patients");
         transbut = new JButton(String.valueOf(methods.getTransNumber()));
         editLabel(transLabel);
@@ -66,6 +67,7 @@ public class WardInfo extends JPanel{
                 TransTable transTable = new TransTable(top, here, methods);
             }
         });
+
         //Adding labels and buttons into Panel
         add(inLabel);
         add(inbut);
@@ -159,37 +161,20 @@ public class WardInfo extends JPanel{
         }
     }
 
-    public void setInText(){
-        inbut.setText(String.valueOf(methods.getInNumber()));
+    public void setInText(String number){
+        inbut.setText(number);
     }
-    public void setOthText(){
-        inbut.setText(String.valueOf(methods.getOthNumber()));
+    public void setOthText(String number){
+        othbut.setText(number);
     }
-    public void setTransText(){
-        inbut.setText(String.valueOf(methods.getTransNumber()));
+    public void setTransText(String number){
+        transbut.setText(number);
     }
-    public void setDisText(){
-        inbut.setText(String.valueOf(methods.getDischargeNumber()));
+    public void setDisText(String number){
+        disbut.setText(number);
     }
-    public void setTotText(){
-        inbut.setText(String.valueOf(methods.getPatientsInWard()));
+    public void setTotText(String number){
+        totbut.setText(number);
     }
-
-
-
-    public void refresh(){
-        try {
-            if(methods.getWardType(methods.getWardId()).equals("AMU")){
-                transbut.setText(String.valueOf(methods.getTransNumber()));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        othbut.setText(String.valueOf(methods.getOthNumber()));
-        inbut.setText(String.valueOf(methods.getInNumber()));
-        disbut.setText(String.valueOf(methods.getDischargeNumber()));
-        totbut.setText(String.valueOf(methods.getPatientsInWard()));
-    }
-
 
 }

@@ -33,6 +33,7 @@ public class TotTablePanel extends JPanel implements TableModelListener {
             "Next Destination",
             "Delete Button"};
 
+    //
     private Object[][] dbData;
     private GeneralWard methods;
     public TotTablePanel(GeneralWard methods){

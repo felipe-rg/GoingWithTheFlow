@@ -53,10 +53,12 @@ public class InTablePanel extends JPanel implements TableModelListener {
     //Constructor
     public InTablePanel(GeneralWard methods) {
         this.methods = methods;
+
+        //
         IncomingTableData incomingTableData = new IncomingTableData(methods.getClient(), methods.getWardId());
         dbData = incomingTableData.getData();
         try {
-            if (methods.getWardType(methods.wardId).equals("AMU")){
+            if (methods.getWardType(methods.getWardId()).equals("AMU")){
                 tableModel = new InTableModel(amcColumnName, dbData);        //Instance of IntableModel extending from MyTableModel
             }
             else {

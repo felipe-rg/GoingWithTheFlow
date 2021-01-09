@@ -3,9 +3,10 @@ import javax.swing.*;
 import java.awt.*;
 
 /*
-    This class is the MainPanel where the table will be inputed, it contains the top, right and left side
-    white panels to make things look good. It colorCode=true then it will also display the labels indicating
-    the color code below the table
+    This class is the MainPanel where the table will be inputed, it contains top, bottom, left and right panels
+    that are different depending on the value of the argument 'condition' entered in the constructor.
+
+    Boolean colorcode determines whether we add a colorcode panel at the bottom of the table or not
 
  */
 public class MainPanel extends JPanel {
@@ -33,6 +34,7 @@ public class MainPanel extends JPanel {
 
 
             //Condition 3 is for distrans table in controlunit
+            //We make leftPanel wider and add two labels (one for each table)
             if (condition ==3){
                 leftPanel.setPreferredSize(new Dimension(250,100));
                 leftPanel.setLayout(new GridLayout(2,1));
@@ -48,6 +50,7 @@ public class MainPanel extends JPanel {
             }
 
             //Condition 4 is for AMCInfo table
+            //We make leftpanel wider and add three labels (one for each table)
             if (condition == 4){
                 leftPanel.setPreferredSize(new Dimension(150,100));
                 leftPanel.setLayout(new GridLayout(3,1));
@@ -72,10 +75,9 @@ public class MainPanel extends JPanel {
         else{
             this.add(bottomPanel, BorderLayout.SOUTH);
         }
-
     }
 
-    //Function in which you introduce labels and they are automatically edited
+    //Editing labels function
     public void setLabel(JLabel ... a){
         for (JLabel i:a){
             i.setOpaque(true);

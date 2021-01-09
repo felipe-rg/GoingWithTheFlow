@@ -42,6 +42,7 @@ public class DisTablePanel extends JPanel implements TableModelListener {
     private GeneralWard methods;
 
     public DisTablePanel(GeneralWard methods){
+
         DischargeTableData dischargeTableData = new DischargeTableData(methods.getClient(), methods.getWardId());
 
         this.methods = methods;
@@ -106,10 +107,6 @@ public class DisTablePanel extends JPanel implements TableModelListener {
 
     }
 
-    private Object dateFormatter(LocalDateTime localDateTime) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-        return localDateTime.format(formatter);
-    }
 
     public void setupTable(JTable table){
         table.setRowHeight(35);                                     //Setting rowheight
