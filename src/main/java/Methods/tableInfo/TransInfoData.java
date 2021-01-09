@@ -28,12 +28,20 @@ public class TransInfoData extends dateFormat implements dataForTable{
         Object[][] data = new Object[patients.size()][8];
         for(int i=0; i<patients.size(); i++) {
             Patient p = patients.get(i);
+
             data[i][0] = p.getId();
-            data[i][1] = p.getCurrentBedId();
+
+            try {
+                data[i][1] = getWardName(p.getCurrentWardId());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
             data[i][2] = p.getPatientId();
             data[i][3] = p.getSex();
             data[i][4] = p.getNeedsSideRoom();
             data[i][5] = p.getInitialDiagnosis();
+
 
             ArrayList<String> json = null;
             try {
@@ -66,6 +74,20 @@ public class TransInfoData extends dateFormat implements dataForTable{
 
         } catch (IOException e) {
             e.printStackTrace();
+        }
+        return output;
+    }
+
+    //Function that returns the wardname if you inout the wardID
+    public String getWardName(int wardID) throws IOException {
+        ArrayList<String> json = client.makeGetRequest("*", "wards", "wardid="+wardID);
+        ArrayList<Ward> wards = client.wardsFromJson(json);
+        String output = null;
+        if(wards.size()!=0) {
+            output = wards.get(0).getWardName();
+        }
+        else {
+            output = "No Destination";
         }
         return output;
     }

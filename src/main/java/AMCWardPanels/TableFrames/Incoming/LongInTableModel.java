@@ -26,6 +26,6 @@ public class LongInTableModel extends MyTableModel {
         }
 
         else return false;
-
     }
+
 }

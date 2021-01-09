@@ -53,8 +53,6 @@ public class TimeRenderer extends DefaultTableCellRenderer {
         return time.format(formatter);
     }
 
-
-
     public long durationFormatter(Duration duration){
         long hours = duration.toHours();
         return hours;
