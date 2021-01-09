@@ -88,11 +88,18 @@ public abstract class GeneralWard implements colourable{
         Patient patientInfo = client.patientsFromJson(json).get(0);
 
         for(Bed b: bedsInWard){
-            if(b.getStatus().equals("F") && b.getHasSideRoom() == patientInfo.getNeedsSideRoom() && b.getForSex().equals(patientInfo.getSex())) {
-                acceptableBeds.add(b); //These are free, correct side room, correct sex
-            }
-            else if(b.getStatus().equals("F") && b.getHasSideRoom() == patientInfo.getNeedsSideRoom() && b.getForSex().equals("Uni")) {
-                acceptableBeds.add(b); //These are free, correct side room, uni sex
+            if(!patientInfo.getNeedsSideRoom()) {
+                if (b.getStatus().equals("F") && b.getForSex().equals(patientInfo.getSex())) {
+                    acceptableBeds.add(b); //These are free, correct side room, correct sex
+                } else if (b.getStatus().equals("F") && b.getForSex().equals("Uni")) {
+                    acceptableBeds.add(b); //These are free, correct side room, uni sex
+                }
+            }else {
+                if (b.getStatus().equals("F") && b.getHasSideRoom()&& b.getForSex().equals(patientInfo.getSex())) {
+                    acceptableBeds.add(b); //These are free, correct side room, correct sex
+                } else if (b.getStatus().equals("F") && b.getHasSideRoom() && b.getForSex().equals("Uni")) {
+                    acceptableBeds.add(b); //These are free, correct side room, uni sex
+                }
             }
         }
         return acceptableBeds;
@@ -129,10 +136,10 @@ public abstract class GeneralWard implements colourable{
                 //If they are in a bed, not in the ward, being deleted, then they are on incoming list
                 changeIncomingNumber(-1);
             }
-        }else {
-            //Not in a bed, must be on incoming list
-            changeIncomingNumber(-1);
         }
+        //Not in a bed, must be on incoming list
+        changeIncomingNumber(-1);
+
         //Delete patient from database
         client.makeDeleteRequest("patients", "id="+patientId);
     }
@@ -143,6 +150,12 @@ public abstract class GeneralWard implements colourable{
             ArrayList<String> json = client.makeGetRequest("*", "wards", "wardname='"+wardName+"'");
             Ward ward = client.wardsFromJson(json).get(0);
             //Update destination number
+            json = client.makeGetRequest("*", "patients", "id="+patientId);
+            Patient patient = client.patientsFromJson(json).get(0);
+            int oldDest = patient.getNextDestination();
+            if(oldDest != 0){
+                updateDestinationNumber(oldDest, -1);
+            }
             updateDestinationNumber(ward.getWardId(), 1);
             //change patient destination
             client.makePutRequest("patients", "nextdestination="+ward.getWardId(), "id="+patientId);

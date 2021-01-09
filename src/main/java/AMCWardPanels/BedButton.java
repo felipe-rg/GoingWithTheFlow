@@ -23,6 +23,7 @@ import Methods.GeneralWard;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -81,6 +82,12 @@ public class BedButton extends JButton{
             throwables.printStackTrace();
         }
         this.setBackground(Color.decode("#2ECC71"));
+        for( ActionListener al : this.getActionListeners() ) {
+            this.removeActionListener( al );
+        }
+        this.addActionListener(evt-> {
+            printInfoEmpty();
+        });
     }
     public void makeClosed(){
         try {
@@ -92,6 +99,12 @@ public class BedButton extends JButton{
         }
         bed.setStatus("C");
         this.setBackground(Color.BLACK);
+        for( ActionListener al : this.getActionListeners() ) {
+            this.removeActionListener( al );
+        }
+        this.addActionListener(evt-> {
+            printInfoClosed();
+        });
     }
     public void makeOpen(){
         try {
@@ -103,6 +116,12 @@ public class BedButton extends JButton{
         }
         bed.setStatus("F");
         this.setBackground(Color.decode("#2ECC71"));
+        for( ActionListener al : this.getActionListeners() ) {
+            this.removeActionListener( al );
+        }
+        this.addActionListener(evt-> {
+            printInfoEmpty();
+        });
     }
 
     // these functions print the information of the bed when clicked in the Topography depending on the type of bed.
@@ -158,12 +177,6 @@ public class BedButton extends JButton{
             infoFrame.dispose();
         });
 
-        JButton selectWardButton = new JButton("Make Transfer Request");
-        selectWardButton.addActionListener(evt -> {
-            selectWard(finalP);
-            infoFrame.dispose();
-        });
-
         JButton editAge = new JButton("Edit");
         Patient finalP1 = p;
         editAge.addActionListener(evt -> {
@@ -174,12 +187,6 @@ public class BedButton extends JButton{
         JButton editGender = new JButton("Edit");
         editGender.addActionListener(evt -> {
             editParameter("Gender", finalP1);
-            infoFrame.dispose();
-        });
-
-        JButton editSR = new JButton("Edit");
-        editSR.addActionListener(evt -> {
-            editParameter("Sideroom", finalP1);
             infoFrame.dispose();
         });
 
@@ -234,9 +241,6 @@ public class BedButton extends JButton{
         c.gridx = 0;
         c.gridy = 3;
         infoPanel.add(srLabel, c);
-        c.gridwidth = 1;
-        c.gridx = 2;
-        infoPanel.add(editSR, c);
 
         c.gridwidth = 2;
         c.gridx = 0;
@@ -266,9 +270,6 @@ public class BedButton extends JButton{
         c.weightx = 0.0;
         c.gridwidth = 3;
         c.gridx = 0;
-        c.gridy = 7;
-        infoPanel.add(selectWardButton, c);
-
         c.gridy = 8;
         infoPanel.add(deleteButton, c);
 
@@ -293,14 +294,7 @@ public class BedButton extends JButton{
 
         JButton editGender = new JButton("Edit");
         editGender.addActionListener(evt -> {
-            this.editBed("Gender");
-            infoFrame.dispose();
-        });
-
-        JButton editSR = new JButton("Edit");
-        editSR.addActionListener(evt -> {
-            this.editBed("Sideroom");
-
+            this.editBedGender();
             infoFrame.dispose();
         });
 
@@ -324,10 +318,6 @@ public class BedButton extends JButton{
         c.gridx = 0;
         c.gridy = 1;
         infoPanel.add(srLabel, c);
-        c.ipady = 1;
-        c.gridx = 1;
-        c.gridy = 1;
-        infoPanel.add(editSR, c);
         c.ipady = 1;
         c.gridx = 0;
         c.gridy = 2;
@@ -359,14 +349,7 @@ public class BedButton extends JButton{
 
         JButton editGender = new JButton("Edit");
         editGender.addActionListener(evt -> {
-            this.editBed("Gender");
-            infoFrame.dispose();
-        });
-
-        JButton editSR = new JButton("Edit");
-        editSR.addActionListener(evt -> {
-            this.editBed("Sideroom");
-
+            this.editBedGender();
             infoFrame.dispose();
         });
 
@@ -390,10 +373,6 @@ public class BedButton extends JButton{
         c.gridx = 0;
         c.gridy = 1;
         infoPanel.add(srLabel, c);
-        c.ipady = 1;
-        c.gridx = 1;
-        c.gridy = 1;
-        infoPanel.add(editSR, c);
         c.ipady = 1;
         c.gridx = 0;
         c.gridy = 2;
@@ -524,7 +503,6 @@ public class BedButton extends JButton{
                 else{ this.setETD(LocalDateTime.now().plusMinutes(Minutes).plusHours(Hours)); }
             }
             try {
-                System.out.println(ETD);
                 methods.editPatient(p.getId(), "estimatedatetimeofnext", "'"+ETD+"'");
                 methods.changeRedBeds(-1);
                 methods.changeOrangeBeds(1);
@@ -659,16 +637,19 @@ public class BedButton extends JButton{
             pSR = new JComboBox<String>(sideRoom);
             JPanel panelSR = new JPanel();
             panelSR.add(pSR);
-            String sRoom = "false";
-            boolean sroo = false;
-            if (pSR.getSelectedItem() == "Sideroom") {
-                sRoom = "true";
-                sroo = true;}
-            final String SR = sRoom;
             ConfirmButton = new JButton("Confirm"); //when confirmed, update information of database
-            boolean finalSroo = sroo;
+            JComboBox<String> finalPSR1 = pSR;
             ConfirmButton.addActionListener(evt -> {
                 try {
+                    String sRoom = "false";
+                    boolean sroo = false;
+                    System.out.println(finalPSR1.getSelectedItem());
+                    System.out.println("Sideroom");
+                    if (finalPSR1.getSelectedItem().equals("Sideroom")) {
+                        sRoom = "true";
+                        sroo = true;}
+                    final String SR = sRoom;
+                    boolean finalSroo = sroo;
                     methods.editPatient(p.getId(), "needssideroom", SR);
                     methods.editBed(bed.getBedId(), "hassideroom", SR);
                     bed.setSR(finalSroo);
@@ -753,9 +734,21 @@ public class BedButton extends JButton{
         editFrame.add(editPanel);
 
     }
+
+
+    private JFrame editFrame(){
+        JFrame editFrame = new JFrame("Edit");
+        editFrame.setSize(300,200);
+        editFrame.setBackground(Color.WHITE);
+        editFrame.setVisible(true);
+        editFrame.setLocationRelativeTo(null);
+        return editFrame;
+    }
+
+
     // editBed is used to change the parameters of empty beds: gender or sideroom. the bed parameters can only be
     // changed if it is empty or closed
-    private void editBed(String par){
+    private void editBedGender(){
         JFrame editFrame = new JFrame("Edit");
         editFrame.setSize(300,200);
         editFrame.setBackground(Color.WHITE);
@@ -767,34 +760,8 @@ public class BedButton extends JButton{
         JButton ConfirmButton = new JButton();
 
         JComboBox<String> pSR = new JComboBox<>();
-        // case where sideroom is the parameter to edit
-        if(par.equals("Sideroom")){
-            String[] sideRoom = { "No Sideroom","Sideroom"};
-            pSR = new JComboBox<String>(sideRoom);
-            JPanel panelSR = new JPanel();
-            panelSR.add(pSR);
-            String sRoom = "false";
-            boolean sroo = false;
-            if (pSR.getSelectedItem() == "Sideroom") {
-                sRoom = "true";
-            sroo = true;}
-            final String SR = sRoom;
-            ConfirmButton = new JButton("Confirm");
-            boolean finalSroo = sroo;
-            ConfirmButton.addActionListener(evt -> {
-                try {
-                    methods.editBed(bed.getBedId(), "hassideroom", SR);
-                    bed.setSR(finalSroo);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                editFrame.dispose();
-                printInfoEmpty();
-            });
-        }
 
-        // case where Gender is the parameter to edit
-        else if(par.equals("Gender")){
+
             String[] genders = { "Male","Female", "Uni"}; // uni means it is unspecified, ie. it can be either
             pSR = new JComboBox<String>(genders);
             JPanel panelSR = new JPanel();
@@ -812,7 +779,6 @@ public class BedButton extends JButton{
                 editFrame.dispose();
                 printInfoEmpty();
             });
-        }
 
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;

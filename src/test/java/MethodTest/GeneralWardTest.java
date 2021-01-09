@@ -3,6 +3,7 @@ package MethodTest;
 import Client.*;
 import Methods.AMCWard;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -19,9 +20,9 @@ public class GeneralWardTest {
     public void testConstructor() {
         AMCWard amc = null;
         try {
-            amc = new AMCWard(2);
-            Assert.assertEquals(amc.getWardId(), 2);
-            Assert.assertEquals(amc.getWardName(2), "AMC1");
+            amc = new AMCWard(11);
+            Assert.assertEquals(amc.getWardId(), 11);
+            Assert.assertEquals(amc.getWardName(11), "TestAMU");
         } catch (IOException e) {
             e.printStackTrace();
         } catch (SQLException throwables) {
@@ -32,9 +33,9 @@ public class GeneralWardTest {
     @Test
     public void testGetWardName(){
         try {
-            AMCWard amc = new AMCWard(2);
-            Assert.assertEquals(amc.getWardName(0), "No Destination");
-            Assert.assertEquals(amc.getWardName(1), "A&E");
+            AMCWard amc = new AMCWard(11);
+            Assert.assertEquals(amc.getWardName(11), "TestAMU");
+            Assert.assertEquals(amc.getWardName(12), "TestLS");
         } catch (IOException e) {
             e.printStackTrace();
         } catch (SQLException throwables) {
@@ -42,21 +43,26 @@ public class GeneralWardTest {
         }
     }
 
+    @Ignore
     @Test
     public void testDeletePatient(){
         try {
             Client c = new Client();
-            AMCWard amc = new AMCWard(2);
+            AMCWard amc = new AMCWard(11);
+
+            //Make male patient who requires a sideroom
             Patient p =new Patient("314159265","Male", LocalDate.now(),"testpatientdiagnosis123",true);
             c.makePostRequest(p);
-
             ArrayList<String> json = c.makeGetRequest("*", "patients", "initialdiagnosis='testpatientdiagnosis123'");
             ArrayList<Patient> patients = c.patientsFromJson(json);
             int patientId = patients.get(0).getId();
+            c.makePutRequest("patients", "nextdestination=11", "id="+patientId);
+
             amc.deletePatient(patientId);
 
-            json = c.makeGetRequest("*", "patients", "initialdiagnosis=testpatientdiagnosis123");
-            Assert.assertEquals(c.patientsFromJson(json).size(), 0);
+            json = c.makeGetRequest("*", "patients", "id="+patientId);
+            patients = c.patientsFromJson(json);
+            Assert.assertEquals(patients.size(), 0);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (SQLException throwables) {
@@ -64,24 +70,62 @@ public class GeneralWardTest {
         }
     }
 
+    @Ignore
     @Test
     public void testAcceptableBeds(){
         try {
             Client c = new Client();
-            AMCWard amc = new AMCWard(2);
+            AMCWard amc = new AMCWard(11);
+
+            //Make male patient who requires a sideroom
             Patient p =new Patient("314159265","Male", LocalDate.now(),"testpatientdiagnosis123",true);
             c.makePostRequest(p);
             ArrayList<String> json = c.makeGetRequest("*", "patients", "initialdiagnosis='testpatientdiagnosis123'");
             ArrayList<Patient> patients = c.patientsFromJson(json);
             int patientId = patients.get(0).getId();
-            c.makePutRequest("patients", "currentwardid=2", "id="+patientId);
 
             ArrayList<Bed> beds = amc.getAcceptableBeds(patientId);
             for(Bed b:beds){
-                Assert.assertEquals(b.getHasSideRoom(), true);
-                Assert.assertTrue(b.getForSex().equals("Male") || b.getForSex().equals("Uni"));
-                Assert.assertEquals(b.getWardId(), 2);
-                Assert.assertEquals(b.getStatus(), "F");
+                Assert.assertTrue(b.getBedId()==49 || b.getBedId()==53); //Male sr or Uni SR
+            }
+            amc.deletePatient(patientId);
+
+            //Make female patient who requires a sideroom
+            p =new Patient("314159265","Female", LocalDate.now(),"testpatientdiagnosis123",true);
+            c.makePostRequest(p);
+            json = c.makeGetRequest("*", "patients", "initialdiagnosis='testpatientdiagnosis123'");
+            patients = c.patientsFromJson(json);
+            patientId = patients.get(0).getId();
+
+            beds = amc.getAcceptableBeds(patientId);
+            for(Bed b:beds){
+                Assert.assertTrue(b.getBedId()==51 || b.getBedId()==53); //Female sr or Uni SR
+            }
+            amc.deletePatient(patientId);
+
+            //Make male patient who doesnt require a sideroom
+            p =new Patient("314159265","Male", LocalDate.now(),"testpatientdiagnosis123",false);
+            c.makePostRequest(p);
+            json = c.makeGetRequest("*", "patients", "initialdiagnosis='testpatientdiagnosis123'");
+            patients = c.patientsFromJson(json);
+            patientId = patients.get(0).getId();
+
+            beds = amc.getAcceptableBeds(patientId);
+            for(Bed b:beds){
+                Assert.assertTrue(b.getBedId()==49 || b.getBedId()==50 || b.getBedId()==53 || b.getBedId()==54 ); //Any male or Uni
+            }
+            amc.deletePatient(patientId);
+
+            //Make female patient who doesnt require a sideroom
+            p =new Patient("314159265","Female", LocalDate.now(),"testpatientdiagnosis123",false);
+            c.makePostRequest(p);
+            json = c.makeGetRequest("*", "patients", "initialdiagnosis='testpatientdiagnosis123'");
+            patients = c.patientsFromJson(json);
+            patientId = patients.get(0).getId();
+
+            beds = amc.getAcceptableBeds(patientId);
+            for(Bed b:beds){
+                Assert.assertTrue(b.getBedId()==51 || b.getBedId()==52 || b.getBedId()==53 || b.getBedId()==54 ); //Any female or Uni
             }
             amc.deletePatient(patientId);
         } catch (IOException e) {
@@ -91,7 +135,7 @@ public class GeneralWardTest {
         }
 
     }
-
+/*
     @Test
     public void testSetPatient(){
         try {
@@ -359,6 +403,6 @@ public class GeneralWardTest {
             throwables.printStackTrace();
         }
     }
-
+*/
 
 }
