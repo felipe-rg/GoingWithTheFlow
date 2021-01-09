@@ -1,14 +1,18 @@
 package AMCWardPanels;
 
-import Client.Bed;
+/*
+This class is the "map" that can be found in the AMCs and Long Stay Wards. It contains an ArrayList of BedButtons, which
+run BedButton methods when clicked. It also communicates with and updates BedStatus so it count the right number of
+each of the different kinds of beds
+ */
+
+import Client.Bed;                             
 import Methods.GeneralWard;
-import com.sun.tools.javac.jvm.Gen;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Topography extends JPanel{
@@ -19,6 +23,7 @@ public class Topography extends JPanel{
     ArrayList<Bed> dbBeds;
     BedStatus bedstatus;
 
+    // constructor initializes all the beds in the ward with their corresponding patient information
     public Topography(BedStatus bedstatus, GeneralWard methods) {
 
         this.bedstatus = bedstatus;
@@ -79,7 +84,9 @@ public class Topography extends JPanel{
 
     }
 
-    // counts how many red-green-orange beds there are
+
+    // counts how many beds there are of each type (to see type definitions, go to BedButton) in order to be able to
+    // update BedStatus accurately
     public void CountBeds(GeneralWard methods) {
         try {
             int status[] = methods.getBedStatus();
@@ -91,18 +98,14 @@ public class Topography extends JPanel{
         }
     }
 
-    //updates bed status numbers
+    //updates bed status numbers using the
     public void updateBedStatus(BedStatus bedstatus){
         bedstatus.setAmbarBedsNum(OCount);
         bedstatus.setGreenBedsNum(GCount);
         bedstatus.setRedBedsNum(RCount);
     }
 
-    /*public void refresh(GeneralWard methods){
-        CountBeds(methods);
-        updateBedStatus(bedstatus);
-    }*/
-
+    // used to make a BedButton red (occupied without ETD)
     public void makeBedButtonRed(int bedId){
         BedButton bedButton = null;
         for(BedButton bed:beds){
@@ -120,6 +123,7 @@ public class Topography extends JPanel{
         });
     }
 
+    // used to make BedButton green (free)
     public void makeBedButtonGreen(int bedId){
         BedButton bedButton = null;
         for(BedButton bed:beds){
@@ -136,6 +140,8 @@ public class Topography extends JPanel{
             finalBedButton.printInfoEmpty();
         });
     }
+
+
 
 
 }
