@@ -2,6 +2,7 @@ package AMCWardPanels.TableFrames.Others;
 
 import AMCWardPanels.TableFrames.ButtonColumn;
 import AMCWardPanels.TableFrames.DeletePopUp;
+import AMCWardPanels.TableFrames.IndexRenderer;
 import AMCWardPanels.TableFrames.MultiLineTableHeaderRenderer;
 import Methods.GeneralWard;
 import Methods.tableInfo.OtherTableData;
@@ -74,6 +75,9 @@ public class OthTablePanel extends JPanel implements TableModelListener {
 
         //Making last column a buttoncolumn (to delete patient)
         ButtonColumn deletePatient = new ButtonColumn(table, deletePopUp, 8);
+
+        //Rendering index column so it displays it as a stirng (aligned to the left) for viewing purposes
+        table.getColumnModel().getColumn(0).setCellRenderer(new IndexRenderer());
 
         //Setting layout and adding scrollpane with table
         this.setLayout(new GridLayout());

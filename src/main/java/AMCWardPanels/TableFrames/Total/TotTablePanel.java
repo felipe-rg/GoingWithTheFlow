@@ -2,6 +2,7 @@ package AMCWardPanels.TableFrames.Total;
 
 import AMCWardPanels.TableFrames.ButtonColumn;
 import AMCWardPanels.TableFrames.DeletePopUp;
+import AMCWardPanels.TableFrames.IndexRenderer;
 import AMCWardPanels.TableFrames.MultiLineTableHeaderRenderer;
 import Methods.GeneralWard;
 import Methods.tableInfo.TotalTableData;
@@ -66,6 +67,10 @@ public class TotTablePanel extends JPanel implements TableModelListener {
 
         //Assigning the column that will have the delete buttons
         ButtonColumn deletePatient = new ButtonColumn(table, deletePopUp, 8);
+
+        //Rendering index and bedID column so it displays it as a stirng (aligned to the left) for viewing purposes
+        table.getColumnModel().getColumn(0).setCellRenderer(new IndexRenderer());
+        table.getColumnModel().getColumn(1).setCellRenderer(new IndexRenderer());
 
         //Setting layout and adding scrollpane with table
         this.setLayout(new GridLayout());

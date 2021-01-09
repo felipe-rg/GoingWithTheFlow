@@ -1,10 +1,8 @@
 package AMCWardPanels.TableFrames.Incoming;
 
 import AMCWardPanels.TableFrames.*;
-import AMCWardPanels.WardInfo;
 import Client.*;
 import Methods.GeneralWard;
-import Methods.tableInfo.IncomingInfoData;
 import Methods.tableInfo.IncomingTableData;
 
 import javax.swing.*;
@@ -120,6 +118,8 @@ public class InTablePanel extends JPanel implements TableModelListener {
         //The background color
         table.getColumnModel().getColumn(5).setCellRenderer(new TimeRenderer());
 
+        //Rendering index column so it displays it as a stirng (aligned to the left) for viewing purposes
+        table.getColumnModel().getColumn(0).setCellRenderer(new IndexRenderer());
 
         //If we are in LongStayWard, we set up the tooltip for the Request Status Column
         if (AMCorLS.equals("LS")){
