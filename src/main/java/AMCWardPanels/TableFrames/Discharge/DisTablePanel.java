@@ -9,6 +9,8 @@ import Methods.tableInfo.DischargeTableData;
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
@@ -71,6 +73,7 @@ public class DisTablePanel extends JPanel implements TableModelListener {
 
         //Assigning the column that will have the delete buttons
         ButtonColumn deletePatient = new ButtonColumn(table, deletePopUp, 9);
+
 
         //Setting layout and adding scrollpane with table
         this.setLayout(new GridLayout());

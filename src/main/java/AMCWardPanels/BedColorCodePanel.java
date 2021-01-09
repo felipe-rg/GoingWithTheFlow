@@ -17,10 +17,10 @@ public class BedColorCodePanel extends JPanel {
 
         //Creating individual color panels
         JPanel greenPanel = createColorPanels("Free Bed", Color.green);
-        JPanel amberPanel = createColorPanels("Bed will become free", Color.decode("#F39C12"));
+        JPanel amberPanel = createColorPanels("Bed will be free", Color.decode("#F39C12"));
         JPanel redPanel = createColorPanels("Occupied Bed", Color.red);
         JPanel blackPanel = createColorPanels("Closed Bed", Color.black);
-        JPanel bluePanel = createColorPanels("ETD Passed", Color.blue);
+        JPanel bluePanel = createColorPanels("Bed should be free", Color.blue);
 
         //Adding them
         this.setLayout(new GridLayout(1,5));

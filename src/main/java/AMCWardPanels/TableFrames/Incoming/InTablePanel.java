@@ -10,6 +10,8 @@ import Methods.tableInfo.IncomingTableData;
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
@@ -26,6 +28,9 @@ public class InTablePanel extends JPanel implements TableModelListener {
 
     //Model of the table
     private MyTableModel tableModel;
+
+
+    private String AMCorLS;
 
     //Columnames in our table
     private String[] amcColumnName = {"Index",
@@ -69,9 +74,11 @@ public class InTablePanel extends JPanel implements TableModelListener {
         try {
             if (methods.getWardType(methods.getWardId()).equals("AMU")){
                 tableModel = new InTableModel(amcColumnName, dbData);        //Instance of InTableModel extending from MyTableModel
+                AMCorLS = "AMC";
             }
             else {
                 tableModel = new LongInTableModel(lsColumnName, dbData);     //Instance of LongInTableModel extending from MyTableModel
+                AMCorLS = "LS";
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -112,6 +119,19 @@ public class InTablePanel extends JPanel implements TableModelListener {
         //Making the renderer of the Arrival at A&E column our custom TimeRenderer (in charge of changing
         //The background color
         table.getColumnModel().getColumn(5).setCellRenderer(new TimeRenderer());
+
+
+        //If we are in LongStayWard, we set up the tooltip for the Request Status Column
+        if (AMCorLS.equals("LS")){
+
+            //The column itself
+            TableColumn requestStatusColumn = table.getColumnModel().getColumn(6);
+
+            //We define new cellRenderer with tooltip and text
+            DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+            renderer.setToolTipText("C for Confirmed; P for Pending; R for Rejected.");
+            requestStatusColumn.setCellRenderer(renderer);
+        }
 
         //Setting layout and adding scrollpane with table
         this.setLayout(new GridLayout());
