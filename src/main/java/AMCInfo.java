@@ -45,7 +45,7 @@ public class AMCInfo {
             }
         });
 
-        MainPanel mainTablePanel = new MainPanel(false,4);
+        MainPanel mainTablePanel = new MainPanel(false,4, "AMC");
 
 
         AMCInfoTablePanel amcInfoTablePanel = new AMCInfoTablePanel(methods);

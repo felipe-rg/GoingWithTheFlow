@@ -46,7 +46,7 @@ public class LongStay {
         });
 
 
-        MainPanel mainTablePanel = new MainPanel(false,  2);
+        MainPanel mainTablePanel = new MainPanel(false,  2, "AMC");
 
         LongStayTablePanel longStayTablePanel = new LongStayTablePanel(methods);
 

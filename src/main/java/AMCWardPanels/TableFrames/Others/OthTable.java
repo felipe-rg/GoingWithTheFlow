@@ -50,7 +50,7 @@ public class OthTable {
         titlePanel.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK));
 
         //We create the mainTablePanel where othTablePanel is introduced together with sidepanels
-        MainPanel mainTablePanel = new MainPanel(false,  1);
+        MainPanel mainTablePanel = new MainPanel(false,  1, "AMC");
         mainTablePanel.add(othTablePanel, BorderLayout.CENTER);
 
         //We add the titlePanel and mainTablePanel to the mainPanel

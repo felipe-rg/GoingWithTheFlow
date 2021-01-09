@@ -52,7 +52,7 @@ public class Incoming {
         JPanel incomingTablePanel = new IncomingTablePanel(methods);
 
         //MainPanel that contains panels on the sides to make table be at the centre
-        MainPanel mainTablePanel = new MainPanel(true, 2);
+        MainPanel mainTablePanel = new MainPanel(true, 2, "AMC");
         mainTablePanel.add(incomingTablePanel, BorderLayout.CENTER);
 
 

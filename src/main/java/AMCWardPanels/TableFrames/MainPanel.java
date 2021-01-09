@@ -10,13 +10,13 @@ import java.awt.*;
 
  */
 public class MainPanel extends JPanel {
-    public MainPanel(Boolean colorCode, int condition){
+    public MainPanel(Boolean colorCode, int condition, String ward){
 
         //Creating panels
         JPanel leftPanel = new JPanel();
         JPanel rightPanel = new JPanel();
         JPanel bottomPanel = new JPanel();
-        JPanel colorCodePanel = new ColorCodePanel();
+        JPanel colorCodePanel = new ColorCodePanel(ward);
         JPanel smallTopPanel = new JPanel();
 
         //Setting sizes

@@ -12,14 +12,27 @@ import java.awt.*;
 
 
 public class ColorCodePanel extends JPanel {
+    JPanel greenPanel;
+    JPanel amberPanel;
+    JPanel redPanel;
 
     //Constructor
-    public ColorCodePanel(){
+    public ColorCodePanel(String ward){
 
-        //Creating individual colorpanels
-        JPanel greenPanel = createColorPanels("<2 hours ago", Color.decode("#8ABB59"));
-        JPanel amberPanel = createColorPanels("2-3 hours ago", Color.decode("#F9D88C"));
-        JPanel redPanel = createColorPanels(">3 hours ago", Color.decode("#F76262"));
+        if (ward.equals("AMC")){
+            //Creating individual colorpanels
+            greenPanel = createColorPanels("<2 hours ago", Color.decode("#8ABB59"));
+            amberPanel = createColorPanels("2-3 hours ago", Color.decode("#F9D88C"));
+            redPanel = createColorPanels(">3 hours ago", Color.decode("#F76262"));
+        }
+
+        if (ward.equals("LS")){
+            //Creating individual colorpanels
+            greenPanel = createColorPanels(">5 hours until arrival", Color.decode("#8ABB59"));
+            amberPanel = createColorPanels("<3 hours until arrival", Color.decode("#F9D88C"));
+            redPanel = createColorPanels("<1 hours until arrival", Color.decode("#F76262"));
+        }
+
 
         //Adding them
         this. setLayout(new GridLayout(1,3));

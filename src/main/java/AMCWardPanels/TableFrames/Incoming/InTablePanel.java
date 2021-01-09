@@ -113,13 +113,16 @@ public class InTablePanel extends JPanel implements TableModelListener {
         ButtonColumn selectBed = new ButtonColumn(table, selectBedAction, 7);
         ButtonColumn deletePatient = new ButtonColumn(table, deletePopUp, 8);
 
-
-        //Making the renderer of the Arrival at A&E column our custom TimeRenderer (in charge of changing
-        //The background color
-        table.getColumnModel().getColumn(5).setCellRenderer(new TimeRenderer());
-
         //Rendering index column so it displays it as a stirng (aligned to the left) for viewing purposes
         table.getColumnModel().getColumn(0).setCellRenderer(new IndexRenderer());
+
+        //If we are in AMC ward
+        if(AMCorLS.equals("AMC")){
+            //Make the renderer of the Arrival at A&E column our custom TimeRenderer (in charge of changing
+            //the background color)
+            table.getColumnModel().getColumn(5).setCellRenderer(new TimeRenderer());
+
+        }
 
         //If we are in LongStayWard, we set up the tooltip for the Request Status Column
         if (AMCorLS.equals("LS")){
@@ -131,6 +134,10 @@ public class InTablePanel extends JPanel implements TableModelListener {
             DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
             renderer.setToolTipText("C for Confirmed; P for Pending; R for Rejected.");
             requestStatusColumn.setCellRenderer(renderer);
+
+            //Making the renderer of the Estimated time of arrival column our custom LsTimeRenderer
+            //(in charge of changing the background color)
+            table.getColumnModel().getColumn(5).setCellRenderer(new LsTimeRenderer());
         }
 
         //Setting layout and adding scrollpane with table
@@ -266,6 +273,10 @@ public class InTablePanel extends JPanel implements TableModelListener {
 
         //Adding a listener to see user edits
         table.getModel().addTableModelListener(this);
+    }
+
+    public String getAMCorLS(){
+        return AMCorLS;
     }
 }
 

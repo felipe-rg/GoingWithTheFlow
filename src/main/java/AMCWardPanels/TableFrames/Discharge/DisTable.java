@@ -50,7 +50,7 @@ public class DisTable {
         titlePanel.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK));
 
         //We create the mainTablePanel where disTablePanel is introduced together with sidepanels
-        MainPanel mainTablePanel = new MainPanel(false,  1);
+        MainPanel mainTablePanel = new MainPanel(false,  1, "AMC");
         mainTablePanel.add(disTablePanel, BorderLayout.CENTER);
 
         //We add the titlePanel and mainTablePanel to the mainPanel
