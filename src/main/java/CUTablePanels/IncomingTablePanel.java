@@ -9,6 +9,7 @@ import Methods.GeneralWard;
 import Methods.tableInfo.IncomingInfoData;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -64,7 +65,7 @@ public class IncomingTablePanel extends JPanel{
     public void setupTable (JTable...tables){
         //Editing table
         for (JTable t : tables) {
-            t.setRowHeight(35);                                     //Setting rowheight
+            t.setRowHeight(35);                                     //Setting row height
             t.getTableHeader().setDefaultRenderer(new MultiLineTableHeaderRenderer());
         }
     }

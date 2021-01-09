@@ -13,6 +13,7 @@ import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.logging.Logger;
 
 
 public class ControlCentre {
@@ -27,9 +28,11 @@ public class ControlCentre {
     private float longstayCapacityPerc;
     private int longstayFreeBeds;
 
+    private static final Logger log= Logger.getLogger(ControlCentre.class.getName());
 
     public ControlCentre() throws IOException, SQLException {
         client = new Client();
+        log.info("Client for Control Unit created");
         refresh();
     }
 

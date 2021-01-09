@@ -8,18 +8,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.logging.Logger;
 
 public class ControlUnit {
 
     JFrame f;                                                           // creates relevant fields
     JPanel mainPanel;
-
     JPanel incomingPanel;
     JPanel longStayPanel;
     JPanel AMCPanel;
 
-
     ControlCentre methods;
+
+    private static final Logger log= Logger.getLogger(ControlUnit.class.getName());
 
     public ControlUnit() {
         try {
@@ -29,6 +30,7 @@ public class ControlUnit {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+        log.info("Control Unit Started");
 
         f = new JFrame();
         mainPanel = new JPanel();
@@ -73,22 +75,21 @@ public class ControlUnit {
 
         // incoming from A&E info
         JLabel text1 = new JLabel("Number of Patients coming from A&E:");
-        text1.setFont (text1.getFont ().deriveFont (14.0f));
-        //labelPadding(text1);
+        text1.setFont(text1.getFont ().deriveFont (14.0f));
 
-        JLabel total = new JLabel(String.valueOf(methods.getRedPatients()+methods.getGreenPatients()+methods.getOrangePatients()) , SwingConstants.CENTER);
-        text1.setFont (text1.getFont ().deriveFont (14.0f));
+        JLabel total = new JLabel("Total = " + String.valueOf(methods.getRedPatients()+methods.getGreenPatients()+methods.getOrangePatients()) , SwingConstants.CENTER);
+        total.setFont (text1.getFont ().deriveFont (16.0f));
         labelPadding(text1);
 
-        JButton r = new JButton(String.valueOf(methods.getRedPatients()));           // incoming patients with traffic light to represent time of arrival
-        r.setBackground(Color.RED);
-        r.setHorizontalAlignment(SwingConstants.CENTER);
-        JButton y = new JButton(String.valueOf(methods.getOrangePatients()));
-        y.setBackground(Color.YELLOW);
-        y.setHorizontalAlignment(SwingConstants.CENTER);
-        JButton g = new JButton(String.valueOf(methods.getGreenPatients()));
-        g.setBackground(Color.GREEN);
-        g.setHorizontalAlignment(SwingConstants.CENTER);
+        JButton r = new JButton("Arrived more than 3 hours ago:   " + String.valueOf(methods.getRedPatients()));           // incoming patients with traffic light to represent time of arrival
+        r.setFont(text1.getFont ().deriveFont (16.0f));
+        r.setBackground(Color.decode("#E74C3C"));
+        JButton y = new JButton("Arrived 2-3 hours ago:   " + String.valueOf(methods.getOrangePatients()));
+        y.setFont(text1.getFont ().deriveFont (16.0f));
+        y.setBackground(Color.decode("#F39C12"));
+        JButton g = new JButton("Arrived less than 2 hours ago:   " + String.valueOf(methods.getGreenPatients()));
+        g.setFont(text1.getFont ().deriveFont (16.0f));
+        g.setBackground(Color.decode("#2ECC71"));
 
         JLabel blank1 = new JLabel("   ");      // here for spacing
         labelPadding(blank1);

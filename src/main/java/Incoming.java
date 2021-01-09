@@ -12,12 +12,15 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 public class Incoming {
 
-    //private GeneralWard methods;
+    private static final Logger log= Logger.getLogger(Incoming.class.getName());
 
     public Incoming(ControlCentre methods) {
+
+        log.info("Incoming Started");
 
         JFrame f = new JFrame();                   //creates JFrame
         JPanel mainPanel = new JPanel();           // creates MainPanel

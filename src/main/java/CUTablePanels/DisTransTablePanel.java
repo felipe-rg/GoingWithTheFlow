@@ -9,6 +9,7 @@ import Methods.tableInfo.DischargeInfoData;
 import Methods.tableInfo.TransInfoData;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -74,7 +75,6 @@ public class DisTransTablePanel extends JPanel {
 
         //Editing the tables so they look good
         setupTable(disTable, transTable);
-
 
 
         GridLayout gridLayout = new GridLayout(2,1);

@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 public class DisTransPage {
 
@@ -20,7 +21,11 @@ public class DisTransPage {
     private AMCWard transMethods;
     private DisTransTablePanel disTransTablePanel;
 
+    private static final Logger log= Logger.getLogger(DisTransPage.class.getName());
+
     public DisTransPage(ControlCentre methods) {
+
+        log.info("DisTransPage Started");
 
         JFrame f = new JFrame();
         JPanel mainPanel = new JPanel();

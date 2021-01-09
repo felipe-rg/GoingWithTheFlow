@@ -10,10 +10,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Logger;
 
 public class AMCInfo {
 
+    private static final Logger log= Logger.getLogger(AMCInfo.class.getName());
+
     public AMCInfo(ControlCentre methods) {
+
+        log.info("AMCInfo Started");
 
         JFrame f = new JFrame();
         JPanel mainPanel = new JPanel();
@@ -21,7 +26,7 @@ public class AMCInfo {
 
         JButton backButton = new JButton("Go Back");
         JButton refreshButton = new JButton("Refresh Page");
-        Title titlePanel = new Title("AMC Status" , backButton, refreshButton, 420, 420);
+        Title titlePanel = new Title("AMC Ward Status" , backButton, refreshButton, 420, 420);
         titlePanel.setBorder(BorderFactory.createMatteBorder(0, 0, 3, 0, Color.BLACK));
 
         backButton.addActionListener(new ActionListener() {

@@ -7,6 +7,7 @@ import Methods.ControlCentre;
 import Methods.tableInfo.AMCInfoData;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.io.IOException;
 import java.sql.SQLException;
