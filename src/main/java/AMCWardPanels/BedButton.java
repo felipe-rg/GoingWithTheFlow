@@ -722,6 +722,7 @@ public class BedButton extends JButton{
         editFrame.setLocationRelativeTo(null);
         JPanel editPanel = new JPanel();
         editPanel.setLayout(new GridBagLayout());
+        JLabel message = new JLabel("Please enter only one word");
 
         JTextField newp = new JTextField(p.getInitialDiagnosis()); // the field where the information is inputted.
 
@@ -740,9 +741,15 @@ public class BedButton extends JButton{
 
         GridBagConstraints c = new GridBagConstraints();
         c.gridy = 0;
-        editPanel.add(newp);
+        c.gridx = 0;
+        c.gridwidth = 2;
+        editPanel.add(message, c);
         c.gridy = 1;
-        editPanel.add(ConfirmButton);
+        c.gridx = 0;
+        c.gridwidth = 1;
+        editPanel.add(newp, c);
+        c.gridx = 1;
+        editPanel.add(ConfirmButton,c);
         editFrame.add(editPanel);
 
     }
