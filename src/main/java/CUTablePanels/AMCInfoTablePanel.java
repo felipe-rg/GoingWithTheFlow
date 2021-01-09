@@ -70,11 +70,6 @@ public class AMCInfoTablePanel extends JPanel {
             JScrollPane scroll = new JScrollPane(table);
             setupTable(table);
             this.addSp(scroll);
-
-            // centres all elements in table except col headings
-            DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-            centerRenderer.setHorizontalAlignment( JLabel.CENTER );
-            table.setDefaultRenderer(String.class, centerRenderer);
         }
     }
 

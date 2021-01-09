@@ -6,12 +6,20 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 public class PatientForm {
 
+    private static final Logger log= Logger.getLogger(PatientForm.class.getName());
+
     public PatientForm() {
+
+        log.info("PatientForm Started");
 
         JFrame f = new JFrame();
         JPanel mainPanel = new JPanel();
@@ -138,13 +146,18 @@ public class PatientForm {
 
                         if(aneUser.checkAddedPatient(p)) {
                             JOptionPane.showMessageDialog(null, "Patient has been added to database.", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
+                            log.info("Patient has been added to database");
                             f.dispose();
                             UserPage user = new UserPage();
                         }
-                        else {JOptionPane.showMessageDialog(null, "Patient has NOT been added to database! Try again", "Warning", JOptionPane.INFORMATION_MESSAGE);}
+                        else {
+                            JOptionPane.showMessageDialog(null, "Patient has NOT been added to database! Try again", "Warning", JOptionPane.INFORMATION_MESSAGE);
+                            log.warning("Patient not added to database");
+                        }
                     }
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
+                    //log.severe("UserPage Started");
                 }
             }
         });
@@ -177,6 +190,7 @@ public class PatientForm {
         f.setVisible(true);
         f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         f.setExtendedState(Frame.MAXIMIZED_BOTH);
+
     }
     public void padding(JPanel panel){
         panel.setBorder(BorderFactory.createEmptyBorder(30, 200, 30, 500));

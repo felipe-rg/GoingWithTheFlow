@@ -59,11 +59,6 @@ public class IncomingTablePanel extends JPanel{
         this.setLayout(new GridLayout());
         add(scrollPane);
 
-        // centres all elements in table except for traffic light
-        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment( JLabel.CENTER );
-        table.setDefaultRenderer(String.class, centerRenderer);
-
     }
 
     //Sets rowheight and edits the tableheader

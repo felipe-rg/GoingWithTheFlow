@@ -1,4 +1,4 @@
-package MethodTest;
+/*package MethodTest;
 
 import Client.*;
 import Methods.AMCWard;
@@ -362,3 +362,4 @@ public class GeneralWardTest {
 
 
 }
+*/

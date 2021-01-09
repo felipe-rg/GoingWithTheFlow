@@ -73,12 +73,6 @@ public class DisTransTablePanel extends JPanel {
         transTable = new JTable(transTableModel);
         transSp = new JScrollPane(transTable);
 
-        // centres all elements in table except col headings
-        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment( JLabel.CENTER );
-        transTable.setDefaultRenderer(String.class, centerRenderer);
-        disTable.setDefaultRenderer(String.class, centerRenderer);
-
         //Editing the tables so they look good
         setupTable(disTable, transTable);
 

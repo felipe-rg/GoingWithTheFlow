@@ -10,12 +10,15 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 public class LongStay {
 
-    public LongStay(ControlCentre methods) {
-    //Todo Input format is not nice - think of better way
+    private static final Logger log= Logger.getLogger(LongStay.class.getName());
 
+    public LongStay(ControlCentre methods) {
+
+        log.info("LongStay Started");
 
         JFrame f = new JFrame();
         JPanel mainPanel = new JPanel();
@@ -24,7 +27,7 @@ public class LongStay {
         //title panel
         JButton backButton = new JButton("Go Back");
         JButton refreshButton = new JButton("Refresh Page");
-        Title titlePanel = new Title("Long-stay Ward Overview" , backButton, refreshButton, 250, 250);
+        Title titlePanel = new Title("Long Stay Ward Overview" , backButton, refreshButton, 250, 250);
         titlePanel.setBorder(BorderFactory.createMatteBorder(0, 0, 3, 0, Color.BLACK));
         backButton.addActionListener(new ActionListener() {
             @Override

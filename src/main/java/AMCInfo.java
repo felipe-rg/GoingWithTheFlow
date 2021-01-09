@@ -10,10 +10,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Logger;
 
 public class AMCInfo {
 
+    private static final Logger log= Logger.getLogger(AMCInfo.class.getName());
+
     public AMCInfo(ControlCentre methods) {
+
+        log.info("AMCInfo Started");
 
         JFrame f = new JFrame();
         JPanel mainPanel = new JPanel();

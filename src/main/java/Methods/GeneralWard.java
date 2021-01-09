@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 //Holds most methods used for communication to the database
 //Instantiated when a ward is chosen - implemented as AMC or longstay
@@ -41,11 +42,14 @@ public abstract class GeneralWard {
     Topography topography;
     WardInfo wardInfo;
 
+    private static final Logger log= Logger.getLogger(GeneralWard.class.getName());
+
     //Constructor creates a client to link to the database
     //Instantiates the local variables for homescreen numbers or use in methods
     public GeneralWard(int wardId) throws IOException, SQLException {
         this.wardId = wardId;
         client = new Client();
+        log.info("Client for Wards successfully created");
         wardName = getWardName(wardId);
         bedStatus = new int[3];
         bedStatus[0] = 0;
@@ -189,6 +193,7 @@ public abstract class GeneralWard {
             wardInfo.setInText();
         }
         client.makeDeleteRequest("patients", "id="+patientId);
+        log.info("Patient was deleted");
     }
 
     // Returns a list of beds in the ward which have the correct characteristics for the chosen patient
@@ -275,18 +280,22 @@ public abstract class GeneralWard {
         changePatientsInWard(-1);
         wardInfo.setTotText();
 
+        log.info("Patient successfully removed");
+
     }
 
     //Edits the designated column in the table for the bed
     //Column names in table need to be known
     public void editBed(int bedId, String columnId, String newVal) throws IOException{
         client.makePutRequest("beds", columnId+"="+newVal, "bedid="+bedId);
+        log.info("Bed successfully editted");
     }
 
     //Edits the designated column in the table for the patient
     //Column names in table need to be known
     public void editPatient(int patientId, String columnId, String newVal) throws IOException, SQLException {
         client.makePutRequest("patients", columnId+"="+newVal, "id="+patientId);
+        log.info("Patient successfully editted");
     }
 
     //Returns the patient in the specified bed

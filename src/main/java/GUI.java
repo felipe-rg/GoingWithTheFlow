@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 public class GUI {
     JButton backButton;
@@ -19,7 +20,12 @@ public class GUI {
     AMCWard method;
     int wardId;
 
+    private static final Logger log= Logger.getLogger(GUI.class.getName());
+
     public GUI(Ward ward) {
+
+        log.info("Ward GUI Started");
+
         Client c = new Client();
         this.wardId = ward.getWardId();
         ArrayList<String> json = null;
@@ -60,20 +66,26 @@ public class GUI {
             try {
                 method = new AMCWard(wardId);
                 UIc = new UIController(backButton, refreshButton, method);
+                log.info("AMC Ward Started");
             } catch (IOException e) {
                 e.printStackTrace();
+                log.severe("AMC Ward cannot setup");
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
+                log.severe("AMC Ward cannot setup");
             }
         }
         else {
             try {
                 methods = new LongstayWard(wardId);
                 UIc = new UIController(backButton, refreshButton, methods);
+                log.info("Longstay Ward setup");
             } catch (IOException e) {
                 e.printStackTrace();
+                log.severe("Longstay Ward cannot setup");
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
+                log.severe("Longstay Ward cannot setup");
             }
         }
 

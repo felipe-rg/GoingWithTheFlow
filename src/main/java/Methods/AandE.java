@@ -4,12 +4,16 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 import Client.*;
 
 public class AandE{
     Client client;
     fromJson fJsn;
+
+    private static final Logger log= Logger.getLogger(AandE.class.getName());
+
     public AandE(int wardId){
         client = new Client();
     }
@@ -17,6 +21,7 @@ public class AandE{
     //Creates patient with essential information
     public void createPatient(Patient p) throws IOException {
         client.makePostRequest(p);
+        log.info("Client has done makePostRequest");
     }
 
     public boolean checkAddedPatient(Patient p) throws IOException {

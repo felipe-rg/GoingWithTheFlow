@@ -17,8 +17,8 @@ public class UserPage {
     private static final Logger log= Logger.getLogger(UserPage.class.getName());
 
     public UserPage() throws IOException {
-        LogManager.getLogManager().readConfiguration(new FileInputStream("logging.properties"));
 
+        log.info("UserPage Started");
 
         Client client = new Client();
         ArrayList<Ward> amuWards = new ArrayList<Ward>();
@@ -122,7 +122,7 @@ public class UserPage {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     frame.dispose();
-                    GUI gui = new GUI(w);                        // constructs control page (new Jframe)
+                    GUI gui = new GUI(w);                        // constructs control page (new JFrame)
                 }
             });
             lsPanel.add(lsWard);
@@ -145,7 +145,6 @@ public class UserPage {
         frame.setExtendedState(Frame.MAXIMIZED_BOTH);                           // frame will occupy the whole screen
         frame.setVisible(true);                                                 // makes JFrame visible
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);          // This closes the program when the frame is closed
-        log.info("UserPage Started");
     }
 
     // padding method improves visual layout
