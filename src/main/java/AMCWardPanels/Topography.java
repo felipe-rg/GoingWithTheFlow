@@ -1,14 +1,13 @@
 package AMCWardPanels;
 
+import AMCWardPanels.TableFrames.BedColorCodePanel;
 import Client.Bed;
 import Methods.GeneralWard;
-import com.sun.tools.javac.jvm.Gen;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Topography extends JPanel{

@@ -28,7 +28,7 @@ public class DisTransTablePanel extends JPanel {
 
     //Columnames in our tables
     private String[] transColumnName = {"Index",
-            "Bed ID",
+            "Ward",
             "Patient ID",
             "Sex",
             "Side Room",
@@ -38,7 +38,7 @@ public class DisTransTablePanel extends JPanel {
     };
 
     private String[] disColumnName = {"Index",
-            "Bed ID",
+            "Ward",
             "Patient ID",
             "Sex",
             "Diagnosis",

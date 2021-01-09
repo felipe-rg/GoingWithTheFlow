@@ -1,4 +1,4 @@
-package AMCWardPanels;
+package AMCWardPanels.TableFrames;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,11 +16,11 @@ public class BedColorCodePanel extends JPanel {
     public BedColorCodePanel(){
 
         //Creating individual color panels
-        JPanel greenPanel = createColorPanels("Free Bed", Color.green);
+        JPanel greenPanel = createColorPanels("Free Bed", Color.decode("#2ECC71"));
         JPanel amberPanel = createColorPanels("Bed will be free", Color.decode("#F39C12"));
-        JPanel redPanel = createColorPanels("Occupied Bed", Color.red);
+        JPanel redPanel = createColorPanels("Occupied Bed", Color.decode("#E74C3C"));
         JPanel blackPanel = createColorPanels("Closed Bed", Color.black);
-        JPanel bluePanel = createColorPanels("Bed should be free", Color.blue);
+        JPanel bluePanel = createColorPanels("Bed should be free", Color.decode("#1531e8"));
 
         //Adding them
         this.setLayout(new GridLayout(1,5));

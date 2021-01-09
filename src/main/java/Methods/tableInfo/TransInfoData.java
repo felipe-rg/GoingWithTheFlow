@@ -29,7 +29,7 @@ public class TransInfoData extends dateFormat implements dataForTable{
         for(int i=0; i<patients.size(); i++) {
             Patient p = patients.get(i);
             data[i][0] = p.getId();
-            data[i][1] = p.getCurrentBedId();
+            data[i][1] = p.getCurrentWardId();
             data[i][2] = p.getPatientId();
             data[i][3] = p.getSex();
             data[i][4] = p.getNeedsSideRoom();
