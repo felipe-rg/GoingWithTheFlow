@@ -1,2 +1,32 @@
-Jan 09, 2021 11:31:56 AM UserPage <init>
+Jan 09, 2021 11:50:25 AM UserPage <init>
 INFO: UserPage Started
+Jan 09, 2021 11:50:29 AM GUI <init>
+INFO: Ward GUI Started
+Jan 09, 2021 11:50:29 AM Methods.GeneralWard <init>
+INFO: Client Successfully created
+Jan 09, 2021 11:50:30 AM GUI <init>
+INFO: AMC Ward Started
+Jan 09, 2021 11:50:32 AM UserPage <init>
+INFO: UserPage Started
+Jan 09, 2021 11:50:33 AM GUI <init>
+INFO: Ward GUI Started
+Jan 09, 2021 11:50:33 AM Methods.GeneralWard <init>
+INFO: Client Successfully created
+Jan 09, 2021 11:50:35 AM GUI <init>
+INFO: Longstay Ward setup
+Jan 09, 2021 11:50:43 AM Methods.GeneralWard editBed
+INFO: Bed Successfully editted
+Jan 09, 2021 11:50:45 AM Methods.GeneralWard editBed
+INFO: Bed Successfully editted
+Jan 09, 2021 11:50:46 AM UserPage <init>
+INFO: UserPage Started
+Jan 09, 2021 11:50:48 AM Methods.ControlCentre <init>
+INFO: Client for Control Unit created
+Jan 09, 2021 11:50:50 AM ControlUnit <init>
+INFO: Control Unit Started
+Jan 09, 2021 11:50:51 AM AMCInfo <init>
+INFO: AMCInfo Started
+Jan 09, 2021 11:50:58 AM Methods.ControlCentre <init>
+INFO: Client for Control Unit created
+Jan 09, 2021 11:51:01 AM ControlUnit <init>
+INFO: Control Unit Started

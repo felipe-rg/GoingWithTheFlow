@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
     /*Holds methods for communication to the database and between panels in the amc and long stay wards
     This class is responsible for real time editing of the database, and ward GUIs */
@@ -36,12 +37,15 @@ public abstract class GeneralWard implements colourable{
     Topography topography;
     WardInfo wardInfo;
 
+    private static final Logger log= Logger.getLogger(GeneralWard.class.getName());
+
     //Constructor creates a client to link to the database
     //Instantiates the local variables for homescreen numbers or use in methods
     //Finds lists of ward types
     public GeneralWard(int wardId) throws IOException, SQLException {
         this.wardId = wardId;
         client = new Client();
+        log.info("Client Successfully created");
         wardName = getWardName(wardId);
         bedStatus = new int[5];
 
@@ -135,6 +139,7 @@ public abstract class GeneralWard implements colourable{
         }
         //Delete patient from database
         client.makeDeleteRequest("patients", "id="+patientId);
+        log.info("Patient successfully deleted");
     }
 
     public void transferPatient(int patientId, String wardName){
@@ -148,9 +153,12 @@ public abstract class GeneralWard implements colourable{
             client.makePutRequest("patients", "nextdestination="+ward.getWardId(), "id="+patientId);
             //change transfer request status
             client.makePutRequest("patients", "transferrequeststatus='P'", "id="+patientId);
+            log.info("Patient Successfully transferred");
         } catch (IOException e) {
             e.printStackTrace();
+            log.warning("Patient not transferred");
         }
+
     }
 
 
@@ -277,7 +285,7 @@ public abstract class GeneralWard implements colourable{
         changeIncomingNumber(1);  //Increases incoming number
 
         topography.makeBedButtonGreen(bedId); //Immediately makes bed green
-
+        log.info("Patient successfully removed");
     }
 
     //Used to change numbers on ward app when a patient is deleted or removed
@@ -329,12 +337,14 @@ public abstract class GeneralWard implements colourable{
     //Column names in table need to be known
     public void editBed(int bedId, String columnId, String newVal) throws IOException{
         client.makePutRequest("beds", columnId+"="+newVal, "bedid="+bedId);
+        log.info("Bed Successfully editted");
     }
 
     //Edits the designated column in the table for the patient
     //Column names in table need to be known
     public void editPatient(int patientId, String columnId, String newVal) throws IOException, SQLException {
         client.makePutRequest("patients", columnId+"="+newVal, "id="+patientId);
+        log.info("Patient Successfully editted");
     }
 
     //Returns the patient in the specified bed
