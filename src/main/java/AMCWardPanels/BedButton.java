@@ -41,12 +41,16 @@ public class BedButton extends JButton{
 
     }
 
+    public int getBedButtonBedId(){
+        return bed.getBedId();
+    }
+
     // functions that return bed information
     public LocalDateTime getETD(){return this.ETD;}
     public void setETD(LocalDateTime time){this.ETD = time;}
     //Refreshes the numbers in topography when things are changed
     public void refreshTopography(){
-        top.refresh(methods);
+        //top.refresh(methods);
     }
 
     public String getBedButtonStatus(){
@@ -69,7 +73,7 @@ public class BedButton extends JButton{
         try {
             methods.editBed(bed.getBedId(), "status", "'C'");
             methods.changeGreenBeds(-1);
-            methods.changeRedBeds(1);
+            methods.changeBlackBeds(1);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -80,6 +84,8 @@ public class BedButton extends JButton{
     public void makeOpen(){
         try {
             methods.editBed(bed.getBedId(), "status", "'F'");
+            methods.changeGreenBeds(1);
+            methods.changeBlackBeds(-1);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -218,7 +224,7 @@ public class BedButton extends JButton{
         });
 
         // delete patient, making the bed empty
-        JButton deleteButton = new JButton("Delete Patient");
+        JButton deleteButton = new JButton("Remove Patient");
         deleteButton.addActionListener(evt -> {
             makeEmpty(finalP);
             infoFrame.dispose();
@@ -489,20 +495,8 @@ public class BedButton extends JButton{
         infoFrame.setVisible(true);
         infoFrame.setLocationRelativeTo(null);
 
-        ArrayList<Ward> wards = new ArrayList<Ward>();
-        //FIXME get all wards more efficiently
+        ArrayList<Ward> wards = methods.getAllTransWards();
 
-        for(int i=3; i<8; i++) {
-            try {
-                ArrayList<String> json = client.makeGetRequest("*", "wards", "wardid="+i);
-                if(json.size()!=0){
-                    Ward ward = client.wardsFromJson(json).get(0);
-                    wards.add(ward);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
         infoFrame.setLayout(new GridLayout(wards.size()+2,1));
         ButtonGroup longstayWards = new ButtonGroup();
         for(Ward w:wards){
@@ -521,17 +515,9 @@ public class BedButton extends JButton{
         infoFrame.add(submitWard);
         submitWard.addActionListener(evt -> {
             String selected = longstayWards.getSelection().getActionCommand();
-            try {
-                ArrayList<String> json = client.makeGetRequest("*", "wards", "wardname='"+selected+"'");
-                Ward ward = client.wardsFromJson(json).get(0);
-                client.makePutRequest("patients", "nextdestination="+ward.getWardId(), "id="+p.getId());
-                client.makePutRequest("patients", "transferrequeststatus='P'", "id="+p.getId());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            methods.transferPatient(p.getId(), selected);
             infoFrame.dispose();
         });
-
     }
 
     // prints text fields, gets info from user and updates gender and age
@@ -1145,4 +1131,5 @@ public class BedButton extends JButton{
 
         editFrame.add(editPanel);
     }
+
 }

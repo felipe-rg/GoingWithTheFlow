@@ -6,6 +6,7 @@ import com.sun.tools.javac.jvm.Gen;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -97,9 +98,44 @@ public class Topography extends JPanel{
         bedstatus.setRedBedsNum(RCount);
     }
 
-    public void refresh(GeneralWard methods){
+    /*public void refresh(GeneralWard methods){
         CountBeds(methods);
         updateBedStatus(bedstatus);
+    }*/
+
+    public void makeBedButtonRed(int bedId){
+        BedButton bedButton = null;
+        for(BedButton bed:beds){
+            if(bed.getBedButtonBedId()==bedId){
+                bedButton = bed;
+            }
+        }
+        for( ActionListener al : bedButton.getActionListeners() ) {
+            bedButton.removeActionListener( al );
+        }
+        BedButton finalBedButton = bedButton;
+        finalBedButton.setBackground(Color.decode("#E74C3C"));
+        bedButton.addActionListener(evt ->{
+            finalBedButton.printInfoFull();
+        });
     }
+
+    public void makeBedButtonGreen(int bedId){
+        BedButton bedButton = null;
+        for(BedButton bed:beds){
+            if(bed.getBedButtonBedId()==bedId){
+                bedButton = bed;
+            }
+        }
+        for( ActionListener al : bedButton.getActionListeners() ) {
+            bedButton.removeActionListener( al );
+        }
+        BedButton finalBedButton = bedButton;
+        finalBedButton.setBackground(Color.decode("#2ECC71"));
+        bedButton.addActionListener(evt ->{
+            finalBedButton.printInfoEmpty();
+        });
+    }
+
 
 }

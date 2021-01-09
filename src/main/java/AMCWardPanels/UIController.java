@@ -23,6 +23,8 @@ public class UIController {
     public UIController(JButton backButton, JButton refreshButton,  LongstayWard methods){
         this.methods = methods;
         setupOne();
+        wardInfo = new WardInfo(topography, methods);
+        methods.setWardInfo(wardInfo);
         bedStatus = new BedStatus(methods);
         methods.setBedStat(bedStatus);
         topography = new Topography(bedStatus, methods);
@@ -32,16 +34,14 @@ public class UIController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        wardInfo = new WardInfo(topography, methods);
-        methods.setWardInfo(wardInfo);
-
         setupTwo();
     }
 
     public UIController(JButton backButton, JButton refreshButton, AMCWard method){
         this.method = method;
         setupOne();
-
+        wardInfo = new WardInfo(topography, method);
+        method.setWardInfo(wardInfo);
         bedStatus = new BedStatus(method);
         method.setBedStat(bedStatus);
         topography = new Topography(bedStatus, method);
@@ -51,8 +51,6 @@ public class UIController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        wardInfo = new WardInfo(topography, method);
-        method.setWardInfo(wardInfo);
 
         setupTwo();
 
