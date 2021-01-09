@@ -50,6 +50,7 @@ public class UserPage {
         c.gridx = 1;
         c.gridy = 0;
         c.gridwidth = 3;
+        c.insets = new Insets(40,0,30,0);
         userPanel.add(userLabel, c);
 
         JButton controlButton = new JButton("Control Unit");     // creates button to access Control Unit
@@ -129,10 +130,13 @@ public class UserPage {
 
         c.gridy = 1;
         c.gridwidth = 1;
+        c.insets = new Insets(0,0,0,40);
         userPanel.add(othPanel, c);
         c.gridx = 2;
+        c.insets = new Insets(0,0,0,40);
         userPanel.add(amuPanel, c);
         c.gridx = 3;
+        c.insets = new Insets(0,0,0,40);
         userPanel.add(lsPanel, c);
 
         // adding title and user option buttons to main Panel

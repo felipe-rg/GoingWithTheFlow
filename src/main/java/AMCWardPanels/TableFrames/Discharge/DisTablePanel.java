@@ -111,7 +111,7 @@ public class DisTablePanel extends JPanel implements TableModelListener {
         int patientId = tableModel.getPatientID(table.getSelectedRow());
 
         //Printing out what has been edited
-        System.out.println("Patient bed: " + patientId + "     Edited '" + columnName+ "': " +data);
+        System.out.println("Index: " + patientId + "     Edited '" + columnName+ "': " +data);
 
         //Editing database
         if(columnName == "TTA Done?"){
