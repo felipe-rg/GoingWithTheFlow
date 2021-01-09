@@ -19,7 +19,6 @@ public class BedStatus extends JPanel{
     public BedStatus(GeneralWard methods){
         this.setPreferredSize(new Dimension(300,100));
 
-
         //Creating and changing color of labels
         greenBeds = new JLabel("0");
         greenBeds.setBackground(Color.decode("#2ECC71"));
@@ -36,8 +35,6 @@ public class BedStatus extends JPanel{
         blackBeds = new JLabel("0");
         blackBeds.setBackground(Color.decode("#000000"));
 
-
-        //
         setLabel(greenBeds, ambarBeds, redBeds, blackBeds, blueBeds);
         blackBeds.setForeground(Color.white);
 
