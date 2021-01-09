@@ -1,6 +1,5 @@
 import AMCWardPanels.TableFrames.MainPanel;
 import CUTablePanels.DisTransTablePanel;
-import Client.Patient;
 import AMCWardPanels.Title;
 import Methods.AMCWard;
 import Methods.ControlCentre;
@@ -10,16 +9,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.ArrayList;
 
 public class DisTransPage {
 
-    private GeneralWard disMethods;
-    private AMCWard transMethods;
+    //TablePanel containing table
     private DisTransTablePanel disTransTablePanel;
 
+    //Constructor
     public DisTransPage(ControlCentre methods) {
 
         JFrame f = new JFrame();

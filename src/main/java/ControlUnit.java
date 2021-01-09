@@ -1,6 +1,5 @@
 import Methods.ControlCentre;
 import AMCWardPanels.Title;
-import Methods.GeneralWard;
 
 import javax.swing.*;
 import java.awt.*;
