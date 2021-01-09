@@ -21,6 +21,8 @@ public class DisTablePanel extends JPanel implements TableModelListener {
     //Table and scrollpane where table sits
     private JTable table;
     private JScrollPane scrollPane;
+
+    //Model of the table
     private DisTableModel tableModel;
 
     //Columnames in our table
@@ -36,21 +38,24 @@ public class DisTablePanel extends JPanel implements TableModelListener {
             "Delete Button"};
 
 
-
+    //2D Object that will contain the data to insert in the table
     private Object[][] dbData;
 
+    //Methods that will be called
     private GeneralWard methods;
 
+    //Constructor
     public DisTablePanel(GeneralWard methods){
-
-        DischargeTableData dischargeTableData = new DischargeTableData(methods.getClient(), methods.getWardId());
-
         this.methods = methods;
-        dbData =dischargeTableData.getData();
-        //Instantiating table with appropriate data and tablemodel
 
-        tableModel = new DisTableModel(columnName, dbData);        //Instance of MytableModel
-        table = new JTable(tableModel);         //Creating a table of model tablemodel (instance of MyTableModel)
+        //Class that gets info from database and puts it into an object
+        DischargeTableData dischargeTableData = new DischargeTableData(methods.getClient(), methods.getWardId());
+        //Filling dbData with data from database
+        dbData =dischargeTableData.getData();
+
+        //Instantiating table with appropriate data and tablemodel
+        tableModel = new DisTableModel(columnName, dbData);       //Instance of DisTableModel (extending from MyTableModel)
+        table = new JTable(tableModel);         //Creating a table of model tablemodel
         scrollPane = new JScrollPane(table);    //Creating scrollpane where table is located (for viewing purposes)
 
         //Editing table
@@ -63,13 +68,16 @@ public class DisTablePanel extends JPanel implements TableModelListener {
                 new DeletePopUp(table, tableModel, methods);
             }
         };
+
         //Assigning the column that will have the delete buttons
         ButtonColumn deletePatient = new ButtonColumn(table, deletePopUp, 9);
 
+        //Setting layout and adding scrollpane with table
         this.setLayout(new GridLayout());
         this.add(scrollPane);
     }
 
+    //Class that edits the patient's side room, tta done or discharge lounge in the database
     private void editPatient(int patientId, String column, boolean value){
         try {
             methods.editPatient(patientId, column, String.valueOf(value));
@@ -80,6 +88,8 @@ public class DisTablePanel extends JPanel implements TableModelListener {
         }
     }
 
+    //Function that is called when the table is changed, it prints out what has been edited and calls
+    //editPatient function to edit database
     @Override
     public void tableChanged(TableModelEvent e) {
         //Row and column being edited
@@ -95,6 +105,8 @@ public class DisTablePanel extends JPanel implements TableModelListener {
 
         //Printing out what has been edited
         System.out.println("Patient bed: " + patientId + "     Edited '" + columnName+ "': " +data);
+
+        //Editing database
         if(columnName == "TTA Done?"){
             editPatient(patientId, "ttasignedoff", (boolean)data);
         }
@@ -108,6 +120,7 @@ public class DisTablePanel extends JPanel implements TableModelListener {
     }
 
 
+    //Function editing table in general
     public void setupTable(JTable table){
         table.setRowHeight(35);                                     //Setting rowheight
         table.getTableHeader().setDefaultRenderer(new MultiLineTableHeaderRenderer());  //Setting header renderer

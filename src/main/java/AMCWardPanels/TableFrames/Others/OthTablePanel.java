@@ -22,6 +22,8 @@ public class OthTablePanel extends JPanel implements TableModelListener {
     //Table and scrollpane where table sits
     private JTable table;
     private JScrollPane scrollPane;
+
+    //Model of the table
     private OthTableModel tableModel;
 
 
@@ -37,14 +39,19 @@ public class OthTablePanel extends JPanel implements TableModelListener {
             "Delete Button"
     };
 
-
+    //2D Object that will contain the data to insert in the table
     private Object[][] dbData;
 
+    //Methods that will be called
     private GeneralWard methods;
 
+    //Constructor
     public OthTablePanel(GeneralWard methods){
-        OtherTableData otherTableData = new OtherTableData(methods.getClient(), methods.getWardId());
         this.methods = methods;
+
+        //Class that gets info from database and puts it into an object
+        OtherTableData otherTableData = new OtherTableData(methods.getClient(), methods.getWardId());
+        //Filling dbData with data from database
         dbData = otherTableData.getData();
 
 
@@ -68,12 +75,12 @@ public class OthTablePanel extends JPanel implements TableModelListener {
         //Making last column a buttoncolumn (to delete patient)
         ButtonColumn deletePatient = new ButtonColumn(table, deletePopUp, 8);
 
-        //Setting layout and adding scrollpan with table
+        //Setting layout and adding scrollpane with table
         this.setLayout(new GridLayout());
         this.add(scrollPane);
     }
 
-    //Function that
+    //Function that edits patient in the database
     private void editPatient(int patientId, String column, boolean value){
         try {
             methods.editPatient(patientId, column, String.valueOf(value));
@@ -85,7 +92,8 @@ public class OthTablePanel extends JPanel implements TableModelListener {
     }
 
     @Override
-    //Function prints
+    //Function that is called when the table is changed, it prints out what has been edited and calls
+    //editPatient function to edit database
     public void tableChanged(TableModelEvent e) {
         //Row and column being edited
         int row = e.getFirstRow();
@@ -110,6 +118,7 @@ public class OthTablePanel extends JPanel implements TableModelListener {
         }
     }
 
+    //Editing table
     public void setupTable(JTable table) {
         table.setRowHeight(35);                                     //Setting rowheight
         table.getTableHeader().setDefaultRenderer(new MultiLineTableHeaderRenderer());  //Setting header renderer
