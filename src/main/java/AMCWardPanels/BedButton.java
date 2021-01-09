@@ -414,11 +414,6 @@ public class BedButton extends JButton{
             longstayWards.add(lsWard);
             infoFrame.add(lsWard);
         }
-        JButton setETDButton = new JButton("Select time from now");
-        setETDButton.addActionListener(evt -> {
-            editETD(p);
-        });
-        infoFrame.add(setETDButton);
         JButton submitWard = new JButton("Submit");
         infoFrame.add(submitWard);
         submitWard.addActionListener(evt -> {
