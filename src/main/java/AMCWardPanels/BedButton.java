@@ -141,12 +141,12 @@ public class BedButton extends JButton{
         }
         JLabel ETDLabel;
         if(p.getEstimatedTimeOfNext().isEqual(p.getArrivalDateTime())){
-            ETDLabel = new JLabel("ETD: N/A", SwingConstants.CENTER);
+            ETDLabel = new JLabel("<html><b>ETD: </b>N/A</html>", SwingConstants.CENTER);
         }
         else {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
             String ETDTime = p.getEstimatedTimeOfNext().format(formatter);
-            ETDLabel = new JLabel("ETD: "+ETDTime, SwingConstants.CENTER);
+            ETDLabel = new JLabel("<html><b>ETD: </b>"+ETDTime+"</html>", SwingConstants.CENTER);
         }
 
         Patient finalP = p;
@@ -453,17 +453,22 @@ public class BedButton extends JButton{
     // is out of bounds (eg. an ETD with minutes>60), or other issues that may require the user to input the information again
     public void Warning(String Problem){
         JFrame WarningFrame = new JFrame();
-        WarningFrame.setSize(300,75);
+        WarningFrame.setSize(300,100);
+        Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+        int x = (int) ((dimension.getWidth() - WarningFrame.getWidth()) / 2);
+        WarningFrame.setLocation(x, 150);
         WarningFrame.setBackground(Color.WHITE);
         WarningFrame.setVisible(true);
-        WarningFrame.setLocationRelativeTo(null);
 
-        JLabel ReasonLabel = new JLabel("Error: "+Problem, SwingConstants.CENTER);
+        JLabel ReasonLabel = new JLabel("Warning: "+Problem, SwingConstants.CENTER);
         JLabel WarningLabel = new JLabel("Please try again", SwingConstants.CENTER);
 
-        JPanel WarningPanel = new JPanel();
-        WarningPanel.add(ReasonLabel);
-        WarningPanel.add(WarningLabel);
+        JPanel WarningPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridy = 0;
+        WarningPanel.add(ReasonLabel, c);
+        c.gridy = 1;
+        WarningPanel.add(WarningLabel,c);
 
         WarningFrame.add(WarningPanel);
     }
@@ -529,6 +534,8 @@ public class BedButton extends JButton{
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
+            editFrame.dispose();
+            printInfoFull();
         });
 
         JPanel editPanel = new JPanel();
@@ -599,7 +606,16 @@ public class BedButton extends JButton{
 
         JButton ConfirmButton = new JButton("Confirm");
         ConfirmButton.addActionListener(evt -> {
+
+            // warning if year is in the future
+            if(Integer.parseInt(year.getText()) > LocalDateTime.now().getYear()){Warning("Year is in the future");}
+            // warning if month > 12
+            if(Integer.parseInt(month.getText()) > 12){Warning("That is not a valid month");}
+            // warning if day > 31
+            if(Integer.parseInt(day.getText()) > 31){Warning("That is not a valid day");}
+
             editFrame.dispose();
+            printInfoFull();
             try {
                 //Change date of birth
                 LocalDate DOB = LocalDate.of(  Integer.parseInt(year.getText()),  Integer.parseInt(month.getText()),  Integer.parseInt(day.getText()) );
