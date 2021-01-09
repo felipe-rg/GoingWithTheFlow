@@ -1,60 +1,24 @@
-Jan 09, 2021 6:28:19 PM UserPage <init>
+Jan 09, 2021 6:44:12 PM UserPage <init>
 INFO: UserPage Started
-Jan 09, 2021 6:28:26 PM GUI <init>
+Jan 09, 2021 6:44:21 PM GUI <init>
 INFO: Ward GUI Started
-Jan 09, 2021 6:28:26 PM Methods.GeneralWard <init>
+Jan 09, 2021 6:44:21 PM Methods.GeneralWard <init>
 INFO: Client Successfully created
-Jan 09, 2021 6:28:29 PM GUI <init>
+Jan 09, 2021 6:44:23 PM GUI <init>
 INFO: AMC Ward Started
-Jan 09, 2021 6:28:33 PM Methods.GeneralWard editPatient
+Jan 09, 2021 6:44:29 PM Methods.GeneralWard editPatient
 INFO: Patient Successfully editted
-Jan 09, 2021 6:28:34 PM Methods.GeneralWard editPatient
+Jan 09, 2021 6:44:29 PM Methods.GeneralWard editPatient
 INFO: Patient Successfully editted
-Jan 09, 2021 6:28:35 PM Methods.GeneralWard editPatient
+Jan 09, 2021 6:44:30 PM Methods.GeneralWard editPatient
 INFO: Patient Successfully editted
-Jan 09, 2021 6:28:35 PM Methods.GeneralWard editPatient
+Jan 09, 2021 6:44:31 PM Methods.GeneralWard editPatient
 INFO: Patient Successfully editted
-Jan 09, 2021 6:28:36 PM Methods.GeneralWard editPatient
-INFO: Patient Successfully editted
-Jan 09, 2021 6:28:36 PM Methods.GeneralWard editPatient
-INFO: Patient Successfully editted
-Jan 09, 2021 6:28:40 PM Methods.GeneralWard editPatient
-INFO: Patient Successfully editted
-Jan 09, 2021 6:28:41 PM Methods.GeneralWard editPatient
-INFO: Patient Successfully editted
-Jan 09, 2021 6:28:42 PM Methods.GeneralWard editPatient
-INFO: Patient Successfully editted
-Jan 09, 2021 6:28:42 PM Methods.GeneralWard editPatient
-INFO: Patient Successfully editted
-Jan 09, 2021 6:28:43 PM Methods.GeneralWard editPatient
-INFO: Patient Successfully editted
-Jan 09, 2021 6:28:43 PM Methods.GeneralWard editPatient
-INFO: Patient Successfully editted
-Jan 09, 2021 6:28:44 PM Methods.GeneralWard editPatient
-INFO: Patient Successfully editted
-Jan 09, 2021 6:28:45 PM Methods.GeneralWard editPatient
-INFO: Patient Successfully editted
-Jan 09, 2021 6:28:45 PM Methods.GeneralWard editPatient
-INFO: Patient Successfully editted
-Jan 09, 2021 6:28:45 PM Methods.GeneralWard editPatient
-INFO: Patient Successfully editted
-Jan 09, 2021 6:28:57 PM UserPage <init>
+Jan 09, 2021 6:44:38 PM UserPage <init>
 INFO: UserPage Started
-Jan 09, 2021 6:28:58 PM Methods.ControlCentre <init>
-INFO: Client for Control Unit created
-Jan 09, 2021 6:29:01 PM ControlUnit <init>
-INFO: Control Unit Started
-Jan 09, 2021 6:29:03 PM DisTransPage <init>
-INFO: DisTransPage Started
-Jan 09, 2021 6:29:09 PM Methods.ControlCentre <init>
-INFO: Client for Control Unit created
-Jan 09, 2021 6:29:11 PM ControlUnit <init>
-INFO: Control Unit Started
-Jan 09, 2021 6:29:13 PM UserPage <init>
-INFO: UserPage Started
-Jan 09, 2021 6:29:14 PM GUI <init>
+Jan 09, 2021 6:44:40 PM GUI <init>
 INFO: Ward GUI Started
-Jan 09, 2021 6:29:14 PM Methods.GeneralWard <init>
+Jan 09, 2021 6:44:40 PM Methods.GeneralWard <init>
 INFO: Client Successfully created
-Jan 09, 2021 6:29:15 PM GUI <init>
+Jan 09, 2021 6:44:42 PM GUI <init>
 INFO: Longstay Ward setup
