@@ -138,7 +138,7 @@ public class BedButton extends JButton{
         JFrame infoFrame = new JFrame();
 
         //edit info Frame
-        infoFrame.setSize(450,300);
+        infoFrame.setSize(450,260);
         infoFrame.setBackground(Color.WHITE);
         infoFrame.setVisible(true);
         infoFrame.setLocationRelativeTo(null);

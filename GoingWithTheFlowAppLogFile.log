@@ -1,16 +1,8 @@
-Jan 09, 2021 7:05:38 PM UserPage <init>
+Jan 09, 2021 7:10:07 PM UserPage <init>
 INFO: UserPage Started
-Jan 09, 2021 7:06:22 PM Methods.ControlCentre <init>
-INFO: Client for Control Unit created
-Jan 09, 2021 7:06:24 PM ControlUnit <init>
-INFO: Control Unit Started
-Jan 09, 2021 7:06:27 PM UserPage <init>
-INFO: UserPage Started
-Jan 09, 2021 7:06:28 PM GUI <init>
+Jan 09, 2021 7:10:13 PM GUI <init>
 INFO: Ward GUI Started
-Jan 09, 2021 7:06:28 PM Methods.GeneralWard <init>
+Jan 09, 2021 7:10:13 PM Methods.GeneralWard <init>
 INFO: Client Successfully created
-Jan 09, 2021 7:06:30 PM GUI <init>
-INFO: Longstay Ward setup
-Jan 09, 2021 7:06:40 PM UserPage <init>
-INFO: UserPage Started
+Jan 09, 2021 7:10:15 PM GUI <init>
+INFO: AMC Ward Started
