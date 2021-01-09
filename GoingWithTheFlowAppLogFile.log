@@ -1,14 +1,8 @@
-Jan 09, 2021 1:23:21 PM UserPage <init>
+Jan 09, 2021 1:24:54 PM UserPage <init>
 INFO: UserPage Started
-Jan 09, 2021 1:23:25 PM GUI <init>
+Jan 09, 2021 1:25:06 PM GUI <init>
 INFO: Ward GUI Started
-Jan 09, 2021 1:23:25 PM Methods.GeneralWard <init>
+Jan 09, 2021 1:25:06 PM Methods.GeneralWard <init>
 INFO: Client Successfully created
-Jan 09, 2021 1:23:26 PM GUI <init>
+Jan 09, 2021 1:25:08 PM GUI <init>
 INFO: AMC Ward Started
-Jan 09, 2021 1:23:42 PM Methods.GeneralWard transferPatient
-INFO: Patient Successfully transferred
-Jan 09, 2021 1:23:48 PM Methods.GeneralWard editPatient
-INFO: Patient Successfully editted
-Jan 09, 2021 1:23:52 PM UserPage <init>
-INFO: UserPage Started
