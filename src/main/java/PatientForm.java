@@ -130,15 +130,11 @@ public class PatientForm {
 
         // Sideroom field
         JLabel infoSR = new JLabel("Is a sideroom required?     ", SwingConstants.RIGHT);
-        String[] sideRoom = { "No","Yes"};
-        final JComboBox<String> pSR = new JComboBox<String>(sideRoom);
+        final JCheckBox pSR = new JCheckBox();
         JPanel panelSR = new JPanel();
         panelSR.add(pSR);
         padding(panelSR);
-        //converts response to a boolean for the database
-        boolean sRoom = false;
-        if (pSR.getSelectedItem() == "Yes") { sRoom = true;}
-        final boolean SR = sRoom;
+
 
         JLabel blank1 = new JLabel("  ");
         JButton submit = new JButton ("Submit Form");
@@ -160,7 +156,7 @@ public class PatientForm {
                         // sets DOB using LocalDate
                         LocalDate DOB = LocalDate.of((Integer) year.getSelectedItem(), (Integer) month.getSelectedItem(), (Integer) day.getSelectedItem());
                         //create a new patient
-                        p = new Patient(pID.getText(), (String) pSex.getSelectedItem(), DOB, pIll.getText(), SR);
+                        p = new Patient(pID.getText(), (String) pSex.getSelectedItem(), DOB, pIll.getText(), pSR.isSelected());
                         // sets location of patient
                         aneUser.createPatient(p);
 
