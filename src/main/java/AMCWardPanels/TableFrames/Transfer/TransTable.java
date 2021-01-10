@@ -14,7 +14,7 @@ import java.awt.event.WindowEvent;
 
 public class TransTable {
 
-    public TransTable(AMCWardPanels.Topography top, AMCWardPanels.WardInfo wardinfo, AMCWard methods){
+    public TransTable(AMCWard methods){
 
         //Frame containing everything
         JFrame frame = new JFrame("Transferring Patients");
@@ -33,7 +33,7 @@ public class TransTable {
             @Override
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
-                new TransTable(top, wardinfo, methods);
+                new TransTable(methods);
             }
         });
 

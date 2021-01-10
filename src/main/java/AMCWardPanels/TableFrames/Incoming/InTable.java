@@ -15,7 +15,7 @@ import java.awt.event.WindowEvent;
 
 public class InTable {
 
-    public InTable(AMCWardPanels.Topography top, AMCWardPanels.WardInfo wardinfo, GeneralWard methods){
+    public InTable(GeneralWard methods){
         //We create a new frame
         JFrame frame = new JFrame("Incoming Patients");
         JPanel mainPanel = new JPanel(new BorderLayout());
@@ -32,7 +32,7 @@ public class InTable {
             @Override
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
-                new InTable(top, wardinfo, methods);
+                new InTable(methods);
             }
         });
 

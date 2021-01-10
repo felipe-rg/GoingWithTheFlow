@@ -30,14 +30,11 @@ public class WardInfo extends JPanel{
     JButton disbut;
     JButton othbut;
     JButton totbut;
-    Topography top;
-    WardInfo here;
     GeneralWard methods;
 
 
-    public WardInfo(Topography top, LongstayWard methods){
+    public WardInfo(LongstayWard methods){
         this.methods = methods;
-        this.top = top;
         this.setLayout(new GridLayout(8,1));
         setup();
         //Adding labels and buttons into Panel
@@ -51,9 +48,8 @@ public class WardInfo extends JPanel{
         add(totbut);
     }
 
-    public WardInfo(Topography top, AMCWard methods){
+    public WardInfo(AMCWard methods){
         this.methods = methods;
-        this.top = top;
         this.setLayout(new GridLayout(10,1));
         setup();
 
@@ -64,7 +60,7 @@ public class WardInfo extends JPanel{
         transbut.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                TransTable transTable = new TransTable(top, here, methods);
+                TransTable transTable = new TransTable(methods);
             }
         });
 
@@ -82,7 +78,6 @@ public class WardInfo extends JPanel{
     }
 
     private void setup(){
-        here = this;
         this.setPreferredSize(new Dimension(300,600));
         this.setBackground(Color.white);
 
@@ -108,28 +103,28 @@ public class WardInfo extends JPanel{
         inbut.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                InTable inTable = new InTable(top, here, methods);
+                InTable inTable = new InTable(methods);
             }
         });
 
         disbut.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                DisTable disTable = new DisTable(top, here, methods);
+                DisTable disTable = new DisTable(methods);
             }
         });
 
         othbut.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                OthTable othTable = new OthTable(top, here, methods);
+                OthTable othTable = new OthTable(methods);
             }
         });
 
         totbut.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                TotTable totTable = new TotTable(top, here, methods);
+                TotTable totTable = new TotTable(methods);
             }
         });
     }

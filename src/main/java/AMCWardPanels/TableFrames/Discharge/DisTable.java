@@ -16,7 +16,7 @@ import java.awt.event.WindowEvent;
 
 public class DisTable {
 
-    public DisTable(AMCWardPanels.Topography top, AMCWardPanels.WardInfo wardinfo, GeneralWard methods){
+    public DisTable(GeneralWard methods){
         //Create frame and mainPanel containing everything
         JFrame frame = new JFrame("Discharge Patients");
         JPanel mainPanel = new JPanel(new BorderLayout());
@@ -33,7 +33,7 @@ public class DisTable {
             @Override
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
-                new DisTable(top, wardinfo, methods);
+                new DisTable(methods);
             }
         });
 

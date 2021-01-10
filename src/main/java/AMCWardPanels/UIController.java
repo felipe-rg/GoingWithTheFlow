@@ -23,7 +23,7 @@ public class UIController {
     public UIController(JButton backButton, JButton refreshButton,  LongstayWard methods){
         this.methods = methods;
         setupOne();
-        wardInfo = new WardInfo(topography, methods);
+        wardInfo = new WardInfo(methods);
         methods.setWardInfo(wardInfo);
         bedStatus = new BedStatus(methods);
         methods.setBedStat(bedStatus);
@@ -40,7 +40,7 @@ public class UIController {
     public UIController(JButton backButton, JButton refreshButton, AMCWard method){
         this.method = method;
         setupOne();
-        wardInfo = new WardInfo(topography, method);
+        wardInfo = new WardInfo(method);
         method.setWardInfo(wardInfo);
         bedStatus = new BedStatus(method);
         method.setBedStat(bedStatus);

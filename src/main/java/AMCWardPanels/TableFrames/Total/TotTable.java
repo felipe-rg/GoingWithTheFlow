@@ -16,7 +16,7 @@ import java.awt.event.WindowEvent;
 
 public class TotTable {
 
-    public TotTable(AMCWardPanels.Topography top, AMCWardPanels.WardInfo wardinfo, GeneralWard methods){
+    public TotTable(GeneralWard methods){
 
         //Create frame and mainPanel containing everything
         JFrame frame = new JFrame("Total Patients");
@@ -34,7 +34,7 @@ public class TotTable {
             @Override
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
-                new TotTable(top, wardinfo, methods);
+                new TotTable(methods);
             }
         });
 

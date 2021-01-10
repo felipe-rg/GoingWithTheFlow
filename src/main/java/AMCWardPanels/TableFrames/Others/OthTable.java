@@ -15,7 +15,7 @@ import java.awt.event.WindowEvent;
 
 public class OthTable {
 
-    public OthTable(AMCWardPanels.Topography top, AMCWardPanels.WardInfo wardinfo, GeneralWard methods){
+    public OthTable(GeneralWard methods){
 
         //Create frame and mainPanel containing everything
         JFrame frame = new JFrame("Others");
@@ -33,7 +33,7 @@ public class OthTable {
             @Override
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
-                new OthTable(top, wardinfo, methods);
+                new OthTable(methods);
             }
         });
 
