@@ -4,6 +4,7 @@ import AMCWardPanels.Title;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,15 +24,13 @@ public class PatientForm {
 
         log.info("PatientForm Started");
 
-        // Creates mainPanel
+        // Creates mainPanel which has all the elements of the patient form
         JFrame f = new JFrame();
         JPanel mainPanel = new JPanel();
-        mainPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
 
         // creates back and refresh buttons
         JButton backButton = new JButton("Cancel & go back");
         JButton refreshButton = new JButton("Refresh Page");
-
 
         // adds buttons to title class that creates title
         Title titlePanel = new Title("A&E Incoming Patient Form", backButton, refreshButton, 230, 200);
@@ -60,25 +59,24 @@ public class PatientForm {
             }
         });
 
-        // this is the panel where patient info will be added
-        JPanel infoPanel = new JPanel();
-        infoPanel.setLayout(new GridLayout(8, 2));
 
         JLabel instructLabel = new JLabel("Please fill out this patient form for the AMC", SwingConstants.RIGHT);
         instructLabel.setFont(instructLabel.getFont().deriveFont(20.0f));
-        JLabel blank = new JLabel(" ");
 
         // patient ID field
         JLabel infoID = new JLabel("Patient ID:", SwingConstants.RIGHT);
+        infoID.setFont(instructLabel.getFont().deriveFont(15.0f));
         JTextField pID = new JTextField(10);
 
         // patient sex field
         JLabel infoSex = new JLabel("Gender:", SwingConstants.RIGHT);
+        infoSex.setFont(instructLabel.getFont().deriveFont(15.0f));
         String[] sex = {"Male", "Female"};
         final JComboBox<String> pSex = new JComboBox<String>(sex);
 
         // patient DOB field
         JLabel infoDOB = new JLabel("Date of Birth:", SwingConstants.RIGHT);
+        infoDOB.setFont(instructLabel.getFont().deriveFont(15.0f));
 
         JLabel dayLabel = new JLabel("Day");
         JLabel monthLabel = new JLabel("Month");
@@ -110,22 +108,15 @@ public class PatientForm {
 
         // Initial diagnosis field
         JLabel infoIll = new JLabel("Initial Diagnosis:", SwingConstants.RIGHT);
+        infoIll.setFont(instructLabel.getFont().deriveFont(15.0f));
         JTextField pIll = new JTextField(20);
 
         // Sideroom field
-        JLabel infoSR = new JLabel("Is a sideroom required?     ", SwingConstants.RIGHT);
+        JLabel infoSR = new JLabel("Is a sideroom required?", SwingConstants.RIGHT);
+        infoSR.setFont(instructLabel.getFont().deriveFont(15.0f));
         final JCheckBox pSR = new JCheckBox();
 
-//        JLabel infoSR = new JLabel("Sideroom:", SwingConstants.RIGHT);
-//        String[] sideRoom = {"No", "Yes"};
-//        final JComboBox<String> pSR = new JComboBox<String>(sideRoom);
-//        boolean sRoom = false;
-//        if (pSR.getSelectedItem() == "Yes") {
-//            sRoom = true;
-//        }
-//        final boolean SR = sRoom;
 
-        JLabel blank1 = new JLabel("  ");
         JButton submit = new JButton("Submit Form");
 
         //Submit button instructions
@@ -171,92 +162,110 @@ public class PatientForm {
         JLabel one = new JLabel("/");
         JLabel two = new JLabel("/");
 
-        mainPanel.setLayout(new GridBagLayout());
+        JPanel panel = new JPanel();
+        panel.setPreferredSize(new Dimension(600,500));
+        panel.setMinimumSize(new Dimension(600,500));
+
+        panel.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
-        c.anchor = GridBagConstraints.CENTER;
-        c.gridwidth = 7;
-        c.gridx = 0;
-        c.gridy = 0;
-        c.ipady = 50;
-        mainPanel.add(instructLabel, c);
+//        c.anchor = GridBagConstraints.CENTER;
+//        c.gridwidth = 7;
+//        c.gridx = 0;
+//        c.gridy = 0;
+//        c.ipady = 80;
+//        panel.add(instructLabel, c);
         // patient ID
         c.anchor = GridBagConstraints.EAST;
-        c.ipady = 20;
+        c.ipady = 30;
         c.gridy = 1;
         c.gridwidth = 1;
-        mainPanel.add(infoID, c);
+        panel.add(infoID, c);
         c.anchor = GridBagConstraints.WEST;
         c.gridwidth = 3;
-        c.ipady = 5;
+        c.ipady = 10;
         c.gridx = 1;
-        mainPanel.add(pID, c);
+        panel.add(pID, c);
         // gender
-        c.ipady = 20;
+        c.ipady = 30;
         c.gridwidth = 1;
         c.anchor = GridBagConstraints.EAST;
         c.gridx = 0;
         c.gridy = 2;
-        mainPanel.add(infoSex, c);
+        panel.add(infoSex, c);
         c.anchor = GridBagConstraints.WEST;
         c.gridwidth = 3;
-        c.ipady = 20;
+        c.ipady = 30;
         c.gridx = 1;
-        mainPanel.add(pSex, c);
+        panel.add(pSex, c);
         // Date of Birth DoB
         c.gridwidth = 1;
         c.anchor = GridBagConstraints.CENTER;
         c.ipady = 10;
         c.gridy = 3;
         c.gridx = 1;
-        mainPanel.add(dayLabel, c);
+        panel.add(dayLabel, c);
         c.gridx = 3;
-        mainPanel.add(monthLabel, c);
+        panel.add(monthLabel, c);
         c.gridx = 5;
-        mainPanel.add(yearLabel, c);
+        panel.add(yearLabel, c);
+        c.ipady = 30;
         c.anchor = GridBagConstraints.EAST;
         c.gridy = 6;
         c.gridx = 0;
-        mainPanel.add(infoDOB, c);
+        panel.add(infoDOB, c);
         c.gridx = 1;
         c.anchor = GridBagConstraints.WEST;
-        mainPanel.add(day, c);
+        panel.add(day, c);
         c.gridx = 2;
-        mainPanel.add(one, c);
+        panel.add(one, c);
         c.gridx = 3;
-        mainPanel.add(month, c);
+        panel.add(month, c);
         c.gridx = 4;
-        mainPanel.add(two, c);
+        panel.add(two, c);
         c.gridx = 5;
-        mainPanel.add(year, c);
+        panel.add(year, c);
         // initial diagnosis
         c.anchor = GridBagConstraints.EAST;
         c.gridx = 0;
         c.gridy = 8;
-        mainPanel.add(infoIll, c);
+        panel.add(infoIll, c);
         c.ipady = 5;
         c.gridwidth = 5;
         c.gridx = 1;
         c.anchor = GridBagConstraints.WEST;
-        mainPanel.add(pIll, c);
+        panel.add(pIll, c);
         // sideroom
-        c.ipady = 20;
+        c.ipady = 60;
         c.anchor = GridBagConstraints.EAST;
         c.gridwidth = 1;
         c.gridx = 0;
         c.gridy = 10;
-        mainPanel.add(infoSR, c);
+        panel.add(infoSR, c);
         c.anchor = GridBagConstraints.WEST;
         c.gridx = 1;
         c.gridwidth = 2;
-        mainPanel.add(pSR, c);
+        panel.add(pSR, c);
         // submit button
         c.gridx = 1;
         c.gridy = 12;
         c.gridwidth = 3;
         c.anchor = GridBagConstraints.WEST;
-        mainPanel.add(submit, c);
+        panel.add(submit, c);
 
+        // adding a square around the form
+        Border blackline = BorderFactory.createLineBorder(Color.black);
+        TitledBorder title;
+        title = BorderFactory.createTitledBorder(blackline,"<html><center>Please fill out this<br>patient form for the AMC</center></html>");
+        title.setTitleJustification(TitledBorder.CENTER);
+        title.setTitleFont(new Font("Verdana",Font.PLAIN,20));
+        panel.setBorder(title);
 
+        mainPanel.setLayout(new GridBagLayout());
+        GridBagConstraints c2 = new GridBagConstraints();
+        c2.gridheight = 50;
+        c2.gridwidth = 40;
+        // adding everything to mainPanel and then the frame.
+        mainPanel.add(panel, c2);
         f.add(mainPanel);
         f.add(titlePanel , BorderLayout.NORTH);
         f.setVisible(true);

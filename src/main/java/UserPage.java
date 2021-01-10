@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 
 /*
 This page is used to select on of the four types of interface: AMC Ward, Long Stay Ward, Patient form or Control Unit
- */
+*/
 
 public class UserPage {
 
@@ -40,7 +40,8 @@ public class UserPage {
         titleLabel.setFont(new Font("Verdana", Font.PLAIN, 80));             // sets text size
         titlePanel.add(titleLabel);                                                    // adds title to panel
 
-        JPanel userPanel = new JPanel();                                               // creates panel to select user
+        JPanel userPanel = new JPanel();                                            // creates panel to select user
+        userPanel.setPreferredSize(new Dimension(600, 250));
         GridBagLayout threeColumns = new GridBagLayout();
         GridBagConstraints c = new GridBagConstraints();
         userPanel.setLayout(threeColumns);
@@ -56,7 +57,7 @@ public class UserPage {
         c.gridy = 0;
         c.gridwidth = 3;
         c.insets = new Insets(40,0,30,0);
-        userPanel.add(userLabel, c);
+        //userPanel.add(userLabel, c);
 
         JButton controlButton = new JButton("Control Unit");     // creates button to access Control Unit
         controlButton.setFont(new Font("Verdana", Font.PLAIN, 20));
@@ -143,6 +144,16 @@ public class UserPage {
         c.gridx = 3;
         c.insets = new Insets(0,0,0,40);
         userPanel.add(lsPanel, c);
+
+        // creating a titled border:
+        // obtained from https://docs.oracle.com/javase/tutorial/uiswing/components/border.html
+        TitledBorder title;
+        Border blackline = BorderFactory.createLineBorder(Color.black);
+        title = BorderFactory.createTitledBorder(blackline,"Please select a user:");
+        title.setTitleJustification(TitledBorder.CENTER);
+        title.setTitleFont(new Font("Verdana",Font.PLAIN,30));
+        userPanel.setBorder(title);
+        // end of reference
 
         // adding title and user option buttons to main Panel
         mainPanel.setLayout(new GridBagLayout());
