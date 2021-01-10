@@ -48,7 +48,7 @@ public class BedButton extends JButton{
         this.setText(String.valueOf(bed.getBedId()));
         this.setFont(new Font("Verdana", Font.PLAIN, 30));
         this.setBounds(x, y, 80, 140);
-        this.setOpaque(true);
+        this.setOpaque(false);
 
         String colour = null;
         try {
@@ -81,7 +81,7 @@ public class BedButton extends JButton{
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        this.setBackground(Color.decode("#2ECC71"));
+        this.setBorder(BorderFactory.createLineBorder(Color.decode("#2ECC71"),4));
         for( ActionListener al : this.getActionListeners() ) {
             this.removeActionListener( al );
         }
@@ -98,7 +98,7 @@ public class BedButton extends JButton{
             e.printStackTrace();
         }
         bed.setStatus("C");
-        this.setBackground(Color.BLACK);
+        this.setBorder(BorderFactory.createLineBorder(Color.decode("#00000"),4));
         for( ActionListener al : this.getActionListeners() ) {
             this.removeActionListener( al );
         }
@@ -115,7 +115,7 @@ public class BedButton extends JButton{
             e.printStackTrace();
         }
         bed.setStatus("F");
-        this.setBackground(Color.decode("#2ECC71"));
+        this.setBorder(BorderFactory.createLineBorder(Color.decode("#2ECC71"),4));
         for( ActionListener al : this.getActionListeners() ) {
             this.removeActionListener( al );
         }
@@ -501,7 +501,7 @@ public class BedButton extends JButton{
                 methods.editPatient(p.getId(), "estimatedatetimeofnext", "'"+ETD+"'");
                 methods.changeRedBeds(-1);
                 methods.changeOrangeBeds(1);
-                this.setBackground(Color.decode("#F89820"));
+                this.setBorder(BorderFactory.createLineBorder(Color.decode("#F89820"),4));
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (SQLException throwables) {

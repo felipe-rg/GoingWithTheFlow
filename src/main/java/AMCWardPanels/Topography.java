@@ -82,7 +82,7 @@ public class Topography extends JPanel{
 
         //Adding bottom panel indicating colorcode for beds
         BedColorCodePanel bedColorCodePanel = new BedColorCodePanel();
-        bedColorCodePanel.setBounds(0, 690, 1136, 50);
+        bedColorCodePanel.setBounds(0, 0, 1136, 50);
         this.add(bedColorCodePanel);
     }
 
@@ -98,7 +98,7 @@ public class Topography extends JPanel{
             bedButton.removeActionListener( al );
         }
         BedButton finalBedButton = bedButton;
-        finalBedButton.setBackground(Color.decode("#E74C3C"));
+        finalBedButton.setBorder(BorderFactory.createLineBorder(Color.decode("#E74C3C"),4));
         bedButton.addActionListener(evt ->{
             finalBedButton.printInfoFull();
         });
@@ -116,7 +116,7 @@ public class Topography extends JPanel{
             bedButton.removeActionListener( al );
         }
         BedButton finalBedButton = bedButton;
-        finalBedButton.setBackground(Color.decode("#2ECC71"));
+        finalBedButton.setBorder(BorderFactory.createLineBorder(Color.decode("#2ECC71"),4));
         bedButton.addActionListener(evt ->{
             finalBedButton.printInfoEmpty();
         });

@@ -1,34 +1,74 @@
-Jan 10, 2021 2:56:03 PM UserPage <init>
+Jan 10, 2021 2:33:20 PM UserPage <init>
 INFO: UserPage Started
-Jan 10, 2021 2:56:11 PM PatientForm <init>
-INFO: PatientForm Started
-Jan 10, 2021 2:56:27 PM Methods.AandE createPatient
-INFO: Client has done makePostRequest
-Jan 10, 2021 2:56:28 PM PatientForm$3 actionPerformed
-INFO: Patient has been added to database
-Jan 10, 2021 2:56:28 PM UserPage <init>
-INFO: UserPage Started
-Jan 10, 2021 2:56:30 PM GUI <init>
+Jan 10, 2021 2:33:23 PM GUI <init>
 INFO: Ward GUI Started
-Jan 10, 2021 2:56:30 PM Methods.GeneralWard <init>
+Jan 10, 2021 2:33:23 PM Methods.GeneralWard <init>
 INFO: Client Successfully created
-Jan 10, 2021 2:56:32 PM GUI <init>
-INFO: AMC Ward Started
-Jan 10, 2021 2:57:20 PM UserPage <init>
+Jan 10, 2021 2:33:25 PM GUI <init>
+INFO: Longstay Ward setup
+Jan 10, 2021 2:34:07 PM UserPage <init>
 INFO: UserPage Started
-Jan 10, 2021 2:57:23 PM PatientForm <init>
+Jan 10, 2021 2:34:11 PM PatientForm <init>
 INFO: PatientForm Started
-Jan 10, 2021 2:57:37 PM Methods.AandE createPatient
-INFO: Client has done makePostRequest
-Jan 10, 2021 2:57:38 PM PatientForm$3 actionPerformed
-INFO: Patient has been added to database
-Jan 10, 2021 2:57:38 PM UserPage <init>
+Jan 10, 2021 2:34:58 PM UserPage <init>
 INFO: UserPage Started
-Jan 10, 2021 2:57:40 PM GUI <init>
+Jan 10, 2021 2:35:03 PM GUI <init>
 INFO: Ward GUI Started
-Jan 10, 2021 2:57:40 PM Methods.GeneralWard <init>
+Jan 10, 2021 2:35:03 PM Methods.GeneralWard <init>
 INFO: Client Successfully created
-Jan 10, 2021 2:57:42 PM GUI <init>
+Jan 10, 2021 2:35:04 PM GUI <init>
 INFO: AMC Ward Started
-Jan 10, 2021 2:58:11 PM Methods.GeneralWard deletePatient
-INFO: Patient successfully deleted
+Jan 10, 2021 2:36:24 PM UserPage <init>
+INFO: UserPage Started
+Jan 10, 2021 2:36:27 PM GUI <init>
+INFO: Ward GUI Started
+Jan 10, 2021 2:36:27 PM Methods.GeneralWard <init>
+INFO: Client Successfully created
+Jan 10, 2021 2:36:30 PM GUI <init>
+INFO: AMC Ward Started
+Jan 10, 2021 2:37:06 PM GUI <init>
+INFO: Ward GUI Started
+Jan 10, 2021 2:37:06 PM Methods.GeneralWard <init>
+INFO: Client Successfully created
+Jan 10, 2021 2:37:08 PM GUI <init>
+INFO: AMC Ward Started
+Jan 10, 2021 2:37:18 PM UserPage <init>
+INFO: UserPage Started
+Jan 10, 2021 2:37:20 PM GUI <init>
+INFO: Ward GUI Started
+Jan 10, 2021 2:37:20 PM Methods.GeneralWard <init>
+INFO: Client Successfully created
+Jan 10, 2021 2:37:21 PM GUI <init>
+INFO: Longstay Ward setup
+Jan 10, 2021 2:37:37 PM UserPage <init>
+INFO: UserPage Started
+Jan 10, 2021 2:37:39 PM Methods.ControlCentre <init>
+INFO: Client for Control Unit created
+Jan 10, 2021 2:37:41 PM ControlUnit <init>
+INFO: Control Unit Started
+Jan 10, 2021 2:37:53 PM Incoming <init>
+INFO: Incoming Started
+Jan 10, 2021 2:38:01 PM Methods.ControlCentre <init>
+INFO: Client for Control Unit created
+Jan 10, 2021 2:38:03 PM ControlUnit <init>
+INFO: Control Unit Started
+Jan 10, 2021 2:38:10 PM AMCInfo <init>
+INFO: AMCInfo Started
+Jan 10, 2021 2:38:19 PM Methods.ControlCentre <init>
+INFO: Client for Control Unit created
+Jan 10, 2021 2:38:20 PM ControlUnit <init>
+INFO: Control Unit Started
+Jan 10, 2021 2:38:23 PM DisTransPage <init>
+INFO: DisTransPage Started
+Jan 10, 2021 2:38:26 PM Methods.ControlCentre <init>
+INFO: Client for Control Unit created
+Jan 10, 2021 2:38:28 PM ControlUnit <init>
+INFO: Control Unit Started
+Jan 10, 2021 2:38:38 PM LongStay <init>
+INFO: LongStay Started
+Jan 10, 2021 2:38:51 PM Methods.ControlCentre <init>
+INFO: Client for Control Unit created
+Jan 10, 2021 2:38:53 PM ControlUnit <init>
+INFO: Control Unit Started
+Jan 10, 2021 2:38:54 PM UserPage <init>
+INFO: UserPage Started
