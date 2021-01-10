@@ -24,7 +24,7 @@ public class BedColorCodePanel extends JPanel {
 
         //Adding them
         this.setLayout(new GridLayout(1,5));
-        addPanels(greenPanel, amberPanel, redPanel, blackPanel, bluePanel);
+        addPanels(greenPanel, amberPanel, redPanel, bluePanel, blackPanel);
 
     }
 
