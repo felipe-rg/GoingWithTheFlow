@@ -177,7 +177,7 @@ public class InTablePanel extends JPanel implements TableModelListener {
             infoFrame.setSize(300,300);
             infoFrame.setBackground(Color.WHITE);
             infoFrame.setVisible(true);
-            infoFrame.setLocation(300,300);
+            infoFrame.setLocationRelativeTo(null);
             infoFrame.setLayout(new GridLayout(acceptableBeds.size() + 1, 2));
             ButtonGroup beds = new ButtonGroup();
             for (Bed w : acceptableBeds) {
@@ -207,7 +207,7 @@ public class InTablePanel extends JPanel implements TableModelListener {
             infoFrame.setSize(300,100);
             infoFrame.setBackground(Color.WHITE);
             infoFrame.setVisible(true);
-            infoFrame.setLocation(300,300);
+            infoFrame.setLocationRelativeTo(null);
             JLabel noBeds = new JLabel("Currently No Acceptable Free Beds");
             noBeds.setHorizontalAlignment(JLabel.CENTER);
             infoFrame.add(noBeds);

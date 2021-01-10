@@ -18,9 +18,9 @@ import java.util.ArrayList;
 
 public class Topography extends JPanel{
     ArrayList<BedButton> beds = new ArrayList<>();
-    Integer RCount;
-    Integer OCount;
-    Integer GCount;
+//    Integer RCount;
+//    Integer OCount;
+//    Integer GCount;
     ArrayList<Bed> dbBeds;
     BedStatus bedstatus;
 
