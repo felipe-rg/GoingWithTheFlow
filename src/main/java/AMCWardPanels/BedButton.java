@@ -47,7 +47,7 @@ public class BedButton extends JButton{
         //Makes bed pretty
         this.setText(String.valueOf(bed.getBedId()));
         this.setFont(new Font("Verdana", Font.PLAIN, 30));
-        this.setBounds(x, y, 70, 140);
+        this.setBounds(x, y, 80, 140);
         this.setOpaque(true);
 
         String colour = null;
@@ -56,7 +56,7 @@ public class BedButton extends JButton{
         } catch (IOException e) {
             e.printStackTrace();
         }
-        this.setBackground(Color.decode(colour));
+        this.setBorder(BorderFactory.createLineBorder(Color.decode(colour),4));
 
     }
 
