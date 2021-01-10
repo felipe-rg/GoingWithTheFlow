@@ -20,10 +20,6 @@ public class LongstayWard extends GeneralWard{
         inNumber = incoming.size();
     }
 
-    //Removes a patient from the database
-    //Ensures that if they were in a bed then the bed status is made free
-
-
     public void updateDestinationNumber(int dest, int number){
         for(int i:dcWardIds){
             if(dest==i){

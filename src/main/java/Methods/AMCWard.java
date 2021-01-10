@@ -32,7 +32,6 @@ public class AMCWard extends GeneralWard{
         wardInfo.setTransText(String.valueOf(transNumber));
     }
 
-
     public void updateDestinationNumber(int dest, int number){
         for(int i:dcWardIds){
             if(dest==i){

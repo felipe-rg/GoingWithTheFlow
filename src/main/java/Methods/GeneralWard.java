@@ -14,7 +14,7 @@ import java.util.logging.Logger;
     /*Holds methods for communication to the database and between panels in the amc and long stay wards
     This class is responsible for real time editing of the database, and ward GUIs */
 
-public abstract class GeneralWard implements colourable{
+public abstract class GeneralWard{
     protected Client client;
     protected int wardId;
     private String wardName;
