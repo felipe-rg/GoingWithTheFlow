@@ -1,7 +1,5 @@
 import AMCWardPanels.TableFrames.MainPanel;
 import CUTablePanels.IncomingTablePanel;
-import Client.Patient;
-import AMCWardPanels.TableFrames.ColorCodePanel;
 import AMCWardPanels.Title;
 import Methods.ControlCentre;
 
@@ -9,10 +7,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.logging.Logger;
+
+/*
+This page shows the list of patients coming from A&E
+ */
 
 public class Incoming {
 

@@ -7,10 +7,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.logging.Logger;
+
+/*
+This page is used to display the bed statistics of each long stay ward
+ */
 
 public class LongStay {
 

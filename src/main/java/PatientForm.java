@@ -6,12 +6,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.logging.LogManager;
 import java.util.logging.Logger;
+
+/*
+This page takes in patient information to add to the database
+ */
 
 public class PatientForm {
 
@@ -21,26 +22,33 @@ public class PatientForm {
 
         log.info("PatientForm Started");
 
+        // Creates mainPanel
         JFrame f = new JFrame();
         JPanel mainPanel = new JPanel();
         mainPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK , 3));
 
+        // creates back and refresh buttons
         JButton backButton = new JButton("Cancel & go back");
         JButton refreshButton = new JButton("Refresh Page");
+
+        // adds buttons to title class that creates title
         Title titlePanel = new Title("A&E Incoming Patient Form" , backButton, refreshButton, 230, 200);
         titlePanel.setBorder(BorderFactory.createMatteBorder(0, 0, 3, 0, Color.BLACK));
+
+        // back button instructions
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                f.dispose();
+                f.dispose();                                    // close frame
                 try {
-                    UserPage user = new UserPage();
+                    UserPage user = new UserPage();             // open user page
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 }
             }
         });
 
+        // refresh button instructions
         refreshButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {    // when refresh button is selected
@@ -49,27 +57,30 @@ public class PatientForm {
             }
         });
 
+        // this is the panel where patient info will be added
         JPanel infoPanel = new JPanel();
         infoPanel.setLayout(new GridLayout(8,2));
 
         JLabel instructLabel = new JLabel("Please fill out this patient form for the AMC" , SwingConstants.RIGHT);
         JLabel blank = new JLabel(" ");
 
-        JLabel infoID = new JLabel("Patient ID:     ", SwingConstants.RIGHT);
+        // patient ID field
+        JLabel infoID = new JLabel("Patient ID:", SwingConstants.RIGHT);
         JTextField pID = new JTextField(10);
         JPanel panelID = new JPanel();
         panelID.add(pID);
         padding(panelID);
 
-
-        JLabel infoSex = new JLabel("Gender:     " , SwingConstants.RIGHT);
+        // patient sex field
+        JLabel infoSex = new JLabel("Gender:" , SwingConstants.RIGHT);
         String[] sex = { "Male","Female"};
         final JComboBox<String> pSex = new JComboBox<String>(sex);
         JPanel panelSex = new JPanel();
         panelSex.add(pSex);
         padding(panelSex);
 
-        JLabel infoDOB = new JLabel("Date of Birth     " , SwingConstants.RIGHT);
+        // patient DOB field
+        JLabel infoDOB = new JLabel("Date of Birth" , SwingConstants.RIGHT);
         JPanel panelDOB = new JPanel();
         panelDOB.setLayout(new GridLayout(2,3));
 
@@ -80,46 +91,50 @@ public class PatientForm {
         panelDOB.add(monthLabel);
         panelDOB.add(yearLabel);
 
+        // Days option
         Integer[] days = new Integer[31];
-        int inc=1;
+        int counter=1;
         for(int i=0;i<31;i++){
-            days[i]= inc;
-            inc++;
+            days[i]= counter;
+            counter++;
         }
         JComboBox<Integer> day = new JComboBox<>(days);
         panelDOB.add(day);
-
+        // Months option
         Integer[] months = new Integer[12];
-        inc=1;
+        counter=1;
         for(int i=0;i<12;i++){
-            months[i]= inc;
-            inc++;
+            months[i]= counter;
+            counter++;
         }
         JComboBox<Integer> month = new JComboBox<>(months);
         panelDOB.add(month);
-
+        // Years option
         int currentYear = 2021;
         Integer[] years = new Integer[currentYear];
-        inc=currentYear;
+        counter=currentYear;
         for(int i=0;i<currentYear;i++){
-            years[i]= inc;
-            inc--;
+            years[i]= counter;
+            counter--;
         }
         JComboBox<Integer> year = new JComboBox<>(years);
         panelDOB.add(year);
 
+        // Initial diagnosis field
         JLabel infoIll = new JLabel("Initial Diagnosis     " , SwingConstants.RIGHT);
         JTextField pIll = new JTextField( 10 );
         JPanel panelIll = new JPanel();
         panelIll.add(pIll);
         padding(panelIll);
 
+        // Sideroom field
         JLabel infoSR = new JLabel("Is a sideroom required?     ", SwingConstants.RIGHT);
         String[] sideRoom = { "No","Yes"};
         final JComboBox<String> pSR = new JComboBox<String>(sideRoom);
         JPanel panelSR = new JPanel();
         panelSR.add(pSR);
         padding(panelSR);
+        //converts response to a boolean for the database
         boolean sRoom = false;
         if (pSR.getSelectedItem() == "Yes") { sRoom = true;}
         final boolean SR = sRoom;
@@ -127,28 +142,36 @@ public class PatientForm {
         JLabel blank1 = new JLabel("  ");
         JButton submit = new JButton ("Submit Form");
 
+        //Submit button instructions
         submit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 AandE aneUser = new AandE(1);
                 Patient p = null;
                 try {
-                    if (pID.getText().length() != 10){
+                    if (pID.getText().length() != 10){      // checks ID is 10 characters long
                         JOptionPane.showMessageDialog(null, "Invalid Patient ID! It must contain 10 digits.", "Warning", JOptionPane.INFORMATION_MESSAGE);
                     }
-                    else if (aneUser.checkExistingId(pID.getText())) {
+                    else if (aneUser.checkExistingId(pID.getText())) { // checks ID does not already exist
                         JOptionPane.showMessageDialog(null, "Already existing Patient ID! Try again.", "Warning", JOptionPane.INFORMATION_MESSAGE);
                     }
                     else {
+                        // sets DOB using LocalDate
                         LocalDate DOB = LocalDate.of((Integer) year.getSelectedItem(), (Integer) month.getSelectedItem(), (Integer) day.getSelectedItem());
+                        //create a new patient
                         p = new Patient(pID.getText(), (String) pSex.getSelectedItem(), DOB, pIll.getText(), SR);
+                        // sets location of patient
                         aneUser.createPatient(p);
 
-                        if(aneUser.checkAddedPatient(p)) {
+                        if(aneUser.checkAddedPatient(p)) {      // checks patient has been added to database
+
+                            // notifies user of successful database update
                             JOptionPane.showMessageDialog(null, "Patient has been added to database.", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
+
                             log.info("Patient has been added to database");
-                            f.dispose();
-                            UserPage user = new UserPage();
+
+                            f.dispose();                        // closes frame
+                            UserPage user = new UserPage();     // reopens user page
                         }
                         else {
                             JOptionPane.showMessageDialog(null, "Patient has NOT been added to database! Try again", "Warning", JOptionPane.INFORMATION_MESSAGE);
@@ -157,17 +180,17 @@ public class PatientForm {
                     }
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
-                    //log.severe("UserPage Started");
                 }
             }
         });
 
+        // adds submit button to panel
         JPanel panelSub = new JPanel();
         panelSub.add(submit);
         padding(panelSub);
 
         padding(infoPanel);
-        infoPanel.add(instructLabel);
+        infoPanel.add(instructLabel);       // adds components to info panel
         infoPanel.add(blank);
         infoPanel.add(infoID);
         infoPanel.add(panelID);
@@ -182,6 +205,7 @@ public class PatientForm {
         infoPanel.add(blank1);
         infoPanel.add(panelSub);
 
+        // organises mainPanel
         mainPanel.setLayout(new BorderLayout());
         mainPanel.add(titlePanel , BorderLayout.NORTH);
         mainPanel.add(infoPanel , BorderLayout.CENTER);
@@ -192,6 +216,8 @@ public class PatientForm {
         f.setExtendedState(Frame.MAXIMIZED_BOTH);
 
     }
+
+    // adds JPanel borders
     public void padding(JPanel panel){
         panel.setBorder(BorderFactory.createEmptyBorder(30, 200, 30, 500));
     }

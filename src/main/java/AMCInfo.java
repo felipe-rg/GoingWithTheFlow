@@ -2,15 +2,16 @@ import AMCWardPanels.TableFrames.MainPanel;
 import AMCWardPanels.Title;
 import CUTablePanels.AMCInfoTablePanel;
 import Methods.ControlCentre;
-import Methods.GeneralWard;
-import Methods.tableInfo.AMCInfoData;
-import Methods.tableInfo.OtherTableData;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.logging.Logger;
+
+/*
+This page is used to display the bed statistics of each ward in the AMC
+ */
 
 public class AMCInfo {
 
@@ -38,12 +39,12 @@ public class AMCInfo {
             }
         });
 
-        //Refreshbutton action
+        //Refresh button action
         refreshButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {    // when refresh button is selected
                 f.dispose();                                // current frame will close
-                AMCInfo page = new AMCInfo(methods);               // class will be called again
+                AMCInfo page = new AMCInfo(methods);        // class will be called again
             }
         });
 
