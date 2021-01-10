@@ -78,8 +78,6 @@ public class BedButton extends JButton{
             methods.removePatient(p.getId(), bed.getBedId());
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
         }
         this.setBorder(BorderFactory.createLineBorder(Color.decode("#2ECC71"),4));
         for( ActionListener al : this.getActionListeners() ) {

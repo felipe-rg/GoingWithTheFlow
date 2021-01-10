@@ -112,19 +112,16 @@ public abstract class GeneralWard{
     //Removes a patient from the database
     //Ensures everything remains functioning
     public void deletePatient(int patientId) throws IOException {
-
         //Get patient info
         ArrayList<String> json = client.makeGetRequest("*", "patients", "id="+patientId);
         ArrayList<Patient> patients = client.patientsFromJson(json);
         int bedid = patients.get(0).getCurrentBedId();
         // If the patient was in a bed we need to edit bed info
         if(bedid!=0){
-            //Free bed
-            client.makePutRequest("beds", "status='F'", "bedid="+bedid);
-            topography.makeBedButtonGreen(bedid);
 
             //If the patient is in this ward, we need to update the ward numbers
             if(patients.get(0).getCurrentWardId()==wardId) {
+                topography.makeBedButtonGreen(bedid);
 
                 LocalDateTime arrival= patients.get(0).getArrivalDateTime();
                 LocalDateTime leaving= patients.get(0).getEstimatedTimeOfNext();
@@ -144,9 +141,17 @@ public abstract class GeneralWard{
         //Not in a bed, must be on incoming list
         changeIncomingNumber(-1);
 
-        //Delete patient from database
-        client.makeDeleteRequest("patients", "id="+patientId);
+        deletePatientFromDatabase(patientId, bedid);
         log.info("Patient successfully deleted");
+    }
+
+    public void deletePatientFromDatabase(int patientId, int bedId){
+        try {
+            client.makePutRequest("beds", "status='F'", "bedid=" + bedId);
+            client.makeDeleteRequest("patients", "id="+patientId);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void transferPatient(int patientId, String wardName){
@@ -251,33 +256,7 @@ public abstract class GeneralWard{
     //Used to assign a bed and change patient location
     public void setBed(int patientId, int bedId) throws IOException, SQLException {
 
-        //Get patient info
-        ArrayList<String> json = client.makeGetRequest("*", "patients", "id="+patientId);
-        ArrayList<Patient> pats = client.patientsFromJson(json);
-        LocalDateTime arrival = null;
-
-        //Find the arrival time and bedid of the patient
-        if(pats.size()!=0){
-            arrival = pats.get(0).getArrivalDateTime();
-
-            int oldBed = pats.get(0).getCurrentBedId();
-            if(oldBed!=0){
-                //Frees the bed the patient is currently in
-                client.makePutRequest("beds", "status='F'", "bedid="+oldBed);
-            }
-        }
-
-        //Sets time of next to time of arrival which means the bed colour is red
-        client.makePutRequest("patients", "estimateddatetimeofnext='"+arrival+"'", "id="+patientId);
-
-        //Changes patient bedid to bedId
-        client.makePutRequest("patients", "currentbedid="+bedId, "id="+patientId);
-        //Changes patient current location to where the bed is
-        client.makePutRequest("patients", "currentwardid="+wardId, "id="+patientId);
-        //Changes patient next destination to null
-        client.makePutRequest("patients", "nextdestination=0", "id="+patientId);
-        //Changes bed status to occupied
-        client.makePutRequest("beds", "status='O'", "bedid="+bedId);
+        setBedDatabase(patientId, bedId);
 
         topography.makeBedButtonRed(bedId); //Immediately changes bed colour
 
@@ -288,17 +267,42 @@ public abstract class GeneralWard{
 
     }
 
-    //Used to undo a setBed and will still appear on incoming list
-    public void removePatient(int patientId, int bedId) throws IOException, SQLException {
+    public void setBedDatabase(int patientId, int bedId){
+        try {
+            //Get patient info
+            ArrayList<String> json = client.makeGetRequest("*", "patients", "id="+patientId);
+            ArrayList<Patient> pats = client.patientsFromJson(json);
+            LocalDateTime arrival = null;
 
-        //Changes patient's bedid to null
-        client.makePutRequest("patients", "currentbedid=0", "id="+patientId);
-        //Changes beds status to free
-        client.makePutRequest("beds", "status='F'", "bedid="+bedId);
-        //Changes patient's current location to null
-        client.makePutRequest("patients", "currentwardid=0", "id="+patientId);
-        //Changes patient's next location to current ward
-        client.makePutRequest("patients", "nextdestination="+wardId, "id="+patientId);
+            //Find the arrival time and bedid of the patient
+            if(pats.size()!=0){
+                arrival = pats.get(0).getArrivalDateTime();
+
+                int oldBed = pats.get(0).getCurrentBedId();
+                if(oldBed!=0){
+                    //Frees the bed the patient is currently in
+                    client.makePutRequest("beds", "status='F'", "bedid="+oldBed);
+                }
+            }
+            //Sets time of next to time of arrival which means the bed colour is red
+            client.makePutRequest("patients", "estimatedatetimeofnext='"+arrival+"'", "id="+patientId);
+            //Changes patient bedid to bedId
+            client.makePutRequest("patients", "currentbedid="+bedId, "id="+patientId);
+            //Changes patient current location to where the bed is
+            client.makePutRequest("patients", "currentwardid="+wardId, "id="+patientId);
+            //Changes patient next destination to null
+            client.makePutRequest("patients", "nextdestination=0", "id="+patientId);
+            //Changes bed status to occupied
+            client.makePutRequest("beds", "status='O'", "bedid="+bedId);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //Used to undo a setBed and will still appear on incoming list
+    public void removePatient(int patientId, int bedId) throws IOException{
+
+        removePatientFromDatabase(patientId, bedId);
 
         //Get patient information
         ArrayList<String> json = client.makeGetRequest("*", "patients", "id="+patientId);
@@ -313,6 +317,23 @@ public abstract class GeneralWard{
 
         topography.makeBedButtonGreen(bedId); //Immediately makes bed green
         log.info("Patient successfully removed");
+    }
+
+    public void removePatientFromDatabase(int patientId, int bedId){
+        try {
+            //Changes patient's bedid to null
+            client.makePutRequest("patients", "currentbedid=0", "id="+patientId);
+            //Changes beds status to free
+            client.makePutRequest("beds", "status='F'", "bedid="+bedId);
+            //Changes patient's current location to null
+            client.makePutRequest("patients", "currentwardid=0", "id="+patientId);
+            //Changes patient's next location to current ward
+            client.makePutRequest("patients", "nextdestination="+wardId, "id="+patientId);
+            //Changes request status to confirmed
+            client.makePutRequest("patients", "transferrequeststatus='C'", "id="+patientId);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     //Used to change numbers on ward app when a patient is deleted or removed

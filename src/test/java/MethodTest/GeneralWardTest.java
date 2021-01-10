@@ -20,17 +20,12 @@ public class GeneralWardTest {
 
     private Client c;
     private AMCWard amc;
-    private Topography top;
-    private BedStatus bedstatus;
-    private WardInfo wardInfo;
+
     @Before
     public void setup(){
         c = new Client();
         try {
             amc = new AMCWard(11);
-            wardInfo = new WardInfo(amc);
-            bedstatus = new BedStatus(amc);
-            top = new Topography(bedstatus, amc);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (SQLException throwables) {
@@ -38,8 +33,6 @@ public class GeneralWardTest {
         }
     }
 
-    //TODO make test ward, beds, patients so that assertion is more accurate
-    // For example getBedStatus is effectively running the method again
     @Test
     public void testConstructor() {
         try {
@@ -61,9 +54,9 @@ public class GeneralWardTest {
     }
 
     @Test
-    public void testDeletePatient() {
+    public void testDeletePatientFromDatabase() {
         try {
-            amc.deletePatient(3);
+            amc.deletePatientFromDatabase(3, 0);
             ArrayList<String> json = c.makeGetRequest("*", "patients", "id=3");
             ArrayList<Patient> patients = c.patientsFromJson(json);
             Assert.assertEquals(patients.size(), 0);
@@ -86,9 +79,6 @@ public class GeneralWardTest {
     @Test
     public void testAcceptableBeds() {
         try {
-            Client c = new Client();
-            AMCWard amc = new AMCWard(11);
-
             ArrayList<Bed> beds = amc.getAcceptableBeds(5);
             for (Bed b : beds) {
                 Assert.assertTrue(b.getBedId() == 49 || b.getBedId() == 53); //Male sr or Uni SR
@@ -111,19 +101,15 @@ public class GeneralWardTest {
 
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
         }
 
     }
 
     @Test
-    public void testSetBed(){
+    public void testSetBedDatabase(){
         try {
-            Client c = new Client();
-            AMCWard amc = new AMCWard(11);
 
-            amc.setBed(4, 51);
+            amc.setBedDatabase(4, 51);
 
             ArrayList<String> json = c.makeGetRequest("*", "patients", "id=4");
 
@@ -144,36 +130,35 @@ public class GeneralWardTest {
             c.makePutRequest("patients", "currentbedid=0", "id=4");
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
         }
     }
 
     @Test
-    public void testRemoveBed(){
+    public void testRemovePatientFromDatabase(){
         try {
-            Client c = new Client();
-            AMCWard amc = new AMCWard(11);
+            amc.removePatientFromDatabase(7,55);
 
-            amc.removePatient(7,55);
-
-            ArrayList<String> json = c.makeGetRequest("*", "patients", "id=55");
+            ArrayList<String> json = c.makeGetRequest("*", "patients", "id=7");
             ArrayList<Patient> pat = c.patientsFromJson(json);
 
-            Assert.assertEquals(pat.get(0).getCurrentBedId(), 0);
-            Assert.assertEquals(pat.get(0).getCurrentWardId(), 0);
-            Assert.assertEquals(pat.get(0).getNextDestination(), 11);
-            Assert.assertTrue(pat.get(0).getTransferRequestStatus().equals("C"));
+            Assert.assertEquals("Current Bed",pat.get(0).getCurrentBedId(), 0);
+            Assert.assertEquals("Current ward",pat.get(0).getCurrentWardId(), 0);
+            Assert.assertEquals("Next destination",pat.get(0).getNextDestination(), 11);
+            Assert.assertTrue("Transfer Request status",pat.get(0).getTransferRequestStatus().equals("C"));
 
             json = c.makeGetRequest("*", "beds", "bedid=55");
             ArrayList<Bed> b = c.bedsFromJson(json);
 
-            Assert.assertTrue(b.get(0).getStatus().equals("F"));
+            Assert.assertTrue("Bed status",b.get(0).getStatus().equals("F"));
+
+            c.makePutRequest("patients" ,"currentbedid=55", "id=7");
+            c.makePutRequest("patients" ,"currentwardid=11", "id=7");
+            c.makePutRequest("patients" ,"nextdestination=0", "id=7");
+            c.makePutRequest("patients" ,"transferrequeststatus='P'", "id=7");
+            c.makePutRequest("beds" ,"status='O'", "bedid=55");
 
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
         }
     }
 }/*
