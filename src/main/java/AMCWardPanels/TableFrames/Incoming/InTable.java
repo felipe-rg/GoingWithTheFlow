@@ -49,7 +49,7 @@ public class InTable {
         titlePanel.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK));
 
         //We create the mainPanel where everything will be
-        MainPanel mainTablePanel = new MainPanel(true,  1);
+        MainPanel mainTablePanel = new MainPanel(true,  1, inTablePanel.getAMCorLS());
 
         //We add the titlePanel and mainTablePanel to the mainPanel
         mainTablePanel.add(inTablePanel, BorderLayout.CENTER);

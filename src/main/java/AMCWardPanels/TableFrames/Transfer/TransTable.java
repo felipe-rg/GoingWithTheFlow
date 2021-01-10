@@ -51,7 +51,7 @@ public class TransTable {
 
 
         //MainPanel that contains the tablePanel and the titlePanel
-        MainPanel mainTablePanel = new MainPanel(false, 2);
+        MainPanel mainTablePanel = new MainPanel(false, 2, "AMC");
 
 
         //Adding the title and the transtablePanel to the mainPanel

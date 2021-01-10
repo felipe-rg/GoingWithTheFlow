@@ -7,16 +7,8 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-/*
-        this class is a table renderer that renders the 'arrival at A&E' column as a label with the same
-        text as the one inputed in the table but different background depending on the time the patient
-        has spent in the hospital. If <2h then green, if in between 2-3h then amber and for >3h then red.
+public class LsTimeRenderer extends DefaultTableCellRenderer {
 
- */
-
-public class TimeRenderer extends DefaultTableCellRenderer {
-
-    @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         //Cells are rendered as labels
         JLabel timeLabel = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
@@ -25,23 +17,23 @@ public class TimeRenderer extends DefaultTableCellRenderer {
         timeLabel.setOpaque(true);
 
         //This is the time in hospital (rounding to lowest hour)
-        long timeInHospital = durationFormatter(Duration.between((LocalDateTime)value, LocalDateTime.now()));
+        long timeUntilArrival = Math.abs(durationFormatter(Duration.between((LocalDateTime)value, LocalDateTime.now())));
 
         //Editing text in label (the one that will be displayed in cell)
         timeLabel.setText(dateFormatter((LocalDateTime) value));
 
-        if (timeInHospital < 2){
-            timeLabel.setBackground(Color.decode("#8ABB59"));   //Making background green
-
+        if (timeUntilArrival < 1){
+            timeLabel.setBackground(Color.decode("#F76262"));       //Making background red
         }
 
-        if (timeInHospital >= 2 && timeInHospital < 3){
+        if (timeUntilArrival >= 1 && timeUntilArrival <= 3){
             timeLabel.setBackground(Color.decode("#F9D88C"));   //Making background amber
         }
 
-        else if (timeInHospital >= 3){
-            timeLabel.setBackground(Color.decode("#F76262"));    //Making background red
+        else if (timeUntilArrival >= 5){
+            timeLabel.setBackground(Color.decode("#8ABB59"));   //Making background green
         }
+
 
         return timeLabel;
     }
@@ -57,5 +49,4 @@ public class TimeRenderer extends DefaultTableCellRenderer {
         long hours = duration.toHours();
         return hours;
     }
-
 }

@@ -4,12 +4,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.LogManager;
 import java.util.logging.Logger;
+
+/*
+This page is used to select on of the four types of interface: AMC Ward, Long Stay Ward, Patient form or Control Unit
+ */
 
 public class UserPage {
 
@@ -18,9 +19,9 @@ public class UserPage {
 
     public UserPage() throws IOException {
 
-        log.info("UserPage Started");
+        log.info("UserPage Started");                   // logs that page has been opened
 
-        Client client = new Client();
+        Client client = new Client();                       // creates a client
         ArrayList<Ward> amuWards = new ArrayList<Ward>();
         ArrayList<Ward> lsWards = new ArrayList<Ward>();
         ArrayList<String> json = new ArrayList<String>();
@@ -32,7 +33,7 @@ public class UserPage {
         JPanel mainPanel = new JPanel();                                                // creates mainPanel for JFrame
 
         JPanel titlePanel = new JPanel();                                               // creates panel for title
-        JLabel titleLabel = new JLabel("<html><div style='text-align:center'>Welcome to the<br>AMC Bed Manager</html>");          // adds Title text
+        JLabel titleLabel = new JLabel("<html><div style='text-align:center'>Welcome to the<br>AMC Bed Manager</html>");
         titleLabel.setFont(new Font("Verdana", Font.PLAIN, 80));             // sets text size
         titlePanel.add(titleLabel);                                                    // adds title to panel
 
@@ -51,6 +52,7 @@ public class UserPage {
         c.gridx = 1;
         c.gridy = 0;
         c.gridwidth = 3;
+        c.insets = new Insets(40,0,30,0);
         userPanel.add(userLabel, c);
 
         JButton controlButton = new JButton("Control Unit");     // creates button to access Control Unit
@@ -130,10 +132,13 @@ public class UserPage {
 
         c.gridy = 1;
         c.gridwidth = 1;
+        c.insets = new Insets(0,0,0,40);
         userPanel.add(othPanel, c);
         c.gridx = 2;
+        c.insets = new Insets(0,0,0,40);
         userPanel.add(amuPanel, c);
         c.gridx = 3;
+        c.insets = new Insets(0,0,0,40);
         userPanel.add(lsPanel, c);
 
         // adding title and user option buttons to main Panel
@@ -149,22 +154,11 @@ public class UserPage {
         c2.gridx = 3;
         c2.gridy = 5;
         mainPanel.add(userPanel , c2);                         // adds user panel below
-        /*
-        mainPanel.setLayout(new BorderLayout());
-        mainPanel.add(titlePanel , BorderLayout.NORTH);                         // adds title to the top of panel
-        mainPanel.add(userPanel , BorderLayout.CENTER);
-                           // adds user panel below
-         */
 
         frame.getContentPane().add(mainPanel);                                  // adds MainPanel to frame
 
         frame.setExtendedState(Frame.MAXIMIZED_BOTH);                           // frame will occupy the whole screen
         frame.setVisible(true);                                                 // makes JFrame visible
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);          // This closes the program when the frame is closed
-    }
-
-    // padding method improves visual layout
-    public void padding(JPanel panel){
-        panel.setBorder(BorderFactory.createEmptyBorder(30, 500, 30, 500));
     }
 }

@@ -1,2 +1,10 @@
-Jan 09, 2021 5:36:16 PM UserPage <init>
+Jan 10, 2021 11:50:55 AM UserPage <init>
+INFO: UserPage Started
+Jan 10, 2021 11:50:58 AM PatientForm <init>
+INFO: PatientForm Started
+Jan 10, 2021 11:51:40 AM Methods.AandE createPatient
+INFO: Client has done makePostRequest
+Jan 10, 2021 11:51:42 AM PatientForm$3 actionPerformed
+INFO: Patient has been added to database
+Jan 10, 2021 11:51:42 AM UserPage <init>
 INFO: UserPage Started

@@ -6,6 +6,7 @@ run BedButton methods when clicked. It also communicates with and updates BedSta
 each of the different kinds of beds
  */
 
+import AMCWardPanels.TableFrames.BedColorCodePanel;
 import Client.Bed;
 import Methods.GeneralWard;
 
