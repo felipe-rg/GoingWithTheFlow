@@ -1,8 +1,22 @@
-Jan 10, 2021 5:22:53 PM UserPage <init>
+Jan 10, 2021 4:17:17 PM UserPage <init>
 INFO: UserPage Started
-Jan 10, 2021 5:23:03 PM GUI <init>
+Jan 10, 2021 4:17:24 PM GUI <init>
 INFO: Ward GUI Started
-Jan 10, 2021 5:23:03 PM Methods.GeneralWard <init>
+Jan 10, 2021 4:17:24 PM Methods.GeneralWard <init>
 INFO: Client Successfully created
-Jan 10, 2021 5:23:05 PM GUI <init>
+Jan 10, 2021 4:17:26 PM GUI <init>
 INFO: AMC Ward Started
+Jan 10, 2021 4:17:34 PM Methods.GeneralWard transferPatient
+INFO: Patient Successfully transferred
+Jan 10, 2021 4:18:16 PM Methods.GeneralWard transferPatient
+INFO: Patient Successfully transferred
+Jan 10, 2021 4:17:03 PM UserPage <init>
+INFO: UserPage Started
+Jan 10, 2021 4:17:06 PM PatientForm <init>
+INFO: PatientForm Started
+Jan 10, 2021 4:17:21 PM Methods.AandE createPatient
+INFO: Client has done makePostRequest
+Jan 10, 2021 4:17:23 PM PatientForm$3 actionPerformed
+INFO: Patient has been added to database
+Jan 10, 2021 4:17:23 PM UserPage <init>
+INFO: UserPage Started

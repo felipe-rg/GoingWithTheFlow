@@ -160,8 +160,22 @@ public abstract class GeneralWard{
             int oldDest = patient.getNextDestination();
             if(oldDest != 0){
                 updateDestinationNumber(oldDest, -1);
+                if(oldDest == 8){
+                    try {
+                        client.makePutRequest("patients", "deceased=false", "id="+patientId);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
             updateDestinationNumber(ward.getWardId(), 1);
+            if(ward.getWardId() == 8){
+                try {
+                    client.makePutRequest("patients", "deceased=true", "id="+patientId);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
             //change patient destination
             client.makePutRequest("patients", "nextdestination="+ward.getWardId(), "id="+patientId);
             //change transfer request status

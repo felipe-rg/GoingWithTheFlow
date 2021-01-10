@@ -135,7 +135,8 @@ public class PatientForm {
                 AandE aneUser = new AandE(1);
                 Patient p = null;
                 try {
-                    if (pID.getText().length() != 10) {      // checks ID is 10 characters long
+                    // checks ID is 10 characters long and all numbers
+                    if (pID.getText().length() != 10 || isNumeric(pID.getText()) == false){
                         JOptionPane.showMessageDialog(null, "Invalid Patient ID! It must contain 10 digits.", "Warning", JOptionPane.INFORMATION_MESSAGE);
                     } else if (aneUser.checkExistingId(pID.getText())) { // checks ID does not already exist
                         JOptionPane.showMessageDialog(null, "Already existing Patient ID! Try again.", "Warning", JOptionPane.INFORMATION_MESSAGE);
@@ -264,6 +265,15 @@ public class PatientForm {
 
 
     }
+
+    // function checks if the string is full of numbers
+    // reference code: https://stackoverflow.com/questions/1102891/how-to-check-if-a-string-is-numeric-in-java
+    public static boolean isNumeric(String str) {
+        try {
+            Double.parseDouble(str);
+            return true;
+        } catch(NumberFormatException e){
+            return false;
+        }
+    }
 }
-
-
