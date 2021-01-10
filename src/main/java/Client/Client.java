@@ -22,6 +22,7 @@ public class Client extends fromJson{
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Content-type", "application/json");
         conn.setRequestProperty("charset", "utf-8");
+
         BufferedReader bufferedReader = new BufferedReader(new
                 InputStreamReader(conn.getInputStream(), "utf-8"));
         String inputLine;
@@ -44,7 +45,7 @@ public class Client extends fromJson{
 
         // Set up the header
         conn.setRequestMethod("POST");
-        conn.setRequestProperty("Accept", "text/html");
+        conn.setRequestProperty("Accept", "application/json");
         conn.setRequestProperty("charset", "utf-8");
         conn.setRequestProperty("Content-Length", Integer.toString(body.length));
         conn.setDoOutput(true);

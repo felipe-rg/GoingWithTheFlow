@@ -44,6 +44,7 @@ public class PatientForm {
                     UserPage user = new UserPage();             // open user page
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
+
                 }
             }
         });

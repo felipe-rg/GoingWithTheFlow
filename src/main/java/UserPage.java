@@ -27,7 +27,6 @@ public class UserPage {
         ArrayList<String> json = new ArrayList<String>();
         ArrayList<JButton> amuButtons = new ArrayList<>();
 
-
         JFrame frame = new JFrame(gc);                                                  // create a JFrame
 
         JPanel mainPanel = new JPanel();                                                // creates mainPanel for JFrame
