@@ -34,6 +34,7 @@ public class TransTablePanel extends JPanel implements TableModelListener {
             "Side Room",
             "ETT",
             "New Ward",
+            "Request Status",
             "Delete Button"
             };
 
@@ -76,7 +77,7 @@ public class TransTablePanel extends JPanel implements TableModelListener {
         };
 
         //Assigning the column that will have the delete buttons
-        ButtonColumn deletePatient = new ButtonColumn(table, deletePopUp, 8);
+        ButtonColumn deletePatient = new ButtonColumn(table, deletePopUp, 9);
 
         //Rendering index column so it displays it as a stirng (aligned to the left) for viewing purposes
         table.getColumnModel().getColumn(0).setCellRenderer(new IndexRenderer());

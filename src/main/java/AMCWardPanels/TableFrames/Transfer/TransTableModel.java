@@ -16,7 +16,7 @@ public class TransTableModel extends MyTableModel {
 
     //Overriding the parent's isCellEditable method
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-        if (columnIndex ==5 || columnIndex==8){
+        if (columnIndex ==5 || columnIndex==9){
             return true;
         }
         else return false;

@@ -1,12 +1,10 @@
-Jan 10, 2021 9:23:51 PM UserPage <init>
+Jan 11, 2021 10:32:45 AM UserPage <init>
 INFO: UserPage Started
-Jan 10, 2021 9:23:54 PM GUI <init>
+Jan 11, 2021 10:32:49 AM GUI <init>
 INFO: Ward GUI Started
-Jan 10, 2021 9:23:54 PM Methods.GeneralWard <init>
+Jan 11, 2021 10:32:49 AM Methods.GeneralWard <init>
 INFO: Client Successfully created
-Jan 10, 2021 9:23:56 PM GUI <init>
-INFO: Longstay Ward setup
-Jan 10, 2021 9:24:01 PM Methods.GeneralWard removePatient
-INFO: Patient successfully removed
-Jan 10, 2021 9:24:12 PM Methods.GeneralWard removePatient
-INFO: Patient successfully removed
+Jan 11, 2021 10:32:52 AM GUI <init>
+INFO: AMC Ward Started
+Jan 11, 2021 10:33:20 AM Methods.GeneralWard transferPatient
+INFO: Patient Successfully transferred

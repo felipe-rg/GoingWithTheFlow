@@ -27,7 +27,7 @@ public class TransTableData extends dateFormat implements dataForTable{
 
     @Override
     public Object[][] getData() {
-        Object[][] data = new Object[transList.size()][9];
+        Object[][] data = new Object[transList.size()][10];
         for(int i=0; i<transList.size(); i++) {
             Patient p = transList.get(i);
             data[i][0] = p.getId();
@@ -49,7 +49,18 @@ public class TransTableData extends dateFormat implements dataForTable{
             if(wards.size()!=0){
                 data[i][7] = wards.get(0).getWardName();
             }
-            data[i][8] = "Delete Patient";
+
+            if(p.getTransferRequestStatus().equals("P")){
+                data[i][8] = "Pending";
+            }
+            else if(p.getTransferRequestStatus().equals("C")){
+                data[i][8] = "Confirmed";
+            }
+            else if(p.getTransferRequestStatus().equals("R")){
+                data[i][8] = "Rejected";
+            }
+            else {data[i][8] = p.getTransferRequestStatus();}
+            data[i][9] = "Delete Patient";
         }
         return data;
     }

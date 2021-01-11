@@ -163,7 +163,6 @@ public class InTablePanel extends JPanel implements TableModelListener {
      */
     private void selectBed(int patientId){
 
-        Client client = new Client();
         JFrame infoFrame = new JFrame();
         ArrayList<Bed> acceptableBeds = new ArrayList<Bed>();
         try {
