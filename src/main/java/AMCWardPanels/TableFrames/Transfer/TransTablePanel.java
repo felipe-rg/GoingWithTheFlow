@@ -1,9 +1,6 @@
 package AMCWardPanels.TableFrames.Transfer;
 
-import AMCWardPanels.TableFrames.ButtonColumn;
-import AMCWardPanels.TableFrames.DeletePopUp;
-import AMCWardPanels.TableFrames.IndexRenderer;
-import AMCWardPanels.TableFrames.MultiLineTableHeaderRenderer;
+import AMCWardPanels.TableFrames.*;
 import Methods.AMCWard;
 import Methods.tableInfo.TransTableData;
 
@@ -81,6 +78,8 @@ public class TransTablePanel extends JPanel implements TableModelListener {
 
         //Rendering index column so it displays it as a stirng (aligned to the left) for viewing purposes
         table.getColumnModel().getColumn(0).setCellRenderer(new IndexRenderer());
+
+        table.getColumnModel().getColumn(8).setCellRenderer(new RequestRenderer());
 
         //Setting layout and adding scrollpane with table
         this.setLayout(new GridLayout());

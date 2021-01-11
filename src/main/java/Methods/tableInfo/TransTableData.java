@@ -49,17 +49,7 @@ public class TransTableData extends dateFormat implements dataForTable{
             if(wards.size()!=0){
                 data[i][7] = wards.get(0).getWardName();
             }
-
-            if(p.getTransferRequestStatus().equals("P")){
-                data[i][8] = "Pending";
-            }
-            else if(p.getTransferRequestStatus().equals("C")){
-                data[i][8] = "Confirmed";
-            }
-            else if(p.getTransferRequestStatus().equals("R")){
-                data[i][8] = "Rejected";
-            }
-            else {data[i][8] = p.getTransferRequestStatus();}
+            data[i][8] = p.getTransferRequestStatus();
             data[i][9] = "Delete Patient";
         }
         return data;
