@@ -60,22 +60,23 @@ public class PatientForm {
         });
 
 
-        JLabel instructLabel = new JLabel("Please fill out this patient form for the AMC", SwingConstants.RIGHT);
+        JLabel instructLabel = new JLabel("Please fill out this patient form for the AMC     ", SwingConstants.RIGHT);
         instructLabel.setFont(instructLabel.getFont().deriveFont(20.0f));
 
         // patient ID field
-        JLabel infoID = new JLabel("Patient ID:", SwingConstants.RIGHT);
+        JLabel infoID = new JLabel("Patient ID:     ", SwingConstants.RIGHT);
         infoID.setFont(instructLabel.getFont().deriveFont(15.0f));
         JTextField pID = new JTextField(10);
 
         // patient sex field
-        JLabel infoSex = new JLabel("Gender:", SwingConstants.RIGHT);
+        JLabel infoSex = new JLabel("Gender:     ", SwingConstants.RIGHT);
         infoSex.setFont(instructLabel.getFont().deriveFont(15.0f));
         String[] sex = {"Male", "Female"};
         final JComboBox<String> pSex = new JComboBox<String>(sex);
+        pSex.setPreferredSize(new Dimension(70,2));
 
         // patient DOB field
-        JLabel infoDOB = new JLabel("Date of Birth:", SwingConstants.RIGHT);
+        JLabel infoDOB = new JLabel("Date of Birth:     ", SwingConstants.RIGHT);
         infoDOB.setFont(instructLabel.getFont().deriveFont(15.0f));
 
         JLabel dayLabel = new JLabel("Day");
@@ -90,6 +91,7 @@ public class PatientForm {
             counter++;
         }
         JComboBox<Integer> day = new JComboBox<>(days);
+        day.setPreferredSize(new Dimension(45,2));
         Integer[] months = new Integer[12];
         counter = 1;
         for (int i = 0; i < 12; i++) {
@@ -97,6 +99,7 @@ public class PatientForm {
             counter++;
         }
         JComboBox<Integer> month = new JComboBox<>(months);
+        month.setPreferredSize(new Dimension(45,2));
         int currentYear = 2021;
         Integer[] years = new Integer[currentYear];
         counter = currentYear;
@@ -105,14 +108,15 @@ public class PatientForm {
             counter--;
         }
         JComboBox<Integer> year = new JComboBox<>(years);
+        year.setPreferredSize(new Dimension(70,2));
 
         // Initial diagnosis field
-        JLabel infoIll = new JLabel("Initial Diagnosis:", SwingConstants.RIGHT);
+        JLabel infoIll = new JLabel("Initial Diagnosis:     ", SwingConstants.RIGHT);
         infoIll.setFont(instructLabel.getFont().deriveFont(15.0f));
         JTextField pIll = new JTextField(20);
 
         // Sideroom field
-        JLabel infoSR = new JLabel("Is a sideroom required?", SwingConstants.RIGHT);
+        JLabel infoSR = new JLabel("Is a sideroom required?     ", SwingConstants.RIGHT);
         infoSR.setFont(instructLabel.getFont().deriveFont(15.0f));
         final JCheckBox pSR = new JCheckBox();
 
@@ -159,21 +163,13 @@ public class PatientForm {
             }
         });
 
-        JLabel one = new JLabel("/");
-        JLabel two = new JLabel("/");
-
         JPanel panel = new JPanel();
         panel.setPreferredSize(new Dimension(600,500));
         panel.setMinimumSize(new Dimension(600,500));
 
         panel.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
-//        c.anchor = GridBagConstraints.CENTER;
-//        c.gridwidth = 7;
-//        c.gridx = 0;
-//        c.gridy = 0;
-//        c.ipady = 80;
-//        panel.add(instructLabel, c);
+
         // patient ID
         c.anchor = GridBagConstraints.EAST;
         c.ipady = 30;
@@ -182,7 +178,7 @@ public class PatientForm {
         panel.add(infoID, c);
         c.anchor = GridBagConstraints.WEST;
         c.gridwidth = 3;
-        c.ipady = 10;
+        c.ipady = 2;
         c.gridx = 1;
         panel.add(pID, c);
         // gender
@@ -216,15 +212,14 @@ public class PatientForm {
         c.gridx = 1;
         c.anchor = GridBagConstraints.WEST;
         panel.add(day, c);
-        c.gridx = 2;
-        panel.add(one, c);
         c.gridx = 3;
+        c.insets = new Insets(0,15,0,0);
         panel.add(month, c);
-        c.gridx = 4;
-        panel.add(two, c);
+        c.insets = new Insets(0,15,0,0);
         c.gridx = 5;
         panel.add(year, c);
         // initial diagnosis
+        c.insets = new Insets(0,0,0,0);
         c.anchor = GridBagConstraints.EAST;
         c.gridx = 0;
         c.gridy = 8;
@@ -246,6 +241,7 @@ public class PatientForm {
         c.gridwidth = 2;
         panel.add(pSR, c);
         // submit button
+        c.ipady = 2;
         c.gridx = 1;
         c.gridy = 12;
         c.gridwidth = 3;
