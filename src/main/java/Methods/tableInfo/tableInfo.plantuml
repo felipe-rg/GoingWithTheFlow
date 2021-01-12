@@ -1,0 +1,233 @@
+@startuml
+
+title __Methods.TableInfo Package Diagram__\n
+
+
+    namespace Methods {
+      namespace tableInfo {
+        class Methods.tableInfo.AMCInfoData {
+            ~ amcInfoList : ArrayList<String>
+            - amcInfoNumber : int
+            - wardId : int
+            + AMCInfoData()
+            + getData()
+            + getNumber()
+            - getList()
+        }
+      }
+    }
+
+  
+
+
+    namespace Methods {
+      namespace tableInfo {
+        class Methods.tableInfo.CCWardData {
+            + getWardInfo()
+        }
+      }
+    }
+
+  
+
+    namespace Methods {
+      namespace tableInfo {
+        class Methods.tableInfo.DischargeInfoData {
+            ~ dischargeInfoList : ArrayList<String>
+            - dischargeInfoNumber : int
+            + DischargeInfoData()
+            + getData()
+            + getNumber()
+            + getWardName()
+            - getList()
+        }
+      }
+    }
+
+  
+
+    namespace Methods {
+      namespace tableInfo {
+        class Methods.tableInfo.DischargeTableData {
+            ~ incomingList : ArrayList<Patient>
+            - dischargeNumber : int
+            - wardId : int
+            + DischargeTableData()
+            + getData()
+            + getNumber()
+            + refresh()
+            - getList()
+        }
+      }
+    }
+
+  
+
+
+    namespace Methods {
+      namespace tableInfo {
+        class Methods.tableInfo.IncomingInfoData {
+            ~ incomingInfoList : ArrayList<String>
+            - incomingInfoNumber : int
+            + IncomingInfoData()
+            + getData()
+            + getNumber()
+            - getList()
+        }
+      }
+    }
+
+  
+
+
+    namespace Methods {
+      namespace tableInfo {
+        class Methods.tableInfo.IncomingTableData {
+            ~ incomingList : ArrayList<Patient>
+            - incomingNumber : int
+            - wardId : int
+            - wardType : String
+            + IncomingTableData()
+            + getData()
+            + getNumber()
+            + refresh()
+            - getList()
+        }
+      }
+    }
+
+
+    namespace Methods {
+      namespace tableInfo {
+        class Methods.tableInfo.LongStayInfoData {
+            ~ lsInfoList : ArrayList<String>
+            - lsInfoNumber : int
+            + LongStayInfoData()
+            + getData()
+            + getNumber()
+            - getList()
+        }
+      }
+    }
+
+  
+
+    namespace Methods {
+      namespace tableInfo {
+        class Methods.tableInfo.OtherTableData {
+            ~ otherList : ArrayList<Patient>
+            - otherNumber : int
+            - wardId : int
+            + OtherTableData()
+            + getData()
+            + getNumber()
+            + refresh()
+            - getList()
+        }
+      }
+    }
+
+  
+
+    namespace Methods {
+      namespace tableInfo {
+        class Methods.tableInfo.TotalTableData {
+            ~ totalList : ArrayList<Patient>
+            - totalNumber : int
+            - wardId : int
+            + TotalTableData()
+            + getData()
+            + getNumber()
+            + refresh()
+            - getList()
+        }
+      }
+    }
+
+  
+
+
+    namespace Methods {
+      namespace tableInfo {
+        class Methods.tableInfo.TransInfoData {
+            ~ transInfoList : ArrayList<String>
+            - transInfoNumber : int
+            + TransInfoData()
+            + getData()
+            + getNumber()
+            + getWardName()
+            - getList()
+        }
+      }
+    }
+
+    namespace Methods {
+      namespace tableInfo {
+        class Methods.tableInfo.TransTableData {
+            ~ transList : ArrayList<Patient>
+            - transNumber : int
+            - wardId : int
+            + TransTableData()
+            + getData()
+            + getNumber()
+            + refresh()
+            - getList()
+        }
+      }
+    }
+
+  
+
+
+    namespace Methods {
+      namespace tableInfo {
+        interface Methods.tableInfo.dataForTable {
+            {abstract} + getData()
+            {abstract} + getNumber()
+        }
+      }
+    }
+
+  
+
+  Methods.tableInfo.AMCInfoData .up.|> Methods.tableInfo.dataForTable
+  Methods.tableInfo.AMCInfoData -up-|> Methods.tableInfo.CCWardData
+  Methods.tableInfo.AMCInfoData o-- Client.Client
+  Methods.tableInfo.CCWardData -up-|> Methods.dateFormat
+  Methods.tableInfo.DischargeInfoData .up.|> Methods.tableInfo.dataForTable
+  Methods.tableInfo.DischargeInfoData -up-|> Methods.dateFormat
+  Methods.tableInfo.DischargeInfoData o-- Client.Client
+  Methods.tableInfo.DischargeTableData .up.|> Methods.tableInfo.dataForTable
+  Methods.tableInfo.DischargeTableData -up-|> Methods.dateFormat
+  Methods.tableInfo.DischargeTableData o-- Client.Client
+  Methods.tableInfo.IncomingInfoData .up.|> Methods.tableInfo.dataForTable
+  Methods.tableInfo.IncomingInfoData -up-|> Methods.dateFormat
+  Methods.tableInfo.IncomingInfoData o-- Client.Client
+  Methods.tableInfo.IncomingTableData .up.|> Methods.tableInfo.dataForTable
+  Methods.tableInfo.IncomingTableData -up-|> Methods.dateFormat
+  Methods.tableInfo.IncomingTableData o-- Client.Client
+  Methods.tableInfo.LongStayInfoData .up.|> Methods.tableInfo.dataForTable
+  Methods.tableInfo.LongStayInfoData -up-|> Methods.tableInfo.CCWardData
+  Methods.tableInfo.LongStayInfoData o-- Client.Client
+  Methods.tableInfo.OtherTableData .up.|> Methods.tableInfo.dataForTable
+  Methods.tableInfo.OtherTableData -up-|> Methods.dateFormat
+  Methods.tableInfo.OtherTableData o-- Client.Client
+  Methods.tableInfo.TotalTableData .up.|> Methods.tableInfo.dataForTable
+  Methods.tableInfo.TotalTableData -up-|> Methods.dateFormat
+  Methods.tableInfo.TotalTableData o-- Client.Client
+  Methods.tableInfo.TransInfoData .up.|> Methods.tableInfo.dataForTable
+  Methods.tableInfo.TransInfoData -up-|> Methods.dateFormat
+  Methods.tableInfo.TransInfoData o-- Client.Client
+  Methods.tableInfo.TransTableData .up.|> Methods.tableInfo.dataForTable
+  Methods.tableInfo.TransTableData -up-|> Methods.dateFormat
+  Methods.tableInfo.TransTableData o-- Client.Client
+
+
+right footer
+
+
+PlantUML diagram generated by SketchIt! (https://bitbucket.org/pmesmeur/sketch.it)
+For more information about this tool, please contact philippe.mesmeur@gmail.com
+endfooter
+
+@enduml
