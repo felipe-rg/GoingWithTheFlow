@@ -82,7 +82,7 @@ public class Topography extends JPanel{
 
         //Adding bottom panel indicating colorcode for beds
         BedColorCodePanel bedColorCodePanel = new BedColorCodePanel();
-        bedColorCodePanel.setBounds(0, 0, 1136, 50);
+        bedColorCodePanel.setBounds(2, 2, 1200, 50);
         this.add(bedColorCodePanel);
     }
 

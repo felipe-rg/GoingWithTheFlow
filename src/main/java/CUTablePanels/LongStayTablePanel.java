@@ -7,8 +7,6 @@ import Methods.tableInfo.LongStayInfoData;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
-import java.sql.SQLException;
 
 public class LongStayTablePanel extends JPanel {
 
@@ -45,6 +43,7 @@ public class LongStayTablePanel extends JPanel {
         tableModel = new MyTableModel(columnName, data);
         table = new JTable(tableModel);
         scrollPane = new JScrollPane(table);
+        scrollPane.setBackground(Color.WHITE);
 
         //Editing table
         setupTable(table);
@@ -58,7 +57,7 @@ public class LongStayTablePanel extends JPanel {
     public void setupTable (JTable...tables){
         //Editing table
         for (JTable t : tables) {
-            t.setRowHeight(195);                                     //Setting rowheight
+            t.setRowHeight(187);                                     //Setting rowheight
             t.getTableHeader().setDefaultRenderer(new MultiLineTableHeaderRenderer());
         }
     }
