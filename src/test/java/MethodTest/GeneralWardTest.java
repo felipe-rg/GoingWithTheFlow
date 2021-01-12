@@ -22,7 +22,7 @@ public class GeneralWardTest {
     private AMCWard amc;
 
     @Before
-    public void setup(){
+    public void setup() {
         c = new Client();
         try {
             amc = new AMCWard(11);
@@ -67,7 +67,7 @@ public class GeneralWardTest {
 
             json = c.makeGetRequest("*", "patients", "patientid='3141592659'");
             p = c.patientsFromJson(json).get(0);
-            c.makePutRequest("patients", "id=3", "id="+p.getId());
+            c.makePutRequest("patients", "id=3", "id=" + p.getId());
             c.makePutRequest("patients", "currentwardid=0", "id=3");
             c.makePutRequest("patients", "nextdestination=11", "id=3");
 
@@ -106,12 +106,12 @@ public class GeneralWardTest {
     }
 
     @Test
-    public void testSetBedDatabase(){
+    public void testSetBedDatabase() {
         try {
 
-            amc.setBedDatabase(4, 51);
+            amc.setBedDatabase(9, 51);
 
-            ArrayList<String> json = c.makeGetRequest("*", "patients", "id=4");
+            ArrayList<String> json = c.makeGetRequest("*", "patients", "id=9");
 
             ArrayList<Patient> pat = c.patientsFromJson(json);
 
@@ -124,83 +124,131 @@ public class GeneralWardTest {
 
             Assert.assertTrue(b.get(0).getStatus().equals("O"));
 
+            json = c.makeGetRequest("*", "beds", "bedid=57");
+            b = c.bedsFromJson(json);
+
+            Assert.assertTrue(b.get(0).getStatus().equals("F"));
+
+            c.makePutRequest("beds", "status='O'", "bedid=57");
             c.makePutRequest("beds", "status='F'", "bedid=51");
-            c.makePutRequest("patients", "currentwardid=0", "id=4");
-            c.makePutRequest("patients", "nextdestination=11", "id=4");
-            c.makePutRequest("patients", "currentbedid=0", "id=4");
+            c.makePutRequest("patients", "currentwardid=12", "id=9");
+            c.makePutRequest("patients", "nextdestination=11", "id=9");
+            c.makePutRequest("patients", "currentbedid=57", "id=9");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     @Test
-    public void testRemovePatientFromDatabase(){
+    public void testRemovePatientFromDatabase() {
         try {
-            amc.removePatientFromDatabase(7,55);
+            amc.removePatientFromDatabase(7, 55);
 
             ArrayList<String> json = c.makeGetRequest("*", "patients", "id=7");
             ArrayList<Patient> pat = c.patientsFromJson(json);
 
-            Assert.assertEquals("Current Bed",pat.get(0).getCurrentBedId(), 0);
-            Assert.assertEquals("Current ward",pat.get(0).getCurrentWardId(), 0);
-            Assert.assertEquals("Next destination",pat.get(0).getNextDestination(), 11);
-            Assert.assertTrue("Transfer Request status",pat.get(0).getTransferRequestStatus().equals("C"));
+            Assert.assertEquals("Current Bed", pat.get(0).getCurrentBedId(), 0);
+            Assert.assertEquals("Current ward", pat.get(0).getCurrentWardId(), 0);
+            Assert.assertEquals("Next destination", pat.get(0).getNextDestination(), 11);
+            Assert.assertTrue("Transfer Request status", pat.get(0).getTransferRequestStatus().equals("C"));
 
             json = c.makeGetRequest("*", "beds", "bedid=55");
             ArrayList<Bed> b = c.bedsFromJson(json);
 
-            Assert.assertTrue("Bed status",b.get(0).getStatus().equals("F"));
+            Assert.assertTrue("Bed status", b.get(0).getStatus().equals("F"));
 
-            c.makePutRequest("patients" ,"currentbedid=55", "id=7");
-            c.makePutRequest("patients" ,"currentwardid=11", "id=7");
-            c.makePutRequest("patients" ,"nextdestination=0", "id=7");
-            c.makePutRequest("patients" ,"transferrequeststatus='P'", "id=7");
-            c.makePutRequest("beds" ,"status='O'", "bedid=55");
+            c.makePutRequest("patients", "currentbedid=55", "id=7");
+            c.makePutRequest("patients", "currentwardid=11", "id=7");
+            c.makePutRequest("patients", "nextdestination=0", "id=7");
+            c.makePutRequest("patients", "transferrequeststatus='P'", "id=7");
+            c.makePutRequest("beds", "status='O'", "bedid=55");
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-}/*
+
     @Test
-    public void testEditBed(){
+    public void testEditBed() {
         try {
-            Client c = new Client();
-            AMCWard amc = new AMCWard(2);
-            amc.editBed(1, "wardid", "15");
-            ArrayList<String> json = c.makeGetRequest("*", "beds", "bedid=1");
+
+            amc.editBed(56, "wardid", "15");
+            amc.editBed(56, "forsex", "'Male'");
+            amc.editBed(56, "hassideroom", "'true'");
+            amc.editBed(56, "status", "'O'");
+            ArrayList<String> json = c.makeGetRequest("*", "beds", "bedid=56");
             ArrayList<Bed> beds = c.bedsFromJson(json);
             Assert.assertEquals(beds.get(0).getWardId(), 15);
+            Assert.assertTrue(beds.get(0).getForSex().equals("Male"));
+            Assert.assertTrue(beds.get(0).getHasSideRoom());
+            Assert.assertTrue(beds.get(0).getStatus().equals("O"));
 
-            c.makePutRequest("beds", "wardid=2", "bedid=1");
+
+            c.makePutRequest("beds", "wardid=12", "bedid=56");
+            c.makePutRequest("beds", "forsex='Uni'", "bedid=56");
+            c.makePutRequest("beds", "hassisderoom='false'", "bedid=56");
+            c.makePutRequest("beds", "status='F'", "bedid=56");
 
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
         }
     }
 
+
     @Test
-    public void testEditPatient(){
+    public void testEditPatient() {
         try {
-            Client c = new Client();
-            AMCWard amc = new AMCWard(2);
-            Patient p =new Patient("314159265","Male", LocalDate.now(),"testpatientdiagnosis123",true);
-            c.makePostRequest(p);
-            ArrayList<String> json = c.makeGetRequest("*", "patients", "initialdiagnosis='testpatientdiagnosis123'");
-            ArrayList<Patient> patients = c.patientsFromJson(json);
-            int patientId = patients.get(0).getId();
 
-            amc.editPatient(patientId, "currentwardid", "15");
+            amc.editPatient(8, "currentwardid", "15");
+            amc.editPatient(8, "sex", "'Female'");
+            amc.editPatient(8, "currentbedid", "54");
+            amc.editPatient(8, "initialdiagnosis", "'test'");
+            amc.editPatient(8, "needssideroom", "false");
+            amc.editPatient(8, "acceptedbymedicine", "false");
+            amc.editPatient(8, "ttasignedoff", "false");
+            amc.editPatient(8, "suitablefordischargelounge", "false");
+            amc.editPatient(8, "transferrequeststatus", "'C'");
+            amc.editPatient(8, "deceased", "false");
+            amc.editPatient(8, "estimatedatetimeofnext", "'2023-03-03 03:03:03.33333'");
+            amc.editPatient(8, "patientid", "0000000000");
+            amc.editPatient(8, "dateofbirth", "'1903-03-03'");
+            amc.editPatient(8, "nextdestination", "15");
 
-            json = c.makeGetRequest("*", "patients", "id="+patientId);
+
+
+            ArrayList<String> json = c.makeGetRequest("*", "patients", "id=8");
             ArrayList<Patient> pat = c.patientsFromJson(json);
 
             Assert.assertEquals(pat.get(0).getCurrentWardId(), 15);
+            Assert.assertEquals(pat.get(0).getNextDestination(), 15);
+            Assert.assertEquals(pat.get(0).getCurrentBedId(), 54);
+            Assert.assertFalse(pat.get(0).getNeedsSideRoom());
+            Assert.assertFalse(pat.get(0).getAcceptedByMedicine());
+            Assert.assertFalse(pat.get(0).getTtaSignedOff());
+            Assert.assertFalse(pat.get(0).getSuitableForDischargeLounge());
+            Assert.assertFalse(pat.get(0).getDeceased());
+            Assert.assertTrue(pat.get(0).getSex().equals("Female"));
+            Assert.assertTrue(pat.get(0).getInitialDiagnosis().equals("test"));
+            Assert.assertTrue(pat.get(0).getTransferRequestStatus().equals("C"));
+            Assert.assertTrue(pat.get(0).getPatientId().equals("0000000000"));
+            Assert.assertTrue(pat.get(0).getDateOfBirth().equals("1903-03-03"));
+            Assert.assertTrue(pat.get(0).getEstimatedTimeOfNext().equals("2023-03-03 03:03:03.33333"));
 
-            amc.deletePatient(patientId);
-
+            c.makePutRequest("patients", "currentwardid=0", "id=8");
+            c.makePutRequest("patients", "sex='Male'", "id=8");
+            c.makePutRequest("patients", "currentbedid=0", "id=8");
+            c.makePutRequest("patients", "initialdiagnosis='editPatientTest'", "id=8");
+            c.makePutRequest("patients", "needssideroom=true", "id=8");
+            c.makePutRequest("patients", "acceptedbymedicine=true", "id=8");
+            c.makePutRequest("patients", "ttasignedoff=true", "id=8");
+            c.makePutRequest("patients", "suitablefordischargelounge=true", "id=8");
+            c.makePutRequest("patients", "transferrequeststatus='R'", "id=8");
+            c.makePutRequest("patients", "deceased=true", "id=8");
+            c.makePutRequest("patients", "estimatedatetimeofnext='"+LocalDateTime.now()+"'", "id=8");
+            c.makePutRequest("patients", "patientid='3141592654'", "id=8");
+            c.makePutRequest("patients", "dateofbirth='2010-01-01'", "id=8");
+            c.makePutRequest("patients", "nextdestination=0", "id=8");
+            c.makePutRequest("patients", "dateofbirth='2010-01-01'", "id=8");
         } catch (IOException e) {
             e.printStackTrace();
         } catch (SQLException throwables) {
@@ -211,35 +259,18 @@ public class GeneralWardTest {
     @Test
     public void testGetPatient(){
         try {
-            Client c = new Client();
-            AMCWard amc = new AMCWard(2);
-            Patient p =new Patient("314159265","Male", LocalDate.now(),"testpatientdiagnosis123",true);
-            c.makePostRequest(p);
-            ArrayList<String> json = c.makeGetRequest("*", "patients", "initialdiagnosis='testpatientdiagnosis123'");
-            ArrayList<Patient> patients = c.patientsFromJson(json);
-            int patientId = patients.get(0).getId();
-            c.makePutRequest("patients", "currentwardid=2", "id="+patientId);
+            Patient p = amc.getPatient(58);
 
-            ArrayList<Bed> beds = amc.getAcceptableBeds(patientId);
-            if(beds.size()==0){
-                amc.deletePatient(patientId);
-                return;
-            }
-
-            amc.setBed(patientId, beds.get(0).getBedId());
-
-            Patient pat = amc.getPatient(beds.get(0).getBedId());
-            Assert.assertEquals(pat.getId(), patientId);
-
-            amc.removePatient(patientId, beds.get(0).getBedId());
-            amc.deletePatient(patientId);
+            Assert.assertEquals(p.getCurrentWardId(), 12);
+            Assert.assertEquals(p.getNextDestination(), 0);
+            Assert.assertTrue(p.getPatientId().equals("3141592658"));
         } catch (IOException e) {
             e.printStackTrace();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
     }
-
+}/*
     @Test
     public void testGetBeds(){
         try {
