@@ -144,7 +144,7 @@ public class BedButton extends JButton{
         // labels with the bed information using methods from class Bed
         JLabel bedIdLabel = new JLabel("<html><b>Bed ID: </b>"+bed.getBedId()+"</html>",SwingConstants.CENTER);
         bedIdLabel.setFont(bedIdLabel.getFont().deriveFont(15.0f));
-        JLabel patientIdLabel = new JLabel("<html><b>Patient ID: </b>"+p.getId()+"</html>", SwingConstants.CENTER);
+        JLabel patientIdLabel = new JLabel("<html><b>Patient ID: </b>"+p.getPatientId()+"</html>", SwingConstants.CENTER);
         patientIdLabel.setFont(patientIdLabel.getFont().deriveFont(15.0f));
         JLabel ageLabel = new JLabel("<html><b>Date of Birth: </b>"+p.getDateOfBirth()+"</html>",SwingConstants.CENTER);
         JLabel genderLabel = new JLabel("<html><b>Gender: </b>"+p.getSex()+"</html>",SwingConstants.CENTER);
