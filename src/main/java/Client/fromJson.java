@@ -3,7 +3,7 @@ package Client;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
-
+/*This class features methods for decoding an array of JSON strings into an array of the respective objects*/
 public class fromJson {
 
     public ArrayList<Patient> patientsFromJson(ArrayList<String> json){
