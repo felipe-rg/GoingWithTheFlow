@@ -26,6 +26,7 @@ title __Client Package Diagram__\n
 
     namespace Client {
       class Client.Client {
+      {static} - log : Logger
           + Client()
           + makeDeleteRequest()
           + makeGetRequest()
