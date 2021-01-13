@@ -10,6 +10,7 @@ import java.awt.*;
  */
 
 public class BedStatus extends JPanel{
+    //Labels
     JLabel greenBeds;
     JLabel ambarBeds;
     JLabel redBeds;
@@ -35,6 +36,7 @@ public class BedStatus extends JPanel{
         blackBeds = new JLabel("0");
         blackBeds.setBackground(Color.decode("#000000"));
 
+        //Editing labels
         setLabel(greenBeds, ambarBeds, redBeds, blackBeds, blueBeds);
         blackBeds.setForeground(Color.white);
 

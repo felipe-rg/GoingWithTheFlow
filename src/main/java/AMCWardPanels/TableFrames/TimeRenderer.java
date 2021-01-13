@@ -11,6 +11,7 @@ import java.time.format.DateTimeFormatter;
         this class is a table renderer that renders the 'arrival at A&E' column as a label with the same
         text as the one inputed in the table but different background depending on the time the patient
         has spent in the hospital. If <2h then green, if in between 2-3h then amber and for >3h then red.
+        To do this we compare the current time and the time the patient entered the hospital.
 
  */
 
@@ -53,6 +54,7 @@ public class TimeRenderer extends DefaultTableCellRenderer {
         return time.format(formatter);
     }
 
+    //Return durtion as a long
     public long durationFormatter(Duration duration){
         long hours = duration.toHours();
         return hours;

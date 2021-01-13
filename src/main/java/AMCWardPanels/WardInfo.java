@@ -32,7 +32,7 @@ public class WardInfo extends JPanel{
     JButton totbut;
     GeneralWard methods;
 
-
+    //Constructor for LongStay Ward
     public WardInfo(LongstayWard methods){
         this.methods = methods;
         this.setLayout(new GridLayout(8,1));
@@ -47,12 +47,13 @@ public class WardInfo extends JPanel{
         add(totLabel);
         add(totbut);
     }
-
+    //Constructor for AMC Ward
     public WardInfo(AMCWard methods){
         this.methods = methods;
         this.setLayout(new GridLayout(10,1));
         setup();
 
+        //Creating Transfer Patients label and button
         transLabel = new JLabel("Transferring Patients");
         transbut = new JButton(String.valueOf(methods.getTransNumber()));
         editLabel(transLabel);
@@ -77,6 +78,8 @@ public class WardInfo extends JPanel{
         add(totbut);
     }
 
+    //Setup function that defines each button and label and gives the action to the buttons.
+    //Buttons just call the table classes that open a new frame displaying the appropriate table
     private void setup(){
         this.setPreferredSize(new Dimension(300,600));
         this.setBackground(Color.white);
@@ -129,6 +132,7 @@ public class WardInfo extends JPanel{
         });
     }
 
+    //Function for editing labels
     public void editLabel(JLabel... a){
         for (JLabel i:a){
             //i.setOpaque(true);
@@ -139,23 +143,14 @@ public class WardInfo extends JPanel{
         }
     }
 
+    //Function for editing buttons
     public void editButton(JButton... a){
         for (JButton i:a){
             i.setFont(new Font ("Verdana", Font.PLAIN, 20));
         }
     }
 
-    public void addLabel(JLabel ... a){
-        for(JLabel i:a){
-            add(i);
-        }
-    }
-    public void addButton(JButton ... a){
-        for(JButton i:a){
-            add(i);
-        }
-    }
-
+    //Functions that will allow us to change the numbers displayed on the buttons
     public void setInText(String number){
         inbut.setText(number);
     }

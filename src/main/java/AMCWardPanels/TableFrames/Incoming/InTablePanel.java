@@ -138,6 +138,7 @@ public class InTablePanel extends JPanel implements TableModelListener {
             //Making the renderer of the Estimated time of arrival column our custom LsTimeRenderer
             //(in charge of changing the background color)
             table.getColumnModel().getColumn(5).setCellRenderer(new LsTimeRenderer());
+            table.getColumnModel().getColumn(6).setCellRenderer(new RequestRenderer());
         }
 
         //Setting layout and adding scrollpane with table

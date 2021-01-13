@@ -6,7 +6,10 @@ import Methods.LongstayWard;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
-
+/*
+    This class has a mainPanel that contains all of the other panels that make up the GUI for the
+    AMC and LongStay wards.
+ */
 public class UIController {
     //Declaring Panels
     JPanel mainPanel;
@@ -19,8 +22,9 @@ public class UIController {
     AMCWard method;
 
 
-    //Constructor
+    //Constructor for LongStay Ward (notice we input LongStayWard methods)
     public UIController(JButton backButton, JButton refreshButton,  LongstayWard methods){
+        //Instantiating panels
         this.methods = methods;
         setupOne();
         wardInfo = new WardInfo(methods);
@@ -37,7 +41,9 @@ public class UIController {
         setupTwo();
     }
 
+    //Constructor for AMC Ward (notice we input AMCWard methods)
     public UIController(JButton backButton, JButton refreshButton, AMCWard method){
+        //Instantiating panels
         this.method = method;
         setupOne();
         wardInfo = new WardInfo(method);
@@ -52,6 +58,7 @@ public class UIController {
             e.printStackTrace();
         }
 
+        //Adding them to the mainPanel
         setupTwo();
 
     }
@@ -62,6 +69,7 @@ public class UIController {
         rhsPanel = new JPanel();
     }
 
+    //Editing panels and adding them to the mainPanel
     private void setupTwo(){
         //Giving the panels a black border
         outline(topography,title, rhsPanel);
@@ -89,10 +97,4 @@ public class UIController {
             i.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         }
     }
-
-//    public void UpdateBedStatus(){
-//        topography.CountBeds();
-//        bedStatus.updateStatuses(topography.getECount(), topography.getCCount(), topography.getFCount());
-//    }
-
 }

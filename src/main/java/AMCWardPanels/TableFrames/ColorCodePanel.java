@@ -18,7 +18,7 @@ public class ColorCodePanel extends JPanel {
 
     //Constructor
     public ColorCodePanel(String ward){
-
+    //Depending on if we are in AMC or in LongStay then we will visualize a different color code
         if (ward.equals("AMC")){
             //Creating individual colorpanels
             greenPanel = createColorPanels("<2 hours ago", Color.decode("#8ABB59"));
