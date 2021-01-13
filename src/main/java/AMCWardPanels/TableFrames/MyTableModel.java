@@ -9,7 +9,7 @@ import java.util.Vector;
        viewed and the editing.
 
        One method called isCellEditable(int row, int column) will be overwritten in each of the
-       tableModels that we use in each table in the GUI extending from this one
+       tableModels that we use in each table in the GUI extending from this one.
 
  */
 

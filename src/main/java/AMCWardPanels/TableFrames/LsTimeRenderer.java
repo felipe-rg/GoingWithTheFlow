@@ -6,6 +6,11 @@ import java.awt.*;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+/*
+    This class is in charge of changing the color of the cells of 'Time of arrival' in the LongStay
+    ward incoming list. To do that, it compares the current time to the time the estimated time of
+    arrival to the LongStay ward.
+ */
 
 public class LsTimeRenderer extends DefaultTableCellRenderer {
 
@@ -45,6 +50,7 @@ public class LsTimeRenderer extends DefaultTableCellRenderer {
         return time.format(formatter);
     }
 
+    //Returns a duration in hours (long)
     public long durationFormatter(Duration duration){
         long hours = duration.toHours();
         return hours;

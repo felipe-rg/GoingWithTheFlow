@@ -64,6 +64,7 @@ public class DeletePopUp {
         deleteRowConfirmation.add(yesButton);
         deleteRowConfirmation.add(noButton);
 
+        //Basic frame editing
         deleteRowConfirmation.setLocationRelativeTo(null);
         deleteRowConfirmation.setVisible(true);
         deleteRowConfirmation.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);

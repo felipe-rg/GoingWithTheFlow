@@ -6,7 +6,7 @@ import java.awt.*;
 
 /*
     This class creates a colorcode Panel for the topography to explain bed colors. It uses the function
-    createColorPanels hat creates little panels made out of a button of the desired color and a label.
+    createColorPanels that creates little panels made out of a button of the desired color and a label.
     Then it's just a matter of adding them to the general ColorCodePanel (this)
 
  */
@@ -19,8 +19,9 @@ public class BedColorCodePanel extends JPanel {
         JPanel greenPanel = createColorPanels("Free Bed", Color.decode("#2ECC71"));
         JPanel amberPanel = createColorPanels("Bed will be free", Color.decode("#F39C12"));
         JPanel redPanel = createColorPanels("Occupied Bed", Color.decode("#E74C3C"));
-        JPanel blackPanel = createColorPanels("Closed Bed", Color.black);
         JPanel bluePanel = createColorPanels("Bed should be free", Color.decode("#1531e8"));
+        JPanel blackPanel = createColorPanels("Closed Bed", Color.black);
+
 
         //Adding them
         this.setLayout(new GridLayout(1,5));

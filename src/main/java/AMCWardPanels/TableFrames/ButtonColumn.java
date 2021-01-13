@@ -16,6 +16,7 @@ import java.awt.event.MouseListener;
     This class will be a renderer and an editor, we will assign in the tablePanel class the column of our table that we want to
     be ButtonColumn.
 
+    REFERENCE
     I have based myself in a code written by Rob Camick in 2009
     (https://tips4java.wordpress.com/2009/07/12/table-button-column/)
  */
