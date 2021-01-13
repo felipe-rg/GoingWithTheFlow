@@ -30,13 +30,17 @@ public class GUI {
         this.wardId = ward.getWardId();
         ArrayList<String> json = null;
 
+        //Creating frame with the appropriate title
         JFrame frame = new JFrame();
         frame.setSize(1200, 800);
-        frame.setTitle("Longstay GUI");
-        //frame.setResizable(false);
+        if(ward.getWardId() == 3 || ward.getWardId() == 4 || ward.getWardId() == 5){
+            frame.setTitle("Longstay Ward");
+        }
+        else frame.setTitle("AMC Ward");
+
 
         //Creating button to go back to the User Page (it will be passed to UIController
-        // and then to the Title panel to be added there
+        //and then to the Title panel to be added there
         backButton = new JButton("Back to UI Selector");
         backButton.addActionListener(new ActionListener() {
             @Override
@@ -50,6 +54,7 @@ public class GUI {
             }
         });
 
+        //Refresh button
         refreshButton = new JButton("Refresh Page");
         refreshButton.addActionListener(new ActionListener() {
             @Override
@@ -62,6 +67,7 @@ public class GUI {
 
         //Creating UIController than generates all panels
         UIController UIc = null;
+        //Creating UIController for AMC Wards and tracking status in Log
         if(ward.getWardType().equals("AMU")) {
             try {
                 method = new AMCWard(wardId);
@@ -75,6 +81,7 @@ public class GUI {
                 log.severe("AMC Ward cannot setup");
             }
         }
+        //Creating UIController for LongStay Wards and tracking status in Log
         else {
             try {
                 methods = new LongstayWard(wardId);
@@ -89,8 +96,10 @@ public class GUI {
             }
         }
 
+        //Adding mainPanel of the UI Controller to the frame
         frame.add(UIc.getMainPanel());
 
+        //Basic frame editing
         frame.setVisible(true);
         frame.setExtendedState(Frame.MAXIMIZED_BOTH);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

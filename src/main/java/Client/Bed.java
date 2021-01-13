@@ -1,5 +1,8 @@
 package Client;
 import java.io.Serializable;
+/*Bed class with attributes corresponding to the fields of the table Beds in the database
+ and their getter methods*/
+
 
 public class Bed implements Serializable {
 

@@ -4,10 +4,11 @@ import java.awt.*;
 
 /*
     This class is the MainPanel where the table will be inputed, it contains top, bottom, left and right panels
-    that are different depending on the value of the argument 'condition' entered in the constructor.
+    that are different depending on the value of the argument 'condition' entered in the constructor. The table
+    will be set at the middle for viewing purposes.
 
     Boolean colorcode determines whether we add a colorcode panel at the bottom of the table or not
-
+    The String ward is used to be inputed in the ColorCodePanel for it to know which color code to use
  */
 public class MainPanel extends JPanel {
     public MainPanel(Boolean colorCode, int condition, String ward){
