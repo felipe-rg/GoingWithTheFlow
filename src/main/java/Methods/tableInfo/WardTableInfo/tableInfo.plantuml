@@ -5,7 +5,7 @@ title __Methods.TableInfo Package Diagram__\n
 
     namespace Methods {
       namespace tableInfo {
-        class Methods.tableInfo.AMCInfoData {
+        class Methods.tableInfo.CCTableInfo.AMCInfoData {
             ~ amcInfoList : ArrayList<String>
             - amcInfoNumber : int
             - wardId : int
@@ -22,7 +22,7 @@ title __Methods.TableInfo Package Diagram__\n
 
     namespace Methods {
       namespace tableInfo {
-        class Methods.tableInfo.CCWardData {
+        class Methods.tableInfo.CCTableInfo.CCWardData {
             + getWardInfo()
         }
       }
@@ -32,7 +32,7 @@ title __Methods.TableInfo Package Diagram__\n
 
     namespace Methods {
       namespace tableInfo {
-        class Methods.tableInfo.DischargeInfoData {
+        class Methods.tableInfo.CCTableInfo.DischargeInfoData {
             ~ dischargeInfoList : ArrayList<String>
             - dischargeInfoNumber : int
             + DischargeInfoData()
@@ -66,7 +66,7 @@ title __Methods.TableInfo Package Diagram__\n
 
     namespace Methods {
       namespace tableInfo {
-        class Methods.tableInfo.IncomingInfoData {
+        class Methods.tableInfo.CCTableInfo.IncomingInfoData {
             ~ incomingInfoList : ArrayList<String>
             - incomingInfoNumber : int
             + IncomingInfoData()
@@ -99,7 +99,7 @@ title __Methods.TableInfo Package Diagram__\n
 
     namespace Methods {
       namespace tableInfo {
-        class Methods.tableInfo.LongStayInfoData {
+        class Methods.tableInfo.CCTableInfo.LongStayInfoData {
             ~ lsInfoList : ArrayList<String>
             - lsInfoNumber : int
             + LongStayInfoData()
@@ -149,7 +149,7 @@ title __Methods.TableInfo Package Diagram__\n
 
     namespace Methods {
       namespace tableInfo {
-        class Methods.tableInfo.TransInfoData {
+        class Methods.tableInfo.CCTableInfo.TransInfoData {
             ~ transInfoList : ArrayList<String>
             - transInfoNumber : int
             + TransInfoData()
@@ -190,34 +190,34 @@ title __Methods.TableInfo Package Diagram__\n
 
   
 
-  Methods.tableInfo.AMCInfoData .up.|> Methods.tableInfo.dataForTable
-  Methods.tableInfo.AMCInfoData -up-|> Methods.tableInfo.CCWardData
-  Methods.tableInfo.AMCInfoData o-- Client.Client
-  Methods.tableInfo.CCWardData -up-|> Methods.dateFormat
-  Methods.tableInfo.DischargeInfoData .up.|> Methods.tableInfo.dataForTable
-  Methods.tableInfo.DischargeInfoData -up-|> Methods.dateFormat
-  Methods.tableInfo.DischargeInfoData o-- Client.Client
+  Methods.tableInfo.CCTableInfo.AMCInfoData .up.|> Methods.tableInfo.dataForTable
+  Methods.tableInfo.CCTableInfo.AMCInfoData -up-|> Methods.tableInfo.CCTableInfo.CCWardData
+  Methods.tableInfo.CCTableInfo.AMCInfoData o-- Client.Client
+  Methods.tableInfo.CCTableInfo.CCWardData -up-|> Methods.dateFormat
+  Methods.tableInfo.CCTableInfo.DischargeInfoData .up.|> Methods.tableInfo.dataForTable
+  Methods.tableInfo.CCTableInfo.DischargeInfoData -up-|> Methods.dateFormat
+  Methods.tableInfo.CCTableInfo.DischargeInfoData o-- Client.Client
   Methods.tableInfo.DischargeTableData .up.|> Methods.tableInfo.dataForTable
   Methods.tableInfo.DischargeTableData -up-|> Methods.dateFormat
   Methods.tableInfo.DischargeTableData o-- Client.Client
-  Methods.tableInfo.IncomingInfoData .up.|> Methods.tableInfo.dataForTable
-  Methods.tableInfo.IncomingInfoData -up-|> Methods.dateFormat
-  Methods.tableInfo.IncomingInfoData o-- Client.Client
+  Methods.tableInfo.CCTableInfo.IncomingInfoData .up.|> Methods.tableInfo.dataForTable
+  Methods.tableInfo.CCTableInfo.IncomingInfoData -up-|> Methods.dateFormat
+  Methods.tableInfo.CCTableInfo.IncomingInfoData o-- Client.Client
   Methods.tableInfo.IncomingTableData .up.|> Methods.tableInfo.dataForTable
   Methods.tableInfo.IncomingTableData -up-|> Methods.dateFormat
   Methods.tableInfo.IncomingTableData o-- Client.Client
-  Methods.tableInfo.LongStayInfoData .up.|> Methods.tableInfo.dataForTable
-  Methods.tableInfo.LongStayInfoData -up-|> Methods.tableInfo.CCWardData
-  Methods.tableInfo.LongStayInfoData o-- Client.Client
+  Methods.tableInfo.CCTableInfo.LongStayInfoData .up.|> Methods.tableInfo.dataForTable
+  Methods.tableInfo.CCTableInfo.LongStayInfoData -up-|> Methods.tableInfo.CCTableInfo.CCWardData
+  Methods.tableInfo.CCTableInfo.LongStayInfoData o-- Client.Client
   Methods.tableInfo.OtherTableData .up.|> Methods.tableInfo.dataForTable
   Methods.tableInfo.OtherTableData -up-|> Methods.dateFormat
   Methods.tableInfo.OtherTableData o-- Client.Client
   Methods.tableInfo.TotalTableData .up.|> Methods.tableInfo.dataForTable
   Methods.tableInfo.TotalTableData -up-|> Methods.dateFormat
   Methods.tableInfo.TotalTableData o-- Client.Client
-  Methods.tableInfo.TransInfoData .up.|> Methods.tableInfo.dataForTable
-  Methods.tableInfo.TransInfoData -up-|> Methods.dateFormat
-  Methods.tableInfo.TransInfoData o-- Client.Client
+  Methods.tableInfo.CCTableInfo.TransInfoData .up.|> Methods.tableInfo.dataForTable
+  Methods.tableInfo.CCTableInfo.TransInfoData -up-|> Methods.dateFormat
+  Methods.tableInfo.CCTableInfo.TransInfoData o-- Client.Client
   Methods.tableInfo.TransTableData .up.|> Methods.tableInfo.dataForTable
   Methods.tableInfo.TransTableData -up-|> Methods.dateFormat
   Methods.tableInfo.TransTableData o-- Client.Client

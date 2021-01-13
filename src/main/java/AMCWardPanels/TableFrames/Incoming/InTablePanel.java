@@ -3,7 +3,7 @@ package AMCWardPanels.TableFrames.Incoming;
 import AMCWardPanels.TableFrames.*;
 import Client.*;
 import Methods.GeneralWard;
-import Methods.tableInfo.IncomingTableData;
+import Methods.tableInfo.WardTableInfo.IncomingTableData;
 
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;

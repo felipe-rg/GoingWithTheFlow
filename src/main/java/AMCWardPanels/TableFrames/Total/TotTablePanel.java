@@ -5,7 +5,7 @@ import AMCWardPanels.TableFrames.DeletePopUp;
 import AMCWardPanels.TableFrames.IndexRenderer;
 import AMCWardPanels.TableFrames.MultiLineTableHeaderRenderer;
 import Methods.GeneralWard;
-import Methods.tableInfo.TotalTableData;
+import Methods.tableInfo.WardTableInfo.TotalTableData;
 
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
@@ -14,8 +14,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class TotTablePanel extends JPanel implements TableModelListener {
     //Table and scrollpane where table sits

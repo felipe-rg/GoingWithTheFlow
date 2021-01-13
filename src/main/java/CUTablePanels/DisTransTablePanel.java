@@ -3,16 +3,12 @@ package CUTablePanels;
 import AMCWardPanels.TableFrames.IndexRenderer;
 import AMCWardPanels.TableFrames.MultiLineTableHeaderRenderer;
 import AMCWardPanels.TableFrames.MyTableModel;
-import Methods.AMCWard;
 import Methods.ControlCentre;
-import Methods.GeneralWard;
-import Methods.tableInfo.DischargeInfoData;
-import Methods.tableInfo.TransInfoData;
+import Methods.tableInfo.CCTableInfo.DischargeInfoData;
+import Methods.tableInfo.CCTableInfo.TransInfoData;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
-import java.sql.SQLException;
 
 public class DisTransTablePanel extends JPanel {
 

@@ -4,16 +4,11 @@ import AMCWardPanels.TableFrames.IndexRenderer;
 import AMCWardPanels.TableFrames.MultiLineTableHeaderRenderer;
 import AMCWardPanels.TableFrames.MyTableModel;
 import AMCWardPanels.TableFrames.TimeRenderer;
-import Methods.AMCWard;
 import Methods.ControlCentre;
-import Methods.GeneralWard;
-import Methods.tableInfo.IncomingInfoData;
+import Methods.tableInfo.CCTableInfo.IncomingInfoData;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
-import java.io.IOException;
-import java.sql.SQLException;
 
 public class IncomingTablePanel extends JPanel{
 

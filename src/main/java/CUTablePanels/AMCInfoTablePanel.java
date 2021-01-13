@@ -4,13 +4,10 @@ import AMCWardPanels.TableFrames.MultiLineTableHeaderRenderer;
 import AMCWardPanels.TableFrames.MyTableModel;
 import Client.Ward;
 import Methods.ControlCentre;
-import Methods.tableInfo.AMCInfoData;
+import Methods.tableInfo.CCTableInfo.AMCInfoData;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
-import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class AMCInfoTablePanel extends JPanel {

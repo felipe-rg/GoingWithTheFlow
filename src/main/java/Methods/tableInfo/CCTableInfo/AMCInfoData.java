@@ -1,13 +1,13 @@
-package Methods.tableInfo;
+package Methods.tableInfo.CCTableInfo;
 
 import Client.*;
-import Methods.dateFormat;
+import Methods.tableInfo.dataForTable;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class AMCInfoData extends CCWardData implements dataForTable{
+public class AMCInfoData extends CCWardData implements dataForTable {
     private int amcInfoNumber;
     Client client;
     ArrayList<String> amcInfoList;

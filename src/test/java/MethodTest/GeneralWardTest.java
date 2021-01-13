@@ -265,7 +265,7 @@ public class GeneralWardTest {
             Patient p = amc.getPatient(58);
 
             Assert.assertEquals(p.getCurrentWardId(), 12);
-            Assert.assertEquals(p.getNextDestination(), 0);
+            Assert.assertEquals(p.getNextDestination(), 6);
             Assert.assertTrue(p.getPatientId().equals("3141592658"));
         } catch (IOException e) {
             e.printStackTrace();

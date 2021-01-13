@@ -1,13 +1,14 @@
-package Methods.tableInfo;
+package Methods.tableInfo.WardTableInfo;
 
 import Client.*;
 import Methods.dateFormat;
+import Methods.tableInfo.dataForTable;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class DischargeTableData extends dateFormat implements dataForTable{
+public class DischargeTableData extends dateFormat implements dataForTable {
     private int dischargeNumber;
     private int wardId;
     Client client;

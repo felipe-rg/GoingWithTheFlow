@@ -2,7 +2,7 @@ package AMCWardPanels.TableFrames.Transfer;
 
 import AMCWardPanels.TableFrames.*;
 import Methods.AMCWard;
-import Methods.tableInfo.TransTableData;
+import Methods.tableInfo.WardTableInfo.TransTableData;
 
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
@@ -11,8 +11,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class TransTablePanel extends JPanel implements TableModelListener {
     //Table and scrollpane where table sits

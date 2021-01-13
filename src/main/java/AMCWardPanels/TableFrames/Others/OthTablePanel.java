@@ -5,9 +5,8 @@ import AMCWardPanels.TableFrames.DeletePopUp;
 import AMCWardPanels.TableFrames.IndexRenderer;
 import AMCWardPanels.TableFrames.MultiLineTableHeaderRenderer;
 import Methods.GeneralWard;
-import Methods.tableInfo.OtherTableData;
+import Methods.tableInfo.WardTableInfo.OtherTableData;
 
-import javax.print.attribute.standard.MediaSize;
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -15,8 +14,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class OthTablePanel extends JPanel implements TableModelListener {
 

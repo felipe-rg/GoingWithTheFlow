@@ -5,19 +5,15 @@ import AMCWardPanels.TableFrames.DeletePopUp;
 import AMCWardPanels.TableFrames.IndexRenderer;
 import AMCWardPanels.TableFrames.MultiLineTableHeaderRenderer;
 import Methods.GeneralWard;
-import Methods.tableInfo.DischargeTableData;
+import Methods.tableInfo.WardTableInfo.DischargeTableData;
 
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class DisTablePanel extends JPanel implements TableModelListener {
 

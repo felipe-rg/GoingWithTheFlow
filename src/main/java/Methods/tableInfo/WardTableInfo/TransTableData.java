@@ -1,12 +1,13 @@
-package Methods.tableInfo;
+package Methods.tableInfo.WardTableInfo;
 
 import Client.*;
 import Methods.dateFormat;
+import Methods.tableInfo.dataForTable;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class TransTableData extends dateFormat implements dataForTable{
+public class TransTableData extends dateFormat implements dataForTable {
 
     private int transNumber;
     private int wardId;

@@ -1,13 +1,14 @@
-package Methods.tableInfo;
+package Methods.tableInfo.WardTableInfo;
 import Client.*;
 import Methods.dateFormat;
+import Methods.tableInfo.dataForTable;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-public class OtherTableData  extends dateFormat implements dataForTable{
+public class OtherTableData  extends dateFormat implements dataForTable {
     private int otherNumber;
     private int wardId;
     Client client;

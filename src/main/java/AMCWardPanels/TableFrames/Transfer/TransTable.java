@@ -3,14 +3,11 @@ package AMCWardPanels.TableFrames.Transfer;
 import AMCWardPanels.TableFrames.MainPanel;
 import AMCWardPanels.Title;
 import Methods.AMCWard;
-import Methods.tableInfo.TransTableData;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
 public class TransTable {
 

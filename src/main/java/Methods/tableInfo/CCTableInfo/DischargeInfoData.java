@@ -1,27 +1,28 @@
-package Methods.tableInfo;
+package Methods.tableInfo.CCTableInfo;
 
 import Client.*;
 import Methods.dateFormat;
+import Methods.tableInfo.dataForTable;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class TransInfoData extends dateFormat implements dataForTable{
-    private int transInfoNumber;
+public class DischargeInfoData extends dateFormat implements dataForTable {
+    private int dischargeInfoNumber;
     Client client;
-    ArrayList<String> transInfoList;
+    ArrayList<String> dischargeInfoList;
 
-    public TransInfoData(Client client){
+
+    public DischargeInfoData(Client client){
         this.client = client;
     };
 
 
     @Override
     public String getNumber() {
-        return String.valueOf(transInfoNumber);
+        return String.valueOf(dischargeInfoNumber);
     }
-
     @Override
     public Object[][] getData() {
         ArrayList<Patient> patients = getList();
@@ -39,39 +40,25 @@ public class TransInfoData extends dateFormat implements dataForTable{
 
             data[i][2] = p.getPatientId();
             data[i][3] = p.getSex();
-            data[i][4] = p.getNeedsSideRoom();
-            data[i][5] = p.getInitialDiagnosis();
-
-
-            ArrayList<String> json = null;
-            try {
-                json = client.makeGetRequest("*", "wards", "wardid="+p.getNextDestination());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            if(json.size()!=0){
-                String wardName = client.wardsFromJson(json).get(0).getWardName();
-                data[i][6] = wardName;
-            }
-
+            data[i][4] = p.getInitialDiagnosis();
+            data[i][5] = p.getTtaSignedOff();
+            data[i][6] = p.getSuitableForDischargeLounge();
             data[i][7] = dateFormatter(p.getEstimatedTimeOfNext());
         }
         return data;
     }
 
     private ArrayList<Patient> getList(){
-        ArrayList<Patient> output = new ArrayList<Patient>();
         ArrayList<String> json = null;
+        ArrayList<Patient> output = new ArrayList<Patient>();
         try {
-            json = client.makeGetRequest("*", "wards", "wardtype='LS'");
-            ArrayList<Ward> lsWards = client.wardsFromJson(json);
+            json = client.makeGetRequest("*", "wards", "wardtype='discharge'");
+            ArrayList<Ward> dischargeWards = client.wardsFromJson(json);
 
-            //Get all patients transferring to long stay wards
-            for(Ward w:lsWards){
+            for(Ward w: dischargeWards){
                 json = client.makeGetRequest("*", "patients", "nextdestination="+w.getWardId());
                 output.addAll(client.patientsFromJson(json));
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }

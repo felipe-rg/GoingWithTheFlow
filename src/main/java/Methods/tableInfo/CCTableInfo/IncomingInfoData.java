@@ -1,14 +1,15 @@
-package Methods.tableInfo;
+package Methods.tableInfo.CCTableInfo;
 
 import Client.*;
 import Methods.dateFormat;
+import Methods.tableInfo.dataForTable;
 
 import java.io.IOException;
 import java.sql.Array;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class IncomingInfoData extends dateFormat implements dataForTable{
+public class IncomingInfoData extends dateFormat implements dataForTable {
     private int incomingInfoNumber;
     Client client;
     ArrayList<String> incomingInfoList;

@@ -1,276 +1,514 @@
-Jan 13, 2021 4:01:29 PM UserPage <init>
+Jan 13, 2021 5:33:37 PM UserPage <init>
 INFO: UserPage Started
-Jan 13, 2021 4:01:34 PM GUI <init>
-INFO: Ward GUI Started
-Jan 13, 2021 4:01:34 PM Methods.GeneralWard <init>
-INFO: Client Successfully created
-Jan 13, 2021 4:01:36 PM GUI <init>
-INFO: AMC Ward Started
-Jan 13, 2021 4:01:49 PM Methods.GeneralWard transferPatient
-INFO: Patient Successfully transferred
-Jan 13, 2021 4:01:56 PM Methods.GeneralWard editPatient
-INFO: Patient Successfully editted
-Jan 13, 2021 4:01:59 PM UserPage <init>
-INFO: UserPage Started
-Jan 13, 2021 4:02:00 PM GUI <init>
-INFO: Ward GUI Started
-Jan 13, 2021 4:02:00 PM Methods.GeneralWard <init>
-INFO: Client Successfully created
-Jan 13, 2021 4:02:02 PM GUI <init>
-INFO: Longstay Ward setup
-Jan 13, 2021 4:02:08 PM Methods.GeneralWard editPatient
-INFO: Patient Successfully editted
-Jan 13, 2021 4:02:28 PM Methods.GeneralWard removePatient
-INFO: Patient successfully removed
-Jan 13, 2021 4:02:32 PM Methods.GeneralWard deletePatient
-INFO: Patient successfully deleted
-Jan 13, 2021 4:02:46 PM UserPage <init>
-INFO: UserPage Started
-Jan 12, 2021 11:36:14 AM UserPage <init>
-INFO: UserPage Started
-Jan 12, 2021 11:36:14 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:39 PM Client.Client makeGetRequest
 INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:36:16 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:39 PM Client.Client makeGetRequest
 INFO: Received response with 3 entries of wards objects.
-Jan 12, 2021 11:36:16 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:39 PM Client.Client makeGetRequest
 INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:36:16 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:39 PM Client.Client makeGetRequest
 INFO: Received response with 3 entries of wards objects.
-Jan 12, 2021 11:36:30 AM GUI <init>
+Jan 13, 2021 5:33:41 PM GUI <init>
 INFO: Ward GUI Started
-Jan 12, 2021 11:36:30 AM Methods.GeneralWard <init>
+Jan 13, 2021 5:33:41 PM Methods.GeneralWard <init>
 INFO: Client Successfully created
-Jan 12, 2021 11:36:30 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:41 PM Client.Client makeGetRequest
 INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:36:31 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:41 PM Client.Client makeGetRequest
 INFO: Received response with 1 entries of wards objects.
-Jan 12, 2021 11:36:31 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:41 PM Client.Client makeGetRequest
 INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:36:31 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:41 PM Client.Client makeGetRequest
 INFO: Received response with 3 entries of wards objects.
-Jan 12, 2021 11:36:31 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:41 PM Client.Client makeGetRequest
 INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:36:31 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:41 PM Client.Client makeGetRequest
 INFO: Received response with 3 entries of wards objects.
-Jan 12, 2021 11:36:31 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:41 PM Client.Client makeGetRequest
 INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:36:31 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:41 PM Client.Client makeGetRequest
 INFO: Received response with 1 entries of wards objects.
-Jan 12, 2021 11:36:31 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:41 PM Client.Client makeGetRequest
 INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:36:31 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:41 PM Client.Client makeGetRequest
 INFO: Received response with 2 entries of wards objects.
-Jan 12, 2021 11:36:31 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:41 PM Client.Client makeGetRequest
 INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:36:32 AM Client.Client makeGetRequest
-INFO: Received response with 6 entries of patients objects.
-Jan 12, 2021 11:36:32 AM Client.Client makeGetRequest
-INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:36:32 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:41 PM Client.Client makeGetRequest
 INFO: Received response with 2 entries of patients objects.
-Jan 12, 2021 11:36:32 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:41 PM Client.Client makeGetRequest
 INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:36:32 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:41 PM Client.Client makeGetRequest
 INFO: Received response with 0 entries of patients objects.
-Jan 12, 2021 11:36:32 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:41 PM Client.Client makeGetRequest
 INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:36:32 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:41 PM Client.Client makeGetRequest
+INFO: Received response with 0 entries of patients objects.
+Jan 13, 2021 5:33:41 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:33:41 PM Client.Client makeGetRequest
 INFO: Received response with 8 entries of beds objects.
-Jan 12, 2021 11:36:32 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:41 PM Client.Client makeGetRequest
 INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:36:32 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:41 PM Client.Client makeGetRequest
 INFO: Received response with 1 entries of beds objects.
-Jan 12, 2021 11:36:32 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:42 PM Client.Client makeGetRequest
 INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:36:33 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:42 PM Client.Client makeGetRequest
+INFO: Received response with 1 entries of beds objects.
+Jan 13, 2021 5:33:42 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:33:42 PM Client.Client makeGetRequest
 INFO: Received response with 1 entries of patients objects.
-Jan 12, 2021 11:36:33 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:42 PM Client.Client makeGetRequest
 INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:36:33 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:42 PM Client.Client makeGetRequest
 INFO: Received response with 1 entries of beds objects.
-Jan 12, 2021 11:36:33 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:42 PM Client.Client makeGetRequest
 INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:36:33 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:42 PM Client.Client makeGetRequest
+INFO: Received response with 1 entries of beds objects.
+Jan 13, 2021 5:33:42 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:33:42 PM Client.Client makeGetRequest
 INFO: Received response with 1 entries of patients objects.
-Jan 12, 2021 11:36:33 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:42 PM Client.Client makeGetRequest
 INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:36:33 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:42 PM Client.Client makeGetRequest
 INFO: Received response with 1 entries of beds objects.
-Jan 12, 2021 11:36:33 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:42 PM Client.Client makeGetRequest
 INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:36:33 AM Client.Client makeGetRequest
-INFO: Received response with 1 entries of beds objects.
-Jan 12, 2021 11:36:33 AM Client.Client makeGetRequest
-INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:36:33 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:42 PM Client.Client makeGetRequest
 INFO: Received response with 1 entries of patients objects.
-Jan 12, 2021 11:36:33 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:42 PM Client.Client makeGetRequest
 INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:36:33 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:42 PM Client.Client makeGetRequest
 INFO: Received response with 1 entries of beds objects.
-Jan 12, 2021 11:36:33 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:42 PM Client.Client makeGetRequest
 INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:36:34 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:42 PM Client.Client makeGetRequest
 INFO: Received response with 1 entries of patients objects.
-Jan 12, 2021 11:36:34 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:42 PM Client.Client makeGetRequest
 INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:36:34 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:42 PM Client.Client makeGetRequest
 INFO: Received response with 1 entries of beds objects.
-Jan 12, 2021 11:36:34 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:42 PM Client.Client makeGetRequest
 INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:36:34 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:42 PM Client.Client makeGetRequest
 INFO: Received response with 1 entries of patients objects.
-Jan 12, 2021 11:36:34 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:42 PM Client.Client makeGetRequest
 INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:36:34 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:42 PM Client.Client makeGetRequest
 INFO: Received response with 1 entries of beds objects.
-Jan 12, 2021 11:36:34 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:42 PM Client.Client makeGetRequest
 INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:36:34 AM Client.Client makeGetRequest
-INFO: Received response with 1 entries of beds objects.
-Jan 12, 2021 11:36:34 AM Client.Client makeGetRequest
-INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:36:34 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:42 PM Client.Client makeGetRequest
 INFO: Received response with 1 entries of wards objects.
-Jan 12, 2021 11:36:34 AM GUI <init>
+Jan 13, 2021 5:33:42 PM GUI <init>
 INFO: AMC Ward Started
-Jan 12, 2021 11:36:42 AM UserPage <init>
-INFO: UserPage Started
-Jan 12, 2021 11:36:42 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:47 PM Client.Client makeGetRequest
 INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:36:43 AM Client.Client makeGetRequest
-INFO: Received response with 3 entries of wards objects.
-Jan 12, 2021 11:36:43 AM Client.Client makeGetRequest
-INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:36:43 AM Client.Client makeGetRequest
-INFO: Received response with 3 entries of wards objects.
-Jan 12, 2021 11:36:44 AM Methods.ControlCentre <init>
-INFO: Client for Control Unit created
-Jan 12, 2021 11:36:44 AM Client.Client makeGetRequest
-INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:36:44 AM Client.Client makeGetRequest
-INFO: Received response with 3 entries of wards objects.
-Jan 12, 2021 11:36:44 AM Client.Client makeGetRequest
-INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:36:45 AM Client.Client makeGetRequest
-INFO: Received response with 6 entries of patients objects.
-Jan 12, 2021 11:36:45 AM Client.Client makeGetRequest
-INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:36:45 AM Client.Client makeGetRequest
-INFO: Received response with 2 entries of patients objects.
-Jan 12, 2021 11:36:45 AM Client.Client makeGetRequest
-INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:36:45 AM Client.Client makeGetRequest
-INFO: Received response with 0 entries of patients objects.
-Jan 12, 2021 11:36:45 AM Client.Client makeGetRequest
-INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:36:45 AM Client.Client makeGetRequest
-INFO: Received response with 3 entries of wards objects.
-Jan 12, 2021 11:36:45 AM Client.Client makeGetRequest
-INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:36:45 AM Client.Client makeGetRequest
-INFO: Received response with 5 entries of patients objects.
-Jan 12, 2021 11:36:45 AM Client.Client makeGetRequest
-INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:36:45 AM Client.Client makeGetRequest
-INFO: Received response with 8 entries of beds objects.
-Jan 12, 2021 11:36:45 AM Client.Client makeGetRequest
-INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:36:45 AM Client.Client makeGetRequest
-INFO: Received response with 2 entries of patients objects.
-Jan 12, 2021 11:36:45 AM Client.Client makeGetRequest
-INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:36:46 AM Client.Client makeGetRequest
-INFO: Received response with 8 entries of beds objects.
-Jan 12, 2021 11:36:46 AM Client.Client makeGetRequest
-INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:36:46 AM Client.Client makeGetRequest
-INFO: Received response with 4 entries of patients objects.
-Jan 12, 2021 11:36:46 AM Client.Client makeGetRequest
-INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:36:46 AM Client.Client makeGetRequest
-INFO: Received response with 8 entries of beds objects.
-Jan 12, 2021 11:36:46 AM Client.Client makeGetRequest
-INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:36:46 AM Client.Client makeGetRequest
-INFO: Received response with 21 entries of beds objects.
-Jan 12, 2021 11:36:46 AM Client.Client makeGetRequest
-INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:36:46 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:48 PM Client.Client makeGetRequest
 INFO: Received response with 1 entries of wards objects.
-Jan 12, 2021 11:36:46 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:48 PM Client.Client makeGetRequest
 INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:36:46 AM Client.Client makeGetRequest
-INFO: Received response with 10 entries of patients objects.
-Jan 12, 2021 11:36:46 AM Client.Client makeGetRequest
-INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:36:46 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:49 PM Client.Client makeGetRequest
 INFO: Received response with 3 entries of wards objects.
-Jan 12, 2021 11:36:46 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:49 PM Client.Client makeGetRequest
 INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:36:47 AM Client.Client makeGetRequest
-INFO: Received response with 0 entries of patients objects.
-Jan 12, 2021 11:36:47 AM Client.Client makeGetRequest
-INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:36:47 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:49 PM Client.Client makeGetRequest
 INFO: Received response with 2 entries of patients objects.
-Jan 12, 2021 11:36:47 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:49 PM Client.Client makeGetRequest
 INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:36:47 AM Client.Client makeGetRequest
-INFO: Received response with 4 entries of patients objects.
-Jan 12, 2021 11:36:47 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:49 PM Client.Client makeGetRequest
+INFO: Received response with 0 entries of patients objects.
+Jan 13, 2021 5:33:49 PM Client.Client makeGetRequest
 INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:36:47 AM Client.Client makeGetRequest
-INFO: Received response with 3 entries of wards objects.
-Jan 12, 2021 11:36:47 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:49 PM Client.Client makeGetRequest
+INFO: Received response with 0 entries of patients objects.
+Jan 13, 2021 5:33:49 PM Client.Client makeGetRequest
 INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:36:47 AM Client.Client makeGetRequest
-INFO: Received response with 6 entries of patients objects.
-Jan 12, 2021 11:36:47 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:49 PM Client.Client makeGetRequest
+INFO: Received response with 1 entries of wards objects.
+Jan 13, 2021 5:33:51 PM Client.Client makeGetRequest
 INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:36:47 AM Client.Client makeGetRequest
-INFO: Received response with 8 entries of beds objects.
-Jan 12, 2021 11:36:47 AM Client.Client makeGetRequest
-INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:36:47 AM Client.Client makeGetRequest
-INFO: Received response with 4 entries of patients objects.
-Jan 12, 2021 11:36:48 AM Client.Client makeGetRequest
-INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:36:48 AM Client.Client makeGetRequest
-INFO: Received response with 8 entries of beds objects.
-Jan 12, 2021 11:36:48 AM Client.Client makeGetRequest
-INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:36:48 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:52 PM Client.Client makeGetRequest
 INFO: Received response with 5 entries of patients objects.
-Jan 12, 2021 11:36:48 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:52 PM Client.Client makeGetRequest
 INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:36:48 AM Client.Client makeGetRequest
+Jan 13, 2021 5:33:52 PM Client.Client makeGetRequest
+INFO: Received response with 3 entries of wards objects.
+Jan 13, 2021 5:33:52 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:33:52 PM Client.Client makeGetRequest
+INFO: Received response with 0 entries of patients objects.
+Jan 13, 2021 5:33:52 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:33:52 PM Client.Client makeGetRequest
+INFO: Received response with 1 entries of patients objects.
+Jan 13, 2021 5:33:52 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:33:52 PM Client.Client makeGetRequest
+INFO: Received response with 4 entries of patients objects.
+Jan 13, 2021 5:33:52 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:33:52 PM Client.Client makeGetRequest
+INFO: Received response with 1 entries of wards objects.
+Jan 13, 2021 5:33:52 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:33:52 PM Client.Client makeGetRequest
+INFO: Received response with 1 entries of wards objects.
+Jan 13, 2021 5:33:55 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:33:55 PM Client.Client makeGetRequest
+INFO: Received response with 5 entries of patients objects.
+Jan 13, 2021 5:33:55 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:33:55 PM Client.Client makeGetRequest
+INFO: Received response with 1 entries of wards objects.
+Jan 13, 2021 5:33:55 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:33:55 PM Client.Client makeGetRequest
+INFO: Received response with 11 entries of patients objects.
+Jan 13, 2021 5:33:57 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:33:57 PM Client.Client makeGetRequest
+INFO: Received response with 1 entries of patients objects.
+Jan 13, 2021 5:33:57 PM Client.Client makePutRequest
+INFO: Attempted connection to servlet to make a doPut request to edit beds entry/ies where bedid=4 to status='F'.
+Jan 13, 2021 5:33:57 PM Client.Client makeDeleteRequest
+INFO: Attempted connection to servlet to make a doDelete request to delete patients entry/ies where id=581.
+Jan 13, 2021 5:33:57 PM Methods.GeneralWard deletePatient
+INFO: Patient successfully deleted
+Jan 13, 2021 5:34:02 PM UserPage <init>
+INFO: UserPage Started
+Jan 13, 2021 5:34:03 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:34:03 PM Client.Client makeGetRequest
+INFO: Received response with 3 entries of wards objects.
+Jan 13, 2021 5:34:03 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:34:03 PM Client.Client makeGetRequest
+INFO: Received response with 3 entries of wards objects.
+Jan 13, 2021 5:34:04 PM GUI <init>
+INFO: Ward GUI Started
+Jan 13, 2021 5:34:04 PM Methods.GeneralWard <init>
+INFO: Client Successfully created
+Jan 13, 2021 5:34:04 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:34:04 PM Client.Client makeGetRequest
+INFO: Received response with 1 entries of wards objects.
+Jan 13, 2021 5:34:04 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:34:04 PM Client.Client makeGetRequest
+INFO: Received response with 3 entries of wards objects.
+Jan 13, 2021 5:34:04 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:34:04 PM Client.Client makeGetRequest
+INFO: Received response with 3 entries of wards objects.
+Jan 13, 2021 5:34:04 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:34:04 PM Client.Client makeGetRequest
+INFO: Received response with 1 entries of wards objects.
+Jan 13, 2021 5:34:04 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:34:04 PM Client.Client makeGetRequest
+INFO: Received response with 2 entries of wards objects.
+Jan 13, 2021 5:34:04 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:34:04 PM Client.Client makeGetRequest
+INFO: Received response with 1 entries of patients objects.
+Jan 13, 2021 5:34:04 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:34:04 PM Client.Client makeGetRequest
 INFO: Received response with 8 entries of beds objects.
-Jan 12, 2021 11:36:48 AM Client.Client makeGetRequest
+Jan 13, 2021 5:34:04 PM Client.Client makeGetRequest
 INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:36:48 AM Client.Client makeGetRequest
-INFO: Received response with 21 entries of beds objects.
-Jan 12, 2021 11:36:48 AM ControlUnit <init>
+Jan 13, 2021 5:34:04 PM Client.Client makeGetRequest
+INFO: Received response with 1 entries of beds objects.
+Jan 13, 2021 5:34:04 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:34:04 PM Client.Client makeGetRequest
+INFO: Received response with 1 entries of patients objects.
+Jan 13, 2021 5:34:04 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:34:04 PM Client.Client makeGetRequest
+INFO: Received response with 1 entries of beds objects.
+Jan 13, 2021 5:34:04 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:34:04 PM Client.Client makeGetRequest
+INFO: Received response with 1 entries of patients objects.
+Jan 13, 2021 5:34:04 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:34:04 PM Client.Client makeGetRequest
+INFO: Received response with 1 entries of beds objects.
+Jan 13, 2021 5:34:04 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:34:04 PM Client.Client makeGetRequest
+INFO: Received response with 1 entries of patients objects.
+Jan 13, 2021 5:34:04 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:34:04 PM Client.Client makeGetRequest
+INFO: Received response with 1 entries of beds objects.
+Jan 13, 2021 5:34:04 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:34:05 PM Client.Client makeGetRequest
+INFO: Received response with 1 entries of patients objects.
+Jan 13, 2021 5:34:05 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:34:05 PM Client.Client makeGetRequest
+INFO: Received response with 1 entries of beds objects.
+Jan 13, 2021 5:34:05 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:34:05 PM Client.Client makeGetRequest
+INFO: Received response with 1 entries of beds objects.
+Jan 13, 2021 5:34:05 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:34:05 PM Client.Client makeGetRequest
+INFO: Received response with 1 entries of beds objects.
+Jan 13, 2021 5:34:05 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:34:05 PM Client.Client makeGetRequest
+INFO: Received response with 1 entries of beds objects.
+Jan 13, 2021 5:34:05 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:34:05 PM Client.Client makeGetRequest
+INFO: Received response with 1 entries of wards objects.
+Jan 13, 2021 5:34:05 PM GUI <init>
+INFO: Longstay Ward setup
+Jan 13, 2021 5:34:07 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:34:07 PM Client.Client makeGetRequest
+INFO: Received response with 4 entries of patients objects.
+Jan 13, 2021 5:34:07 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:34:07 PM Client.Client makeGetRequest
+INFO: Received response with 0 entries of wards objects.
+Jan 13, 2021 5:34:07 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:34:07 PM Client.Client makeGetRequest
+INFO: Received response with 1 entries of wards objects.
+Jan 13, 2021 5:34:07 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:34:07 PM Client.Client makeGetRequest
+INFO: Received response with 0 entries of wards objects.
+Jan 13, 2021 5:34:07 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:34:07 PM Client.Client makeGetRequest
+INFO: Received response with 0 entries of wards objects.
+Jan 13, 2021 5:34:10 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:34:10 PM Client.Client makeGetRequest
+INFO: Received response with 1 entries of patients objects.
+Jan 13, 2021 5:34:10 PM Client.Client makePutRequest
+INFO: Attempted connection to servlet to make a doPut request to edit beds entry/ies where bedid=17 to status='F'.
+Jan 13, 2021 5:34:10 PM Client.Client makeDeleteRequest
+INFO: Attempted connection to servlet to make a doDelete request to delete patients entry/ies where id=596.
+Jan 13, 2021 5:34:10 PM Methods.GeneralWard deletePatient
+INFO: Patient successfully deleted
+Jan 13, 2021 5:34:15 PM GUI <init>
+INFO: Ward GUI Started
+Jan 13, 2021 5:34:15 PM Methods.GeneralWard <init>
+INFO: Client Successfully created
+Jan 13, 2021 5:34:15 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:34:15 PM Client.Client makeGetRequest
+INFO: Received response with 1 entries of wards objects.
+Jan 13, 2021 5:34:15 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:34:15 PM Client.Client makeGetRequest
+INFO: Received response with 3 entries of wards objects.
+Jan 13, 2021 5:34:15 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:34:15 PM Client.Client makeGetRequest
+INFO: Received response with 3 entries of wards objects.
+Jan 13, 2021 5:34:15 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:34:15 PM Client.Client makeGetRequest
+INFO: Received response with 1 entries of wards objects.
+Jan 13, 2021 5:34:15 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:34:15 PM Client.Client makeGetRequest
+INFO: Received response with 2 entries of wards objects.
+Jan 13, 2021 5:34:15 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:34:15 PM Client.Client makeGetRequest
+INFO: Received response with 1 entries of patients objects.
+Jan 13, 2021 5:34:15 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:34:15 PM Client.Client makeGetRequest
+INFO: Received response with 8 entries of beds objects.
+Jan 13, 2021 5:34:15 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:34:15 PM Client.Client makeGetRequest
+INFO: Received response with 1 entries of beds objects.
+Jan 13, 2021 5:34:15 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:34:15 PM Client.Client makeGetRequest
+INFO: Received response with 1 entries of beds objects.
+Jan 13, 2021 5:34:15 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:34:15 PM Client.Client makeGetRequest
+INFO: Received response with 1 entries of patients objects.
+Jan 13, 2021 5:34:15 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:34:15 PM Client.Client makeGetRequest
+INFO: Received response with 1 entries of beds objects.
+Jan 13, 2021 5:34:15 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:34:15 PM Client.Client makeGetRequest
+INFO: Received response with 1 entries of patients objects.
+Jan 13, 2021 5:34:15 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:34:15 PM Client.Client makeGetRequest
+INFO: Received response with 1 entries of beds objects.
+Jan 13, 2021 5:34:15 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:34:15 PM Client.Client makeGetRequest
+INFO: Received response with 1 entries of patients objects.
+Jan 13, 2021 5:34:15 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:34:15 PM Client.Client makeGetRequest
+INFO: Received response with 1 entries of beds objects.
+Jan 13, 2021 5:34:15 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:34:16 PM Client.Client makeGetRequest
+INFO: Received response with 1 entries of beds objects.
+Jan 13, 2021 5:34:16 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:34:16 PM Client.Client makeGetRequest
+INFO: Received response with 1 entries of beds objects.
+Jan 13, 2021 5:34:16 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:34:16 PM Client.Client makeGetRequest
+INFO: Received response with 1 entries of beds objects.
+Jan 13, 2021 5:34:16 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:34:16 PM Client.Client makeGetRequest
+INFO: Received response with 1 entries of wards objects.
+Jan 13, 2021 5:34:16 PM GUI <init>
+INFO: Longstay Ward setup
+Jan 13, 2021 5:35:55 PM UserPage <init>
+INFO: UserPage Started
+Jan 13, 2021 5:35:55 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:35:55 PM Client.Client makeGetRequest
+INFO: Received response with 3 entries of wards objects.
+Jan 13, 2021 5:35:55 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:35:55 PM Client.Client makeGetRequest
+INFO: Received response with 3 entries of wards objects.
+Jan 13, 2021 5:35:57 PM Methods.ControlCentre <init>
+INFO: Client for Control Unit created
+Jan 13, 2021 5:35:57 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:35:57 PM Client.Client makeGetRequest
+INFO: Received response with 3 entries of wards objects.
+Jan 13, 2021 5:35:57 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:35:57 PM Client.Client makeGetRequest
+INFO: Received response with 2 entries of patients objects.
+Jan 13, 2021 5:35:57 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:35:57 PM Client.Client makeGetRequest
+INFO: Received response with 0 entries of patients objects.
+Jan 13, 2021 5:35:57 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:35:57 PM Client.Client makeGetRequest
+INFO: Received response with 0 entries of patients objects.
+Jan 13, 2021 5:35:57 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:35:57 PM Client.Client makeGetRequest
+INFO: Received response with 3 entries of wards objects.
+Jan 13, 2021 5:35:57 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:35:57 PM Client.Client makeGetRequest
+INFO: Received response with 4 entries of patients objects.
+Jan 13, 2021 5:35:57 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:35:57 PM Client.Client makeGetRequest
+INFO: Received response with 8 entries of beds objects.
+Jan 13, 2021 5:35:57 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:35:57 PM Client.Client makeGetRequest
+INFO: Received response with 3 entries of patients objects.
+Jan 13, 2021 5:35:57 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:35:57 PM Client.Client makeGetRequest
+INFO: Received response with 8 entries of beds objects.
+Jan 13, 2021 5:35:57 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:35:58 PM Client.Client makeGetRequest
+INFO: Received response with 4 entries of patients objects.
+Jan 13, 2021 5:35:58 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:35:58 PM Client.Client makeGetRequest
+INFO: Received response with 8 entries of beds objects.
+Jan 13, 2021 5:35:58 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:35:58 PM Client.Client makeGetRequest
+INFO: Received response with 25 entries of beds objects.
+Jan 13, 2021 5:35:58 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:35:58 PM Client.Client makeGetRequest
+INFO: Received response with 1 entries of wards objects.
+Jan 13, 2021 5:35:58 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:35:58 PM Client.Client makeGetRequest
+INFO: Received response with 10 entries of patients objects.
+Jan 13, 2021 5:35:58 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:35:58 PM Client.Client makeGetRequest
+INFO: Received response with 3 entries of wards objects.
+Jan 13, 2021 5:35:58 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:35:58 PM Client.Client makeGetRequest
+INFO: Received response with 0 entries of patients objects.
+Jan 13, 2021 5:35:58 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:35:58 PM Client.Client makeGetRequest
+INFO: Received response with 1 entries of patients objects.
+Jan 13, 2021 5:35:58 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:35:58 PM Client.Client makeGetRequest
+INFO: Received response with 4 entries of patients objects.
+Jan 13, 2021 5:35:58 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:35:58 PM Client.Client makeGetRequest
+INFO: Received response with 3 entries of wards objects.
+Jan 13, 2021 5:35:58 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:35:58 PM Client.Client makeGetRequest
+INFO: Received response with 8 entries of beds objects.
+Jan 13, 2021 5:35:58 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:35:58 PM Client.Client makeGetRequest
+INFO: Received response with 8 entries of beds objects.
+Jan 13, 2021 5:35:58 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:35:58 PM Client.Client makeGetRequest
+INFO: Received response with 8 entries of beds objects.
+Jan 13, 2021 5:35:58 PM Client.Client makeGetRequest
+INFO: Attempted connection to servlet to make a doGet request.
+Jan 13, 2021 5:35:58 PM Client.Client makeGetRequest
+INFO: Received response with 25 entries of beds objects.
+Jan 13, 2021 5:35:58 PM ControlUnit <init>
 INFO: Control Unit Started
-Jan 12, 2021 11:37:05 AM UserPage <init>
-INFO: UserPage Started
-Jan 12, 2021 11:37:05 AM Client.Client makeGetRequest
+Jan 13, 2021 5:36:01 PM Incoming <init>
+INFO: Incoming Started
+Jan 13, 2021 5:36:01 PM Client.Client makeGetRequest
 INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:37:06 AM Client.Client makeGetRequest
+Jan 13, 2021 5:36:01 PM Client.Client makeGetRequest
 INFO: Received response with 3 entries of wards objects.
-Jan 12, 2021 11:37:06 AM Client.Client makeGetRequest
+Jan 13, 2021 5:36:01 PM Client.Client makeGetRequest
 INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:37:06 AM Client.Client makeGetRequest
-INFO: Received response with 3 entries of wards objects.
-Jan 12, 2021 11:37:11 AM PatientForm <init>
-INFO: PatientForm Started
-Jan 12, 2021 11:37:16 AM UserPage <init>
-INFO: UserPage Started
-Jan 12, 2021 11:37:16 AM Client.Client makeGetRequest
+Jan 13, 2021 5:36:01 PM Client.Client makeGetRequest
+INFO: Received response with 2 entries of patients objects.
+Jan 13, 2021 5:36:01 PM Client.Client makeGetRequest
 INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:37:17 AM Client.Client makeGetRequest
-INFO: Received response with 3 entries of wards objects.
-Jan 12, 2021 11:37:17 AM Client.Client makeGetRequest
+Jan 13, 2021 5:36:01 PM Client.Client makeGetRequest
+INFO: Received response with 0 entries of patients objects.
+Jan 13, 2021 5:36:01 PM Client.Client makeGetRequest
 INFO: Attempted connection to servlet to make a doGet request.
-Jan 12, 2021 11:37:17 AM Client.Client makeGetRequest
-INFO: Received response with 3 entries of wards objects.
+Jan 13, 2021 5:36:01 PM Client.Client makeGetRequest
+INFO: Received response with 0 entries of patients objects.

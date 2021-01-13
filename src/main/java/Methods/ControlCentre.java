@@ -15,6 +15,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.logging.Logger;
 
+/*  Methods used to retrieve information to display on the control centre
+    Used with the tables labelled Info and the CCWardInfo class
+    Tested through UI test comparing to database
+    More robust tests needed - Separate database needed with specific AMU and LS wards else they will interfere with app*/
 
 public class ControlCentre {
     Client client;
@@ -65,86 +69,82 @@ public class ControlCentre {
 
         ArrayList<Patient> amcPatients = new ArrayList<Patient>(); //All amc patients
         ArrayList<Bed> amcBeds = new ArrayList<Bed>();
+
+        //Loop amu wards
         for(Ward w:amuWards){
             int wardid = w.getWardId();
 
-            json = client.makeGetRequest("*", "patients", "currentwardid="+wardid);
+            json = client.makeGetRequest("*", "patients", "currentwardid="+wardid); //Get patients in amu wards
             if(json.size()!=0) {
-                amcPatients.addAll(client.patientsFromJson(json));
+                amcPatients.addAll(client.patientsFromJson(json)); //Add patients to amcPatients
             }
-            json = client.makeGetRequest("*", "beds", "wardid="+wardid);
+            json = client.makeGetRequest("*", "beds", "wardid="+wardid); //Get beds in amu wards
             if(json.size()!=0) {
-                amcBeds.addAll(client.bedsFromJson(json));
+                amcBeds.addAll(client.bedsFromJson(json)); //Add beds to amcBeds
             }
         }
-
-        amcCapacityPerc = amcPatients.size()*100/amcBeds.size();
-
-        json = client.makeGetRequest("*", "beds", "status='F'");
 
         ArrayList<Bed> allFreeBeds = new ArrayList<Bed>();
+        json = client.makeGetRequest("*", "beds", "status='F'"); //Find all free beds
         if(json.size()!=0) {
-            allFreeBeds = client.bedsFromJson(json); //All free beds
+            allFreeBeds = client.bedsFromJson(json); //Put free beds in array
         }
-        ArrayList<Bed> amcFreeBeds = client.bedCrossReference(allFreeBeds, amcBeds);
+        ArrayList<Bed> amcFreeBeds = client.bedCrossReference(allFreeBeds, amcBeds); //Find free beds in AMU
 
-        freeBeds = amcFreeBeds.size();
+        freeBeds = amcFreeBeds.size(); //Add number to those displayed
 
-        json = client.makeGetRequest("*", "wards", "wardtype='discharge'");
+        amcCapacityPerc = (amcBeds.size()-freeBeds)*100/amcBeds.size(); //Find percentage of not-free beds
+
+        json = client.makeGetRequest("*", "wards", "wardtype='discharge'"); //Get all discharge wards
         ArrayList<Ward> dischargeWards = client.wardsFromJson(json); //All discharge areas
 
         ArrayList<Patient> discharges = new ArrayList<Patient>();
-        for(Ward w:dischargeWards) {
-            json = client.makeGetRequest("*", "patients", "nextdestination="+w.getWardId());
+        for(Ward w:dischargeWards) { //Loop discharge wards
+            json = client.makeGetRequest("*", "patients", "nextdestination="+w.getWardId()); //Find patients goinf to discharge wards
             if(json.size()!=0) {
-                discharges = client.patientsFromJson(json); //All amc patients
+                discharges = client.patientsFromJson(json); //Add to discharge array
             }
         }
 
-        ArrayList<Patient> amcDischarges = client.crossReference(amcPatients, discharges);
-        dischargePatients = amcDischarges.size();
+        ArrayList<Patient> amcDischarges = client.crossReference(amcPatients, discharges); //`Find patients discharging from AMU
+        dischargePatients = amcDischarges.size(); //Count discharges and display
 
-        json = client.makeGetRequest("*", "wards", "wardtype='LS'");
+        json = client.makeGetRequest("*", "wards", "wardtype='LS'"); //Find all long stay wards
         ArrayList<Ward> lsWards = client.wardsFromJson(json); //All long stay wards
 
         ArrayList<Patient> toLong= new ArrayList<Patient>();
-        for(Ward w:lsWards) {
-            json = client.makeGetRequest("*", "patients", "nextdestination="+w.getWardId());
+        for(Ward w:lsWards) { //Loop long stay wards
+            json = client.makeGetRequest("*", "patients", "nextdestination="+w.getWardId()); //Find patients going to long stay
             if(json.size()!=0) {
-                toLong.addAll(client.patientsFromJson(json));
+                toLong.addAll(client.patientsFromJson(json)); //add to array
             }
         }
 
-        transferPatients = toLong.size();
+        transferPatients = client.crossReference(toLong, amcPatients).size(); //Add transfers from AMU
     }
 
     //Updates numbers in longstay section
     private void longStayNumbers() throws IOException, SQLException {
         longstayCapacityPerc = 0;
         longstayFreeBeds = 0;
-        int longStayCapacity = 0;
 
-        ArrayList<Patient> inLong = new ArrayList<Patient>();
         ArrayList<Bed> longBed = new ArrayList<Bed>();
 
-        ArrayList<String> json = client.makeGetRequest("*", "wards", "wardtype='LS'");
+        ArrayList<String> json = client.makeGetRequest("*", "wards", "wardtype='LS'");//Find all long stay wards
         ArrayList<Ward> lsWards = client.wardsFromJson(json); //All long stay wards
 
-        for(Ward w:lsWards) {
-            json = client.makeGetRequest("*", "patients", "currentwardid="+w.getWardId());
-            inLong.addAll(client.patientsFromJson(json));
-            json = client.makeGetRequest("*", "beds", "wardid="+w.getWardId());
+        for(Ward w:lsWards) { //Loop long stay wards
+            json = client.makeGetRequest("*", "beds", "wardid="+w.getWardId()); //Find beds in long stay
             longBed.addAll(client.bedsFromJson(json));
         }
-        longStayCapacity = inLong.size();
 
-        json = client.makeGetRequest("*", "beds", "status='F'");
+        json = client.makeGetRequest("*", "beds", "status='F'"); //Find all free beds
         ArrayList<Bed> allFreeBeds = client.bedsFromJson(json); //All free beds
 
-        ArrayList<Bed> longFreeBeds = client.bedCrossReference(allFreeBeds, longBed);
+        ArrayList<Bed> longFreeBeds = client.bedCrossReference(allFreeBeds, longBed); //Find free beds in long stay wards
 
-        longstayFreeBeds = longFreeBeds.size();
-        longstayCapacityPerc = longStayCapacity*100/longBed.size();
+        longstayFreeBeds = longFreeBeds.size(); //Free beds
+        longstayCapacityPerc = (longBed.size()-longstayFreeBeds)*100/longBed.size(); //Percentage capacity
     }
 
     //Updates numbers in incoming section
@@ -154,38 +154,37 @@ public class ControlCentre {
         orangePatients = 0;
         ArrayList<Patient> toAMU = new ArrayList<Patient>();
 
-        ArrayList<String> json = client.makeGetRequest("*", "wards", "wardtype='AMU'");
+        ArrayList<String> json = client.makeGetRequest("*", "wards", "wardtype='AMU'"); //Finf all amu wards
         ArrayList<Ward> amuWards = client.wardsFromJson(json); //All amc wards
 
-        for(Ward w:amuWards){
-            json = client.makeGetRequest("*", "patients", "nextdestination="+w.getWardId());
-            toAMU.addAll(client.patientsFromJson(json));
+        for(Ward w:amuWards){ //Loop amu wards
+            json = client.makeGetRequest("*", "patients", "nextdestination="+w.getWardId()); //Find patients going to amu
+            toAMU.addAll(client.patientsFromJson(json)); //add to array
         }
 
+        LocalDateTime now = LocalDateTime.now(); //Get time now
+        LocalDateTime red = now.minusHours(3); //Get time in 3 hours
+        LocalDateTime orange = now.minusHours(2); //Get time in 2 hours
 
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime red = now.minusHours(3);
-        LocalDateTime orange = now.minusHours(2);
-
-        for(Patient p : toAMU){
-            LocalDateTime patientArrival = p.getArrivalDateTime();
-            if(patientArrival.isAfter(orange)){
-                greenPatients = greenPatients +1;
+        for(Patient p : toAMU){ //Loop patients incoming
+            LocalDateTime patientArrival = p.getArrivalDateTime(); //Get patients arrival time
+            if(patientArrival.isAfter(orange)){ //If patient has been waiting less than 2 hours
+                greenPatients = greenPatients +1;  //Patient is green
             }
-            else if(patientArrival.isAfter(red)){
-                orangePatients = orangePatients +1;
+            else if(patientArrival.isAfter(red)){//If patient has been waiting more than 2 hours but less than 3 hours
+                orangePatients = orangePatients +1; //patient is orange
             }
             else {
-                redPatients = redPatients +1;
+                redPatients = redPatients +1; //If they have been waiting for more than 3 hours they are red
             }
         }
     }
 
     public ArrayList<Ward> findAMUWards(){
         try {
-            ArrayList<String> json = client.makeGetRequest("*", "wards", "wardtype='AMU'");
+            ArrayList<String> json = client.makeGetRequest("*", "wards", "wardtype='AMU'"); //find amu wards
             if(json.size()!=0){
-                return client.wardsFromJson(json);
+                return client.wardsFromJson(json); //return array
             }
         } catch (IOException e) {
             e.printStackTrace();

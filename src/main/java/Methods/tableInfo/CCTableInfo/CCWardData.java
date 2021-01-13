@@ -1,4 +1,4 @@
-package Methods.tableInfo;
+package Methods.tableInfo.CCTableInfo;
 
 import Client.*;
 import Methods.dateFormat;
@@ -31,16 +31,16 @@ public class CCWardData extends dateFormat {
         json = client.makeGetRequest("*", "beds", "wardid="+wardId);
         ArrayList<Bed> beds = client.bedsFromJson(json);
 
-        //Do some funky maths
-        float capacity = patients.size()*100/beds.size();
-        numbers.add(String.valueOf(capacity));
-
         //Get all free beds
         json = client.makeGetRequest("*", "beds", "status='F'");
         ArrayList<Bed> allFreeBeds = client.bedsFromJson(json);
 
         //Cross ref to get free beds in ward
         ArrayList<Bed> freeBedsInWard = client.bedCrossReference(allFreeBeds, beds);
+
+        //Do some funky maths
+        float capacity = (beds.size()-freeBedsInWard.size())*100/beds.size();
+        numbers.add(String.valueOf(capacity));
 
         //Get all male beds
         json = client.makeGetRequest("*", "beds", "forsex='Male'");

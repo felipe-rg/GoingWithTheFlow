@@ -1,13 +1,13 @@
-package Methods.tableInfo;
+package Methods.tableInfo.CCTableInfo;
 
 import Client.*;
-import Methods.dateFormat;
+import Methods.tableInfo.dataForTable;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class LongStayInfoData extends CCWardData implements dataForTable{
+public class LongStayInfoData extends CCWardData implements dataForTable {
     private int lsInfoNumber;
     Client client;
     ArrayList<String> lsInfoList;

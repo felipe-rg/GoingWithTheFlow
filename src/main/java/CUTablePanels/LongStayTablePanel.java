@@ -3,7 +3,7 @@ package CUTablePanels;
 import AMCWardPanels.TableFrames.MultiLineTableHeaderRenderer;
 import AMCWardPanels.TableFrames.MyTableModel;
 import Methods.ControlCentre;
-import Methods.tableInfo.LongStayInfoData;
+import Methods.tableInfo.CCTableInfo.LongStayInfoData;
 
 import javax.swing.*;
 import java.awt.*;
