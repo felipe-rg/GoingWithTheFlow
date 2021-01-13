@@ -1,0 +1,196 @@
+@startuml
+
+title __AMCWardPanels.TableFrames Package Diagram__\n
+
+
+    namespace AMCWardPanels {
+      namespace TableFrames {
+        class AMCWardPanels.TableFrames.BedColorCodePanel {
+            + BedColorCodePanel()
+            + addPanels()
+            + createColorPanels()
+            + setLabel()
+        }
+      }
+    }
+
+  
+
+
+    namespace AMCWardPanels {
+      namespace TableFrames {
+        class AMCWardPanels.TableFrames.ButtonColumn {
+            - action : Action
+            - editButton : JButton
+            - editorValue : Object
+            - focusBorder : Border
+            - isButtonColumnEditor : boolean
+            - renderButton : JButton
+            - table : JTable
+            + ButtonColumn()
+            + actionPerformed()
+            + getCellEditorValue()
+            + getTableCellEditorComponent()
+            + getTableCellRendererComponent()
+            + mouseClicked()
+            + mouseEntered()
+            + mouseExited()
+            + mousePressed()
+            + mouseReleased()
+            + setFocusBorder()
+        }
+      }
+    }
+
+  
+
+
+    namespace AMCWardPanels {
+      namespace TableFrames {
+        class AMCWardPanels.TableFrames.ColorCodePanel {
+            ~ amberPanel : JPanel
+            ~ greenPanel : JPanel
+            ~ redPanel : JPanel
+            + ColorCodePanel()
+            + addPanels()
+            + createColorPanels()
+            + setLabel()
+        }
+      }
+    }
+
+  
+
+
+    namespace AMCWardPanels {
+      namespace TableFrames {
+        class AMCWardPanels.TableFrames.DeletePopUp {
+            + DeletePopUp()
+        }
+      }
+    }
+
+  
+
+
+    namespace AMCWardPanels {
+      namespace TableFrames {
+        class AMCWardPanels.TableFrames.IndexRenderer {
+            + getTableCellRendererComponent()
+        }
+      }
+    }
+
+
+
+    namespace AMCWardPanels {
+      namespace TableFrames {
+        class AMCWardPanels.TableFrames.LsTimeRenderer {
+            + dateFormatter()
+            + durationFormatter()
+            + getTableCellRendererComponent()
+        }
+      }
+    }
+
+  
+
+
+    namespace AMCWardPanels {
+      namespace TableFrames {
+        class AMCWardPanels.TableFrames.MainPanel {
+            + MainPanel()
+            + setLabel()
+        }
+      }
+    }
+
+  
+
+
+    namespace AMCWardPanels {
+      namespace TableFrames {
+        class AMCWardPanels.TableFrames.MultiLineTableHeaderRenderer {
+            + MultiLineTableHeaderRenderer()
+            + getTableCellRendererComponent()
+        }
+      }
+    }
+
+  
+
+
+    namespace AMCWardPanels {
+      namespace TableFrames {
+        class AMCWardPanels.TableFrames.MyTableModel {
+            # columnIdentifiers : Vector
+            # dataVector : Vector
+            + MyTableModel()
+            + MyTableModel()
+            + getColumnClass()
+            + getColumnCount()
+            + getColumnName()
+            + getPatientID()
+            + getRowCount()
+            + getValueAt()
+            + isCellEditable()
+            + removeRow()
+            + setColumnCount()
+            + setColumnIdentifiers()
+            + setDataVector()
+            + setValueAt()
+            {static} # convertToVector()
+            {static} # convertToVector()
+        }
+      }
+    }
+
+  
+
+    namespace AMCWardPanels {
+      namespace TableFrames {
+        class AMCWardPanels.TableFrames.RequestRenderer {
+            + getTableCellRendererComponent()
+        }
+      }
+    }
+
+  
+
+    namespace AMCWardPanels {
+      namespace TableFrames {
+        class AMCWardPanels.TableFrames.TimeRenderer {
+            + dateFormatter()
+            + durationFormatter()
+            + getTableCellRendererComponent()
+        }
+      }
+    }
+
+  
+
+  AMCWardPanels.TableFrames.BedColorCodePanel -up-|> javax.swing.JPanel
+  AMCWardPanels.TableFrames.ButtonColumn .up.|> java.awt.event.ActionListener
+  AMCWardPanels.TableFrames.ButtonColumn .up.|> java.awt.event.MouseListener
+  AMCWardPanels.TableFrames.ButtonColumn .up.|> javax.swing.table.TableCellEditor
+  AMCWardPanels.TableFrames.ButtonColumn .up.|> javax.swing.table.TableCellRenderer
+  AMCWardPanels.TableFrames.ButtonColumn -up-|> javax.swing.AbstractCellEditor
+  AMCWardPanels.TableFrames.ColorCodePanel -up-|> javax.swing.JPanel
+  AMCWardPanels.TableFrames.IndexRenderer -up-|> javax.swing.table.DefaultTableCellRenderer
+  AMCWardPanels.TableFrames.LsTimeRenderer -up-|> javax.swing.table.DefaultTableCellRenderer
+  AMCWardPanels.TableFrames.MainPanel -up-|> javax.swing.JPanel
+  AMCWardPanels.TableFrames.MultiLineTableHeaderRenderer .up.|> javax.swing.table.TableCellRenderer
+  AMCWardPanels.TableFrames.MultiLineTableHeaderRenderer -up-|> javax.swing.JTextArea
+  AMCWardPanels.TableFrames.MyTableModel -up-|> javax.swing.table.AbstractTableModel
+  AMCWardPanels.TableFrames.RequestRenderer -up-|> javax.swing.table.DefaultTableCellRenderer
+  AMCWardPanels.TableFrames.TimeRenderer -up-|> javax.swing.table.DefaultTableCellRenderer
+
+
+right footer
+
+
+PlantUML diagram generated by SketchIt! (https://bitbucket.org/pmesmeur/sketch.it)
+For more information about this tool, please contact philippe.mesmeur@gmail.com
+endfooter
+
+@enduml
