@@ -44,6 +44,16 @@ public class GeneralWardTest {
     }
 
     @Test
+    public void testGetWardType() {
+        try {
+            Assert.assertEquals(amc.getWardType(11), "Test");
+            Assert.assertEquals(amc.getWardType(2), "AMU");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
     public void testGetWardName() {
         try {
             Assert.assertEquals(amc.getWardName(11), "TestAMU");
@@ -215,7 +225,6 @@ public class GeneralWardTest {
             amc.editPatient(8, "nextdestination", "15");
 
 
-
             ArrayList<String> json = c.makeGetRequest("*", "patients", "id=8");
             ArrayList<Patient> pat = c.patientsFromJson(json);
 
@@ -244,7 +253,7 @@ public class GeneralWardTest {
             c.makePutRequest("patients", "suitablefordischargelounge=true", "id=8");
             c.makePutRequest("patients", "transferrequeststatus='R'", "id=8");
             c.makePutRequest("patients", "deceased=true", "id=8");
-            c.makePutRequest("patients", "estimatedatetimeofnext='"+LocalDateTime.now()+"'", "id=8");
+            c.makePutRequest("patients", "estimatedatetimeofnext='" + LocalDateTime.now() + "'", "id=8");
             c.makePutRequest("patients", "patientid='3141592654'", "id=8");
             c.makePutRequest("patients", "dateofbirth='2010-01-01'", "id=8");
             c.makePutRequest("patients", "nextdestination=0", "id=8");
@@ -257,7 +266,7 @@ public class GeneralWardTest {
     }
 
     @Test
-    public void testGetPatient(){
+    public void testGetPatient() {
         try {
             Patient p = amc.getPatient(58);
 
@@ -270,110 +279,89 @@ public class GeneralWardTest {
             throwables.printStackTrace();
         }
     }
-}/*
+
+    //TODO when all tests done do this
+    @Ignore
     @Test
-    public void testGetBeds(){
+    public void testGetBeds() {
         try {
-            AMCWard amc = new AMCWard(2);
             ArrayList<Bed> beds = amc.getBeds();
             Assert.assertEquals(beds.size(), 8);
-            for(int i=1; i<9; i++){
-                Assert.assertEquals(beds.get(i-1).getBedId(), i);
+            for (int i = 1; i < 9; i++) {
+                Assert.assertEquals(beds.get(i - 1).getBedId(), i);
             }
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
         }
     }
 
     @Test
-    public void testGetBed(){
+    public void testGetBed() {
         try {
-            AMCWard amc = new AMCWard(2);
-            Bed bed = amc.getBed(1);
-            Assert.assertEquals(bed.getBedId(), 1);
+            Bed bed = amc.getBed(49);
+            Assert.assertEquals(bed.getBedId(), 49);
+            Assert.assertTrue(bed.getStatus().equals("F"));
+            Assert.assertTrue(bed.getForSex().equals("Male"));
+            Assert.assertTrue(bed.getHasSideRoom());
+            Assert.assertEquals(bed.getWardId(), 11);
+
+            bed = amc.getBed("49");
+            Assert.assertEquals(bed.getBedId(), 49);
+            Assert.assertTrue(bed.getStatus().equals("F"));
+            Assert.assertTrue(bed.getForSex().equals("Male"));
+            Assert.assertTrue(bed.getHasSideRoom());
+            Assert.assertEquals(bed.getWardId(), 11);
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
         }
     }
 
     @Test
-    public void testGetBedColour(){
+    public void testTransferPatientInDatabase() {
         try {
-            Client c = new Client();
-            AMCWard amc = new AMCWard(2);
+            amc.transferPatientInDatabase(12, 12);
 
-            for(int i=2; i<3; i++) {
-                Bed bed = amc.getBed(i);
-                if (bed.getStatus().equals("C")) {
-                    Assert.assertEquals(amc.getBedColour(i), "#000000");
-                } else if (bed.getStatus().equals("F")) {
-                    Assert.assertEquals(amc.getBedColour(i), "#2ECC71");
-                } else if (bed.getStatus().equals("O")) {
-                    Patient patient = amc.getPatient(bed.getBedId());
-                    LocalDateTime leaving = patient.getEstimatedTimeOfNext();
-                    if (leaving.isEqual(patient.getArrivalDateTime())) {
-                        Assert.assertEquals(amc.getBedColour(i), "#E74C3C");
-                    } else if (leaving.isAfter(LocalDateTime.now().plusHours(4))) {
-                        Assert.assertEquals(amc.getBedColour(i), "#E74C3C");
-                    } else if (leaving.isBefore(LocalDateTime.now())) {
-                        Assert.assertEquals(amc.getBedColour(i), "#1531e8");
-                    } else {
-                        Assert.assertEquals(amc.getBedColour(i), "#F89820");
-                    }
+            ArrayList<String> json = c.makeGetRequest("*", "patients", "id=12");
+            Patient p = c.patientsFromJson(json).get(0);
 
-                }
-            }
+            Assert.assertEquals(p.getNextDestination(), 12);
+            Assert.assertTrue(p.getTransferRequestStatus().equals("P"));
+
+            c.makePutRequest("patients", "nextdestination=0", "id=12");
+            c.makePutRequest("patients", "transferrequeststatus='C'", "id=12");
 
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
         }
     }
 
     @Test
-    public void testGetBedStatus(){
+    public void testGetBedColour() {
         try {
-            Client c = new Client();
-            AMCWard amc = new AMCWard(2);
-            ArrayList<String> json = c.makeGetRequest("*", "beds", "wardid=2");
-            ArrayList<Bed> beds = c.bedsFromJson(json);
-            int green = 0;
-            int orange = 0;
-            int red = 0;
-            for(Bed b:beds){
-                if(b.getStatus().equals("F")){
-                    green = green +1;
-                }
-                else if(b.getStatus().equals("C")){
-                    red = red +1;
-                }
-                else if(b.getStatus().equals("O")){
-                    Patient patient = amc.getPatient(b.getBedId());
-                    LocalDateTime leaving = patient.getEstimatedTimeOfNext();
-                    if(leaving.isBefore(LocalDateTime.now())){
-                        red = red + 1;
-                    }
-                    else if(leaving.isAfter(LocalDateTime.now().plusHours(4))){
-                        red = red + 1;
-                    }
-                    else {
-                        orange = orange + 1;
-                    }
-                }
-            }
-            int colours[] = amc.getBedStatus();
-            Assert.assertEquals(colours[0], green);
-            Assert.assertEquals(colours[1], orange);
-            Assert.assertEquals(colours[2], red);
+            String colour = amc.getBedColourForTest(59);
+            Assert.assertTrue(colour.equals("#2ECC71"));//Green
+
+            colour = amc.getBedColourForTest(60);
+            Assert.assertTrue(colour.equals("#000000"));//Black
+
+            colour = amc.getBedColourForTest(61);
+            Assert.assertTrue(colour.equals("#E74C3C"));//Red
+
+            LocalDateTime orangeTime = LocalDateTime.now().plusHours(1);
+            c.makePutRequest("patients", "estimatedatetimeofnext='"+orangeTime+"'", "id=14");
+
+            colour = amc.getBedColourForTest(62);
+            Assert.assertTrue(colour.equals("#F89820"));//Orange
+
+            LocalDateTime blueTime = LocalDateTime.now().minusHours(1);
+            c.makePutRequest("patients", "estimatedatetimeofnext='"+blueTime+"'", "id=15");
+
+            colour = amc.getBedColourForTest(63);
+            Assert.assertTrue(colour.equals("#1531e8"));//Blue
+
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
         }
     }
-*/
+
+}

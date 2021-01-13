@@ -80,6 +80,7 @@ public abstract class GeneralWard{
 
     // Returns a list of beds in the ward which have the correct characteristics for the chosen patient
     // Used when clicking select bed in incoming table
+    //Test Done
     public ArrayList<Bed> getAcceptableBeds(int patientId) throws IOException {
         ArrayList<Bed> acceptableBeds = new ArrayList<Bed>();
 
@@ -145,6 +146,8 @@ public abstract class GeneralWard{
         log.info("Patient successfully deleted");
     }
 
+    //Deletes patient from database and sets bed status to free
+    //Test Done
     public void deletePatientFromDatabase(int patientId, int bedId){
         try {
             client.makePutRequest("beds", "status='F'", "bedid=" + bedId);
@@ -154,6 +157,8 @@ public abstract class GeneralWard{
         }
     }
 
+    //Updates numbers on homescreen
+    //Calls transferpatientindatabase
     public void transferPatient(int patientId, String wardName){
         try {
             //Get ward info
@@ -167,30 +172,47 @@ public abstract class GeneralWard{
                 updateDestinationNumber(oldDest, -1);
                 if(oldDest == 8){
                     try {
-                        client.makePutRequest("patients", "deceased=false", "id="+patientId);
+                        //TODO remove deceased column - now a destination
+                        editPatient(patientId, "deceased", "false");
                     } catch (IOException e) {
                         e.printStackTrace();
+                    }
+                    catch (SQLException throwables) {
+                        throwables.printStackTrace();
                     }
                 }
             }
             updateDestinationNumber(ward.getWardId(), 1);
             if(ward.getWardId() == 8){
                 try {
-                    client.makePutRequest("patients", "deceased=true", "id="+patientId);
+                    //TODO remove deceased column - now a destination
+                    editPatient(patientId, "deceased", "true");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
             }
-            //change patient destination
-            client.makePutRequest("patients", "nextdestination="+ward.getWardId(), "id="+patientId);
-            //change transfer request status
-            client.makePutRequest("patients", "transferrequeststatus='P'", "id="+patientId);
+            transferPatientInDatabase(ward.getWardId(), patientId);
             log.info("Patient Successfully transferred");
         } catch (IOException e) {
             e.printStackTrace();
             log.warning("Patient not transferred");
         }
+    }
 
+    //Makes transfer request status pending and sets next dest to chosen ward
+    //Test done
+    public void transferPatientInDatabase(int wardId, int patientId){
+        try {
+            //change patient destination
+            client.makePutRequest("patients", "nextdestination="+wardId, "id="+patientId);
+            //change transfer request status
+            client.makePutRequest("patients", "transferrequeststatus='P'", "id="+patientId);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -253,6 +275,54 @@ public abstract class GeneralWard{
         }
     }
 
+    //Finds bed colour for each bedbutton
+    //Does the same as above without changing numbers on homescreen
+    //Todo find way of testing getBedColour without separate function
+    public String getBedColourForTest(int BedID) throws IOException {
+        //Gets bed info
+        ArrayList<String> json = client.makeGetRequest("*", "beds", "bedid="+BedID);
+        ArrayList<Bed> beds = client.bedsFromJson(json);
+        //If there is no bed then there is a problem we need to fix
+        if(beds.size()==0){
+            return null;
+        }
+        Bed newBed = beds.get(0);
+        //If the status is free then the bed is green
+        if(newBed.getStatus().equals("F")){
+            return "#2ECC71"; //Green
+        }
+        //If the status is closed then the bed is black
+        if(newBed.getStatus().equals("C")){
+            return "#000000"; //black
+        }
+        else {
+            //If not closed or free, the bed is occupied and we get the patient info
+            json = client.makeGetRequest("*", "patients", "currentbedid="+newBed.getBedId());
+            ArrayList<Patient> patients = client.patientsFromJson(json);;
+            //If no patient then there is an issue to fix
+            if(patients.size()==0){
+                return null;
+            }
+            //Gte arrival and leaving times from the patient
+            LocalDateTime arrival = patients.get(0).getArrivalDateTime();
+            LocalDateTime leaving = patients.get(0).getEstimatedTimeOfNext();
+            LocalDateTime now = LocalDateTime.now();
+
+            //If arrival is the same as leaving then no leaving time has been made and the bed is red
+            if(arrival.isEqual(leaving)){
+                return "#E74C3C"; //Red
+            }
+            //if leaving is in the past then the bed is blue
+            else if(leaving.isBefore(now)){
+                return "#1531e8";//Blue
+            }
+            //If the arrival is different from leaving and is in the future then the bed is orange
+            else{
+                return "#F89820"; //orange
+            }
+        }
+    }
+
     //Used to assign a bed and change patient location
     public void setBed(int patientId, int bedId) throws IOException, SQLException {
 
@@ -267,6 +337,8 @@ public abstract class GeneralWard{
 
     }
 
+    //Sets bed in database - occupies bed, updates current ward and bed, changes est time of next and next dest
+    //Test done
     public void setBedDatabase(int patientId, int bedId){
         try {
             //Get patient info
@@ -319,6 +391,8 @@ public abstract class GeneralWard{
         log.info("Patient successfully removed");
     }
 
+    //Makes changes to database
+    //Test done
     public void removePatientFromDatabase(int patientId, int bedId){
         try {
             //Changes patient's bedid to null
@@ -353,6 +427,7 @@ public abstract class GeneralWard{
 
 
     //Gets the wardName for any ward
+    //test done
     public String getWardName(int wardID) throws IOException {
         ArrayList<String> json = client.makeGetRequest("*", "wards", "wardid="+wardID);
         ArrayList<Ward> wards = client.wardsFromJson(json);
@@ -367,6 +442,7 @@ public abstract class GeneralWard{
     }
 
     //Gets the ward type for any ward
+    //Test done
     public String getWardType(int wardID) throws IOException {
         ArrayList<String> json = client.makeGetRequest("*", "wards", "wardid="+wardID);
         ArrayList<Ward> wards = client.wardsFromJson(json);
@@ -383,6 +459,7 @@ public abstract class GeneralWard{
 
     //Edits the designated column in the table for the bed
     //Column names in table need to be known
+    //test done
     public void editBed(int bedId, String columnId, String newVal) throws IOException{
         client.makePutRequest("beds", columnId+"="+newVal, "bedid="+bedId);
         log.info("Bed Successfully editted");
@@ -390,12 +467,14 @@ public abstract class GeneralWard{
 
     //Edits the designated column in the table for the patient
     //Column names in table need to be known
+    //test done
     public void editPatient(int patientId, String columnId, String newVal) throws IOException, SQLException {
         client.makePutRequest("patients", columnId+"="+newVal, "id="+patientId);
         log.info("Patient Successfully editted");
     }
 
     //Returns the patient in the specified bed
+    //Test done
     public Patient getPatient(int bedId) throws IOException, SQLException {
         ArrayList<String> json = client.makeGetRequest("*","patients", "currentbedid="+bedId);
         ArrayList<Patient> patients = client.patientsFromJson(json);
@@ -406,24 +485,28 @@ public abstract class GeneralWard{
     }
 
     //Returns all beds in ward, used for initialisation
+    //Test done
     public ArrayList<Bed> getBeds() throws IOException {
         ArrayList<String> json = client.makeGetRequest("*", "beds", "wardid="+wardId);
         return client.bedsFromJson(json);
     }
 
     //Returns information about a bed, given the id
+    //Test done
     public Bed getBed(int bedId) throws IOException {
         ArrayList<String> json = client.makeGetRequest("*", "beds", "bedid="+bedId);
         return restOfGetBed(json);
     }
 
     //Returns information about a bed, given the id
+    //Test done
     public Bed getBed(String bedId) throws IOException {
         ArrayList<String> json = client.makeGetRequest("*", "beds", "bedid="+bedId);
         return restOfGetBed(json);
     }
 
     //finishes getBed function
+    //Test done
     private Bed restOfGetBed(ArrayList<String> json){
         ArrayList<Bed> beds = client.bedsFromJson(json);
         if(beds.size()==0){
@@ -433,12 +516,6 @@ public abstract class GeneralWard{
         return beds.get(0);
     }
 
-
-    //Outputs an array of three integers which holds the number of
-    // green, orange, or red beds
-    public int[] getBedStatus() throws IOException {
-        return bedStatus;
-    }
 
     public void changeGreenBeds(int i){
         bedStatus[0] = bedStatus[0] + i;
@@ -514,24 +591,12 @@ public abstract class GeneralWard{
         bedStat = stat;
     }
 
-    public BedStatus getBedStat(){
-        return bedStat;
-    }
-
     public void setTopography(Topography top){
         topography = top;
     }
 
-    public Topography getTopography(){
-        return topography;
-    }
-
     public void setWardInfo(WardInfo wardinfo){
         wardInfo = wardinfo;
-    }
-
-    public WardInfo getWardInfo(){
-        return wardInfo;
     }
 
 }
