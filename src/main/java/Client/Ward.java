@@ -2,6 +2,8 @@ package Client;
 
 import java.io.Serializable;
 
+/*Ward class with attributes corresponding to the fields of the table Wards in the database
+ and their getter methods.*/
 public class Ward implements Serializable {
 
     private int wardId;

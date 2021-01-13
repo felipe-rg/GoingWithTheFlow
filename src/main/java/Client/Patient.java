@@ -4,7 +4,8 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
+/*Patient class with attributes corresponding to the fields of the table Patients in the database
+ and their getter methods.*/
 public class Patient implements Serializable {
 
     private int id;
@@ -26,6 +27,9 @@ public class Patient implements Serializable {
 
     public Patient(){}
 
+    /*two constructors available depending on whether the patient is instantiated from the PatientForm to be added
+    to the database(fewer attributes/field required) or instantiated from the servlet 'end along with the data from
+    all the associated fields from the table (all attributes required)*/
     public Patient(String patientId,String sex,LocalDate dateOfBirth,String initialDiagnosis,boolean needsSideRoom) {
         this.patientId = patientId;
         this.sex = sex;
