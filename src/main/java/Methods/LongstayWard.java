@@ -8,6 +8,9 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+/*      Long stay wards are normal wards where their incoming is from AMU not A&E
+*       In the future we need a patient form for each ward for them to log inpatients
+*       for now closed beds will do similar*/
 
 public class LongstayWard extends GeneralWard{
     public LongstayWard(int wardId) throws IOException, SQLException {
@@ -20,6 +23,7 @@ public class LongstayWard extends GeneralWard{
         inNumber = incoming.size();
     }
 
+    //Long stay destinations are only discharge or other
     public void updateDestinationNumber(int dest, int number){
         for(int i:dcWardIds){
             if(dest==i){
@@ -33,6 +37,7 @@ public class LongstayWard extends GeneralWard{
         }
     }
 
+    //Long stay destinations are only discharge or other
     public ArrayList<Ward> getAllTransWards(){
         ArrayList<Ward> output = new ArrayList<Ward>();
         output.addAll(dcWards);

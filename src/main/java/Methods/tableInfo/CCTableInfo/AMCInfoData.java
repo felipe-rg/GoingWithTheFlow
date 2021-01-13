@@ -18,12 +18,13 @@ public class AMCInfoData extends CCWardData implements dataForTable {
         this.client = client;
     };
 
-
+    //Not currently needed
     @Override
     public String getNumber() {
         return String.valueOf(amcInfoNumber);
     }
 
+    //Passed into table
     @Override
     public Object[][] getData() {
         ArrayList<String> amcList = getList();
@@ -34,9 +35,11 @@ public class AMCInfoData extends CCWardData implements dataForTable {
         return data;
     }
 
+
+    //Find information
     private ArrayList<String> getList(){
         try {
-            return getWardInfo(wardId, client);
+            return getWardInfo(wardId, client); //Gets ward info for the ward
         } catch (IOException e) {
             e.printStackTrace();
         } catch (SQLException throwables) {

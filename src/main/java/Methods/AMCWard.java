@@ -7,12 +7,17 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+/*      AMC wards are special wards as they have patients incoming and leaving the ward
+        Therefore they need different transfer wards and they have an extra table*/
+
 public class AMCWard extends GeneralWard{
 
     private int transNumber;
 
     public AMCWard(int wardId) throws IOException, SQLException {
         super(wardId);
+
+        //Incoming for all AMU are the same
         ArrayList<Patient> incoming = new ArrayList<Patient>();
         for(int i=0; i<amuWardIds.length; i++) {
             ArrayList json = client.makeGetRequest("*", "patients", "nextdestination="+amuWardIds[i]);
@@ -32,6 +37,7 @@ public class AMCWard extends GeneralWard{
         wardInfo.setTransText(String.valueOf(transNumber));
     }
 
+    //AMC patients can go to long stay, discharge, or other
     public void updateDestinationNumber(int dest, int number){
         for(int i:dcWardIds){
             if(dest==i){
@@ -50,6 +56,7 @@ public class AMCWard extends GeneralWard{
         }
     }
 
+    //AMC patients can go to long stay, discharge, or other
     public ArrayList<Ward> getAllTransWards(){
         ArrayList<Ward> output = new ArrayList<Ward>();
         output.addAll(lsWards);

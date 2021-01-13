@@ -19,17 +19,20 @@ public class IncomingInfoData extends dateFormat implements dataForTable {
     };
 
 
+    //Not currently used
     @Override
     public String getNumber() {
         return String.valueOf(incomingInfoNumber);
     }
 
+    //Inputs to table
     @Override
     public Object[][] getData() {
         ArrayList<Patient> patients = getList();
         Object[][] data = new Object[patients.size()][7];
         for(int i=0; i<patients.size(); i++) {
             Patient p = patients.get(i);
+            //Finds info used in table
             data[i][0] = p.getId();
             data[i][1] = p.getPatientId();
             data[i][2] = p.getSex();
@@ -41,13 +44,16 @@ public class IncomingInfoData extends dateFormat implements dataForTable {
         return data;
     }
 
+    //Finds info for getData
     private ArrayList<Patient> getList(){
         ArrayList<Patient> output = new ArrayList<Patient>();
         try {
+            //Gets all amu wards
             ArrayList<String> json = client.makeGetRequest("*", "wards", "wardtype='AMU'");
             ArrayList<Ward> amuWards = client.wardsFromJson(json);
 
             for(Ward w:amuWards){
+                //Finds all patients going to amu
                 json = client.makeGetRequest("*", "patients", "nextdestination="+w.getWardId());
                 output.addAll(client.patientsFromJson(json));
             }

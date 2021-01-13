@@ -18,11 +18,13 @@ public class DischargeInfoData extends dateFormat implements dataForTable {
         this.client = client;
     };
 
-
+    //Not currently needed
     @Override
     public String getNumber() {
         return String.valueOf(dischargeInfoNumber);
     }
+
+    //Inputs to table
     @Override
     public Object[][] getData() {
         ArrayList<Patient> patients = getList();
@@ -30,6 +32,7 @@ public class DischargeInfoData extends dateFormat implements dataForTable {
         for(int i=0; i<patients.size(); i++) {
             Patient p = patients.get(i);
 
+            //Retrieves information as objects usable in the table
             data[i][0] = p.getId();
 
             try {
@@ -48,15 +51,16 @@ public class DischargeInfoData extends dateFormat implements dataForTable {
         return data;
     }
 
+    //Finds information for getData
     private ArrayList<Patient> getList(){
         ArrayList<String> json = null;
         ArrayList<Patient> output = new ArrayList<Patient>();
         try {
-            json = client.makeGetRequest("*", "wards", "wardtype='discharge'");
+            json = client.makeGetRequest("*", "wards", "wardtype='discharge'"); //Gets all discharge wards
             ArrayList<Ward> dischargeWards = client.wardsFromJson(json);
 
             for(Ward w: dischargeWards){
-                json = client.makeGetRequest("*", "patients", "nextdestination="+w.getWardId());
+                json = client.makeGetRequest("*", "patients", "nextdestination="+w.getWardId()); //gets all patients to be discharged
                 output.addAll(client.patientsFromJson(json));
             }
         } catch (IOException e) {

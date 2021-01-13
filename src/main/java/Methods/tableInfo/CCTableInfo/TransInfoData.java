@@ -17,19 +17,20 @@ public class TransInfoData extends dateFormat implements dataForTable {
         this.client = client;
     };
 
-
+    //Not currently used
     @Override
     public String getNumber() {
         return String.valueOf(transInfoNumber);
     }
 
+    //Gets info for table
     @Override
     public Object[][] getData() {
         ArrayList<Patient> patients = getList();
         Object[][] data = new Object[patients.size()][8];
         for(int i=0; i<patients.size(); i++) {
             Patient p = patients.get(i);
-
+            //Formats info to be read into table
             data[i][0] = p.getId();
 
             try {
@@ -46,12 +47,12 @@ public class TransInfoData extends dateFormat implements dataForTable {
 
             ArrayList<String> json = null;
             try {
-                json = client.makeGetRequest("*", "wards", "wardid="+p.getNextDestination());
+                json = client.makeGetRequest("*", "wards", "wardid="+p.getNextDestination()); //Gets ward
             } catch (IOException e) {
                 e.printStackTrace();
             }
             if(json.size()!=0){
-                String wardName = client.wardsFromJson(json).get(0).getWardName();
+                String wardName = client.wardsFromJson(json).get(0).getWardName(); //gets ward name
                 data[i][6] = wardName;
             }
 
@@ -64,12 +65,12 @@ public class TransInfoData extends dateFormat implements dataForTable {
         ArrayList<Patient> output = new ArrayList<Patient>();
         ArrayList<String> json = null;
         try {
-            json = client.makeGetRequest("*", "wards", "wardtype='LS'");
+            json = client.makeGetRequest("*", "wards", "wardtype='LS'"); //Gets all long stay wards
             ArrayList<Ward> lsWards = client.wardsFromJson(json);
 
             //Get all patients transferring to long stay wards
             for(Ward w:lsWards){
-                json = client.makeGetRequest("*", "patients", "nextdestination="+w.getWardId());
+                json = client.makeGetRequest("*", "patients", "nextdestination="+w.getWardId()); //Gets patients going to long stay
                 output.addAll(client.patientsFromJson(json));
             }
 
