@@ -23,7 +23,7 @@ public class AandE{
         client.makePostRequest(p);
         log.info("Client has done makePostRequest");
     }
-
+    //Checks whether patient has been added to database
     public boolean checkAddedPatient(Patient p) throws IOException {
         ArrayList<String> json = client.makeGetRequest("*", "patients", "patientid='"+p.getPatientId()+"'");
         ArrayList<Patient> patients = client.patientsFromJson(json);
@@ -32,7 +32,7 @@ public class AandE{
         }
         else {return false;}
     }
-
+    //Checks if there is an existing patient with the submited patientID to prevent duplicates
     public boolean checkExistingId(String pId) throws IOException {
         ArrayList<String> json = client.makeGetRequest("*", "patients", "patientid='"+pId+"'");
         ArrayList<Patient> patients = client.patientsFromJson(json);
