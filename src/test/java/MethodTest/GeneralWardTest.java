@@ -219,9 +219,7 @@ public class GeneralWardTest {
             amc.editPatient(8, "suitablefordischargelounge", "false");
             amc.editPatient(8, "transferrequeststatus", "'C'");
             amc.editPatient(8, "deceased", "false");
-            amc.editPatient(8, "estimatedatetimeofnext", "'2023-03-03 03:03:03.33333'");
-            amc.editPatient(8, "patientid", "0000000000");
-            amc.editPatient(8, "dateofbirth", "'1903-03-03'");
+            amc.editPatient(8, "patientid", "1000000001");
             amc.editPatient(8, "nextdestination", "15");
 
 
@@ -239,9 +237,7 @@ public class GeneralWardTest {
             Assert.assertTrue(pat.get(0).getSex().equals("Female"));
             Assert.assertTrue(pat.get(0).getInitialDiagnosis().equals("test"));
             Assert.assertTrue(pat.get(0).getTransferRequestStatus().equals("C"));
-            Assert.assertTrue(pat.get(0).getPatientId().equals("0000000000"));
-            Assert.assertTrue(pat.get(0).getDateOfBirth().equals("1903-03-03"));
-            Assert.assertTrue(pat.get(0).getEstimatedTimeOfNext().equals("2023-03-03 03:03:03.33333"));
+            Assert.assertTrue(pat.get(0).getPatientId().equals("1000000001"));
 
             c.makePutRequest("patients", "currentwardid=0", "id=8");
             c.makePutRequest("patients", "sex='Male'", "id=8");
@@ -253,11 +249,9 @@ public class GeneralWardTest {
             c.makePutRequest("patients", "suitablefordischargelounge=true", "id=8");
             c.makePutRequest("patients", "transferrequeststatus='R'", "id=8");
             c.makePutRequest("patients", "deceased=true", "id=8");
-            c.makePutRequest("patients", "estimatedatetimeofnext='" + LocalDateTime.now() + "'", "id=8");
             c.makePutRequest("patients", "patientid='3141592654'", "id=8");
             c.makePutRequest("patients", "dateofbirth='2010-01-01'", "id=8");
             c.makePutRequest("patients", "nextdestination=0", "id=8");
-            c.makePutRequest("patients", "dateofbirth='2010-01-01'", "id=8");
         } catch (IOException e) {
             e.printStackTrace();
         } catch (SQLException throwables) {
