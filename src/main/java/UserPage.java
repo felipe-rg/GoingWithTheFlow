@@ -8,7 +8,9 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.ImageObserver;
 import java.io.IOException;
+import java.text.AttributedCharacterIterator;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
@@ -34,6 +36,19 @@ public class UserPage {
         JFrame frame = new JFrame(gc);                                                  // create a JFrame
 
         JPanel mainPanel = new JPanel();                                                // creates mainPanel for JFrame
+
+        JPanel logoPanel = new JPanel();
+
+        ImageIcon imageIcon = new ImageIcon("src/main/java/logo.png"); // load the image to a imageIcon
+        Image image = imageIcon.getImage(); // transform it
+        Image newimg = image.getScaledInstance(725, 8,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
+        imageIcon = new ImageIcon(newimg);  // transform it back
+        logoPanel.add(new JLabel(imageIcon));
+
+        JLabel logoTitle = new JLabel("GOING WITH THE FLOW");
+        logoTitle.setFont(new Font("Calibri", Font.PLAIN, 65));
+        logoTitle.setForeground(Color.decode("#29a329"));
+        logoPanel.add(logoTitle);
 
         JPanel titlePanel = new JPanel();                                               // creates panel for title
         JLabel titleLabel = new JLabel("<html><div style='text-align:center'>Welcome to the<br>AMC Bed Manager</html>");
@@ -162,7 +177,7 @@ public class UserPage {
         c2.gridwidth = 7;
         c2.gridx = 0;
         c2.gridy = 0;
-        mainPanel.add(titlePanel, c2); // adds title to the top of panel
+        mainPanel.add(logoPanel, c2); // adds title to the top of panel
         c2.gridheight = 2;
         c2.gridwidth = 4;
         c2.gridx = 3;
