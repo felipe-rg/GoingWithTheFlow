@@ -479,8 +479,8 @@ public class BedButton extends JButton{
         editFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
         JLabel editLabel = new JLabel("Time from now:");
-        JTextField hours = new JTextField("",5); // how many hours in the future
-        JTextField minutes = new JTextField("",5); // how many minutes in the future
+        JTextField hours = new JTextField("HH",5); // how many hours in the future
+        JTextField minutes = new JTextField("mm",5); // how many minutes in the future
 
         JLabel one = new JLabel(":"); // this goes between hours : minutes
 
@@ -548,9 +548,9 @@ public class BedButton extends JButton{
         editFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
         JLabel DateLabel = new JLabel("Date of Birth:"); // description of the information
-        JTextField day = new JTextField("",5); // text field for day
-        JTextField month = new JTextField("",5); // text field for month
-        JTextField year = new JTextField("",5); // text field for year
+        JTextField day = new JTextField("DD",5); // text field for day
+        JTextField month = new JTextField("MM",5); // text field for month
+        JTextField year = new JTextField("YYYY",5); // text field for year
 
         // these jlabels are so it looks like day / month / year
         // for example, 08 / 01 / 1942
